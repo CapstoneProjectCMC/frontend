@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './styles/theme-service/theme.service';
+import { NotificationTestComponent } from './shared/components/notification-test/notification-test';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NotificationTestComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

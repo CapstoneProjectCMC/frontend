@@ -1,0 +1,11 @@
+<div>
+  <button (click)="add()">Thêm</button>
+  <button (click)="remove()">Xóa 1</button>
+  <button (click)="clear()">Xóa hết</button>
+
+  <ul>
+    <li *ngFor="let notif of notifications$ | async">
+      {{ notif.id }} - {{ notif.message }}
+    </li>
+  </ul>
+</div>

@@ -16,7 +16,7 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'main',
+    path: 'second',
     component: SecondLayout, // Layout cho các trang không có header, sidebar, ...
     children: [
       {
