@@ -1,0 +1,60 @@
+<div class="paging-component" *ngIf="totalData > 0">
+  <div class="pagi-area">
+    <div class="pagination-container">
+      <button
+        class="start-arrow"
+        [class.disabled]="!canPressStart"
+        [disabled]="!canPressStart"
+        (click)="pageIndex(1)"
+      >
+        &laquo;&laquo;
+      </button>
+
+      <button
+        class="previous-arrow"
+        [class.disabled]="!canPressStart"
+        [disabled]="!canPressStart"
+        (click)="pageIndex(currentPageIndex - 1)"
+      >
+        &laquo;
+      </button>
+
+      <div class="page-number">
+        <div class="midle-page">
+          <ng-container *ngFor="let pageNum of generatePageNumbers()">
+            <span *ngIf="pageNum === '...'">...</span>
+            <button
+              *ngIf="pageNum !== '...'"
+              [class.active]="currentPageIndex === pageNum"
+              (click)="pageIndex(+pageNum)"
+            >
+              {{ pageNum }}
+            </button>
+          </ng-container>
+        </div>
+      </div>
+
+      <button
+        class="next-arrow"
+        [class.disabled]="!canPressEnd"
+        [disabled]="!canPressEnd"
+        (click)="pageIndex(currentPageIndex + 1)"
+      >
+        &raquo;
+      </button>
+
+      <button
+        class="end-arrow"
+        [class.disabled]="!canPressEnd"
+        [disabled]="!canPressEnd"
+        (click)="pageIndex(totalPages)"
+      >
+        &raquo;&raquo;
+      </button>
+    </div>
+  </div>
+
+  <div class="total-data">
+    <p class="label-total-data">Tất cả: {{ totalData }}</p>
+  </div>
+</div>

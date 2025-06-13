@@ -1,0 +1,12 @@
+@use "../src/app/styles/themes/variables";
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.button {
+  background-color: var(--primary-color);
+}

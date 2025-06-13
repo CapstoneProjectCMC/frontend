@@ -1,0 +1,100 @@
+.paging-component {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+
+  .pagination-container {
+    display: flex;
+    align-items: center;
+
+    .page-number {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 40px;
+
+      .midle-page {
+        display: flex;
+        align-items: center;
+
+        button,
+        span {
+          color: white;
+          height: 40px;
+          width: 40px;
+          margin: 3px;
+          cursor: pointer;
+          border: none;
+          border-radius: 6px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 16px;
+          font-weight: bold;
+          transition: 0.3s;
+
+          &:hover {
+            background-color: rgb(224, 224, 219);
+          }
+        }
+
+        button.active {
+          background-color: #808080;
+          color: white;
+        }
+      }
+    }
+
+    button {
+      height: 40px;
+      width: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 5px;
+      font-size: 16px;
+      border-radius: 6px;
+      transition: 0.3s;
+
+      &:hover {
+        background-color: rgb(110, 110, 110);
+      }
+
+      &.disabled {
+        cursor: not-allowed;
+        background-color: rgb(73, 73, 73);
+        opacity: 0.5;
+      }
+    }
+
+    .start-arrow,
+    .previous-arrow,
+    .next-arrow,
+    .end-arrow {
+      margin: 0 5px;
+      color: white;
+    }
+  }
+
+  .total-data {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #575757;
+    height: 40px;
+    border-radius: 8px;
+    padding: 0 15px;
+    color: white;
+    font-weight: bold;
+    cursor: help;
+
+    .label-total-data {
+      white-space: nowrap;
+    }
+  }
+}
