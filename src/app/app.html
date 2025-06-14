@@ -1,6 +1,16 @@
 <router-outlet />
 <app-notification-test />
-<button (click)="toggleTheme()">Đổi theme</button>
+
+<div style="position: relative; left: 100px">
+  <app-tooltip
+    [content]="'Đổi theme'"
+    [position]="'left'"
+    [delay]="0.5"
+    [distance]="10"
+  >
+    <button (click)="toggleTheme()">Đổi theme</button>
+  </app-tooltip>
+</div>
 
 <!-- Danh sách thông báo -->
 <div class="notification-wrapper">

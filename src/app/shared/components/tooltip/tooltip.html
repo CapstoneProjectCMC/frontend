@@ -1,0 +1,9 @@
+<ng-content></ng-content>
+<span
+  class="tooltip"
+  [class]="'tooltip-' + position"
+  [style.--tooltip-delay]="delay + 's'"
+  [style.--tooltip-distance]="distance + 'px'"
+>
+  {{content}}
+</span>

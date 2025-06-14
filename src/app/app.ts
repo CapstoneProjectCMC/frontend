@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { AlertNotificationComponent } from './shared/components/alert-notification/alert-notification.component';
 import { removeNotification } from './shared/store/notification/notification.action';
 import { CommonModule } from '@angular/common';
+import { Tooltip } from './shared/components/tooltip/tooltip';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     NotificationTestComponent,
     AlertNotificationComponent,
+    Tooltip,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
