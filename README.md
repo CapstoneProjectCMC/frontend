@@ -1,59 +1,169 @@
-# Codecampus
+# CodeCampus Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2.
+Đây là phần frontend của dự án CodeCampus, được xây dựng bằng Angular framework.
 
-## Development server
+## Công nghệ sử dụng
 
-To start a local development server, run:
+- **Angular 20.0.0**: Framework chính để xây dựng ứng dụng
+- **NgRx**: State management (Store, Effects, DevTools)
+- **TypeScript**: Ngôn ngữ lập trình chính
+- **RxJS**: Xử lý bất đồng bộ và reactive programming
+- **Angular CLI**: Công cụ để phát triển và build ứng dụng
 
-```bash
-ng serve
+## Yêu cầu hệ thống
+
+- Node.js (phiên bản LTS mới nhất)
+- npm (được cài đặt cùng với Node.js)
+- Angular CLI (phiên bản 20.0.2 trở lên)
+
+## Cấu trúc dự án
+
+```
+frontend/
+├── src/                    # Source code chính
+│   ├── app/               # Components, services, và các module
+│   │   ├── core/         # Core module - chứa các thành phần cốt lõi
+│   │   │   ├── services/    # Các service dùng chung (auth, api, etc.)
+│   │   │   ├── models/      # Interface và type definitions
+│   │   │   ├── interceptors/# HTTP interceptors
+│   │   │   └── constants/   # Constants và enums
+│   │   │
+│   │   ├── features/     # Feature modules - các tính năng chính
+│   │   │   ├── auth/        # Module xác thực (login, register, etc.)
+│   │   │   └── dashboard/   # Module dashboard
+│   │   │
+│   │   ├── shared/       # Shared module - các thành phần dùng chung
+│   │   │   ├── components/  # Shared components (buttons, cards, etc.)
+│   │   │   ├── utils/       # Utility functions và helpers
+│   │   │   ├── store/       # NgRx store configurations
+│   │   │   └── pipes/       # Custom pipes
+│   │   │
+│   │   ├── layouts/      # Layout components (header, footer, sidebar)
+│   │   │
+│   │   ├── styles/       # Global styles và themes
+│   │   │
+│   │   ├── app.routes.ts # Route configurations
+│   │   ├── app.config.ts # App configurations
+│   │   └── app.ts        # Root component
+│   │
+│   ├── environments/     # Cấu hình môi trường
+│   └── styles/          # Global styles
+│
+├── public/              # Public assets
+├── .angular/           # Angular cache
+├── node_modules/       # Dependencies
+└── configuration files # Các file cấu hình (angular.json, tsconfig.json, etc.)
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+### Chi tiết các module chính
 
-## Code scaffolding
+#### Core Module
+- **Services**: Chứa các service cốt lõi như authentication, API calls, error handling
+- **Models**: Định nghĩa các interface và type cho dữ liệu
+- **Interceptors**: HTTP interceptors cho xử lý requests/responses
+- **Constants**: Các hằng số và enum được sử dụng trong toàn bộ ứng dụng
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+#### Features Module
+- **Auth**: Module xử lý authentication và authorization
+  - Login/Register components
+  - Auth guards
+  - Auth services
+- **Dashboard**: Module chính của ứng dụng
+  - Dashboard components
+  - Feature-specific services
+  - Feature-specific models
 
+#### Shared Module
+- **Components**: Các component có thể tái sử dụng
+  - UI components (buttons, cards, modals)
+  - Form components
+  - Layout components
+- **Utils**: Các utility functions và helpers
+- **Store**: NgRx store configurations
+  - Actions
+  - Reducers
+  - Effects
+  - Selectors
+- **Pipes**: Custom pipes cho data transformation
+
+#### Layouts
+- Header component
+- Footer component
+- Sidebar component
+- Main layout template
+
+## Hướng dẫn cài đặt
+
+1. Clone repository:
 ```bash
-ng generate component component-name
+git clone [repository-url]
+cd frontend
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+2. Cài đặt dependencies:
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
+3. Tạo file môi trường:
+- Copy file `src/environments/environment.example.ts` thành `src/environments/environment.ts`
+- Cập nhật các biến môi trường trong file `environment.ts`
 
-To build the project run:
-
+4. Chạy ứng dụng ở môi trường development:
 ```bash
-ng build
+npm start
+```
+Ứng dụng sẽ chạy tại `http://localhost:4200`
+
+## Các lệnh thường dùng
+
+- `npm start`: Chạy ứng dụng ở môi trường development
+- `npm run build`: Build ứng dụng cho production
+- `npm run test`: Chạy unit tests
+- `npm run watch`: Build và watch mode cho development
+
+## Cấu trúc State Management (NgRx)
+
+Dự án sử dụng NgRx để quản lý state với các thành phần:
+- Store: Lưu trữ state
+- Effects: Xử lý side effects
+- DevTools: Debug và theo dõi state changes
+
+## Development Guidelines
+
+1. **Code Style**
+   - Tuân thủ Angular Style Guide
+   - Sử dụng TypeScript strict mode
+   - Follow ESLint rules
+
+2. **Git Workflow**
+   - Sử dụng feature branches
+   - Commit messages rõ ràng và có ý nghĩa
+   - Code review trước khi merge
+
+3. **Testing**
+   - Unit tests cho services và components
+   - E2E tests cho critical paths
+   - Maintain test coverage
+
+## Deployment
+
+1. Build ứng dụng:
+```bash
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+2. Output sẽ được tạo trong thư mục `dist/`
 
-## Running unit tests
+## Contributing
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+1. Fork repository
+2. Tạo feature branch
+3. Commit changes
+4. Push to branch
+5. Tạo Pull Request
 
-```bash
-ng test
-```
+## Contact
 
-## Running end-to-end tests
+Toquangduc2004@gmail.com
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
