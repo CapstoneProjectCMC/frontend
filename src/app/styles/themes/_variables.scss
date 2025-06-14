@@ -8,7 +8,8 @@ $blue-e7f1ff: #e7f1ff; // primary blue - lightest intensity
 $blue-081f5c: #081f5c; // primary blue - dark intensity
 $white-f9fcff: #f9fcff; // white - bright intensity
 $black-000000: #000000; // black - darkest intensity
-$dark-121212: #1e1e1e; // dark background - very dark intensity
+$dark-1e1e1e: #1e1e1e; // dark background - very dark intensity
+$dark-121212: #121212; // dark background - very dark intensity
 
 // Theme classes
 
@@ -37,6 +38,7 @@ $dark-121212: #1e1e1e; // dark background - very dark intensity
 
   --accent-color: #{$blue-d0e3ff}; // tạo điểm sáng trong nền tối
   --background-color: #{$dark-121212};
+  --background-color-secondary: #{$dark-1e1e1e};
   --surface-color: #1e1e1e;
   --border-color: #2a2a2a;
   --hover-color: #3a4a7a;
