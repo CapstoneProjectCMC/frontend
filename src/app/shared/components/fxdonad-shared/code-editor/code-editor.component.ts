@@ -29,8 +29,8 @@ export class CodeEditorComponent implements OnInit {
   ];
 
   themes = [
-    { id: 'oneDark', name: 'Dark Editor', theme: oneDark },
-    { id: 'light', name: 'Light Editor', theme: null },
+    { id: 'oneDark', name: 'Dark Theme', theme: oneDark },
+    { id: 'light', name: 'Light Theme', theme: null },
   ];
 
   ngOnInit() {
