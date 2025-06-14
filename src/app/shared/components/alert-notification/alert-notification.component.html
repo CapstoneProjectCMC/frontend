@@ -1,0 +1,33 @@
+<div
+  class="notification-container"
+  [@notificationState]="state"
+  role="alert"
+  [ngClass]="type"
+  (click)="onClick()"
+  (keydown.enter)="dismiss()"
+  tabindex="0"
+>
+  <div class="notification-header">
+    <div class="icon-title">
+      <span class="notification-icon" [ngClass]="type">
+        <i class="material-icons">{{ getIcon() }}</i>
+      </span>
+      <h3 class="notification-title">{{ title }}</h3>
+    </div>
+    <button
+      class="close-btn"
+      (click)="dismiss($event)"
+      aria-label="Close notification"
+    >
+      <i class="material-icons">close</i>
+    </button>
+  </div>
+  <div class="notification-content">
+    <p class="notification-message">{{ message }}</p>
+    <span class="notification-timestamp">
+      {{ timestamp | date : "dd/MM/yyyy - HH:mm" }}
+    </span>
+  </div>
+  <!-- Thanh tiến trình -->
+  <div class="progress-bar" [style.width.%]="progress"></div>
+</div>

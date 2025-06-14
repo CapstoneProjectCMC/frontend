@@ -1,13 +1,24 @@
 // styles/themes/_variables.scss
 
+// Global color variables
+$blue-334eac: #334eac; // primary blue - medium intensity
+$blue-7096d1: #7096d1; // primary blue - light intensity
+$blue-d0e3ff: #d0e3ff; // primary blue - very light intensity
+$blue-e7f1ff: #e7f1ff; // primary blue - lightest intensity
+$blue-081f5c: #081f5c; // primary blue - dark intensity
+$white-f9fcff: #f9fcff; // white - bright intensity
+$black-000000: #000000; // black - darkest intensity
+$dark-121212: #121212; // dark background - very dark intensity
+
+// Theme classes
 .theme-light {
-  --primary-color: #1976d2;
-  --background-color: #ffffff;
-  --text-color: #000000;
+  --primary-color: #{$blue-334eac};
+  --background-color: #{$white-f9fcff};
+  --text-color: #{$black-000000};
 }
 
 .theme-dark {
-  --primary-color: #90caf9;
-  --background-color: #121212;
-  --text-color: #ffffff;
+  --primary-color: #{$blue-7096d1};
+  --background-color: #{$dark-121212};
+  --text-color: #{$white-f9fcff};
 }

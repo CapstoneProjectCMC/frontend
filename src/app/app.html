@@ -1,3 +1,15 @@
 <router-outlet />
 <app-notification-test />
 <button (click)="toggleTheme()">Đổi theme</button>
+
+<!-- Danh sách thông báo -->
+<div class="notification-wrapper">
+  <app-notification-card
+    *ngFor="let notif of notifications$ | async"
+    [title]="notif.title"
+    [message]="notif.message"
+    [type]="notif.type"
+    [timestamp]="notif.timestamp"
+    (closed)="removeNotification(notif.id)"
+  ></app-notification-card>
+</div>

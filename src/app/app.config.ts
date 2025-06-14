@@ -11,6 +11,7 @@ import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { provideStore } from '@ngrx/store';
 import { formReducer } from './shared/store/open-form-state/form.reducer';
 import { notificationReducer } from './shared/store/notification/notification.reducer';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,5 +24,6 @@ export const appConfig: ApplicationConfig = {
       form: formReducer,
       notification: notificationReducer,
     }),
+    provideAnimations(),
   ],
 };
