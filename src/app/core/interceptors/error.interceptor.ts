@@ -4,6 +4,7 @@ import { inject } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
+import { sendNotification } from '../../shared/utils/notification';
 
 // Bản đồ lỗi từ mã lỗi API sang thông báo tiếng Việt
 const ERROR_MESSAGES: Record<number, string> = {
@@ -38,6 +39,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
       //     timestamp: new Date(),
       //   };
       //   store.dispatch(addNotification({ notification }));
+
+      sendNotification(store, 'Lỗi', errorMessage, 'error');
 
       // Trả về lỗi với cấu trúc: { code, message, status }
       return throwError(() => ({
