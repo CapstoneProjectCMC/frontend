@@ -10,6 +10,7 @@ import { AlertNotificationComponent } from './shared/components/alert-notificati
 import { removeNotification } from './shared/store/notification/notification.action';
 import { CommonModule } from '@angular/common';
 import { Tooltip } from './shared/components/tooltip/tooltip';
+import { CodeEditorComponent } from './shared/components/code-editor/code-editor.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { Tooltip } from './shared/components/tooltip/tooltip';
     NotificationTestComponent,
     AlertNotificationComponent,
     Tooltip,
+    CodeEditorComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

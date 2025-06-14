@@ -1,0 +1,53 @@
+@use "../../../styles/themes/variables";
+
+.code-editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-color);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.editor-controls {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--background-color-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  label {
+    color: var(--text-color);
+    font-size: 0.9rem;
+  }
+
+  select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    background: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--background-color-hover);
+    }
+  }
+}
+
+.editor {
+  flex: 1;
+  overflow: auto;
+  font-family: "Fira Code", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  background: var(--background-color);
+  color: var(--text-color);
+}
