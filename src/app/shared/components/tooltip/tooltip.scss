@@ -1,0 +1,113 @@
+@use "sass:color";
+@use "../../../styles/themes/variables" as *;
+
+:host {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  position: absolute;
+  font-size: 14px;
+  background: #ffffff;
+  color: #000000;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px color.scale($blue-334eac, $lightness: 60%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transition-delay: 0s;
+  white-space: nowrap;
+  z-index: 1000;
+}
+
+// Top position (default)
+.tooltip-top {
+  top: calc(-1 * var(--tooltip-distance, 30px));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip-top::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+// Bottom position
+.tooltip-bottom {
+  bottom: calc(-1 * var(--tooltip-distance, 30px));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.tooltip-bottom::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  top: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+// Left position
+.tooltip-left {
+  left: calc(-1 * var(--tooltip-distance, 30px));
+  top: 50%;
+  transform: translateY(-50%) translateX(-100%);
+}
+
+.tooltip-left::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+// Right position
+.tooltip-right {
+  right: calc(-1 * var(--tooltip-distance, 30px));
+  top: 50%;
+  transform: translateY(-50%) translateX(100%);
+}
+
+.tooltip-right::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #ffffff;
+  left: -3px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+:host:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: var(--tooltip-delay, 1s);
+}
+
+:host:hover .tooltip,
+:host:hover .tooltip::before {
+  background: $blue-081f5c;
+  color: $blue-e7f1ff;
+}

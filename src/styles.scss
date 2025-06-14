@@ -1,8 +1,22 @@
 @use "../src/app/styles/themes/variables";
+@use "../src/app/styles/font/fonts";
+
+:root {
+  --font-family: "FzPoppins", sans-serif;
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+}
 
 body {
   margin: 0;
-  font-family: sans-serif;
+  font-family: var(--font-family);
   background-color: var(--background-color);
   color: var(--text-color);
 }
