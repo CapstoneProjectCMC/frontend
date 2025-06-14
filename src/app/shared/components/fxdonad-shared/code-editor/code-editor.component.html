@@ -1,0 +1,27 @@
+<div class="code-editor-container">
+  <div class="editor-controls">
+    <div class="control-group">
+      <label for="language">Ngôn ngữ:</label>
+      <select
+        id="language"
+        [(ngModel)]="selectedLanguage"
+        (change)="onLanguageChange()"
+      >
+        <option *ngFor="let lang of languages" [value]="lang.id">
+          {{ lang.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label for="theme">Giao diện:</label>
+      <select id="theme" [(ngModel)]="selectedTheme" (change)="onThemeChange()">
+        <option *ngFor="let theme of themes" [value]="theme.id">
+          {{ theme.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div id="editor" class="editor"></div>
+</div>

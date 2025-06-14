@@ -4,12 +4,12 @@ import {
   addNotification,
   removeNotification,
   clearNotifications,
-} from '../../store/notification/notification.action';
-import { selectNotifications } from '../../store/notification/notification.selector';
+} from '../../../store/notification/notification.action';
+import { selectNotifications } from '../../../store/notification/notification.selector';
 
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { INotification } from '../../../core/models/notification.models';
+import { INotification } from '../../../../core/models/notification.models';
 
 @Component({
   imports: [CommonModule],

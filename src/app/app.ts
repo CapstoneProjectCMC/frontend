@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './styles/theme-service/theme.service';
-import { NotificationTestComponent } from './shared/components/notification-test/notification-test';
+import { NotificationTestComponent } from './shared/components/fxdonad-shared/notification-test/notification-test';
 import { INotification } from './core/models/notification.models';
 import { Observable } from 'rxjs';
 import { selectNotifications } from './shared/store/notification/notification.selector';
 import { Store } from '@ngrx/store';
-import { AlertNotificationComponent } from './shared/components/alert-notification/alert-notification.component';
+import { AlertNotificationComponent } from './shared/components/fxdonad-shared/alert-notification/alert-notification.component';
 import { removeNotification } from './shared/store/notification/notification.action';
 import { CommonModule } from '@angular/common';
-import { Tooltip } from './shared/components/tooltip/tooltip';
+import { Tooltip } from './shared/components/fxdonad-shared/tooltip/tooltip';
+import { CodeEditorComponent } from './shared/components/fxdonad-shared/code-editor/code-editor.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { Tooltip } from './shared/components/tooltip/tooltip';
     NotificationTestComponent,
     AlertNotificationComponent,
     Tooltip,
+    CodeEditorComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
