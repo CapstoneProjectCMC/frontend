@@ -1,5 +1,6 @@
 <ng-content></ng-content>
 <span
+  *ngIf="isVisible"
   class="tooltip"
   [class]="'tooltip-' + position"
   [style.--tooltip-delay]="delay + 's'"

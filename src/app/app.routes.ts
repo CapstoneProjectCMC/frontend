@@ -10,7 +10,9 @@ export const routes: Routes = [
       {
         path: 'auth',
         loadChildren: () =>
-          import('./features/auth/auth.module').then((m) => m.AuthModule),
+          import('./features/auth/auth-routing.module').then(
+            (m) => m.AuthRoutingModule
+          ),
       },
       // Thêm các route auth khác nếu cần...
     ],

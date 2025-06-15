@@ -29,7 +29,7 @@ export class NotificationTestComponent {
       id: crypto.randomUUID(), // hoặc bất kỳ ID nào
       title: 'Test',
       message: 'Thông báo test ' + Math.floor(Math.random() * 1000),
-      type: 'info',
+      type: 'error',
       timestamp: new Date(),
     };
     this.store.dispatch(addNotification({ notification }));
