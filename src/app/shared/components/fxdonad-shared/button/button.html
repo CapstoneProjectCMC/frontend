@@ -1,0 +1,18 @@
+<button
+  [attr.type]="type"
+  [disabled]="disabled || loading"
+  [ngClass]="['btn', variant, size]"
+  (click)="onClick($event)"
+>
+  <span class="label" *ngIf="label">{{ label }}</span>
+
+  <span class="icon" *ngIf="icon && !loading">
+    <ng-container [ngTemplateOutlet]="icon"></ng-container>
+  </span>
+
+  <span class="loading-spinner" *ngIf="loading">
+    <i class="fas fa-spinner fa-spin"></i>
+  </span>
+  <!-- Dùng ng-content nếu muốn cho phép tùy chỉnh hoàn toàn -->
+  <ng-content *ngIf="!loading"></ng-content>
+</button>

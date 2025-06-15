@@ -1,0 +1,116 @@
+@use "../../../../styles/themes/_variables.scss" as *;
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+  padding: 0.5rem 1rem;
+
+  &.sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.75rem;
+  }
+
+  &.md {
+    font-size: 0.875rem;
+  }
+
+  &.lg {
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  &:active {
+    filter: brightness(0.9); // giảm sáng 10%
+    transform: scale(0.94); // thêm hiệu ứng nhấn nhẹ
+  }
+
+  &:disabled:active {
+    filter: none;
+    transform: none;
+  }
+
+  &.primary {
+    background-color: $blue-main;
+    color: white;
+
+    &:hover {
+      background-color: $blue-dark;
+    }
+
+    &:disabled {
+      background-color: $blue-light;
+      cursor: not-allowed;
+    }
+  }
+
+  &.secondary {
+    background-color: $blue-light;
+    color: $blue-main;
+
+    &:hover {
+      background-color: $blue-mid;
+      color: white;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+
+  &.ghost {
+    background-color: transparent;
+    color: $blue-main;
+    border: 1px solid $blue-main;
+
+    &:hover {
+      background-color: $blue-lightest;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+
+  &.danger {
+    background-color: #ff4d4f;
+    color: white;
+
+    &:hover {
+      background-color: #d9363e;
+    }
+
+    &:disabled {
+      background-color: #ffa39e;
+    }
+  }
+
+  .icon {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .label {
+    white-space: nowrap;
+  }
+
+  .loading-spinner {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 8px;
+
+    i {
+      font-size: 16px;
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
