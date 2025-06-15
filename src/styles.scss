@@ -1,5 +1,6 @@
 @use "../src/app/styles/themes/variables";
 @use "../src/app/styles/font/fonts";
+@import "@fortawesome/fontawesome-free/css/all.css";
 
 :root {
   --font-family: "FzPoppins", sans-serif;
