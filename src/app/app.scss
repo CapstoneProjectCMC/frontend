@@ -6,3 +6,13 @@
   right: 60px;
   z-index: 100001;
 }
+
+.toggle-switch-container {
+  z-index: 100001;
+  width: 100px;
+  height: 100px;
+  bottom: -100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
