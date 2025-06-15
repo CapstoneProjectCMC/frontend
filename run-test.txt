@@ -1,0 +1,11 @@
+
+//chạy bằng IP
+ng serve --host=0.0.0.0 --disable-host-check
+
+
+--test--
+& "C:\Users\toqua\AppData\Roaming\npm\sonar-scanner" `
+  -D"sonar.projectKey=FE_CodeCampus" `
+  -D"sonar.sources=." `
+  -D"sonar.host.url=http://localhost:9000" `
+  -D"sonar.token=sqp_b3591e099cc39ec4dbe34e8a7942297327f1fd05"
