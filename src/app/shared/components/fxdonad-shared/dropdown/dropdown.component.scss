@@ -180,12 +180,23 @@
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        padding: 8px;
+
         transition: all 0.3s ease;
         max-height: 0px;
         overflow-x: hidden;
         box-sizing: border-box;
+        &.small {
+          gap: 4px;
+          padding: 4px;
+        }
+        &.medium {
+          gap: 6px;
+          padding: 6px;
+        }
+        &.large {
+          gap: 8px;
+          padding: 8px;
+        }
         &.opened {
           max-height: 300px;
         }
@@ -235,6 +246,7 @@
 
 .dropdown-item {
   width: 100%;
+  padding: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
   background-color: var(--surface-color);
@@ -294,7 +306,7 @@
   opacity: 0.6;
 }
 
-@media (max-width: 1068px) {
+@media (min-width: 1068px) {
   .dropdown-menu.first-type {
     &.open {
       width: max-content;
