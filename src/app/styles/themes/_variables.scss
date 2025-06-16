@@ -10,7 +10,8 @@ $white-f9fcff: #f9fcff; // white - bright intensity
 $black-000000: #000000; // black - darkest intensity
 $dark-1e1e1e: #1e1e1e; // dark background - very dark intensity
 $dark-121212: #121212; // dark background - very dark intensity
-
+$dark-18181B: #18181b; // text black and gray
+$gray-D4D4D8: #d4d4d8; // text gray
 // Theme classes
 
 // Light Theme
@@ -28,6 +29,8 @@ $dark-121212: #121212; // dark background - very dark intensity
   --disabled-color: #d3d3d3;
   --text-color: #{$black-000000};
   --text-muted-color: #555;
+  --text-dark-gray-color: #{$dark-18181B};
+  --text-gray-color: #{$gray-D4D4D8};
 }
 
 // Dark Theme
