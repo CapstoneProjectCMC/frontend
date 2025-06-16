@@ -52,6 +52,8 @@ $error-color: #e45967;
 
   --dropdown-primary-color: #{$input-primary-color};
   --dropdown-secondary-color: #{$blue-dark};
+  --dropdown-selected-color: #{$blue-main};
+  --dropdown-hover-color: #{$blue-mid};
 }
 
 // Dark Theme
@@ -63,7 +65,7 @@ $error-color: #e45967;
   --accent-color: #{$blue-d0e3ff}; // tạo điểm sáng trong nền tối
   --background-color: #{$dark-121212};
   --background-color-secondary: #{$dark-1e1e1e};
-  --surface-color: #1e1e1e;
+  --surface-color: #686868;
   --border-color: #2a2a2a;
   --hover-color: #3a4a7a;
   --disabled-color: #555;
@@ -80,4 +82,6 @@ $error-color: #e45967;
 
   --dropdown-primary-color: #{$blue-main};
   --dropdown-secondary-color: #{$blue-dark};
+  --dropdown-selected-color: #3b3b3b;
+  --dropdown-hover-color: #3a3a3a;
 }

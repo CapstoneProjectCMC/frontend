@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EditorView, basicSetup } from 'codemirror';
 import { python } from '@codemirror/lang-python';
 import { cpp } from '@codemirror/lang-cpp';
@@ -7,6 +7,8 @@ import { java } from '@codemirror/lang-java';
 import { oneDark } from '@codemirror/theme-one-dark';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ThemeService } from '../../../../styles/theme-service/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-code-editor',
@@ -15,10 +17,11 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.scss'],
 })
-export class CodeEditorComponent implements OnInit {
+export class CodeEditorComponent implements OnInit, OnDestroy {
   private editor: EditorView | null = null;
   selectedLanguage: string = 'python';
   selectedTheme: string = 'oneDark';
+  private themeSubscription: Subscription;
 
   languages = [
     { id: 'python', name: 'Python', extension: python },
@@ -28,13 +31,28 @@ export class CodeEditorComponent implements OnInit {
     { id: 'javascript', name: 'JavaScript', extension: javascript },
   ];
 
-  themes = [
-    { id: 'oneDark', name: 'Dark Editor', theme: oneDark },
-    { id: 'light', name: 'Light Editor', theme: null },
-  ];
+  constructor(private themeService: ThemeService) {
+    this.selectedTheme =
+      this.themeService.getCurrentTheme() === 'light' ? 'light' : 'oneDark';
+    this.themeSubscription = this.themeService.themeChanged$.subscribe(
+      (theme) => {
+        this.selectedTheme = theme === 'light' ? 'light' : 'oneDark';
+        if (this.editor) {
+          this.editor.destroy();
+          this.initializeEditor();
+        }
+      }
+    );
+  }
 
   ngOnInit() {
     this.initializeEditor();
+  }
+
+  ngOnDestroy() {
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
   }
 
   initializeEditor() {

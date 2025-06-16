@@ -69,16 +69,16 @@
         [size]="'large'"
         [customDropField]="'second-type'"
         [disabled]="false"
-        [multiSelect]="false"
+        [multiSelect]="true"
         [isDisplayCheckbox]="false"
         (onSelect)="handleSelect('the-loai', $event)"
         [isOpen]="activeDropdown === 'the-loai'"
         (toggle)="toggleDropdown('the-loai')"
-        [isDisplaySelectedOpptionLabels]="false"
+        [isDisplaySelectedOpptionLabels]="true"
         [isButtonControl]="false"
         [isSearchable]="true"
         [minHeight]="true"
-        [needIndexColor]="false"
+        [needIndexColor]="true"
       >
       </app-dropdown-button>
     </div>
