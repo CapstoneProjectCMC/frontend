@@ -1,1 +1,127 @@
-<p>Statistics works!</p>
+<div class="guild-component-container">
+  <p>Statistics works!</p>
+
+  <app-notification-test />
+
+  <app-code-editor></app-code-editor>
+
+  <app-input
+    label="Tên người dùng"
+    placeholder="Nhập tên..."
+    [value]="username"
+    (valueChange)="handleInputChange($event)"
+    [required]="false"
+    [minLength]="3"
+    [variant]="'primary'"
+    [errorMessage]="usernameError"
+    [isSvg]="true"
+    [icon]="searchIcon"
+  ></app-input>
+
+  <app-interactive-button
+    [buttonText]="follow ? 'Unfollow' : 'Follow'"
+    [buttonType]="'primary'"
+    [buttonSize]="'small'"
+    [isDisabled]="false"
+    [tooltipText]="'Nhấn để xác nhận'"
+    (buttonClick)="onClick()"
+    ><svg
+      *ngIf="follow"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-bookmark-minus"
+    >
+      <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+      <line x1="15" x2="9" y1="10" y2="10" />
+    </svg>
+    <svg
+      *ngIf="!follow"
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="lucide lucide-bookmark-plus"
+    >
+      <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+      <line x1="12" x2="12" y1="7" y2="13" />
+      <line x1="15" x2="9" y1="10" y2="10" />
+    </svg>
+  </app-interactive-button>
+
+  <div class="filter-list-container">
+    <div class="dropdown-filer">
+      <app-dropdown-button
+        [label]="'Thể loại'"
+        [options]="genres"
+        [variant]="'primary'"
+        [size]="'large'"
+        [customDropField]="'second-type'"
+        [disabled]="false"
+        [multiSelect]="false"
+        [isDisplayCheckbox]="false"
+        (onSelect)="handleSelect('the-loai', $event)"
+        [isOpen]="activeDropdown === 'the-loai'"
+        (toggle)="toggleDropdown('the-loai')"
+        [isDisplaySelectedOpptionLabels]="false"
+        [isButtonControl]="false"
+        [isSearchable]="true"
+        [minHeight]="true"
+        [needIndexColor]="false"
+      >
+      </app-dropdown-button>
+    </div>
+
+    <div class="dropdown-filer">
+      <app-dropdown-button
+        [label]="'Năm'"
+        [options]="years"
+        [variant]="'primary'"
+        [size]="'large'"
+        [customDropField]="'second-type'"
+        [disabled]="false"
+        [multiSelect]="false"
+        [isDisplaySelectedOpptionLabels]="false"
+        [isDisplayCheckbox]="false"
+        (onSelect)="handleSelect('nam', $event)"
+        [isOpen]="activeDropdown === 'nam'"
+        (toggle)="toggleDropdown('nam')"
+        [isSearchable]="true"
+        [minHeight]="true"
+        [needIndexColor]="false"
+      >
+      </app-dropdown-button>
+    </div>
+
+    <div class="dropdown-filer">
+      <app-dropdown-button
+        [label]="'Lịch chiếu'"
+        [options]="schedules"
+        [variant]="'primary'"
+        [size]="'large'"
+        [customDropField]="'second-type'"
+        [disabled]="false"
+        [multiSelect]="false"
+        [isDisplayCheckbox]="false"
+        [isDisplaySelectedOpptionLabels]="false"
+        (onSelect)="handleSelect('lich-chieu', $event)"
+        [isOpen]="activeDropdown === 'lich-chieu'"
+        (toggle)="toggleDropdown('lich-chieu')"
+        [minHeight]="true"
+        [needIndexColor]="false"
+      >
+      </app-dropdown-button>
+    </div>
+  </div>
+</div>

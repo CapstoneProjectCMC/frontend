@@ -13,14 +13,10 @@
   color: #000000;
   padding: 5px 8px;
   border-radius: 5px;
-  box-shadow: 0 10px 10px color.scale($blue-334eac, $lightness: 60%);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  transition-delay: 0s;
+  box-shadow: 0 5px 5px color.scale($blue-334eac, $lightness: 60%);
   white-space: nowrap;
   z-index: 1000;
+  transform-origin: center;
 }
 
 // Top position (default)
@@ -39,7 +35,6 @@
   bottom: -3px;
   left: 50%;
   transform: translate(-50%) rotate(45deg);
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 // Bottom position
@@ -58,7 +53,6 @@
   top: -3px;
   left: 50%;
   transform: translate(-50%) rotate(45deg);
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 // Left position
@@ -77,7 +71,6 @@
   right: -3px;
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 // Right position
@@ -96,14 +89,6 @@
   left: -3px;
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-:host:hover .tooltip {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transition-delay: var(--tooltip-delay, 1s);
 }
 
 :host:hover .tooltip,

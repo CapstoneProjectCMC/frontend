@@ -1,9 +1,11 @@
 <ng-content></ng-content>
 <span
+  *ngIf="isVisible"
   class="tooltip"
   [class]="'tooltip-' + position"
   [style.--tooltip-delay]="delay + 's'"
   [style.--tooltip-distance]="distance + 'px'"
+  [@tooltipAnimation]="{ value: '*', params: { delay: delay } }"
 >
   {{content}}
 </span>

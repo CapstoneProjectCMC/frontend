@@ -1,0 +1,31 @@
+<div class="button-wrapper">
+  <button
+    [ngClass]="{
+      'custom-button': true,
+      primary: buttonType === 'primary',
+      secondary: buttonType === 'secondary',
+      danger: buttonType === 'danger',
+      small: buttonSize === 'small',
+      medium: buttonSize === 'medium',
+      large: buttonSize === 'large',
+      disabled: isDisabled,
+      loading: isLoading
+    }"
+    [disabled]="isDisabled"
+    (click)="onButtonClick($event)"
+    (mouseenter)="onHover(true)"
+    (mouseleave)="onHover(false)"
+    (focus)="onFocus(true)"
+    (blur)="onFocus(false)"
+    [attr.aria-label]="buttonText"
+    [attr.aria-disabled]="isDisabled"
+    [title]="tooltipText"
+  >
+    <div class="button-content">
+      <div *ngIf="iconName" class="material-icons icon">{{ iconName }}</div>
+      <div class="button-text">{{ buttonText }}</div>
+      <ng-content *ngIf="!isLoading"></ng-content>
+      <div *ngIf="isLoading" class="loader"></div>
+    </div>
+  </button>
+</div>

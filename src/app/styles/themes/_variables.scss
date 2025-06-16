@@ -9,9 +9,21 @@ $blue-081f5c: #081f5c; // primary blue - dark intensity
 $white-f9fcff: #f9fcff; // white - bright intensity
 $black-000000: #000000; // black - darkest intensity
 $dark-1e1e1e: #1e1e1e; // dark background - very dark intensity
-$dark-121212: #121212; // dark background - very dark intensity
+$dark-121212: #2c2c2c; // dark background - very dark intensity
 $dark-18181B: #18181b; // text black and gray
 $gray-D4D4D8: #d4d4d8; // text gray
+$blue-dark: #081f5c;
+$blue-main: #334eac;
+$blue-mid: #7096d1;
+$blue-light: #d0e3ff;
+$blue-lighter: #e7f1ff;
+$blue-lightest: #f9fcff;
+
+$input-primary-color: #e6e6e6;
+$input-secondary-color: #5d5757;
+$border-color: #ced4da;
+$error-color: #e45967;
+
 // Theme classes
 
 // Light Theme
@@ -23,14 +35,24 @@ $gray-D4D4D8: #d4d4d8; // text gray
 
   --accent-color: #{$blue-081f5c}; // dùng cho nhấn mạnh, title...
   --background-color: #{$white-f9fcff};
+  --background-color-secondary: #{$blue-e7f1ff};
   --surface-color: #ffffff;
   --border-color: #{$blue-d0e3ff};
   --hover-color: #{$blue-7096d1};
   --disabled-color: #d3d3d3;
   --text-color: #{$black-000000};
   --text-muted-color: #555;
-  --text-dark-gray-color: #{$dark-18181B};
-  --text-gray-color: #{$gray-D4D4D8};
+
+  --button-color: #{$blue-main};
+  --button-color-hover: #{$blue-dark};
+
+  --input-primary-color: #{$input-primary-color};
+  --input-secondary-color: #{$input-secondary-color};
+  --border-color: #{$border-color};
+  --error-color: #{$error-color};
+
+  --dropdown-primary-color: #{$input-primary-color};
+  --dropdown-secondary-color: #{$blue-dark};
 }
 
 // Dark Theme
@@ -48,4 +70,15 @@ $gray-D4D4D8: #d4d4d8; // text gray
   --disabled-color: #555;
   --text-color: #{$white-f9fcff};
   --text-muted-color: #999;
+
+  --button-color: #{$blue-dark};
+  --button-color-hover: #{$blue-main};
+
+  --input-primary-color: #555555;
+  --input-secondary-color: #{$input-secondary-color};
+  --border-color: #{$border-color};
+  --error-color: #{$error-color};
+
+  --dropdown-primary-color: #{$blue-main};
+  --dropdown-secondary-color: #{$blue-dark};
 }

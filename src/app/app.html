@@ -1,19 +1,22 @@
 <router-outlet />
-<app-notification-test />
 
-<div style="position: relative; left: 100px">
+<div class="toggle-switch-container" style="position: relative">
   <app-tooltip
     [content]="'Đổi theme'"
     [position]="'right'"
-    [delay]="0.5"
+    [delay]="1"
     [distance]="10"
   >
-    <button (click)="toggleTheme()">Đổi theme</button>
+    <app-toggle-switch
+      [isChecked]="isDarkMode"
+      [disabled]="false"
+      [label]="'Your Label'"
+      [size]="'medium'"
+      (toggleChange)="toggleTheme($event)"
+    >
+    </app-toggle-switch>
   </app-tooltip>
 </div>
-
-<app-code-editor></app-code-editor>
-
 <!-- Danh sách thông báo -->
 <div class="notification-wrapper">
   <app-notification-card

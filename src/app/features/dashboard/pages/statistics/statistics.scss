@@ -1,0 +1,12 @@
+.guild-component-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .filter-list-container {
+    width: 100%;
+    gap: 10px;
+    display: flex;
+    margin-left: 10px;
+  }
+}

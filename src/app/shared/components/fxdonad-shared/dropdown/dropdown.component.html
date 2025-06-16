@@ -1,0 +1,125 @@
+<div class="dropdown-container" [class.disabled]="disabled">
+  <div class="title-label" *ngIf="title_label">{{ title_label }}</div>
+
+  <button
+    class="dropdown-button"
+    [class.open]="isOpen"
+    [class.primary]="variant === 'primary'"
+    [class.secondary]="variant === 'secondary'"
+    [class.outlined]="variant === 'outlined'"
+    [class.text]="variant === 'text'"
+    [class.small]="size === 'small'"
+    [class.medium]="size === 'medium'"
+    [class.large]="size === 'large'"
+    [attr.aria-expanded]="isOpen"
+    [attr.aria-disabled]="disabled"
+    (click)="toggleDropdown($event)"
+    (keydown)="handleKeydown($event)"
+    (click)="onToggle()"
+    role="button"
+    tabindex="0"
+    #dropdownButton
+  >
+    <span class="button-label">
+      <ng-container *ngIf="multiSelect; else singleLabel">
+        {{ selectedLabels }}
+      </ng-container>
+      <ng-template #singleLabel>
+        {{ truncateString(selectedLabels, 12) }}
+      </ng-template>
+    </span>
+
+    <span class="arrow-icon" [class.open]="isOpen">
+      <img src="icon-assets/icon-dropdown.png" alt="" class="icon-dropdown" />
+    </span>
+  </button>
+
+  <div
+    class="dropdown-menu"
+    [class.min-height]="minHeight"
+    [class.first-type]="customDropField === 'first-type'"
+    [class.third-type]="customDropField === 'third-type'"
+    [class.second-type]="customDropField === 'second-type'"
+    [class.four-type]="customDropField === 'four-type'"
+    [class.open]="isOpen"
+    role="listbox"
+    [attr.inert]="!isOpen ? true : null"
+    #dropdownMenu
+  >
+    <input
+      *ngIf="isSearchable"
+      type="text"
+      class="search-input"
+      [(ngModel)]="searchTerm"
+      placeholder="Tìm kiếm..."
+      (input)="filterOptions()"
+      (keydown)="handleKeydown($event)"
+    />
+
+    <div [class.opened]="isOpen" class="list-options">
+      <!-- Hiển thị thông báo nếu không tìm thấy kết quả và có từ khóa tìm kiếm -->
+      <div
+        *ngIf="filteredOptions.length === 0 && searchTerm"
+        class="no-options"
+      >
+        Không tìm thấy kết quả
+      </div>
+
+      <!-- Chỉ hiển thị danh sách nếu có item -->
+      <ng-container *ngIf="filteredOptions.length > 0 || !searchTerm">
+        <div
+          *ngFor="
+            let option of filteredOptions.length > 0
+              ? filteredOptions
+              : options;
+            let i = index
+          "
+          class="dropdown-item"
+          [class.disabled]="option.disabled"
+          [class.selected]="isSelected(option) && needIndexColor"
+          (click)="selectOption(option, i)"
+        >
+          <div class="label-dropdown-header">
+            <input
+              *ngIf="isDisplayCheckbox"
+              type="checkbox"
+              [checked]="isSelected(option)"
+              (click)="$event.stopPropagation()"
+            />
+            {{ option.label }}
+          </div>
+        </div>
+      </ng-container>
+    </div>
+
+    <div *ngIf="isButtonControl" class="btn-control">
+      <div class="explain-tag">Giải thích chi tiết về thể loại?</div>
+      <div class="btn-area">
+        <app-interactive-button
+          [buttonText]="'Huỷ hết'"
+          [buttonType]="'secondary'"
+          [buttonSize]="'small'"
+          [isDisabled]="false"
+          [iconName]=""
+          [tooltipText]="'Nhấn để xác nhận'"
+          (buttonClick)="handleCancel($event)"
+          (buttonHover)="handleHover($event)"
+          (buttonFocus)="handleFocus($event)"
+        ></app-interactive-button>
+
+        <app-interactive-button
+          [buttonText]="'Xác nhận'"
+          [buttonType]="'primary'"
+          [buttonSize]="'small'"
+          [isDisabled]="false"
+          [isLoading]="loading"
+          [iconName]=""
+          [tooltipText]="'Nhấn để xác nhận'"
+          (buttonClick)="handleClick($event)"
+          (buttonHover)="handleHover($event)"
+          (buttonFocus)="handleFocus($event)"
+        ></app-interactive-button>
+      </div>
+    </div>
+  </div>
+</div>
