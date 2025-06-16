@@ -97,7 +97,7 @@ export class Statistics {
     // Lưu lại option vừa chọn
     this.selectedOptions[dropdownKey] = selected;
 
-    this.router.navigate(['/quick-search', dropdownKey, selected.label]);
+    // this.router.navigate(['/', dropdownKey, selected.label]);
 
     console.log(this.selectedOptions);
   }

@@ -30,7 +30,14 @@
     </span>
 
     <span class="arrow-icon" [class.open]="isOpen">
-      <img src="icon-assets/icon-dropdown.png" alt="" class="icon-dropdown" />
+      <img
+        src="icon-assets/icon-dropdown.png"
+        alt=""
+        class="icon-dropdown"
+        [class.small]="size === 'small'"
+        [class.medium]="size === 'medium'"
+        [class.large]="size === 'large'"
+      />
     </span>
   </button>
 
