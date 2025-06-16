@@ -17,12 +17,7 @@ import {
 } from '@angular/forms';
 import { InteractiveButtonComponent } from '../button/button.component';
 import { truncateString } from '../../../utils/stringProcess';
-
-interface DropdownOption {
-  value: string | number;
-  label: string;
-  disabled?: boolean;
-}
+import { DropdownOption } from '../../../../core/models/data-handle';
 
 @Component({
   selector: 'app-dropdown-button',
