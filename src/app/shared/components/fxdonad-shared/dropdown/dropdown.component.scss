@@ -3,6 +3,7 @@
 .dropdown-container {
   position: relative;
   width: 100%;
+  min-width: 150px;
 
   .title-label {
     font-weight: 700;
@@ -62,7 +63,16 @@
       .icon-dropdown {
         display: flex;
         justify-content: center;
-        height: 25px;
+
+        &.small {
+          height: 15px;
+        }
+        &.medium {
+          height: 20px;
+        }
+        &.large {
+          height: 25px;
+        }
       }
       transition: transform 0.3s ease;
 
@@ -79,7 +89,7 @@
     }
     top: 100%;
     left: 0;
-    width: fit-content; //hiện fix cứng chưa responsive
+    min-width: 100%;
     background-color: var(--input-primary-color);
     border: var(--border-color) 1px solid;
     border-radius: 12px;
@@ -90,6 +100,7 @@
     z-index: 1000;
     margin-top: 4px;
     box-shadow: 0px 40px 60px rgba(255, 255, 255, 0.1);
+    overflow-x: hidden;
     &.open {
       opacity: 1;
       visibility: visible;
@@ -97,7 +108,7 @@
     }
 
     .search-input {
-      width: 94%;
+      width: calc(100% - 24px);
       padding: 8px;
       margin: 12px 5px;
       border: 1px solid var(--border-color);
@@ -119,6 +130,8 @@
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         gap: 5px;
         padding: 5px;
+        width: 100%;
+        box-sizing: border-box;
       }
       .btn-control {
         display: flex;
@@ -126,6 +139,8 @@
         margin: 10px 16px;
         justify-content: space-between;
         min-width: 450px;
+        width: calc(100% - 32px);
+        box-sizing: border-box;
         .explain-tag {
           font-style: italic;
           cursor: pointer;
@@ -143,23 +158,26 @@
 
     &.third-type {
       display: flex;
-      width: auto;
+      width: max-content;
       .list-options {
         display: flex;
         gap: 8px;
         padding: 8px;
+        width: 100%;
+        box-sizing: border-box;
+        flex-wrap: wrap;
       }
     }
 
     &.second-type {
       display: flex;
       flex-direction: column;
-      width: auto;
-      min-width: 150px;
+      min-width: 100%;
       .search-input {
-        width: 80%;
+        width: calc(100% - 28px);
       }
       .list-options {
+        width: 100%;
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -167,6 +185,7 @@
         transition: all 0.3s ease;
         max-height: 0px;
         overflow-x: hidden;
+        box-sizing: border-box;
         &.opened {
           max-height: 300px;
         }
@@ -176,26 +195,24 @@
     &.four-type {
       display: flex;
       flex-direction: column;
-      width: auto;
+      width: max-content;
       min-width: 150px;
-      max-width: 500px;
+      max-width: none;
 
       .search-input {
-        width: 80%;
+        width: calc(100% - 24px);
       }
 
       .list-options {
         display: grid;
-        grid-template-columns: repeat(
-          auto-fill,
-          minmax(50px, 1fr)
-        ); // Chia cột tự động
-        grid-template-columns: repeat(4, auto); // Đặt 4 hàng
+        grid-template-columns: repeat(4, 1fr);
         gap: 8px;
         padding: 8px;
         transition: all 0.3s ease;
         max-height: 0px;
         overflow: hidden;
+        width: 100%;
+        box-sizing: border-box;
 
         &.opened {
           overflow-y: visible;
@@ -208,25 +225,29 @@
         text-align: center;
         border-radius: 4px;
         transition: 0.2s ease-in-out;
-        width: auto;
+        width: 100%;
         white-space: nowrap;
+        box-sizing: border-box;
       }
     }
   }
 }
 
 .dropdown-item {
-  padding: 12px 16px;
+  width: 100%;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 100px;
   background-color: var(--surface-color);
   border-radius: 8px;
   border: white 1px solid;
+  box-sizing: border-box;
   .label-dropdown-header {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
   }
 
   &:hover:not(.disabled) {
@@ -259,7 +280,8 @@
 @media (max-width: 1068px) {
   .dropdown-menu.first-type {
     &.open {
-      width: 500px;
+      width: max-content;
+      min-width: 100%;
     }
   }
 

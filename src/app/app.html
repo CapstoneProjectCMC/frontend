@@ -1,30 +1,32 @@
-<router-outlet />
+<div class="app-container">
+  <router-outlet />
 
-<div class="toggle-switch-container" style="position: relative">
-  <app-tooltip
-    [content]="'Đổi theme'"
-    [position]="'right'"
-    [delay]="1"
-    [distance]="10"
-  >
-    <app-toggle-switch
-      [isChecked]="isDarkMode"
-      [disabled]="false"
-      [label]="'Your Label'"
-      [size]="'medium'"
-      (toggleChange)="toggleTheme($event)"
+  <div class="toggle-switch-container">
+    <app-tooltip
+      [content]="'Đổi theme'"
+      [position]="'right'"
+      [delay]="1"
+      [distance]="10"
     >
-    </app-toggle-switch>
-  </app-tooltip>
-</div>
-<!-- Danh sách thông báo -->
-<div class="notification-wrapper">
-  <app-notification-card
-    *ngFor="let notif of notifications$ | async"
-    [title]="notif.title"
-    [message]="notif.message"
-    [type]="notif.type"
-    [timestamp]="notif.timestamp"
-    (closed)="removeNotification(notif.id)"
-  ></app-notification-card>
+      <app-toggle-switch
+        [isChecked]="isDarkMode"
+        [disabled]="false"
+        [label]="'Your Label'"
+        [size]="'medium'"
+        (toggleChange)="toggleTheme($event)"
+      >
+      </app-toggle-switch>
+    </app-tooltip>
+  </div>
+  <!-- Danh sách thông báo -->
+  <div class="notification-wrapper">
+    <app-notification-card
+      *ngFor="let notif of notifications$ | async"
+      [title]="notif.title"
+      [message]="notif.message"
+      [type]="notif.type"
+      [timestamp]="notif.timestamp"
+      (closed)="removeNotification(notif.id)"
+    ></app-notification-card>
+  </div>
 </div>
