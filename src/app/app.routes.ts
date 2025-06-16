@@ -12,6 +12,7 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/auth/auth.module').then((m) => m.AuthModule),
       },
+
       // Thêm các route auth khác nếu cần...
     ],
   },
@@ -27,6 +28,13 @@ export const routes: Routes = [
           ),
       },
       // Thêm các route auth khác nếu cần...
+      {
+        path: 'landing',
+        loadChildren: () =>
+          import('./features/landing/landing.module').then(
+            (m) => m.LandingModule
+          ),
+      },
     ],
   },
 ];

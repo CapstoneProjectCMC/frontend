@@ -1,0 +1,61 @@
+.header {
+  width: 100%;
+  padding: 16px 0;
+  background-color: var(--background-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-logo {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+
+    &-icon {
+      height: 32px;
+    }
+
+    &-name {
+      height: 24px;
+    }
+  }
+
+  &-menu {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+
+    &-item {
+      &-text {
+        font-size: 16px;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: var(--hover-color);
+        }
+      }
+
+      &-button {
+        padding: 8px 16px;
+        background-color: var(--background-color);
+        color: var(--text-dark-gray-color);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border: 1px solid var(--text-dark-gray-color);
+        &:hover {
+          background-color: var(--primary-color-dark);
+        }
+      }
+    }
+  }
+}
