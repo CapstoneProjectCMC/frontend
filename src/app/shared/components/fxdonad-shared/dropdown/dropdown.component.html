@@ -68,6 +68,9 @@
       <div
         *ngIf="filteredOptions.length === 0 && searchTerm"
         class="no-options"
+        [class.small]="size === 'small'"
+        [class.medium]="size === 'medium'"
+        [class.large]="size === 'large'"
       >
         Không tìm thấy kết quả
       </div>
@@ -86,7 +89,12 @@
           [class.selected]="isSelected(option) && needIndexColor"
           (click)="selectOption(option, i)"
         >
-          <div class="label-dropdown-header">
+          <div
+            class="label-dropdown-header"
+            [class.small]="size === 'small'"
+            [class.medium]="size === 'medium'"
+            [class.large]="size === 'large'"
+          >
             <input
               *ngIf="isDisplayCheckbox"
               type="checkbox"
