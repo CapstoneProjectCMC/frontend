@@ -8,6 +8,7 @@ import { InputComponent } from '../../../../shared/components/fxdonad-shared/inp
 import { InteractiveButtonComponent } from '../../../../shared/components/fxdonad-shared/button/button.component';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { Router } from '@angular/router';
+import { TextEditor } from '../../../../shared/components/fxdonad-shared/text-editor/text-editor';
 
 @Component({
   selector: 'app-statistics',
@@ -18,6 +19,7 @@ import { Router } from '@angular/router';
     InputComponent,
     InteractiveButtonComponent,
     DropdownButtonComponent,
+    TextEditor,
   ],
   templateUrl: './statistics.html',
   styleUrl: './statistics.scss',
