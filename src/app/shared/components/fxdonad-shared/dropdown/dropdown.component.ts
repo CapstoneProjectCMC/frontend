@@ -42,12 +42,11 @@ export class DropdownButtonComponent
   @Input() variant: 'primary' | 'secondary' | 'outlined' | 'text' = 'primary';
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
   @Input() customDropField:
-    | 'first-type'
-    | 'year-filter'
-    | 'third-type'
+    | 'main-type'
     | 'second-type'
+    | 'third-type'
     | 'four-type'
-    | 'first-type' = 'first-type';
+    | 'main-type' = 'main-type';
   @Input() minHeight: boolean = false;
   @Input() disabled: boolean = false;
   @Input() multiSelect: boolean = false;
