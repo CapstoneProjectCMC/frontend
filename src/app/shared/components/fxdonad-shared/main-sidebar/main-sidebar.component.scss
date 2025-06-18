@@ -1,0 +1,209 @@
+@use "../../../../styles/themes/variables" as *;
+
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--primary-color) 0%,
+    var(--primary-color-light) 100%
+  );
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  position: relative;
+
+  &.collapsed {
+    width: 70px;
+
+    .sidebar-header h3 {
+      display: none;
+    }
+
+    .sidebar-label,
+    .submenu-label {
+      display: none;
+    }
+
+    .expand-icon {
+      display: none;
+    }
+
+    .submenu {
+      display: none;
+    }
+  }
+}
+
+.sidebar-header {
+  padding: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .toggle-btn {
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    i {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+.sidebar-nav {
+  padding: 20px 0;
+}
+
+.sidebar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-item {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(5px);
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #fff;
+  }
+}
+
+.sidebar-icon {
+  width: 20px;
+  margin-right: 15px;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.sidebar-label {
+  flex: 1;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.expand-icon {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  padding: 5px;
+
+  &.expanded {
+    transform: rotate(180deg);
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+}
+
+.submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.submenu-item {
+  margin: 0;
+  padding: 0;
+}
+
+.submenu-link {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px 12px 55px;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(5px);
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-left: 4px solid rgba(255, 255, 255, 0.5);
+  }
+}
+
+.submenu-icon {
+  width: 16px;
+  margin-right: 12px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.submenu-label {
+  flex: 1;
+  font-weight: 400;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .sidebar.collapsed {
+    width: 100%;
+  }
+}
+
+// Scrollbar styling
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

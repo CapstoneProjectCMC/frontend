@@ -1,1 +1,172 @@
-<p>text-editor works!</p>
+<div class="text-editor-container">
+  <!-- Toolbar -->
+  <div class="text-editor-toolbar" *ngIf="!config.readonly">
+    <!-- Text Formatting -->
+    <div class="toolbar-group">
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('bold')"
+        (click)="bold()"
+        title="In đậm (Ctrl+B)"
+        *ngIf="config.toolbar?.bold"
+      >
+        <i class="icon-bold">B</i>
+      </button>
+
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('italic')"
+        (click)="italic()"
+        title="In nghiêng (Ctrl+I)"
+        *ngIf="config.toolbar?.italic"
+      >
+        <i class="icon-italic">I</i>
+      </button>
+
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('underline')"
+        (click)="underline()"
+        title="Gạch chân (Ctrl+U)"
+        *ngIf="config.toolbar?.underline"
+      >
+        <i class="icon-underline">U</i>
+      </button>
+
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('strikeThrough')"
+        (click)="strikethrough()"
+        title="Gạch ngang"
+        *ngIf="config.toolbar?.strikethrough"
+      >
+        <i class="icon-strikethrough">S</i>
+      </button>
+    </div>
+
+    <!-- Text Alignment -->
+    <div class="toolbar-group">
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('justifyLeft')"
+        (click)="alignLeft()"
+        title="Căn trái"
+        *ngIf="config.toolbar?.alignLeft"
+      >
+        <i class="icon-align-left">⫷</i>
+      </button>
+
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('justifyCenter')"
+        (click)="alignCenter()"
+        title="Căn giữa"
+        *ngIf="config.toolbar?.alignCenter"
+      >
+        <i class="icon-align-center">⫸</i>
+      </button>
+
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('justifyRight')"
+        (click)="alignRight()"
+        title="Căn phải"
+        *ngIf="config.toolbar?.alignRight"
+      >
+        <i class="icon-align-right">⫹</i>
+      </button>
+
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('justifyFull')"
+        (click)="alignJustify()"
+        title="Căn đều"
+        *ngIf="config.toolbar?.alignJustify"
+      >
+        <i class="icon-align-justify">⫺</i>
+      </button>
+    </div>
+
+    <!-- Lists -->
+    <div class="toolbar-group">
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('insertUnorderedList')"
+        (click)="insertUnorderedList()"
+        title="Danh sách không đánh số"
+        *ngIf="config.toolbar?.bulletList"
+      >
+        <i class="icon-list-ul">•</i>
+      </button>
+
+      <button
+        type="button"
+        class="toolbar-btn"
+        [class.active]="isCommandActive('insertOrderedList')"
+        (click)="insertOrderedList()"
+        title="Danh sách đánh số"
+        *ngIf="config.toolbar?.numberedList"
+      >
+        <i class="icon-list-ol">1.</i>
+      </button>
+    </div>
+
+    <!-- Indentation -->
+    <div class="toolbar-group">
+      <button
+        type="button"
+        class="toolbar-btn"
+        (click)="indent()"
+        title="Thụt lề"
+        *ngIf="config.toolbar?.indent"
+      >
+        <i class="icon-indent">→</i>
+      </button>
+
+      <button
+        type="button"
+        class="toolbar-btn"
+        (click)="outdent()"
+        title="Giảm thụt lề"
+        *ngIf="config.toolbar?.outdent"
+      >
+        <i class="icon-outdent">←</i>
+      </button>
+    </div>
+
+    <!-- Clear Format -->
+    <div class="toolbar-group">
+      <button
+        type="button"
+        class="toolbar-btn"
+        (click)="clearFormat()"
+        title="Xóa định dạng"
+        *ngIf="config.toolbar?.clearFormat"
+      >
+        <i class="icon-clear-format">T</i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Editor Area -->
+  <div
+    #editor
+    class="text-editor-content"
+    [style.height]="config.height"
+    [style.min-height]="config.minHeight"
+    [style.max-height]="config.maxHeight"
+    (focus)="onEditorFocus()"
+    (blur)="onEditorBlur()"
+    [attr.contenteditable]="!config.readonly"
+    [attr.data-placeholder]="config.placeholder"
+  ></div>
+</div>

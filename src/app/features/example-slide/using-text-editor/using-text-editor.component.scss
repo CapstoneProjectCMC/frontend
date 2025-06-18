@@ -1,0 +1,260 @@
+.demo-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  h2 {
+    color: #2c3e50;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .demo-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    background: #ffffff;
+
+    h3 {
+      color: #495057;
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+
+  .content-preview {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+
+    h4 {
+      color: #495057;
+      margin: 15px 0 10px 0;
+      font-size: 16px;
+      font-weight: 600;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    pre {
+      background: #2d3748;
+      color: #e2e8f0;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 12px;
+      line-height: 1.4;
+      margin: 10px 0;
+    }
+
+    .rendered-content {
+      background: #ffffff;
+      padding: 15px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      margin: 10px 0;
+      min-height: 100px;
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin: 10px 0 5px 0;
+        color: #2c3e50;
+      }
+
+      p {
+        margin: 8px 0;
+        line-height: 1.6;
+      }
+
+      ul,
+      ol {
+        margin: 8px 0;
+        padding-left: 20px;
+      }
+
+      blockquote {
+        margin: 10px 0;
+        padding: 10px 15px;
+        border-left: 4px solid #007bff;
+        background: #f8f9fa;
+        font-style: italic;
+      }
+
+      code {
+        background: #f1f3f4;
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      pre {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 10px 0;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 10px 0;
+
+        th,
+        td {
+          border: 1px solid #dee2e6;
+          padding: 8px 12px;
+          text-align: left;
+        }
+
+        th {
+          background: #f8f9fa;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+
+  .controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #007bff;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: #0056b3;
+        transform: translateY(-1px);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &:focus {
+        outline: 2px solid #007bff;
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .demo-container {
+    padding: 15px;
+
+    .demo-section {
+      padding: 15px;
+      margin-bottom: 30px;
+    }
+
+    .controls {
+      flex-direction: column;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// Dark theme support
+@media (prefers-color-scheme: dark) {
+  .demo-container {
+    background: #1a202c;
+    color: #e2e8f0;
+
+    h2 {
+      color: #f7fafc;
+    }
+
+    .demo-section {
+      background: #2d3748;
+      border-color: #4a5568;
+
+      h3 {
+        color: #e2e8f0;
+      }
+    }
+
+    .content-preview {
+      background: #1a202c;
+
+      h4 {
+        color: #e2e8f0;
+      }
+
+      .rendered-content {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          color: #f7fafc;
+        }
+
+        blockquote {
+          background: #1a202c;
+          border-left-color: #3182ce;
+        }
+
+        code {
+          background: #4a5568;
+        }
+
+        pre {
+          background: #1a202c;
+        }
+
+        table {
+          th,
+          td {
+            border-color: #4a5568;
+          }
+
+          th {
+            background: #1a202c;
+          }
+        }
+      }
+    }
+
+    .controls {
+      button {
+        background: #3182ce;
+
+        &:hover {
+          background: #2c5aa0;
+        }
+
+        &:focus {
+          outline-color: #3182ce;
+        }
+      }
+    }
+  }
+}

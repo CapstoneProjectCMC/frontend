@@ -10,6 +10,9 @@ import { removeNotification } from './shared/store/notification/notification.act
 import { CommonModule } from '@angular/common';
 import { Tooltip } from './shared/components/fxdonad-shared/tooltip/tooltip';
 import { ToggleSwitch } from './shared/components/fxdonad-shared/toggle-switch/toggle-switch';
+import { NotificationTestComponent } from './shared/components/fxdonad-shared/notification-test/notification-test';
+import { MainSidebarComponent } from './shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
+import { sidebarData } from './core/constants/menu-router.data';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +22,8 @@ import { ToggleSwitch } from './shared/components/fxdonad-shared/toggle-switch/t
     AlertNotificationComponent,
     Tooltip,
     ToggleSwitch,
+    NotificationTestComponent,
+    MainSidebarComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -27,6 +32,10 @@ export class App implements OnInit {
   notifications$: Observable<INotification[]>;
   protected title = 'codecampus';
   isDarkMode: boolean = false;
+
+  isSidebarCollapsed = false;
+  // Example data structure for sidebar items
+  sidebarData = sidebarData;
 
   constructor(private themeService: ThemeService, private store: Store) {
     this.notifications$ = this.store.select(selectNotifications);

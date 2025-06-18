@@ -111,6 +111,8 @@ export class DropdownButtonComponent
   onClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (
+      this.dropdownButton &&
+      this.dropdownMenu &&
       !this.dropdownButton.nativeElement.contains(target) &&
       !this.dropdownMenu.nativeElement.contains(target)
     ) {

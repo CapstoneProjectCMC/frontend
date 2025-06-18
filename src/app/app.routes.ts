@@ -21,6 +21,13 @@ export const routes: Routes = [
     component: SecondLayout, // Layout cho các trang không có header, sidebar, ...
     children: [
       {
+        path: 'example-using-component-slide',
+        loadChildren: () =>
+          import('./features/example-slide/example-slide.module').then(
+            (m) => m.ExampleSlideModule
+          ),
+      },
+      {
         path: 'dashboard',
         loadChildren: () =>
           import('./features/dashboard/dashboard.module').then(
