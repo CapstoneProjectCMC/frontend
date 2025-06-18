@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-landing-header',
-  imports: [],
   templateUrl: './header.html',
-  styleUrl: './header.scss',
+  styleUrls: ['./header.scss'],
+  standalone: true,
 })
-export class LandingHeader {}
+export class LandingHeader {
+  constructor() {}
+}

@@ -2,10 +2,8 @@
   width: 100%;
   padding: 16px 0;
   background-color: var(--background-color);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   &-container {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 24px;
     display: flex;
@@ -30,7 +28,7 @@
   &-menu {
     display: flex;
     align-items: center;
-    gap: 80px;
+    gap: 40px;
 
     &-item {
       &-text {
@@ -53,7 +51,9 @@
         transition: background-color 0.2s;
         border: 1px solid var(--text-dark-gray-color);
         &:hover {
-          background-color: var(--primary-color-dark);
+          background-color: var(--button-color-hover);
+          border: 1px solid var(--text-gray-color);
+          color: var(--text-gray-color);
         }
       }
     }
