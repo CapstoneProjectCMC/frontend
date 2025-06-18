@@ -42,12 +42,11 @@ export class DropdownButtonComponent
   @Input() variant: 'primary' | 'secondary' | 'outlined' | 'text' = 'primary';
   @Input() size: 'small' | 'medium' | 'large' = 'medium';
   @Input() customDropField:
-    | 'first-type'
-    | 'year-filter'
-    | 'third-type'
+    | 'main-type'
     | 'second-type'
+    | 'third-type'
     | 'four-type'
-    | 'first-type' = 'first-type';
+    | 'main-type' = 'main-type';
   @Input() minHeight: boolean = false;
   @Input() disabled: boolean = false;
   @Input() multiSelect: boolean = false;
@@ -112,6 +111,8 @@ export class DropdownButtonComponent
   onClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     if (
+      this.dropdownButton &&
+      this.dropdownMenu &&
       !this.dropdownButton.nativeElement.contains(target) &&
       !this.dropdownMenu.nativeElement.contains(target)
     ) {

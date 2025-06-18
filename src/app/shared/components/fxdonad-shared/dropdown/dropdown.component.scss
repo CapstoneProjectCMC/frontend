@@ -122,7 +122,42 @@
       }
     }
 
-    &.first-type {
+    &.main-type {
+      display: flex;
+      flex-direction: column;
+      min-width: 100%;
+      .search-input {
+        width: calc(100% - 28px);
+      }
+      .list-options {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        transition: all 0.3s ease;
+        max-height: 0px;
+        overflow-x: hidden;
+        box-sizing: border-box;
+        &.small {
+          gap: 4px;
+          padding: 4px;
+        }
+        &.medium {
+          gap: 6px;
+          padding: 6px;
+        }
+        &.large {
+          gap: 8px;
+          padding: 8px;
+        }
+        &.opened {
+          max-height: 300px;
+        }
+      }
+    }
+
+    //Chưa hoàn thiện, đang để minh họa
+    &.second-type {
       display: flex;
       flex-direction: column;
       .list-options {
@@ -166,40 +201,6 @@
         width: 100%;
         box-sizing: border-box;
         flex-wrap: wrap;
-      }
-    }
-
-    &.second-type {
-      display: flex;
-      flex-direction: column;
-      min-width: 100%;
-      .search-input {
-        width: calc(100% - 28px);
-      }
-      .list-options {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-
-        transition: all 0.3s ease;
-        max-height: 0px;
-        overflow-x: hidden;
-        box-sizing: border-box;
-        &.small {
-          gap: 4px;
-          padding: 4px;
-        }
-        &.medium {
-          gap: 6px;
-          padding: 6px;
-        }
-        &.large {
-          gap: 8px;
-          padding: 8px;
-        }
-        &.opened {
-          max-height: 300px;
-        }
       }
     }
 

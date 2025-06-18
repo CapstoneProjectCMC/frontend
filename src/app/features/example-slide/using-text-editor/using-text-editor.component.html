@@ -1,0 +1,49 @@
+<p>using-text-editor works!</p>
+
+<div class="demo-container">
+  <h2>Text Editor Demo</h2>
+
+  <div class="demo-section">
+    <h3>Basic Text Editor</h3>
+    <app-text-editor
+      [(value)]="editorContent"
+      [config]="editorConfig"
+      (onChange)="onContentChange($event)"
+      (onFocus)="onEditorFocus()"
+      (onBlur)="onEditorBlur()"
+    >
+    </app-text-editor>
+  </div>
+
+  <div class="demo-section">
+    <h3>Readonly Text Editor</h3>
+    <app-text-editor [value]="readonlyContent" [config]="readonlyConfig">
+    </app-text-editor>
+  </div>
+
+  <div class="demo-section">
+    <h3>Minimal Toolbar</h3>
+    <app-text-editor [(value)]="minimalContent" [config]="minimalConfig">
+    </app-text-editor>
+  </div>
+
+  <div class="demo-section">
+    <h3>Content Preview</h3>
+    <div class="content-preview">
+      <h4>HTML Output:</h4>
+      <pre>{{ editorContent }}</pre>
+
+      <h4>Rendered Content:</h4>
+      <div class="rendered-content" [innerHTML]="editorContent"></div>
+    </div>
+  </div>
+
+  <div class="demo-section">
+    <h3>Controls</h3>
+    <div class="controls">
+      <button (click)="setSampleContent()">Set Sample Content</button>
+      <button (click)="clearContent()">Clear Content</button>
+      <button (click)="toggleReadonly()">Toggle Readonly</button>
+    </div>
+  </div>
+</div>
