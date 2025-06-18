@@ -30,14 +30,21 @@
     </span>
 
     <span class="arrow-icon" [class.open]="isOpen">
-      <img src="icon-assets/icon-dropdown.png" alt="" class="icon-dropdown" />
+      <img
+        src="icon-assets/icon-dropdown.png"
+        alt=""
+        class="icon-dropdown"
+        [class.small]="size === 'small'"
+        [class.medium]="size === 'medium'"
+        [class.large]="size === 'large'"
+      />
     </span>
   </button>
 
   <div
     class="dropdown-menu"
     [class.min-height]="minHeight"
-    [class.first-type]="customDropField === 'first-type'"
+    [class.main-type]="customDropField === 'main-type'"
     [class.third-type]="customDropField === 'third-type'"
     [class.second-type]="customDropField === 'second-type'"
     [class.four-type]="customDropField === 'four-type'"
@@ -56,11 +63,20 @@
       (keydown)="handleKeydown($event)"
     />
 
-    <div [class.opened]="isOpen" class="list-options">
+    <div
+      [class.opened]="isOpen"
+      class="list-options"
+      [class.small]="size === 'small'"
+      [class.medium]="size === 'medium'"
+      [class.large]="size === 'large'"
+    >
       <!-- Hiển thị thông báo nếu không tìm thấy kết quả và có từ khóa tìm kiếm -->
       <div
         *ngIf="filteredOptions.length === 0 && searchTerm"
         class="no-options"
+        [class.small]="size === 'small'"
+        [class.medium]="size === 'medium'"
+        [class.large]="size === 'large'"
       >
         Không tìm thấy kết quả
       </div>
@@ -78,8 +94,16 @@
           [class.disabled]="option.disabled"
           [class.selected]="isSelected(option) && needIndexColor"
           (click)="selectOption(option, i)"
+          [class.small]="size === 'small'"
+          [class.medium]="size === 'medium'"
+          [class.large]="size === 'large'"
         >
-          <div class="label-dropdown-header">
+          <div
+            class="label-dropdown-header"
+            [class.small]="size === 'small'"
+            [class.medium]="size === 'medium'"
+            [class.large]="size === 'large'"
+          >
             <input
               *ngIf="isDisplayCheckbox"
               type="checkbox"

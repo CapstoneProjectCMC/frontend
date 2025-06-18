@@ -1,0 +1,69 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar-header">
+    <h3 *ngIf="!isCollapsed">Menu</h3>
+    <div class="toggle-btn" (click)="isCollapsed = !isCollapsed">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="sidebar-menu">
+      <li
+        *ngFor="let item of sidebarItems"
+        class="sidebar-item"
+        [class.active]="item.isActive"
+      >
+        <div
+          class="sidebar-link"
+          (click)="setActiveItem(item)"
+          [routerLink]="item.path"
+          routerLinkActive="active"
+        >
+          <i *ngIf="item.icon" [class]="item.icon" class="sidebar-icon"></i>
+          <span *ngIf="!isCollapsed" class="sidebar-label">{{
+            item.label
+          }}</span>
+
+          <i
+            *ngIf="item.children && item.children.length > 0 && !isCollapsed"
+            class="fas fa-chevron-down expand-icon"
+            [class.expanded]="item.isExpanded"
+            (click)="toggleItem(item); $event.stopPropagation()"
+          >
+          </i>
+        </div>
+
+        <!-- Submenu -->
+        <ul
+          *ngIf="
+            item.children &&
+            item.children.length > 0 &&
+            item.isExpanded &&
+            !isCollapsed
+          "
+          class="submenu"
+        >
+          <li
+            *ngFor="let child of item.children"
+            class="submenu-item"
+            [class.active]="child.isActive"
+          >
+            <a
+              class="submenu-link"
+              [routerLink]="child.path"
+              routerLinkActive="active"
+              (click)="setActiveItem(child)"
+            >
+              <i
+                *ngIf="child.icon"
+                [class]="child.icon"
+                class="submenu-icon"
+              ></i>
+              <span class="submenu-label">{{ child.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</div>
