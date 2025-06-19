@@ -3,7 +3,7 @@ import { SidebarItem } from '../models/data-handle';
 export const sidebarData: SidebarItem[] = [
   {
     id: 'home',
-    path: '/',
+    path: '/main',
     label: 'Home',
     icon: 'fas fa-home',
     isActive: true,
@@ -16,7 +16,7 @@ export const sidebarData: SidebarItem[] = [
     children: [
       {
         id: 'code-editor',
-        path: '/second/example-using-component-slide/code-editor',
+        path: '/second/example-using-component-slide/code-editor-page',
         label: 'Code Editor',
         icon: 'fas fa-file-code',
       },
@@ -37,6 +37,12 @@ export const sidebarData: SidebarItem[] = [
         path: '/second/example-using-component-slide/text-editor',
         label: 'Text Editor',
         icon: 'fas fa-edit',
+      },
+      {
+        id: 'card-data',
+        path: '/second/example-using-component-slide/card-data',
+        label: 'Card Data',
+        icon: 'fas fa-id-card',
       },
     ],
   },

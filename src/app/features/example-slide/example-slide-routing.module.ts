@@ -4,6 +4,8 @@ import { UsingCodeEditorComponent } from './using-code-editor/using-code-editor.
 import { UsingInputButtonComponent } from './using-input-button/using-input-button.component';
 import { UsingDropdownComponent } from './using-dropdown/using-dropdown.component';
 import { UsingTextEditorComponent } from './using-text-editor/using-text-editor.component';
+import { UsingCardDataComponent } from './using-card-data/using-card-data.component';
+import { CodeEditorPage } from './code-editor/code-editor.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,14 @@ const routes: Routes = [
   {
     path: 'text-editor',
     component: UsingTextEditorComponent,
+  },
+  {
+    path: 'card-data',
+    component: UsingCardDataComponent,
+  },
+  {
+    path: 'code-editor-page',
+    component: CodeEditorPage,
   },
 ];
 
