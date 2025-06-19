@@ -1,0 +1,88 @@
+<div class="info-card" [ngClass]="{ 'dark-mode': isDarkMode }">
+  <div class="card-header">
+    <h2 class="title" [title]="data.name">{{ data.name }}</h2>
+  </div>
+
+  <div class="metadata">
+    <div class="uploader-info">
+      <img
+        [src]="
+          data.uploader.avatar ||
+          'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50'
+        "
+        [alt]="data.uploader.name"
+        class="avatar"
+        (error)="handleImageError($event)"
+      />
+      <span class="username">{{ data.uploader.name }}</span>
+    </div>
+    <div class="timestamp" [title]="data.uploadTime | date : 'full'">
+      {{ data.uploadTime | date : "medium" }}
+    </div>
+  </div>
+
+  <div class="description">
+    <p [class.expanded]="isExpanded">
+      {{ data.description }}
+    </p>
+    <button
+      *ngIf="data.description.length > 150"
+      (click)="toggleDescription()"
+      class="read-more"
+    >
+      {{ isExpanded ? "Read Less" : "Read More" }}
+    </button>
+  </div>
+
+  <div class="difficulty" [attr.aria-label]="'Difficulty: ' + data.difficulty">
+    <div class="difficulty-badge" [ngClass]="data.difficulty">
+      {{ data.difficulty | titlecase }}
+    </div>
+    <div class="difficulty-stars">
+      <span
+        class="star"
+        *ngFor="let star of difficultyStars"
+        [class.filled]="star <= difficultyLevel"
+      >
+        ★
+      </span>
+    </div>
+  </div>
+
+  <div class="tags-container">
+    <div class="tags-scroll">
+      <span
+        class="tag"
+        *ngFor="let tag of data.tags"
+        (click)="onTagClick(tag)"
+        [attr.aria-label]="'Tag: ' + tag"
+      >
+        {{ tag }}
+      </span>
+    </div>
+  </div>
+
+  <div class="actions">
+    <div class="status-toggle">
+      <button
+        class="toggle-btn"
+        [class.completed]="data.status === 'completed'"
+        (click)="toggleStatus()"
+        [attr.aria-label]="'Toggle status: Currently ' + data.status"
+      >
+        <span class="toggle-icon">{{
+          data.status === "completed" ? "✓" : "⧖"
+        }}</span>
+        {{ data.status | titlecase }}
+      </button>
+    </div>
+    <button
+      class="save-btn"
+      [class.saved]="isSaved"
+      (click)="toggleSave()"
+      aria-label="Save item"
+    >
+      <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span>
+    </button>
+  </div>
+</div>

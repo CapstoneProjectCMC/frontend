@@ -10,7 +10,6 @@ import { removeNotification } from './shared/store/notification/notification.act
 import { CommonModule } from '@angular/common';
 import { Tooltip } from './shared/components/fxdonad-shared/tooltip/tooltip';
 import { ToggleSwitch } from './shared/components/fxdonad-shared/toggle-switch/toggle-switch';
-import { NotificationTestComponent } from './shared/components/fxdonad-shared/notification-test/notification-test';
 import { MainSidebarComponent } from './shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { sidebarData } from './core/constants/menu-router.data';
 
@@ -22,7 +21,6 @@ import { sidebarData } from './core/constants/menu-router.data';
     AlertNotificationComponent,
     Tooltip,
     ToggleSwitch,
-    NotificationTestComponent,
     MainSidebarComponent,
   ],
   templateUrl: './app.html',

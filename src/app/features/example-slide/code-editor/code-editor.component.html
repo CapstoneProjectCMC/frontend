@@ -1,0 +1,153 @@
+<div class="code-editor-container">
+  <div class="left-section">
+    <div class="problem-header">
+      <h2>{{ problemTitle }}</h2>
+      <span class="difficulty" [ngClass]="difficultyLevel">{{
+        difficultyLevel
+      }}</span>
+    </div>
+    <div class="problem-description" [innerHTML]="problemDescription"></div>
+    <div class="examples">
+      <div class="example-box" *ngFor="let example of examples">
+        <h4>Example {{ example.id }}</h4>
+        <pre>
+Input: {{ example.input }}
+  Output: {{ example.output }}</pre
+        >
+      </div>
+    </div>
+    <div class="test-cases">
+      <h4>Test Cases</h4>
+      <div *ngFor="let tc of testCases" class="test-case-item">
+        <div>Input: {{ tc.input }}</div>
+        <div>Expected: {{ tc.expected }}</div>
+        <div>
+          <span
+            [ngClass]="{
+              pass: tc.status === 'pass',
+              fail: tc.status === 'fail',
+              pending: !tc.status
+            }"
+          >
+            {{ tc.status ? (tc.status | uppercase) : "PENDING" }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="center-section">
+    <div class="editor-controls">
+      <button (click)="runCode()" [disabled]="isRunning">Run Code</button>
+    </div>
+
+    <!--code editor component thêm tại đây-->
+    <app-code-editor class="code-editor"></app-code-editor>
+
+    <div class="console-output">
+      <div class="output-header">
+        <span>Console Output</span>
+        <div class="metrics">
+          <span>Time: {{ executionTime }}ms</span>
+          <span>Memory: {{ memoryUsage }}MB</span>
+        </div>
+      </div>
+      <pre [ngClass]="{ error: hasError }">{{ output }}</pre>
+    </div>
+  </div>
+
+  <div class="right-section">
+    <div class="chat-container">
+      <div class="chat-messages" #chatScroll>
+        <div
+          *ngFor="let message of chatMessages"
+          class="message"
+          [ngClass]="message.type"
+        >
+          <img [src]="message.avatar" alt="avatar" class="avatar" />
+          <div class="message-content">
+            <span class="sender">{{ message.sender }}</span>
+            <p>{{ message.text }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input
+          type="text"
+          [(ngModel)]="newMessage"
+          placeholder="Ask for help..."
+          (keyup.enter)="sendMessage()"
+        />
+        <button (click)="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-section">
+    <div class="comments-section">
+      <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
+        <textarea
+          formControlName="comment"
+          placeholder="Write a comment..."
+        ></textarea>
+        <button type="submit" [disabled]="!commentForm.valid">Post</button>
+      </form>
+      <div class="comments-list">
+        <div *ngFor="let comment of comments" class="comment">
+          <img
+            [src]="comment.userAvatar"
+            alt="user avatar"
+            class="user-avatar"
+          />
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="username">{{ comment.username }}</span>
+              <span class="timestamp">{{
+                comment.timestamp | date : "medium"
+              }}</span>
+            </div>
+            <p>{{ comment.text }}</p>
+            <div class="comment-actions">
+              <button
+                (click)="vote(comment.id, 'up')"
+                [class.active]="comment.userVote === 'up'"
+              >
+                <i class="fas fa-arrow-up"></i> {{ comment.upvotes }}
+              </button>
+              <button
+                (click)="vote(comment.id, 'down')"
+                [class.active]="comment.userVote === 'down'"
+              >
+                <i class="fas fa-arrow-down"></i> {{ comment.downvotes }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ranking-section">
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Username</th>
+            <th>Score</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let rank of rankings"
+            [class.current-user]="rank.isCurrentUser"
+          >
+            <td>{{ rank.position }}</td>
+            <td>{{ rank.username }}</td>
+            <td>{{ rank.score }}</td>
+            <td>{{ rank.time }}s</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
