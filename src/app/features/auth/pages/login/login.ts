@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { OAuthConfig } from '../../../../core/services/config-service/oauth.configuration';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   imports: [],
@@ -18,4 +19,6 @@ export class Login {
     });
     window.location.href = `${OAuthConfig.authUri}?${params.toString()}`;
   }
+
+  constructor(private router: Router) {}
 }
