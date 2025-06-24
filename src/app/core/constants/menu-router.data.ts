@@ -61,4 +61,18 @@ export const sidebarData: SidebarItem[] = [
       },
     ],
   },
+  {
+    id: 'auth',
+    path: mainLayout + '/auth',
+    label: 'Auth',
+    icon: 'fas fa-user',
+    children: [
+      {
+        id: 'login',
+        path: mainLayout + '/auth/login',
+        label: 'Login',
+        icon: 'fas fa-sign-in-alt',
+      },
+    ],
+  },
 ];
