@@ -154,6 +154,23 @@
       >
         <i class="icon-clear-format">T</i>
       </button>
+      <!-- Nút upload ảnh -->
+      <button
+        type="button"
+        class="toolbar-btn"
+        (click)="onImageUploadClick()"
+        title="Chèn ảnh"
+        *ngIf="config.toolbar?.image"
+      >
+        <i class="icon-image">🖼️</i>
+      </button>
+      <input
+        #imageInput
+        type="file"
+        accept="image/*"
+        style="display: none"
+        (change)="onImageSelected($event)"
+      />
     </div>
   </div>
 

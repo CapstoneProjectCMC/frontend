@@ -6,6 +6,7 @@ import { UsingDropdownComponent } from './using-dropdown/using-dropdown.componen
 import { UsingTextEditorComponent } from './using-text-editor/using-text-editor.component';
 import { UsingCardDataComponent } from './using-card-data/using-card-data.component';
 import { CodeEditorPage } from './code-editor/code-editor.component';
+import { UsingTrendingComponent } from './using-trending/using-trending.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'code-editor-page',
     component: CodeEditorPage,
+  },
+  {
+    path: 'trending',
+    component: UsingTrendingComponent,
   },
 ];
 
