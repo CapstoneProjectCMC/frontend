@@ -9,7 +9,6 @@ import { LandingHeader } from './components/header/header';
   imports: [
     CommonModule,
     LandingRoutingModule, // <-- Tích hợp route vào module
-    LandingHeader,
   ],
 })
 export class LandingModule {}

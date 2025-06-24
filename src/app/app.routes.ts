@@ -12,6 +12,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/auth/auth.module').then((m) => m.AuthModule),
       },
+      {
+        path: 'post',
+        loadChildren: () =>
+          import('./features/post/post.module').then((m) => m.PostModule),
+      },
 
       // Thêm các route auth khác nếu cần...
     ],
