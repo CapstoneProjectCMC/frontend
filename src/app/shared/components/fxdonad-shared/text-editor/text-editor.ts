@@ -30,6 +30,7 @@ export interface TextEditorConfig {
     indent?: boolean;
     outdent?: boolean;
     clearFormat?: boolean;
+    image?: boolean;
   };
 }
 
@@ -60,6 +61,7 @@ export class TextEditor implements AfterViewInit, OnDestroy {
       indent: true,
       outdent: true,
       clearFormat: true,
+      image: true,
     },
   };
 
@@ -70,6 +72,7 @@ export class TextEditor implements AfterViewInit, OnDestroy {
   @Output() onChange = new EventEmitter<string>();
 
   @ViewChild('editor') editorRef!: ElementRef<HTMLDivElement>;
+  @ViewChild('imageInput') imageInputRef!: ElementRef<HTMLInputElement>;
 
   private observer: MutationObserver | null = null;
 
@@ -211,5 +214,26 @@ export class TextEditor implements AfterViewInit, OnDestroy {
   // Insert HTML at cursor
   insertHTML(html: string) {
     this.execCommand('insertHTML', html);
+  }
+
+  // Thêm hàm xử lý upload/chèn ảnh
+  onImageUploadClick() {
+    if (this.config.readonly) return;
+    this.imageInputRef?.nativeElement?.click();
+  }
+
+  onImageSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const imgHtml = `<img src="${e.target.result}" alt="image" style="max-width:100%;"/>`;
+        this.insertHTML(imgHtml);
+      };
+      reader.readAsDataURL(file);
+      // Reset input để chọn lại cùng 1 file nếu muốn
+      input.value = '';
+    }
   }
 }

@@ -45,8 +45,8 @@
     class="dropdown-menu"
     [class.min-height]="minHeight"
     [class.main-type]="customDropField === 'main-type'"
-    [class.third-type]="customDropField === 'third-type'"
     [class.second-type]="customDropField === 'second-type'"
+    [class.third-type]="customDropField === 'third-type'"
     [class.four-type]="customDropField === 'four-type'"
     [class.open]="isOpen"
     role="listbox"
@@ -62,6 +62,22 @@
       (input)="filterOptions()"
       (keydown)="handleKeydown($event)"
     />
+
+    <div *ngIf="isButtonControl" class="btn-control">
+      <div class="btn-area">
+        <app-interactive-button
+          [buttonText]="'Huỷ hết'"
+          [buttonType]="'primary'"
+          [buttonSize]="'small'"
+          [isDisabled]="false"
+          [iconName]="''"
+          [tooltipText]="'Nhấn để xác nhận'"
+          (buttonClick)="handleCancel($event)"
+          (buttonHover)="handleHover($event)"
+          (buttonFocus)="handleFocus($event)"
+        ></app-interactive-button>
+      </div>
+    </div>
 
     <div
       [class.opened]="isOpen"
@@ -114,36 +130,6 @@
           </div>
         </div>
       </ng-container>
-    </div>
-
-    <div *ngIf="isButtonControl" class="btn-control">
-      <div class="explain-tag">Giải thích chi tiết về thể loại?</div>
-      <div class="btn-area">
-        <app-interactive-button
-          [buttonText]="'Huỷ hết'"
-          [buttonType]="'secondary'"
-          [buttonSize]="'small'"
-          [isDisabled]="false"
-          [iconName]=""
-          [tooltipText]="'Nhấn để xác nhận'"
-          (buttonClick)="handleCancel($event)"
-          (buttonHover)="handleHover($event)"
-          (buttonFocus)="handleFocus($event)"
-        ></app-interactive-button>
-
-        <app-interactive-button
-          [buttonText]="'Xác nhận'"
-          [buttonType]="'primary'"
-          [buttonSize]="'small'"
-          [isDisabled]="false"
-          [isLoading]="loading"
-          [iconName]=""
-          [tooltipText]="'Nhấn để xác nhận'"
-          (buttonClick)="handleClick($event)"
-          (buttonHover)="handleHover($event)"
-          (buttonFocus)="handleFocus($event)"
-        ></app-interactive-button>
-      </div>
     </div>
   </div>
 </div>

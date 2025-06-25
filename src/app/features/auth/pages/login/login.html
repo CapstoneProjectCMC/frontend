@@ -1,1 +1,42 @@
-<p>login works!</p>
+<div class="login-container">
+  <div class="login-slider">
+    <div class="slider-image">
+      <img src="assets/landing-assets/CodePage.svg" alt="Slider Image" />
+    </div>
+    <div class="slider-text">
+      <h2>Chào mừng bạn đến với Website!</h2>
+      <p>Khám phá, học hỏi và chia sẻ kiến thức lập trình cùng cộng đồng.</p>
+    </div>
+  </div>
+  <div class="login-form-section">
+    <div class="login-logo">
+      <img src="assets/Logo.svg" alt="Logo" />
+    </div>
+    <form class="login-form">
+      <h3>Đăng nhập bằng Email</h3>
+      <div class="form-group">
+        <input type="email" placeholder="Email" required />
+      </div>
+      <div class="form-group">
+        <input type="password" placeholder="Mật khẩu" required />
+      </div>
+      <button type="submit" class="btn-login">Đăng nhập</button>
+    </form>
+    <div class="login-or">Hoặc</div>
+    <div class="login-social">
+      <button class="btn-google" type="button" (click)="onGoogleLogin()">
+        <img src="assets/icon-assets/google-icon.svg" alt="Google" /> Đăng nhập
+        bằng Google
+      </button>
+      <button class="btn-facebook" type="button">
+        <img src="assets/icon-assets/facebook-icon.svg" alt="Facebook" /> Đăng
+        nhập bằng Facebook
+      </button>
+    </div>
+    <div class="login-links">
+      <a href="#" class="forgot-password">Quên mật khẩu?</a>
+      <span> | </span>
+      <a href="#" class="register-link">Chưa có tài khoản?</a>
+    </div>
+  </div>
+</div>

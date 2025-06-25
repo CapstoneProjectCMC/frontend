@@ -15,7 +15,7 @@
       [isOpen]="activeDropdown === 'the-loai'"
       (toggle)="toggleDropdown('the-loai')"
       [isDisplaySelectedOpptionLabels]="true"
-      [isButtonControl]="false"
+      [isButtonControl]="true"
       [isSearchable]="true"
       [minHeight]="true"
       [needIndexColor]="true"
@@ -50,7 +50,7 @@
       [options]="schedules"
       [variant]="'primary'"
       [size]="'large'"
-      [customDropField]="'main-type'"
+      [customDropField]="'second-type'"
       [disabled]="false"
       [multiSelect]="false"
       [isDisplayCheckbox]="false"
@@ -59,7 +59,7 @@
       [isOpen]="activeDropdown === 'lich-chieu'"
       (toggle)="toggleDropdown('lich-chieu')"
       [minHeight]="true"
-      [needIndexColor]="false"
+      [needIndexColor]="true"
     >
     </app-dropdown-button>
   </div>
