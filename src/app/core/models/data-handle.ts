@@ -12,4 +12,5 @@ export interface SidebarItem {
   children?: SidebarItem[];
   isActive?: boolean;
   isExpanded?: boolean;
+  disabled?: boolean;
 }

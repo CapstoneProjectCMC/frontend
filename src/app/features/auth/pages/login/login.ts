@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { OAuthConfig } from '../../../../core/services/config-service/oauth.configuration';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   imports: [],
@@ -10,7 +11,7 @@ export class Login {
   onGoogleLogin() {
     const params = new URLSearchParams({
       client_id: OAuthConfig.clientId,
-      redirect_uri: window.location.origin + '/',
+      redirect_uri: window.location.origin,
       response_type: 'token',
       scope: 'email profile openid',
       include_granted_scopes: 'true',
@@ -18,4 +19,6 @@ export class Login {
     });
     window.location.href = `${OAuthConfig.authUri}?${params.toString()}`;
   }
+
+  constructor(private router: Router) {}
 }

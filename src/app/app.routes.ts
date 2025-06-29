@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { MainLayout } from './layouts/layout-pages/main-layout/main-layout';
 import { SecondLayout } from './layouts/layout-pages/second-layout/second-layout';
+import { WrongDirectComponent } from './features/auth/pages/wrong-direct/wrong-direct.component';
 
 export const routes: Routes = [
   {
