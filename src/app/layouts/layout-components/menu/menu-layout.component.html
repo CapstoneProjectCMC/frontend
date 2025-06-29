@@ -1,0 +1,78 @@
+<div class="menu-container">
+  <div class="menu-header">
+    <h1>Menu</h1>
+  </div>
+</div>
+
+<nav
+  class="ant-menu"
+  [class.ant-menu-horizontal]="mode === 'horizontal'"
+  [class.ant-menu-vertical]="mode === 'vertical'"
+  [class.ant-menu-light]="theme === 'light'"
+  [class.ant-menu-dark]="theme === 'dark'"
+>
+  <div class="ant-menu-container">
+    <ul class="ant-menu-list">
+      <li
+        *ngFor="let item of menuItems"
+        class="ant-menu-item-wrapper"
+        [class.ant-menu-item-wrapper-has-children]="hasChildren(item)"
+      >
+        <div
+          class="ant-menu-item"
+          [class.ant-menu-item-active]="isActive(item)"
+          [class.ant-menu-item-selected]="isActive(item)"
+          [class.ant-menu-item-disabled]="item.disabled"
+          [class.ant-menu-item-expanded]="isExpanded(item)"
+          (click)="
+            hasChildren(item)
+              ? toggleSubmenu(item, $event)
+              : setActiveItem(item)
+          "
+          [routerLink]="!hasChildren(item) ? item.path : null"
+          routerLinkActive="ant-menu-item-selected"
+        >
+          <span class="ant-menu-item-icon" *ngIf="item.icon">
+            <i [class]="item.icon"></i>
+          </span>
+          <span class="ant-menu-title-content">
+            {{ item.label }}
+          </span>
+          <span class="ant-menu-item-arrow" *ngIf="hasChildren(item)">
+            <i
+              class="fas fa-chevron-down"
+              [class.rotated]="isExpanded(item)"
+            ></i>
+          </span>
+        </div>
+
+        <!-- Submenu Dropdown -->
+        <div
+          *ngIf="hasChildren(item)"
+          class="ant-submenu"
+          [class.ant-submenu-open]="isExpanded(item)"
+        >
+          <ul class="ant-submenu-list">
+            <li
+              *ngFor="let child of item.children"
+              class="ant-submenu-item"
+              [class.ant-submenu-item-active]="isActive(child)"
+              [class.ant-submenu-item-selected]="isActive(child)"
+              [class.ant-submenu-item-disabled]="child.disabled"
+              (click)="onSubmenuItemClick(child)"
+              [routerLink]="child.path"
+              routerLinkActive="ant-submenu-item-selected"
+            >
+              <span class="ant-submenu-item-icon" *ngIf="child.icon">
+                <i [class]="child.icon"></i>
+              </span>
+              <span class="ant-submenu-title-content">
+                {{ child.label }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

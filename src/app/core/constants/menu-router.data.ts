@@ -59,6 +59,12 @@ export const sidebarData: SidebarItem[] = [
         label: 'Create Post',
         icon: 'fas fa-file-pen',
       },
+      {
+        id: 'app-menu-layout',
+        path: secondLayout + '/example-using-component-slide/app-menu-layout',
+        label: 'App Menu Layout',
+        icon: 'fas fa-bars',
+      },
     ],
   },
   {

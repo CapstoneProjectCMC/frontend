@@ -11,7 +11,7 @@ export class Login {
   onGoogleLogin() {
     const params = new URLSearchParams({
       client_id: OAuthConfig.clientId,
-      redirect_uri: window.location.origin + '/',
+      redirect_uri: window.location.origin,
       response_type: 'token',
       scope: 'email profile openid',
       include_granted_scopes: 'true',
