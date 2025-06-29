@@ -1,9 +1,3 @@
-<div class="menu-container">
-  <div class="menu-header">
-    <h1>Menu</h1>
-  </div>
-</div>
-
 <nav
   class="ant-menu"
   [class.ant-menu-horizontal]="mode === 'horizontal'"
@@ -17,6 +11,8 @@
         *ngFor="let item of menuItems"
         class="ant-menu-item-wrapper"
         [class.ant-menu-item-wrapper-has-children]="hasChildren(item)"
+        (mouseenter)="onMouseEnter(item)"
+        (mouseleave)="onMouseLeave(item)"
       >
         <div
           class="ant-menu-item"
@@ -51,6 +47,8 @@
           *ngIf="hasChildren(item)"
           class="ant-submenu"
           [class.ant-submenu-open]="isExpanded(item)"
+          (mouseenter)="onSubmenuMouseEnter(item)"
+          (mouseleave)="onSubmenuMouseLeave(item)"
         >
           <ul class="ant-submenu-list">
             <li

@@ -1,12 +1,13 @@
 # Menu Layout Component
 
-Component menu layout ngang theo thiết kế Ant Design với khả năng tùy chỉnh theme và mode, hỗ trợ submenu dropdown và **tự động cập nhật theme**.
+Component menu layout ngang theo thiết kế Ant Design với khả năng tùy chỉnh theme và mode, hỗ trợ submenu dropdown, **tự động cập nhật theme** và **hover functionality**.
 
 ## Tính năng
 
 - ✅ Menu ngang (horizontal) và dọc (vertical)
 - ✅ **Submenu dropdown** cho menu items có children
 - ✅ **Auto theme switching** - Tự động cập nhật khi theme thay đổi
+- ✅ **Hover functionality** - Tự động mở/đóng submenu khi hover
 - ✅ Light theme và Dark theme
 - ✅ Hỗ trợ icons (FontAwesome)
 - ✅ Active state và hover effects
@@ -63,12 +64,69 @@ const menuItems: SidebarItem[] = [
 ### 3. Sử dụng trong template
 
 ```html
-<!-- Menu sẽ tự động cập nhật theme -->
+<!-- Menu sẽ tự động cập nhật theme và hỗ trợ hover -->
 <app-menu-layout 
   [menuItems]="menuItems" 
   mode="horizontal">
 </app-menu-layout>
 ```
+
+## Hover Functionality
+
+### Cách hoạt động:
+
+#### **Horizontal Mode:**
+- **Hover vào menu item** → Submenu mở ngay lập tức
+- **Hover ra khỏi menu item** → Submenu đóng sau 150ms delay
+- **Hover vào submenu** → Submenu vẫn mở
+- **Hover ra khỏi submenu** → Submenu đóng sau 100ms delay
+
+#### **Vertical Mode:**
+- **Click vào menu item** → Submenu expand/collapse
+- **Hover không có tác dụng** → Chỉ dùng click
+
+### Implementation Details:
+
+```typescript
+// Hover events for menu items
+onMouseEnter(item: SidebarItem): void {
+  if (this.hasChildren(item) && this.mode === 'horizontal') {
+    this.expandedItems.add(item.id);
+  }
+}
+
+onMouseLeave(item: SidebarItem): void {
+  if (this.hasChildren(item) && this.mode === 'horizontal') {
+    this.hoverTimeout = setTimeout(() => {
+      this.expandedItems.delete(item.id);
+    }, 150); // 150ms delay
+  }
+}
+
+// Hover events for submenu
+onSubmenuMouseEnter(item: SidebarItem): void {
+  if (this.mode === 'horizontal') {
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+  }
+}
+
+onSubmenuMouseLeave(item: SidebarItem): void {
+  if (this.mode === 'horizontal') {
+    this.hoverTimeout = setTimeout(() => {
+      this.expandedItems.delete(item.id);
+    }, 100); // 100ms delay
+  }
+}
+```
+
+### Features:
+- ✅ **Smooth animations** với cubic-bezier easing
+- ✅ **Delay mechanism** để tránh submenu đóng quá nhanh
+- ✅ **Pointer events management** cho submenu
+- ✅ **Memory leak prevention** với timeout cleanup
+- ✅ **Mode-specific behavior** (hover chỉ hoạt động ở horizontal mode)
 
 ## Theme Switching
 
@@ -106,7 +164,7 @@ toggleTheme() {
 ## Submenu Functionality
 
 ### Cách hoạt động:
-- **Horizontal Mode**: Click vào menu item có children sẽ hiển thị dropdown submenu
+- **Horizontal Mode**: Hover hoặc click vào menu item có children sẽ hiển thị dropdown submenu
 - **Vertical Mode**: Click vào menu item có children sẽ expand/collapse submenu inline
 - **Auto Close**: Submenu sẽ tự động đóng khi click vào submenu item khác
 
@@ -161,16 +219,18 @@ Component sử dụng SCSS với các class chính:
 - Submenu hiển thị dưới dạng dropdown
 - Position: absolute, top: 100%
 - Box shadow và border radius
-- Smooth fade in/out animation
+- Smooth fade in/out animation với cubic-bezier
+- Hover functionality với delay mechanism
 
 ### Vertical Mode:
 - Submenu hiển thị inline dưới parent item
 - Indent với padding-left
 - Expand/collapse animation
+- Click-only functionality
 
 ## Responsive Design
 
-- **Desktop**: Full submenu dropdown functionality
+- **Desktop**: Full submenu dropdown functionality với hover
 - **Tablet (768px)**: Adjusted submenu positioning
 - **Mobile (480px)**: Submenu hiển thị inline cho cả horizontal mode
 
@@ -192,11 +252,12 @@ Component sử dụng SCSS với các class chính:
 
 ## Animations
 
-- Fade in/out animation cho submenu
+- Fade in/out animation cho submenu với cubic-bezier easing
 - Smooth hover transitions
 - Arrow rotation cho items có children
 - Transform effects trên hover
 - Expand/collapse animation cho vertical mode
+- Delay mechanism cho hover events
 
 ## Accessibility
 
@@ -205,6 +266,7 @@ Component sử dụng SCSS với các class chính:
 - ARIA attributes
 - Screen reader friendly
 - Proper tab order cho submenu items
+- Hover delay để tránh accidental triggers
 
 ## Dependencies
 
@@ -216,7 +278,7 @@ Component sử dụng SCSS với các class chính:
 
 ## Demo
 
-Xem file `menu-test.component.ts` để có ví dụ hoàn chỉnh về cách test theme switching.
+Xem file `menu-hover-demo.component.ts` để có ví dụ hoàn chỉnh về cách test hover functionality và theme switching.
 
 ## Integration với Layout
 
@@ -229,6 +291,17 @@ Menu layout này được thiết kế để đặt dưới header trong layout 
 ```
 
 ## Troubleshooting
+
+### Hover không hoạt động:
+1. Đảm bảo đang sử dụng `mode="horizontal"`
+2. Kiểm tra console để xem có lỗi JavaScript không
+3. Đảm bảo menu item có property `children`
+4. Kiểm tra CSS pointer-events có bị disable không
+
+### Submenu đóng quá nhanh:
+1. Điều chỉnh delay time trong `onMouseLeave` và `onSubmenuMouseLeave`
+2. Kiểm tra hover area có bị overlap không
+3. Đảm bảo submenu có đủ space để hover
 
 ### Component không cập nhật theme:
 1. Đảm bảo `ThemeService` được inject đúng cách
@@ -244,4 +317,5 @@ Menu layout này được thiết kế để đặt dưới header trong layout 
 ### Submenu không đóng:
 1. Click vào submenu item sẽ tự động đóng submenu
 2. Click vào menu item khác cũng sẽ đóng submenu hiện tại
-3. Submenu sẽ đóng khi navigate đến route khác 
+3. Submenu sẽ đóng khi navigate đến route khác
+4. Hover ra khỏi menu area sẽ đóng submenu (horizontal mode) 

@@ -23,7 +23,6 @@
   }
 
   &.ant-menu-light {
-    background: #ffffff;
     color: var(--text-color);
 
     .ant-menu-item {
@@ -54,7 +53,6 @@
   }
 
   &.ant-menu-dark {
-    background: #001529;
     color: rgba(255, 255, 255, 0.65);
 
     .ant-menu-item {
@@ -115,6 +113,16 @@
 
   &.ant-menu-item-wrapper-has-children {
     position: relative;
+  }
+
+  // Hover effect for horizontal mode
+  .ant-menu-horizontal & {
+    &:hover {
+      .ant-menu-item {
+        color: var(--primary-color);
+        background-color: rgba(24, 144, 255, 0.04);
+      }
+    }
   }
 }
 
@@ -216,30 +224,46 @@
   top: 100%;
   left: 0;
   min-width: 200px;
+  line-height: 28px;
   background: #ffffff;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 8px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   margin-top: 4px;
+  pointer-events: none;
 
   &.ant-submenu-open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+    pointer-events: auto;
   }
 
   .ant-menu-dark & {
-    background: #001529;
+    background: var(--surface-color);
     border-color: #303030;
+  }
+
+  // Hover effect for submenu
+  &:hover {
+    .ant-submenu-item {
+      &:hover {
+        background-color: var(--dropdown-hover-color);
+        color: #ffffff;
+      }
+    }
   }
 }
 
 .ant-submenu-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   list-style: none;
   margin: 0;
   padding: 8px 0;
@@ -258,14 +282,16 @@
   color: var(--text-color);
   text-decoration: none;
   white-space: nowrap;
+  border-radius: 8px;
 
   &:hover {
-    background-color: rgba(24, 144, 255, 0.04);
+    background-color: var(--dropdown-hover-color);
     color: var(--primary-color);
+    transform: translateX(2px);
   }
 
   &.ant-submenu-item-selected {
-    background-color: rgba(24, 144, 255, 0.1);
+    background-color: var(--dropdown-selected-color);
     color: var(--primary-color);
     font-weight: 500;
   }
@@ -278,6 +304,7 @@
     &:hover {
       color: rgba(0, 0, 0, 0.25);
       background-color: transparent;
+      transform: none;
     }
   }
 
@@ -374,6 +401,7 @@
     border: none;
     margin-top: 0;
     background: transparent;
+    pointer-events: auto;
 
     &.ant-submenu-open {
       display: block;
