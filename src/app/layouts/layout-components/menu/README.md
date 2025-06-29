@@ -1,11 +1,12 @@
 # Menu Layout Component
 
-Component menu layout ngang theo thiết kế Ant Design với khả năng tùy chỉnh theme và mode, hỗ trợ submenu dropdown.
+Component menu layout ngang theo thiết kế Ant Design với khả năng tùy chỉnh theme và mode, hỗ trợ submenu dropdown và **tự động cập nhật theme**.
 
 ## Tính năng
 
 - ✅ Menu ngang (horizontal) và dọc (vertical)
 - ✅ **Submenu dropdown** cho menu items có children
+- ✅ **Auto theme switching** - Tự động cập nhật khi theme thay đổi
 - ✅ Light theme và Dark theme
 - ✅ Hỗ trợ icons (FontAwesome)
 - ✅ Active state và hover effects
@@ -62,19 +63,44 @@ const menuItems: SidebarItem[] = [
 ### 3. Sử dụng trong template
 
 ```html
-<!-- Horizontal Menu với Submenu -->
+<!-- Menu sẽ tự động cập nhật theme -->
 <app-menu-layout 
   [menuItems]="menuItems" 
-  mode="horizontal" 
-  theme="light">
+  mode="horizontal">
 </app-menu-layout>
+```
 
-<!-- Vertical Menu với Submenu -->
-<app-menu-layout 
-  [menuItems]="menuItems" 
-  mode="vertical" 
-  theme="light">
-</app-menu-layout>
+## Theme Switching
+
+### Tự động cập nhật theme:
+Component tự động lắng nghe thay đổi theme từ `ThemeService` và cập nhật giao diện ngay lập tức.
+
+```typescript
+// Component tự động subscribe to theme changes
+this.themeSubscription = this.themeService.themeChanged$.subscribe(
+  (newTheme) => {
+    this.theme = newTheme;
+  }
+);
+```
+
+### Cách hoạt động:
+1. Component inject `ThemeService` trong constructor
+2. Subscribe to `themeChanged$` observable trong `ngOnInit`
+3. Tự động cập nhật `theme` property khi có thay đổi
+4. Template binding `[class.ant-menu-light]="theme === 'light'"` sẽ trigger re-render
+5. Cleanup subscription trong `ngOnDestroy`
+
+### Test theme switching:
+Sử dụng component test để kiểm tra theme switching:
+
+```typescript
+// Trong component khác
+constructor(private themeService: ThemeService) {}
+
+toggleTheme() {
+  this.themeService.toggleTheme();
+}
 ```
 
 ## Submenu Functionality
@@ -94,8 +120,9 @@ const menuItems: SidebarItem[] = [
 | Property | Type | Default | Description |
 |----------|------|---------|-------------|
 | `menuItems` | `SidebarItem[]` | `[]` | Array của menu items |
-| `theme` | `'light' \| 'dark'` | `'light'` | Theme của menu |
 | `mode` | `'horizontal' \| 'vertical'` | `'horizontal'` | Mode hiển thị của menu |
+
+**Lưu ý**: `theme` không còn là `@Input()` vì component tự động lấy từ `ThemeService`
 
 ## SidebarItem Interface
 
@@ -185,10 +212,11 @@ Component sử dụng SCSS với các class chính:
 - Angular RouterModule
 - FontAwesome (cho icons)
 - SCSS variables từ theme system
+- **ThemeService** - Để lắng nghe thay đổi theme
 
 ## Demo
 
-Xem file `menu-demo.component.ts` để có ví dụ hoàn chỉnh về cách sử dụng component với submenu functionality.
+Xem file `menu-test.component.ts` để có ví dụ hoàn chỉnh về cách test theme switching.
 
 ## Integration với Layout
 
@@ -201,6 +229,12 @@ Menu layout này được thiết kế để đặt dưới header trong layout 
 ```
 
 ## Troubleshooting
+
+### Component không cập nhật theme:
+1. Đảm bảo `ThemeService` được inject đúng cách
+2. Kiểm tra console để xem có lỗi subscription không
+3. Đảm bảo `ThemeService.themeChanged$` emit giá trị mới
+4. Kiểm tra CSS variables có được cập nhật không
 
 ### Submenu không hiển thị:
 1. Kiểm tra xem menu item có property `children` không

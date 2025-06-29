@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SidebarItem } from '../../../core/models/data-handle';
+import { ThemeService } from '../../../styles/theme-service/theme.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu-layout',
@@ -10,18 +12,36 @@ import { SidebarItem } from '../../../core/models/data-handle';
   imports: [CommonModule, RouterModule],
   standalone: true,
 })
-export class MenuLayoutComponent implements OnInit {
+export class MenuLayoutComponent implements OnInit, OnDestroy {
   @Input() menuItems: SidebarItem[] = [];
-  @Input() theme: 'light' | 'dark' = 'light';
   @Input() mode: 'horizontal' | 'vertical' = 'horizontal';
 
   activeItem: string = '';
+  theme: 'light' | 'dark' = 'light';
   expandedItems: Set<string> = new Set();
+  private themeSubscription?: Subscription;
+
+  constructor(private themeService: ThemeService) {}
 
   ngOnInit() {
     // Set first item as active by default
     if (this.menuItems.length > 0) {
       this.activeItem = this.menuItems[0].id;
+    }
+
+    // Subscribe to theme changes
+    this.theme = this.themeService.getCurrentTheme();
+    this.themeSubscription = this.themeService.themeChanged$.subscribe(
+      (newTheme) => {
+        this.theme = newTheme;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
     }
   }
 
