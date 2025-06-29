@@ -14,7 +14,7 @@ import { SidebarItem } from '../../../core/models/data-handle';
       <div class="demo-section">
         <h3>Horizontal Menu với Submenu</h3>
         <p class="demo-description">
-          Click vào menu "Components" để xem submenu dropdown
+          Hover vào menu "Components" để xem submenu dropdown
         </p>
         <app-menu-layout [menuItems]="menuItems" mode="horizontal">
         </app-menu-layout>

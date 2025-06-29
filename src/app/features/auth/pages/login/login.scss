@@ -103,6 +103,7 @@
   max-width: 340px;
 }
 .btn-google,
+.btn-google-different,
 .btn-facebook {
   display: flex;
   align-items: center;
@@ -123,6 +124,15 @@
 }
 .btn-google:hover {
   background: #f1f1f1;
+}
+.btn-google-different {
+  background: #f8f9fa;
+  color: #495057;
+  border: 1px solid #dee2e6;
+  font-size: 0.9rem;
+}
+.btn-google-different:hover {
+  background: #e9ecef;
 }
 .btn-facebook {
   background: #1877f3;
