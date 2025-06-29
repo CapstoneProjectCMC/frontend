@@ -8,7 +8,7 @@ import { UsingCardDataComponent } from './using-card-data/using-card-data.compon
 import { CodeEditorPage } from './code-editor/code-editor.component';
 import { UsingTrendingComponent } from './using-trending/using-trending.component';
 import { MenuLayoutComponent } from '../../layouts/layout-components/menu/menu-layout.component';
-import { MenuDemoComponent } from '../../layouts/layout-components/menu/menu-demo.component';
+import { MenuDemoComponent } from './using-main-navbar/menu-demo.component';
 
 const routes: Routes = [
   {

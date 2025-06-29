@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MenuLayoutComponent } from './menu-layout.component';
+import { MenuLayoutComponent } from '../../../layouts/layout-components/menu/menu-layout.component';
 import { SidebarItem } from '../../../core/models/data-handle';
 
 @Component({

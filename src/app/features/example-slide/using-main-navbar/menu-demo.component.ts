@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MenuLayoutComponent } from './menu-layout.component';
+import { MenuLayoutComponent } from '../../../layouts/layout-components/menu/menu-layout.component';
 import { SidebarItem } from '../../../core/models/data-handle';
 
 @Component({
@@ -12,38 +12,21 @@ import { SidebarItem } from '../../../core/models/data-handle';
       <h2>Menu Layout Demo - Ant Design Style</h2>
 
       <div class="demo-section">
-        <h3>Horizontal Menu với Submenu (Light Theme)</h3>
+        <h3>Horizontal Menu với Submenu</h3>
         <p class="demo-description">
           Click vào menu "Components" để xem submenu dropdown
         </p>
-        <app-menu-layout
-          [menuItems]="menuItems"
-          mode="horizontal"
-          theme="light"
-        >
+        <app-menu-layout [menuItems]="menuItems" mode="horizontal">
         </app-menu-layout>
       </div>
 
       <div class="demo-section">
-        <h3>Horizontal Menu với Submenu (Dark Theme)</h3>
-        <p class="demo-description">
-          Click vào menu "Authentication" để xem submenu dropdown
-        </p>
-        <app-menu-layout [menuItems]="menuItems" mode="horizontal" theme="dark">
-        </app-menu-layout>
-      </div>
-
-      <div class="demo-section">
-        <h3>Vertical Menu với Submenu</h3>
+        <h3>Vertical Menu với Submenu (chưa hoàn thiện)</h3>
         <p class="demo-description">
           Click vào menu items để xem submenu expand/collapse
         </p>
         <div class="vertical-menu-container">
-          <app-menu-layout
-            [menuItems]="menuItems"
-            mode="vertical"
-            theme="light"
-          >
+          <app-menu-layout [menuItems]="menuItems" mode="vertical">
           </app-menu-layout>
         </div>
       </div>
