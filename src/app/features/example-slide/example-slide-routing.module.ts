@@ -7,6 +7,8 @@ import { UsingTextEditorComponent } from './using-text-editor/using-text-editor.
 import { UsingCardDataComponent } from './using-card-data/using-card-data.component';
 import { CodeEditorPage } from './code-editor/code-editor.component';
 import { UsingTrendingComponent } from './using-trending/using-trending.component';
+import { MenuLayoutComponent } from '../../layouts/layout-components/menu/menu-layout.component';
+import { MenuDemoComponent } from './using-main-navbar/menu-demo.component';
 
 const routes: Routes = [
   {
@@ -36,6 +38,10 @@ const routes: Routes = [
   {
     path: 'trending',
     component: UsingTrendingComponent,
+  },
+  {
+    path: 'app-menu-layout',
+    component: MenuDemoComponent,
   },
 ];
 

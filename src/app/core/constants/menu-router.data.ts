@@ -6,7 +6,7 @@ const secondLayout = '/second';
 export const sidebarData: SidebarItem[] = [
   {
     id: 'home',
-    path: mainLayout,
+    path: mainLayout + '/home',
     label: 'Home',
     icon: 'fas fa-home',
     isActive: true,
@@ -59,6 +59,12 @@ export const sidebarData: SidebarItem[] = [
         label: 'Create Post',
         icon: 'fas fa-file-pen',
       },
+      {
+        id: 'app-menu-layout',
+        path: secondLayout + '/example-using-component-slide/app-menu-layout',
+        label: 'App Menu Layout',
+        icon: 'fas fa-bars',
+      },
     ],
   },
   {
@@ -72,6 +78,24 @@ export const sidebarData: SidebarItem[] = [
         path: mainLayout + '/auth/login',
         label: 'Login',
         icon: 'fas fa-sign-in-alt',
+      },
+      {
+        id: 'register',
+        path: mainLayout + '/auth/register',
+        label: 'Register',
+        icon: 'fas fa-user-plus',
+      },
+      {
+        id: 'error-500',
+        path: mainLayout + '/auth/error-500',
+        label: 'Error 500',
+        icon: 'fas fa-exclamation-triangle',
+      },
+      {
+        id: 'error-400',
+        path: mainLayout + '/auth/error-400',
+        label: 'Error 400',
+        icon: 'fas fa-exclamation-triangle',
       },
     ],
   },
