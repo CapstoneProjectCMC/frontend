@@ -35,9 +35,11 @@
     "@ngrx/store": "^19.2.1",
     "@ngrx/store-devtools": "^19.2.1",
     "@schematics/angular": "^19.2.15",
+    "apexcharts": "^4.7.0",
     "codemirror": "^6.0.1",
     "date-fns": "^4.1.0",
-    "ngx-cookie-service": "^20.0.1",
+    "ng-apexcharts": "^1.8.0",
+    "ngx-cookie-service": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

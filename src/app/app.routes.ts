@@ -18,6 +18,13 @@ export const routes: Routes = [
           import('./features/post/post.module').then((m) => m.PostModule),
       },
 
+      {
+        path: 'student-statistic',
+        loadChildren: () =>
+          import('./features/student-statistic/student-statistic.module').then(
+            (m) => m.StudentStatisticModule
+          ),
+      },
       // Thêm các route auth khác nếu cần...
     ],
   },

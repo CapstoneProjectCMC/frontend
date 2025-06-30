@@ -1,0 +1,50 @@
+<h2>Student Statistic</h2>
+<!-- Bắt buộc phải truyền value và labels -->
+<fx-pie-chart [value]="[50]" [labels]="['Giải khuyến khích']"> </fx-pie-chart>
+
+<!-- Ví dụ sử dụng fx-line-chart với đủ 7 ngày trong tuần, 2 series: Bài đã làm, Bài chưa làm -->
+<fx-line-chart
+  [categories]="[
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
+    '21',
+    '22',
+    '23',
+    '24',
+    '25',
+    '26',
+    '27',
+    '28',
+    '29',
+    '30'
+  ]"
+  [series]="[
+    {
+      name: 'Số lượng bài tập',
+      data: [
+        10, 12, 8, 15, 20, 18, 17, 16, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3,
+        2, 1, 0, 2, 4, 6, 8, 10, 12, 14
+      ]
+    }
+  ]"
+  [height]="350"
+  [chartTitle]="'Tỷ lệ hoàn thành bài của học sinh trong tổ chức'"
+></fx-line-chart>
