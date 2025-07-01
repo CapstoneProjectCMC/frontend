@@ -6,9 +6,6 @@ export type ApiResponse<T> = {
 };
 
 export type loginResponse = {
-  username: string;
-  email: string;
-  tokenId: string;
   tokenAccessType: string;
   accessToken: string;
   refreshToken: string;
