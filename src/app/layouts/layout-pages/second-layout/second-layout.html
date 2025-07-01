@@ -1,3 +1,10 @@
 <p>second-layout works!</p>
+<div class="demo-container">
+  <app-main-sidebar
+    [sidebarItems]="sidebarData"
+    [isCollapsed]="isSidebarCollapsed"
+  >
+  </app-main-sidebar>
+</div>
 <router-outlet />
 <app-notification-test />

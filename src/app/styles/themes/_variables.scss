@@ -40,6 +40,7 @@ $error-color: #e45967;
   --border-color: #{$blue-d0e3ff};
   --hover-color: #{$blue-7096d1};
   --disabled-color: #d3d3d3;
+  --title-text: #081f5c;
   --text-color: #{$black-000000};
   --text-muted-color: #555;
 
@@ -58,6 +59,8 @@ $error-color: #e45967;
   --dropdown-secondary-color: #{$blue-dark};
   --dropdown-selected-color: #{$blue-main};
   --dropdown-hover-color: #{$blue-mid};
+
+  --login-slider-bg: url("/auth-assets/Login-Art.png");
 }
 
 // Dark Theme
@@ -73,6 +76,7 @@ $error-color: #e45967;
   --border-color: #2a2a2a;
   --hover-color: #3a4a7a;
   --disabled-color: #555;
+  --title-text: #7096d1;
   --text-color: #{$white-f9fcff};
   --text-muted-color: #999;
 
@@ -88,4 +92,6 @@ $error-color: #e45967;
   --dropdown-secondary-color: #{$blue-dark};
   --dropdown-selected-color: #3b3b3b;
   --dropdown-hover-color: #3a3a3a;
+
+  --login-slider-bg: url("/auth-assets/Login-Art-Dark.png");
 }

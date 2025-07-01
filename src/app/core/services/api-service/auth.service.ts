@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiMethod } from '../config-service/api.methods';
 import { API_CONFIG } from '../config-service/api.enpoints';
+import { ApiResponse, loginResponse } from '../../models/api-response';
+import { LoginDataEmail, LoginDataUsername } from '../../models/data-handle';
 
 @Injectable({
   providedIn: 'root',
@@ -16,12 +18,18 @@ export class AuthService {
   //     );
   //   }
 
-  //   loginByUsername(
-  //     dataLogin: IDataLoginUsername
-  //   ): Observable<SERVER_RESPONSE<ILoginResponse>> {
-  //     return this.api.post<SERVER_RESPONSE<ILoginResponse>>(
-  //       API_CONFIG.ENDPOINTS.POST.POST_LOGIN_USERNAME,
-  //       dataLogin
-  //     );
-  //   }
+  loginByUsername(
+    dataLogin: LoginDataUsername
+  ): Observable<ApiResponse<loginResponse>> {
+    return this.api.post(API_CONFIG.ENDPOINTS.POST.LOGIN, dataLogin);
+  }
+  loginByEmail(
+    dataLogin: LoginDataEmail
+  ): Observable<ApiResponse<loginResponse>> {
+    return this.api.post(API_CONFIG.ENDPOINTS.POST.LOGIN, dataLogin);
+  }
+
+  verifyGoogleToken() {
+    return this.api.post;
+  }
 }

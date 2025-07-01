@@ -2,22 +2,89 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OAuthConfig } from '../../../../core/services/config-service/oauth.configuration';
 import { Router } from '@angular/router';
+import { slides } from '../../../../core/constants/value.constant';
+import { AuthService } from '../../../../core/services/api-service/auth.service';
+import { LoginDataUsername } from '../../../../core/models/data-handle';
+import { loginResponse } from '../../../../core/models/api-response';
+import { Store } from '@ngrx/store';
+import { sendNotification } from '../../../../shared/utils/notification';
+import { FormsModule } from '@angular/forms';
+import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-shared/loading-overlay/loading-overlay.component';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, LoadingOverlayComponent],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
-  constructor(private router: Router) {}
+  isLoading = false;
+
+  dataLogin: LoginDataUsername = {
+    username: '',
+    password: '',
+  };
+
+  loginResponse: loginResponse = {
+    username: '',
+    email: '',
+    tokenId: '',
+    tokenAccessType: '',
+    accessToken: '',
+    refreshToken: '',
+    accessExpiry: '',
+    refreshExpiry: '',
+    authenticated: false,
+    enabled: false,
+    active: false,
+  };
+
+  currentSlide = 0;
+
+  slides = slides;
+
+  showPassword = false;
+
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private store: Store
+  ) {}
+
+  ngOnInit() {
+    setInterval(() => {
+      this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+    }, 4000);
+  }
+
+  onLogin() {
+    this.isLoading = true;
+
+    this.authService.loginByUsername(this.dataLogin).subscribe({
+      next: (res) => {
+        this.loginResponse = res.result;
+        this.isLoading = false;
+
+        sendNotification(this.store, res.status, res.message, 'success');
+      },
+      error: (err) => {
+        console.log(err);
+        sendNotification(
+          this.store,
+          'Thất bại!',
+          'Đăng nhập thật bại, vui lòng thử lại!',
+          'error'
+        );
+        this.isLoading = false;
+      },
+    });
+  }
 
   onGoogleLogin() {
     const params = new URLSearchParams({
       client_id: OAuthConfig.clientId,
       redirect_uri: OAuthConfig.redirectUri,
-      response_type: 'token',
+      response_type: 'code',
       scope: 'email profile openid',
       include_granted_scopes: 'true',
       state: 'login',
@@ -32,8 +99,6 @@ export class Login {
     localStorage.removeItem('token_expiry');
     localStorage.removeItem('token_scope');
     localStorage.removeItem('user_info');
-
-    const googleLogoutUrl = 'https://accounts.google.com/logout';
   }
 
   loginWithDifferentAccount() {
