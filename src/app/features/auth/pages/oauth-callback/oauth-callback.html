@@ -1,3 +1,6 @@
 <div class="oauth-callback-container">
-  <app-loading-overlay [message]="'Đang xác thực...'"></app-loading-overlay>
+  <app-loading-overlay
+    [visible]="isLoading"
+    [message]="'Đang xác thực...'"
+  ></app-loading-overlay>
 </div>

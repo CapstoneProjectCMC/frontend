@@ -9,6 +9,9 @@ import { Store } from '@ngrx/store';
 import { sendNotification } from '../../../../shared/utils/notification';
 import { FormsModule } from '@angular/forms';
 import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-shared/loading-overlay/loading-overlay.component';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { DecodedJwtPayload } from '../../../../core/models/data-handle';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -19,15 +22,27 @@ import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-s
 export class Login {
   isLoading = false;
 
+  userInfo: DecodedJwtPayload = {
+    sub: '',
+    permissions: [],
+    scope: '',
+    roles: [],
+    iss: '',
+    active: false,
+    exp: 0,
+    token_type: '',
+    iat: 0,
+    userId: '',
+    jti: '',
+    email: '',
+  };
+
   dataLogin = {
     accountName: '',
     password: '',
   };
 
   loginResponse: loginResponse = {
-    username: '',
-    email: '',
-    tokenId: '',
     tokenAccessType: '',
     accessToken: '',
     refreshToken: '',
@@ -47,7 +62,8 @@ export class Login {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private store: Store
+    private store: Store,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit() {
@@ -57,6 +73,15 @@ export class Login {
   }
 
   onLogin() {
+    if (!this.dataLogin.accountName || !this.dataLogin.password) {
+      sendNotification(
+        this.store,
+        'Lỗi!',
+        'Vui lòng nhập đầy đủ tài khoản và mật khẩu!',
+        'error'
+      );
+      return;
+    }
     this.isLoading = true;
     let data: any = {
       password: this.dataLogin.password,
@@ -72,7 +97,12 @@ export class Login {
       next: (res) => {
         this.loginResponse = res.result;
         this.isLoading = false;
+        this.userInfo = decodeJWT(res.result.accessToken)?.payload;
 
+        //Hiện có thể lưu tại 3 chỗ
+        this.saveUserInfoToSession(this.userInfo);
+        this.saveUserInfoToCookie(this.userInfo);
+        localStorage.setItem('token', res.result.accessToken);
         sendNotification(this.store, res.status, res.message, 'success');
       },
       error: (err) => {
@@ -120,5 +150,13 @@ export class Login {
       prompt: 'select_account consent',
     });
     window.location.href = `${OAuthConfig.authUri}?${params.toString()}`;
+  }
+
+  saveUserInfoToSession(userInfo: DecodedJwtPayload) {
+    sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
+  }
+
+  saveUserInfoToCookie(userInfo: DecodedJwtPayload) {
+    this.cookieService.set('userInfo', JSON.stringify(userInfo));
   }
 }
