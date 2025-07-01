@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ApiMethod } from '../config-service/api.methods';
 import { API_CONFIG } from '../config-service/api.enpoints';
 import { ApiResponse, loginResponse } from '../../models/api-response';
-import { LoginDataEmail, LoginDataUsername } from '../../models/data-handle';
+import { LoginData } from '../../models/data-handle';
 
 @Injectable({
   providedIn: 'root',
@@ -19,17 +19,15 @@ export class AuthService {
   //   }
 
   loginByUsername(
-    dataLogin: LoginDataUsername
-  ): Observable<ApiResponse<loginResponse>> {
-    return this.api.post(API_CONFIG.ENDPOINTS.POST.LOGIN, dataLogin);
-  }
-  loginByEmail(
-    dataLogin: LoginDataEmail
+    dataLogin: LoginData
   ): Observable<ApiResponse<loginResponse>> {
     return this.api.post(API_CONFIG.ENDPOINTS.POST.LOGIN, dataLogin);
   }
 
-  verifyGoogleToken() {
-    return this.api.post;
+  verifyGoogleToken(code: string) {
+    return this.api.post<ApiResponse<loginResponse>>(
+      API_CONFIG.ENDPOINTS.POST.OUTBOUND_GOOGLE_LOGIN(code),
+      null
+    );
   }
 }
