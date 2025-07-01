@@ -1,42 +1,87 @@
 <div class="login-container">
+  <!-- Phần trái: Slider -->
   <div class="login-slider">
-    <div class="slider-image">
-      <img src="assets/landing-assets/CodePage.svg" alt="Slider Image" />
-    </div>
-    <div class="slider-text">
-      <h2>Chào mừng bạn đến với Website!</h2>
-      <p>Khám phá, học hỏi và chia sẻ kiến thức lập trình cùng cộng đồng.</p>
+    <div class="slider-content">
+      <img
+        [src]="slides[currentSlide].img"
+        alt="Slide image"
+        class="slider-image"
+      />
+      <h2 class="title">{{ slides[currentSlide].title }}</h2>
+      <p class="description">{{ slides[currentSlide].desc }}</p>
+      <div class="dots">
+        <span
+          *ngFor="let slide of slides; let i = index"
+          [class.active]="i === currentSlide"
+        ></span>
+      </div>
     </div>
   </div>
-  <div class="login-form-section">
-    <div class="login-logo">
-      <img src="assets/Logo.svg" alt="Logo" />
-    </div>
-    <form class="login-form">
-      <h3>Đăng nhập bằng Email</h3>
-      <div class="form-group">
-        <input type="email" placeholder="Email" required />
+
+  <div class="form-container">
+    <!-- Phần phải: Form login -->
+    <div class="login-form">
+      <div class="brand">
+        <img src="Logo.svg" alt="Logo" class="logo" />
+        <div class="brand-text">
+          <h2>CodeCampus</h2>
+          <p class="subtitle">Chào mừng trở lại</p>
+          <p class="subtitle">Công nghệ dẫn lối-Tri thức khai mở</p>
+        </div>
       </div>
-      <div class="form-group">
-        <input type="password" placeholder="Mật khẩu" required />
-      </div>
-      <button type="submit" class="btn-login">Đăng nhập</button>
-    </form>
-    <div class="login-or">Hoặc</div>
-    <div class="login-social">
-      <button class="btn-google" type="button" (click)="onGoogleLogin()">
-        <img src="assets/icon-assets/google-icon.svg" alt="Google" /> Đăng nhập
-        bằng Google
+
+      <form>
+        <div class="input-container">
+          <input
+            required=""
+            id="username-input"
+            type="text"
+            [(ngModel)]="dataLogin.username"
+            name="username"
+          />
+          <label class="label" for="username-input">Tài khoản</label>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
+          <input
+            required=""
+            id="password-input"
+            [type]="showPassword ? 'text' : 'password'"
+            [(ngModel)]="dataLogin.password"
+            name="password"
+          />
+          <label class="label" for="password-input">Mật khẩu</label>
+          <div class="underline"></div>
+          <span class="toggle-password" (click)="showPassword = !showPassword">
+            <i
+              class="fa"
+              [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+            ></i>
+          </span>
+        </div>
+        <div class="forgot">
+          <a href="#">Quên mật khẩu?</a>
+        </div>
+        <button type="submit" (click)="onLogin()">Đăng nhập</button>
+      </form>
+
+      <div class="or-divider">Hoặc</div>
+
+      <button class="social-btn google" (click)="onGoogleLogin()">
+        <img src="/auth-assets/Google.png" alt="" class="google-icon" />
+        Đăng nhập bằng Google
       </button>
-      <button class="btn-facebook" type="button">
-        <img src="assets/icon-assets/facebook-icon.svg" alt="Facebook" /> Đăng
+      <button class="social-btn facebook">
+        <img src="/auth-assets/Facebook.png" alt="" class="google-icon" />Đăng
         nhập bằng Facebook
       </button>
-    </div>
-    <div class="login-links">
-      <a href="#" class="forgot-password">Quên mật khẩu?</a>
-      <span> | </span>
-      <a href="#" class="register-link">Chưa có tài khoản?</a>
+
+      <div class="signup-link">
+        Bạn chưa có tài khoản?
+        <a href="#">Đăng ký</a>
+      </div>
     </div>
   </div>
 </div>
+
+<app-loading-overlay *ngIf="isLoading"></app-loading-overlay>

@@ -14,3 +14,12 @@ export interface SidebarItem {
   isExpanded?: boolean;
   disabled?: boolean;
 }
+export interface LoginDataUsername {
+  username: string;
+  password: string;
+}
+
+export interface LoginDataEmail {
+  email: string;
+  password: string;
+}
