@@ -12,6 +12,7 @@ import {
   ApexNonAxisChartSeries,
   ApexResponsive,
   ApexChart,
+  ApexTitleSubtitle,
 } from 'ng-apexcharts';
 
 export type ChartOptions = {
@@ -19,14 +20,16 @@ export type ChartOptions = {
   chart: ApexChart;
   responsive: ApexResponsive[];
   labels: any;
+  title: ApexTitleSubtitle;
 };
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'fx-pie-chart',
   templateUrl: './pie-chart.html',
   styleUrls: ['./pie-chart.scss'],
   standalone: true,
-  imports: [NgApexchartsModule],
+  imports: [NgApexchartsModule, NgIf],
 })
 export class PieChartComponent implements OnChanges, OnInit {
   @ViewChild('chart') chart!: ChartComponent;
@@ -34,6 +37,7 @@ export class PieChartComponent implements OnChanges, OnInit {
   @Input() value!: ApexNonAxisChartSeries;
   @Input() labels!: any;
   @Input() width: number = 380;
+  @Input() chartTitle: string = '';
   @Input() responsive: ApexResponsive[] = [
     {
       breakpoint: 480,
@@ -56,6 +60,14 @@ export class PieChartComponent implements OnChanges, OnInit {
     },
     labels: [],
     responsive: this.responsive,
+    title: {
+      text: this.chartTitle,
+      align: 'center',
+      style: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+      },
+    },
   };
 
   ngOnInit(): void {
@@ -67,7 +79,8 @@ export class PieChartComponent implements OnChanges, OnInit {
       changes['value'] ||
       changes['labels'] ||
       changes['width'] ||
-      changes['responsive']
+      changes['responsive'] ||
+      changes['chartTitle']
     ) {
       this.validateRequiredInputs();
       this.updateChartOptions();
@@ -101,6 +114,14 @@ export class PieChartComponent implements OnChanges, OnInit {
       },
       labels: this.labels,
       responsive: this.responsive,
+      title: {
+        text: this.chartTitle,
+        align: 'center',
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+        },
+      },
     };
   }
 }
