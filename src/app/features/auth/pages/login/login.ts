@@ -4,7 +4,6 @@ import { OAuthConfig } from '../../../../core/services/config-service/oauth.conf
 import { Router } from '@angular/router';
 import { slides } from '../../../../core/constants/value.constant';
 import { AuthService } from '../../../../core/services/api-service/auth.service';
-import { LoginDataUsername } from '../../../../core/models/data-handle';
 import { loginResponse } from '../../../../core/models/api-response';
 import { Store } from '@ngrx/store';
 import { sendNotification } from '../../../../shared/utils/notification';
@@ -20,8 +19,8 @@ import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-s
 export class Login {
   isLoading = false;
 
-  dataLogin: LoginDataUsername = {
-    username: '',
+  dataLogin = {
+    accountName: '',
     password: '',
   };
 
@@ -59,8 +58,17 @@ export class Login {
 
   onLogin() {
     this.isLoading = true;
+    let data: any = {
+      password: this.dataLogin.password,
+    };
 
-    this.authService.loginByUsername(this.dataLogin).subscribe({
+    if (this.dataLogin.accountName.includes('@')) {
+      data.email = this.dataLogin.accountName;
+    } else {
+      data.username = this.dataLogin.accountName;
+    }
+
+    this.authService.loginByUsername(data).subscribe({
       next: (res) => {
         this.loginResponse = res.result;
         this.isLoading = false;

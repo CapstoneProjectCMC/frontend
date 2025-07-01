@@ -36,10 +36,12 @@
             required=""
             id="username-input"
             type="text"
-            [(ngModel)]="dataLogin.username"
-            name="username"
+            [(ngModel)]="dataLogin.accountName"
+            name="accountName"
           />
-          <label class="label" for="username-input">Tài khoản</label>
+          <label class="label" for="username-input"
+            >Tên tài khoản hoặc Email</label
+          >
           <div class="underline"></div>
         </div>
         <div class="input-container">
@@ -84,4 +86,7 @@
   </div>
 </div>
 
-<app-loading-overlay *ngIf="isLoading"></app-loading-overlay>
+<app-loading-overlay
+  *ngIf="isLoading"
+  [message]="'Đang đăng nhập, xin chờ...'"
+></app-loading-overlay>
