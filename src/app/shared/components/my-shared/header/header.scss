@@ -1,0 +1,156 @@
+.header {
+  width: 100%;
+  height: 80px;
+  padding: 16px 0;
+  background-color: var(--background-color);
+  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.08);
+  &-container {
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 20px;
+    &-icon {
+      height: 47px;
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      &-name {
+        color: var(--primary-color);
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+        padding-bottom: 0px;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      &-description {
+        font-size: 8px;
+        color: var(--primary-color);
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  &-auth {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+
+    &-item {
+      &-text {
+        font-size: 16px;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: var(--hover-color);
+        }
+      }
+
+      &-button {
+        padding: 8px 16px;
+        background-color: var(--background-color);
+        color: var(--text-dark-gray-color);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border: 1px solid var(--text-dark-gray-color);
+        &:hover {
+          background-color: var(--button-color-hover);
+          border: 1px solid var(--text-gray-color);
+          color: var(--text-gray-color);
+        }
+      }
+    }
+  }
+
+  .header-logo-divider {
+    display: inline-block;
+    width: 1px;
+    height: 30px;
+    background-color: var(--text-color);
+    opacity: 0.3;
+    margin-left: 12px;
+    margin-top: 10px;
+    align-self: center;
+  }
+  .header-action {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    gap: 40px;
+    .header-action-notification {
+      position: relative;
+      top: 5px;
+    }
+
+    .header-notification-badge {
+      position: absolute;
+      top: -6px;
+      right: 0px;
+      left: auto;
+      width: 21px;
+      height: 21px;
+      background: rgba(255, 93, 109, 0.4);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      padding: 0;
+
+      &-text {
+        width: 17px;
+        height: 17px;
+        background: var(--error-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: bold;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    &-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f3f3f3; // tuỳ chọn, để có nền khi chưa có ảnh
+    }
+
+    &-avatar {
+      margin-top: 0;
+      border: 1px solid var(--text-color);
+      &-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+      }
+    }
+  }
+}

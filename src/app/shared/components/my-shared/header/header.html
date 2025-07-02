@@ -1,0 +1,53 @@
+<div class="header">
+  <div class="header-container">
+    <div class="header-logo">
+      <img class="header-logo-icon" src="landing-assets/Logo.svg" alt="logo" />
+      <div class="header-logo-text">
+        <p class="header-logo-text-name">CodeCampus</p>
+        <span class="header-logo-text-description"
+          >Học tập và kết nối cộng đồng</span
+        >
+      </div>
+      <span class="header-logo-divider"></span>
+    </div>
+    <div class="header-auth" *ngIf="!isLoggedIn">
+      <span class="header-logo-divider"></span>
+      <span class="header-auth-item-text" (click)="goToLogin()">Đăng nhập</span>
+      <span class="header-auth-item-button" (click)="goToRegister()"
+        >Tạo tài khoản</span
+      >
+    </div>
+    <div class="header-action" *ngIf="isLoggedIn">
+      <div class="header-action-notification">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="48"
+          height="48"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-bell-icon lucide-bell"
+        >
+          <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+          <path
+            d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
+          />
+        </svg>
+        <span class="header-notification-badge">
+          <p class="header-notification-badge-text">{{ notificationCount }}</p>
+        </span>
+      </div>
+
+      <div class="header-action-avatar">
+        <img
+          class="header-action-avatar-img"
+          src="https://i.pinimg.com/736x/3f/f5/7a/3ff57a47bfb8b67da24f8f7f606b1ace.jpg"
+          alt="avatar"
+        />
+      </div>
+    </div>
+  </div>
+</div>
