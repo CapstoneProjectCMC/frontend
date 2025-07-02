@@ -10,7 +10,7 @@
   <div class="notification-header">
     <div class="icon-title">
       <span class="notification-icon" [ngClass]="type">
-        <i class="material-icons">{{ getIcon() }}</i>
+        <i [ngClass]="getIconClass()"></i>
       </span>
       <h3 class="notification-title">{{ title }}</h3>
     </div>

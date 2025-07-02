@@ -61,6 +61,8 @@ $error-color: #e45967;
   --dropdown-selected-color: #{$blue-main};
   --dropdown-hover-color: #{$blue-mid};
 
+  --progress-color: #{$blue-7096d1};
+
   --login-slider-bg: url("/auth-assets/Login-Art.png");
 }
 
@@ -93,6 +95,8 @@ $error-color: #e45967;
   --dropdown-secondary-color: #{$blue-dark};
   --dropdown-selected-color: #3b3b3b;
   --dropdown-hover-color: #3a3a3a;
+
+  --progress-color: #{$border-color};
 
   --login-slider-bg: url("/auth-assets/Login-Art-Dark.png");
 }

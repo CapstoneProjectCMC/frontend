@@ -108,12 +108,12 @@ export class AlertNotificationComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  getIcon(): string {
+  getIconClass(): string {
     const icons = {
-      success: '✅',
-      warning: '‼‼',
-      error: '❌',
-      info: '💦',
+      success: 'fa-solid fa-circle-check',
+      warning: 'fa-solid fa-triangle-exclamation',
+      error: 'fa-solid fa-circle-xmark',
+      info: 'fa-solid fa-circle-info',
     };
     return icons[this.type];
   }
