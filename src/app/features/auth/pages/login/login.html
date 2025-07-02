@@ -87,6 +87,6 @@
 </div>
 
 <app-loading-overlay
-  *ngIf="isLoading"
+  [visible]="isLoading"
   [message]="'Đang đăng nhập, xin chờ...'"
 ></app-loading-overlay>

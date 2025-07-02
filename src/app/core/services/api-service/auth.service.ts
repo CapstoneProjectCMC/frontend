@@ -24,7 +24,7 @@ export class AuthService {
     return this.api.post(API_CONFIG.ENDPOINTS.POST.LOGIN, dataLogin);
   }
 
-  verifyGoogleToken(code: string) {
+  verifyGoogleCode(code: string) {
     return this.api.post<ApiResponse<loginResponse>>(
       API_CONFIG.ENDPOINTS.POST.OUTBOUND_GOOGLE_LOGIN(code),
       null

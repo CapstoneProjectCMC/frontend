@@ -114,3 +114,46 @@ export function formatDate(date: Date): string {
 export function removeSpecialCharacters(str: string): string {
   return str.replace(/[^a-zA-Z0-9]/g, '');
 }
+
+//Giải mã JWT token
+export function decodeJWT(token: string): {
+  header: any;
+  payload: any;
+  issuedAt?: string;
+  expiresAt?: string;
+} | null {
+  try {
+    const [header64, payload64] = token.split('.');
+    const base64UrlDecode = (str: string) => {
+      const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(json);
+    };
+
+    const header = base64UrlDecode(header64);
+    const payload = base64UrlDecode(payload64);
+
+    const issuedAt = payload.iat
+      ? new Date(payload.iat * 1000).toLocaleString()
+      : undefined;
+
+    const expiresAt = payload.exp
+      ? new Date(payload.exp * 1000).toLocaleString()
+      : undefined;
+
+    return {
+      header,
+      payload,
+      issuedAt,
+      expiresAt,
+    };
+  } catch (e) {
+    console.error('Invalid JWT', e);
+    return null;
+  }
+}
