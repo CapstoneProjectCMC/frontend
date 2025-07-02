@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class HeaderComponent {
   @Input() isLoggedIn: boolean = false;
   @Input() notificationCount: number = 0;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private store: Store) {}
 
   goToLogin() {
     this.router.navigate(['/main/auth/login']);
