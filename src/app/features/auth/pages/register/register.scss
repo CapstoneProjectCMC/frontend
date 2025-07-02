@@ -1,0 +1,332 @@
+.register-main-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--background-color);
+  .registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 0 40px;
+    border-radius: var(--border-color);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+    .login-nav {
+      padding-top: 20px;
+      display: flex;
+      gap: 10px;
+      .router-login {
+        color: var(--primary-color);
+        cursor: pointer;
+
+        &:hover {
+          text-decoration: underline;
+        }
+
+        &:active {
+          transform: scale(0.9);
+        }
+      }
+    }
+
+    .form-submit {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .title {
+      font-size: 2rem; // 32px
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0px;
+      color: var(--title-text);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1rem; // 16px
+      margin: 0.5rem;
+      color: var(--text-color);
+    }
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0 1rem; // Chỉ có khoảng cách cột
+    width: 100%;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .input-container {
+    position: relative;
+    margin-bottom: 25px;
+
+    // Áp dụng chung cho các loại input
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: none;
+      border-bottom: 2px solid var(--border-color);
+      background: transparent;
+      padding: 8px 0;
+      font-size: 16px;
+      color: var(--text-color);
+      outline: none;
+      resize: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    // Style cho select
+    select {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .select-arrow {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 0;
+      color: var(--text-color);
+    }
+
+    // Style cho label
+    label {
+      position: absolute;
+      top: 8px;
+      left: 0;
+      font-size: 16px;
+      color: var(--text-color);
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    // Style cho gạch chân underline
+    .underline {
+      height: 2px;
+      background-color: var(--text-muted-color);
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      transform: scaleX(0);
+      transition: all 0.3s ease;
+      z-index: 2;
+    }
+
+    // Hiệu ứng khi focus
+    input:focus,
+    textarea:focus,
+    select:focus {
+      & ~ .underline {
+        transform: scaleX(1);
+      }
+      & ~ label {
+        top: -18px;
+        font-size: 12px;
+        color: var(--primary-color);
+      }
+    }
+
+    // Hiệu ứng khi có giá trị
+    input.has-value,
+    textarea.has-value,
+    select.has-value {
+      & ~ label {
+        top: -18px;
+        font-size: 12px;
+      }
+    }
+
+    // Trường hợp đặc biệt cho input date
+    input[type="date"] {
+      & ~ label {
+        top: -18px;
+        font-size: 12px;
+        color: var(--text-muted-color);
+      }
+      &:focus ~ label {
+        color: var(--primary-color);
+      }
+    }
+
+    input.has-value ~ label,
+    input:focus ~ label {
+      top: -18px;
+      font-size: 12px;
+      color: var(--primary-color);
+    }
+  }
+
+  // Class cho các trường chiếm toàn bộ chiều rộng
+  .full-width-container {
+    position: relative;
+    grid-column: 1 / -1;
+    @extend .input-container;
+
+    .link-list {
+      position: absolute;
+      top: 8px;
+      left: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      z-index: 3;
+      min-height: 24px;
+      span {
+        background: var(--primary-color-lighter);
+        color: var(--text-color);
+        border-radius: 16px;
+        padding: 4px 12px 4px 8px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        button {
+          background: none;
+          border: none;
+          color: var(--primary-color);
+          margin-left: 6px;
+          font-size: 16px;
+          cursor: pointer;
+          border-radius: 50%;
+          width: 22px;
+          height: 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: background 0.2s;
+          &:hover {
+            background: #e0e7ef;
+          }
+        }
+      }
+    }
+    input[type="text"]#links {
+      z-index: 1;
+      border-bottom: 1.5px solid var(--border-color);
+      font-size: 15px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-bottom: 0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      outline: none;
+      color: var(--text-color);
+      padding-top: 32px;
+      &::placeholder {
+        visibility: hidden;
+      }
+      &:focus {
+        border-color: var(--primary-color);
+        background: var(--surface-color);
+        box-shadow: 0 2px 8px rgba(51, 78, 172, 0.08);
+      }
+    }
+  }
+
+  .primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    width: 100%;
+    border-radius: var(--border-color);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+
+    &:hover {
+      background-color: var(--accent-color);
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+
+  button[type="submit"] {
+    padding: 10px;
+    background-color: #334eac;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    max-width: 300px;
+    font-size: 16px;
+    cursor: pointer;
+    &:hover {
+      transition: all 0.3s ease;
+      transform: translatey(-2px);
+    }
+    &:active {
+      transition: all 0.3s ease;
+      transform: translatey(0px);
+    }
+  }
+
+  .login-slider {
+    background: var(--login-slider-bg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+
+    .slider-content {
+      text-align: center;
+      width: 100%;
+      height: 100%;
+
+      .slider-image {
+        margin-top: 6%;
+        height: 50%;
+        max-width: 100%;
+        margin-bottom: 20px;
+        border-radius: 12px;
+      }
+
+      .title {
+        color: var(--title-text);
+      }
+
+      .description {
+        font-size: 18px;
+        color: var(--text-color);
+      }
+
+      .dots {
+        margin-top: 10px;
+        span {
+          display: inline-block;
+          width: 10px;
+          height: 10px;
+          margin: 0 4px;
+          border-radius: 50%;
+          background-color: #ccc;
+          &.active {
+            background-color: #334eac;
+          }
+        }
+      }
+    }
+  }
+}

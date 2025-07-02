@@ -187,6 +187,7 @@
         button[type="submit"] {
           padding: 10px;
           background-color: #334eac;
+          box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.5);
           color: white;
           border: none;
           border-radius: 6px;
@@ -271,13 +272,22 @@
       }
 
       .signup-link {
-        margin-top: 20px;
         text-align: center;
-
-        a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        p {
           color: var(--title-text);
-          text-decoration: underline;
           font-weight: 500;
+          cursor: pointer;
+          &:hover {
+            text-decoration: underline;
+          }
+
+          &:active {
+            transform: scale(0.9);
+          }
         }
       }
     }

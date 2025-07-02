@@ -14,10 +14,26 @@ export interface SidebarItem {
   isExpanded?: boolean;
   disabled?: boolean;
 }
+
 export interface LoginData {
   email?: string;
   username?: string;
   password: string;
+}
+
+export interface ICreateUserRequest {
+  username: string;
+  email: string;
+  password: string;
+
+  firstName?: string;
+  lastName?: string;
+  dob?: string; // ISO format: "2004-05-31T00:00:00Z"
+  bio?: string;
+  displayName?: string;
+  education?: number;
+  links?: string[];
+  city?: string;
 }
 
 export type DecodedJwtPayload = {

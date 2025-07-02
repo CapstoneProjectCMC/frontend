@@ -70,6 +70,12 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
       basicSetup,
       language ? language() : python(),
       EditorView.lineWrapping,
+      EditorView.updateListener.of((update) => {
+        if (update.docChanged) {
+          const code = update.state.doc.toString();
+          console.log('Code changed:', code);
+        }
+      }),
     ];
 
     // Thêm theme dựa trên lựa chọn
@@ -108,6 +114,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     if (this.editor) {
       this.editor.destroy();
       this.initializeEditor();
+      console.log(this.editor);
     }
   }
 

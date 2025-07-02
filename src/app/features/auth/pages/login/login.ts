@@ -72,6 +72,10 @@ export class Login {
     }, 4000);
   }
 
+  linkToRegister() {
+    this.router.navigate(['/auth/identity/register']);
+  }
+
   onLogin() {
     if (!this.dataLogin.accountName || !this.dataLogin.password) {
       sendNotification(
@@ -93,7 +97,7 @@ export class Login {
       data.username = this.dataLogin.accountName;
     }
 
-    this.authService.loginByUsername(data).subscribe({
+    this.authService.login(data).subscribe({
       next: (res) => {
         this.loginResponse = res.result;
         this.isLoading = false;
