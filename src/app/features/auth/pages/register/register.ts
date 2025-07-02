@@ -80,13 +80,22 @@ export class Register {
     this.authService.register(this.formData).subscribe({
       next: (res) => {
         this.isLoading = false;
-        sendNotification(
-          this.store,
-          'Thành công',
-          'Tài khoản đã được tạo!',
-          'success'
-        );
-        this.router.navigate(['/login']);
+        if (res.code === 20000) {
+          sendNotification(
+            this.store,
+            'Thành công',
+            'Tài khoản đã được tạo!',
+            'success'
+          );
+          this.router.navigate(['/auth/identity/login']);
+        } else {
+          sendNotification(
+            this.store,
+            'Thất bại',
+            'Có lỗi xảy ra khi tạo tài khoản',
+            'error'
+          );
+        }
       },
       error: (err) => {
         this.isLoading = false;
