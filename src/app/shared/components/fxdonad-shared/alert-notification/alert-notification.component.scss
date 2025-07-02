@@ -5,12 +5,12 @@
   padding: 16px;
   margin: 8px;
   border-radius: 8px;
-  background: #888787;
+  background: var(--surface-color);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: all 0.3s ease;
-  color: white;
-  border: 1px white solid;
+  color: var(--text-color);
+  border: 1px var(--border-color) solid;
 }
 
 .notification-container:hover {
@@ -56,7 +56,7 @@
   display: block;
   margin-top: 8px;
   font-size: 12px;
-  color: #f8f8f8;
+  color: var(--text-gray-color);
 }
 
 .close-btn {
@@ -67,7 +67,7 @@
   opacity: 0.6;
   transition: opacity 0.2s;
   i {
-    color: white;
+    color: var(--text-color);
   }
 }
 
@@ -83,6 +83,7 @@
 .success .notification-icon {
   background: rgba(76, 175, 80, 0.1);
   color: #4caf50;
+  border: none;
 }
 
 .warning {
@@ -92,6 +93,7 @@
 .warning .notification-icon {
   background: rgba(255, 152, 0, 0.1);
   color: #ff9800;
+  border: none;
 }
 
 .error {
@@ -101,6 +103,7 @@
 .error .notification-icon {
   background: rgba(244, 67, 54, 0.1);
   color: #f44336;
+  border: none;
 }
 
 .info {
@@ -110,11 +113,12 @@
 .info .notification-icon {
   background: rgba(33, 150, 243, 0.1);
   color: #2196f3;
+  border: none;
 }
 
 .progress-bar {
   height: 4px;
-  background: white;
+  background: var(--progress-color);
   position: absolute;
   bottom: 0;
   left: 0;
