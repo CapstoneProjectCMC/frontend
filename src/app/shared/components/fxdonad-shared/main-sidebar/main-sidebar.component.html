@@ -1,11 +1,4 @@
 <div class="sidebar" [class.collapsed]="isCollapsed">
-  <div class="sidebar-header">
-    <h3 *ngIf="!isCollapsed">Menu</h3>
-    <div class="toggle-btn" (click)="isCollapsed = !isCollapsed">
-      <i class="fas fa-bars"></i>
-    </div>
-  </div>
-
   <nav class="sidebar-nav">
     <ul class="sidebar-menu">
       <li
@@ -66,4 +59,10 @@
       </li>
     </ul>
   </nav>
+  <div class="sidebar-header">
+    <!-- <h3 *ngIf="!isCollapsed">Menu</h3> -->
+    <div class="toggle-btn" (click)="isCollapsed = !isCollapsed">
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
 </div>
