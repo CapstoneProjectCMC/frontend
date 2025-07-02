@@ -10,6 +10,7 @@ import { removeNotification } from './shared/store/notification/notification.act
 import { CommonModule } from '@angular/common';
 import { Tooltip } from './shared/components/fxdonad-shared/tooltip/tooltip';
 import { ToggleSwitch } from './shared/components/fxdonad-shared/toggle-switch/toggle-switch';
+import { BreadcrumbComponent } from './shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 
 @Component({
   selector: 'app-root',
@@ -19,6 +20,7 @@ import { ToggleSwitch } from './shared/components/fxdonad-shared/toggle-switch/t
     AlertNotificationComponent,
     Tooltip,
     ToggleSwitch,
+    BreadcrumbComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

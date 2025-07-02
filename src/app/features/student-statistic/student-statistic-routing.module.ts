@@ -4,8 +4,14 @@ import { StudentStatisticComponent } from './test-statistic/student-statistic.co
 
 const routes: Routes = [
   {
+    path: '',
+    component: StudentStatisticComponent,
+    data: { skipBreadcrumb: true },
+  },
+  {
     path: 'test',
     component: StudentStatisticComponent,
+    data: { skipBreadcrumb: true },
   },
 ];
 @NgModule({

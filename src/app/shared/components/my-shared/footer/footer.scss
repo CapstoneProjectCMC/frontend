@@ -1,0 +1,138 @@
+.footer {
+  width: 100%;
+  height: 327px;
+  background: var(--background-color);
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-top {
+  height: 70px;
+  background: var(--primary-color);
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    &-icon {
+      height: 50px;
+    }
+
+    &-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      &-name {
+        color: var(--primary-color-lightest);
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+        padding-bottom: 0px;
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+      &-description {
+        font-size: 8px;
+        color: var(--primary-color-lightest);
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+}
+
+.footer-content {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 32px 48px 0 48px;
+  gap: 32px;
+}
+.footer-description {
+  position: relative;
+  top: -50px;
+  width: 20%;
+}
+.footer-col {
+  display: flex;
+  flex-direction: row;
+  width: 70%;
+  gap: 10px;
+  margin-left: 0px;
+  &-item {
+    flex: 1;
+    width: 200px;
+  }
+}
+
+.footer-name {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--primary-color);
+}
+.footer-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text-color);
+}
+
+.footer-desc {
+  font-size: 14px;
+  color: var(--text-color);
+  margin-bottom: 16px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  &-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+.footer-social img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  transition: transform 0.2s;
+}
+.footer-social img:hover {
+  transform: scale(1.1);
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.footer-col ul li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-col ul li svg {
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+.footer-col ul li span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (max-width: 900px) {
+  .footer-content {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+  }
+  .footer-col {
+    min-width: 0;
+  }
+}

@@ -2,7 +2,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LandingRoutingModule } from './landing-routing.module'; // <-- Import ở đây
-import { LandingHeader } from './components/header/header';
+import { HeaderComponent } from '../../shared/components/my-shared/header/header';
 
 @NgModule({
   declarations: [],

@@ -8,16 +8,19 @@ export const routes: Routes = [
   {
     path: 'main',
     component: MainLayout, // Layout cho các trang không có header, sidebar, ...
+    data: { breadcrumb: 'Home' },
     children: [
       {
         path: 'auth',
         loadChildren: () =>
           import('./features/auth/auth.module').then((m) => m.AuthModule),
+        data: { skipBreadcrumb: true },
       },
       {
         path: 'post',
         loadChildren: () =>
           import('./features/post/post.module').then((m) => m.PostModule),
+        data: { breadcrumb: 'Bài viết' },
       },
 
       {
@@ -26,6 +29,15 @@ export const routes: Routes = [
           import('./features/student-statistic/student-statistic.module').then(
             (m) => m.StudentStatisticModule
           ),
+        data: { breadcrumb: 'Thống kê' },
+      },
+      {
+        path: 'landing',
+        loadChildren: () =>
+          import('./features/landing/landing.module').then(
+            (m) => m.LandingModule
+          ),
+        data: { breadcrumb: 'landing' },
       },
       // Thêm các route auth khác nếu cần...
     ],
@@ -33,6 +45,7 @@ export const routes: Routes = [
   {
     path: 'second',
     component: SecondLayout, // Layout cho các trang không có header, sidebar, ...
+    data: { skipBreadcrumb: true },
     children: [
       {
         path: 'example-using-component-slide',
@@ -40,6 +53,7 @@ export const routes: Routes = [
           import('./features/example-slide/example-slide.module').then(
             (m) => m.ExampleSlideModule
           ),
+        data: { skipBreadcrumb: true },
       },
       {
         path: 'dashboard',
@@ -47,15 +61,9 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard.module').then(
             (m) => m.AdminModule
           ),
+        data: { skipBreadcrumb: true },
       },
       // Thêm các route auth khác nếu cần...
-      {
-        path: 'landing',
-        loadChildren: () =>
-          import('./features/landing/landing.module').then(
-            (m) => m.LandingModule
-          ),
-      },
     ],
   },
 
@@ -63,6 +71,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
+    data: { skipBreadcrumb: true },
     children: [
       {
         path: 'identity',
