@@ -4,7 +4,9 @@
   display: flex;
   flex-direction: column;
   width: 280px;
-  height: 100vh;
+  min-width: 280px;
+  max-width: 280px;
+  height: 80vh;
   // background: linear-gradient(
   //   135deg,
   //   var(--primary-color) 0%,
@@ -12,29 +14,43 @@
   // );
   background-color: transparent;
   color: var(--text-color);
-  transition: all 0.3s ease;
-  border: 1;
-  overflow-y: auto;
+  border-right: 1px solid var(--text-color);
   position: relative;
+  overflow: hidden;
+  transition: width 0.3s, min-width 0.3s, max-width 0.3s;
 
   &.collapsed {
     width: 70px;
+    min-width: 70px;
+    max-width: 70px;
 
-    .sidebar-header h3 {
-      display: none;
+    .sidebar-header {
+      padding: 20px 8px;
+      justify-content: center;
     }
-
     .sidebar-label,
     .submenu-label {
       display: none;
     }
-
     .expand-icon {
       display: none;
     }
-
     .submenu {
       display: none;
+    }
+    .sidebar-link {
+      padding: 15px 8px;
+      justify-content: center;
+    }
+    .sidebar-icon {
+      margin-right: 0;
+    }
+    .submenu-link {
+      padding: 12px 8px 12px 8px;
+      justify-content: center;
+    }
+    .submenu-icon {
+      margin-right: 0;
     }
   }
 }
@@ -46,6 +62,10 @@
   justify-content: flex-end;
   align-items: center;
   margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  background: var(--background-color);
+  z-index: 2;
 
   h3 {
     margin: 0;
@@ -60,7 +80,7 @@
     transition: background-color 0.3s ease;
 
     &:hover {
-      background-color: rgba(255, 255, 255, 0.1);
+      background-color: rgba(223, 8, 8, 0.1);
     }
 
     i {
@@ -71,7 +91,12 @@
 
 .sidebar-nav {
   flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
   padding: 20px 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--text-color-rgb), 0.5) transparent;
 }
 
 .sidebar-menu {
@@ -88,21 +113,28 @@
 .sidebar-link {
   display: flex;
   align-items: center;
-  padding: 15px 20px;
+  padding: 5px 5px;
+  margin: 10px;
   color: var(--text-color);
   text-decoration: none;
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--primary-color-lighter);
+    color: var(--primary-color);
+    border-radius: 8px;
     transform: translateX(5px);
   }
 
   &.active {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-left: 4px solid #fff;
+    background-color: var(--primary-color-lighter);
+    color: var(--primary-color);
+    border-radius: 8px;
   }
 }
 
@@ -117,6 +149,9 @@
   flex: 1;
   font-weight: 500;
   font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .expand-icon {
@@ -156,17 +191,23 @@
   text-decoration: none;
   transition: all 0.3s ease;
   font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--primary-color-lighter);
     color: var(--text-color);
+    border-radius: 8px;
     transform: translateX(5px);
   }
 
   &.active {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: var(--text-color);
+    color: var(--primary-color);
     border-left: 4px solid rgba(255, 255, 255, 0.5);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 2px;
   }
 }
 
@@ -180,6 +221,9 @@
 .submenu-label {
   flex: 1;
   font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // Responsive design
@@ -211,4 +255,23 @@
 
 .sidebar::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.5);
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(var(--text-color-rgb), 0.5);
+  border-radius: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
 }
