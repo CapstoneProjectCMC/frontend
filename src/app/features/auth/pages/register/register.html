@@ -1,1 +1,235 @@
-<p>register works!</p>
+<div class="register-main-container">
+  <div class="registration-form">
+    <h1 class="title">Tạo tài khoản CodeCampus</h1>
+    <p class="subtitle">Bắt đầu hành trình lập trình của bạn ngay hôm nay!</p>
+
+    <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="form-submit">
+      <div class="form-grid">
+        <!-- Required Fields -->
+        <div class="input-container">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            [(ngModel)]="formData.username"
+            required
+            (focus)="focused['username'] = true"
+            (blur)="focused['username'] = false"
+            [ngClass]="{ 'has-value': formData.username }"
+          />
+          <label for="username">Tên đăng nhập *</label>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            [(ngModel)]="formData.email"
+            required
+            email
+            (focus)="focused['email'] = true"
+            (blur)="focused['email'] = false"
+            [ngClass]="{ 'has-value': formData.email }"
+          />
+          <label for="email">Email *</label>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            [(ngModel)]="formData.password"
+            required
+            minlength="6"
+            (focus)="focused['password'] = true"
+            (blur)="focused['password'] = false"
+            [ngClass]="{ 'has-value': formData.password }"
+          />
+          <label for="password">Mật khẩu *</label>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
+          <input
+            type="password"
+            id="repassword"
+            name="repassword"
+            [(ngModel)]="repassword"
+            required
+            (focus)="focused['repassword'] = true"
+            (blur)="focused['repassword'] = false"
+            [ngClass]="{ 'has-value': repassword }"
+          />
+          <label for="repassword">Nhập lại mật khẩu *</label>
+          <div class="underline"></div>
+        </div>
+
+        <!-- Optional Fields -->
+        <div class="input-container">
+          <input
+            type="text"
+            id="lastName"
+            name="lastName"
+            [(ngModel)]="formData.lastName"
+            (focus)="focused['lastName'] = true"
+            (blur)="focused['lastName'] = false"
+            [ngClass]="{ 'has-value': formData.lastName }"
+          />
+          <label for="lastName">Họ</label>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            id="firstName"
+            name="firstName"
+            [(ngModel)]="formData.firstName"
+            (focus)="focused['firstName'] = true"
+            (blur)="focused['firstName'] = false"
+            [ngClass]="{ 'has-value': formData.firstName }"
+          />
+          <label for="firstName">Tên</label>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            id="displayName"
+            name="displayName"
+            [(ngModel)]="formData.displayName"
+            (focus)="focused['displayName'] = true"
+            (blur)="focused['displayName'] = false"
+            [ngClass]="{ 'has-value': formData.displayName }"
+          />
+          <label for="displayName">Tên hiển thị</label>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
+          <input
+            type="date"
+            id="dob"
+            name="dob"
+            [(ngModel)]="formData.dob"
+            (focus)="focused['dob'] = true"
+            (blur)="focused['dob'] = false"
+            [ngClass]="{ 'has-value': formData.dob }"
+          />
+          <label for="dob">Ngày sinh</label>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
+          <select
+            id="education"
+            name="education"
+            [(ngModel)]="formData.education"
+            (focus)="focused['education'] = true"
+            (blur)="focused['education'] = false"
+            [ngClass]="{ 'has-value': formData.education }"
+          >
+            <option [ngValue]="undefined" disabled selected></option>
+            <option
+              *ngFor="let option of educationOptions"
+              [value]="option.value"
+            >
+              {{ option.label }}
+            </option>
+          </select>
+          <label for="education">Trình độ học vấn</label>
+          <div class="underline"></div>
+          <div class="select-arrow">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              ></path>
+            </svg>
+          </div>
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            id="city"
+            name="city"
+            [(ngModel)]="formData.city"
+            (focus)="focused['city'] = true"
+            (blur)="focused['city'] = false"
+            [ngClass]="{ 'has-value': formData.city }"
+          />
+          <label for="city">Thành phố</label>
+          <div class="underline"></div>
+        </div>
+        <div class="full-width-container">
+          <input
+            type="text"
+            id="links"
+            name="links"
+            #linkInput
+            placeholder="Thêm liên kết (Enter để thêm)"
+            [(ngModel)]="linkInputValue"
+            [ngClass]="{ 'has-value': linkInputValue }"
+            (keydown.enter)="addLink($event, linkInput)"
+            (focus)="focused['links'] = true"
+            (blur)="focused['links'] = false"
+          />
+          <label for="links" *ngIf="!formData.links?.length"
+            >Liên kết (VD: LinkedIn, Github...)</label
+          >
+          <div class="link-list" *ngIf="formData.links?.length">
+            <span *ngFor="let link of formData.links; let i = index">
+              {{ link }}
+              <button type="button" (click)="removeLink(i)">×</button>
+            </span>
+          </div>
+          <div class="underline"></div>
+        </div>
+        <div class="full-width-container">
+          <textarea
+            id="bio"
+            name="bio"
+            rows="2"
+            [(ngModel)]="formData.bio"
+            (focus)="focused['bio'] = true"
+            (blur)="focused['bio'] = false"
+            [ngClass]="{ 'has-value': formData.bio }"
+          ></textarea>
+          <label for="bio">Giới thiệu bản thân</label>
+          <div class="underline"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="primary-btn">Đăng ký</button>
+    </form>
+
+    <div class="login-nav">
+      Đã có tài khoản?
+      <div class="router-login" (click)="backToLogin()">Đăng nhập</div>
+    </div>
+  </div>
+
+  <!-- Phần trái: Slider -->
+  <div class="login-slider">
+    <div class="slider-content">
+      <img
+        [src]="slides[currentSlide].img"
+        alt="Slide image"
+        class="slider-image"
+      />
+      <h2 class="title">{{ slides[currentSlide].title }}</h2>
+      <p class="description">{{ slides[currentSlide].desc }}</p>
+      <div class="dots">
+        <span
+          *ngFor="let slide of slides; let i = index"
+          [class.active]="i === currentSlide"
+        ></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loading-overlay
+  [visible]="isLoading"
+  [message]="'Đang đăng nhập, xin chờ...'"
+></app-loading-overlay>

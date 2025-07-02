@@ -36,6 +36,7 @@ import { DropdownOption } from '../../../../core/models/data-handle';
 export class DropdownButtonComponent
   implements AfterViewInit, OnInit, ControlValueAccessor
 {
+  @Input() typeSubmit: string = 'submit';
   @Input() title_label: string = '';
   @Input() label: string = 'Select Option';
   @Input() options: DropdownOption[] = [];

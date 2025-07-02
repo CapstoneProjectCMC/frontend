@@ -11,6 +11,7 @@ export const API_CONFIG = {
     GET: {},
     POST: {
       LOGIN: '/identity/auth/login',
+      REGISTER: '/identity/auth/register',
       OUTBOUND_GOOGLE_LOGIN: (code: string) =>
         `/identity/auth/login-google?code=${code}`,
     },
