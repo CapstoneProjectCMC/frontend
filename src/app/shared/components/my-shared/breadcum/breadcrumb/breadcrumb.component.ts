@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { NgForOf, NgIf } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
+import { NgForOf, NgIf } from '@angular/common';
+import { Subscription } from 'rxjs';
+
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
@@ -9,12 +11,28 @@ import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss'],
 })
-export class BreadcrumbComponent {
-  constructor(private breadcrumbService: BreadcrumbService) {
-    console.log('BreadcrumbComponent đã được khởi tạo');
+export class BreadcrumbComponent implements OnInit, OnDestroy {
+  breadcrumbs: Breadcrumb[] = [];
+  private sub!: Subscription;
+
+  constructor(
+    private breadcrumbService: BreadcrumbService,
+    private router: Router
+  ) {}
+
+  ngOnInit() {
+    // Lấy breadcrumbs lần đầu
+    this.breadcrumbs = this.breadcrumbService.breadcrumbs;
+
+    // Cập nhật breadcrumbs mỗi khi route thay đổi
+    this.sub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.breadcrumbs = this.breadcrumbService.breadcrumbs;
+      }
+    });
   }
-  get breadcrumbs(): Breadcrumb[] {
-    console.log('Breadcrumbs getter:', this.breadcrumbService.breadcrumbs);
-    return this.breadcrumbService.breadcrumbs;
+
+  ngOnDestroy() {
+    if (this.sub) this.sub.unsubscribe();
   }
 }
