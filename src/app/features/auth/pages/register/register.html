@@ -167,15 +167,15 @@
             id="links"
             name="links"
             #linkInput
-            placeholder="Thêm liên kết (Enter để thêm)"
             [(ngModel)]="linkInputValue"
             [ngClass]="{ 'has-value': linkInputValue }"
             (keydown.enter)="addLink($event, linkInput)"
             (focus)="focused['links'] = true"
             (blur)="focused['links'] = false"
+            class="input-link"
           />
           <label for="links" *ngIf="!formData.links?.length"
-            >Liên kết (VD: LinkedIn, Github...)</label
+            >Liên kết (VD: LinkedIn, Github... Enter để thêm)</label
           >
           <div class="link-list" *ngIf="formData.links?.length">
             <span *ngFor="let link of formData.links; let i = index">
@@ -206,6 +206,8 @@
     <div class="login-nav">
       Đã có tài khoản?
       <div class="router-login" (click)="backToLogin()">Đăng nhập</div>
+      |
+      <div class="router-login" (click)="onOtpClose()">Nhập OTP</div>
     </div>
   </div>
 
@@ -229,7 +231,17 @@
   </div>
 </div>
 
+<app-otp-modal
+  [show]="openOTP"
+  [email]="formData.email"
+  (resend)="onOtpResend()"
+  (close)="onOtpClose()"
+  (verify)="onOtpVerify($event)"
+  (emailChange)="formData.email= $event"
+  [loading]="resendingOTP"
+></app-otp-modal>
+
 <app-loading-overlay
   [visible]="isLoading"
-  [message]="'Đang đăng nhập, xin chờ...'"
+  [message]="'Đang xử lý, xin chờ...'"
 ></app-loading-overlay>

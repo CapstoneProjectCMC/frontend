@@ -111,12 +111,6 @@ export class Login {
       },
       error: (err) => {
         console.log(err);
-        sendNotification(
-          this.store,
-          'Thất bại!',
-          'Đăng nhập thật bại, vui lòng thử lại!',
-          'error'
-        );
         this.isLoading = false;
       },
     });
