@@ -28,6 +28,7 @@ export class Register {
   currentSlide = 0;
   showPassword = false;
   isLoading = false;
+  resendingOTP = false;
   repassword = '';
   linkInputValue = '';
   openOTP = false;
@@ -121,15 +122,22 @@ export class Register {
   onOtpResend() {
     // TODO: Gửi lại mã OTP cho email
     // Ví dụ: gọi API gửi lại OTP
-    this.authService.sendOtp(this.formData.email).subscribe((res) => {
-      if (res.code === 20000) {
-        sendNotification(
-          this.store,
-          'OTP',
-          'Đã gửi lại mã OTP đến email của bạn!',
-          'info'
-        );
-      }
+    this.resendingOTP = true;
+    this.authService.sendOtp(this.formData.email).subscribe({
+      next: (res) => {
+        if (res.code === 20000) {
+          sendNotification(
+            this.store,
+            'OTP',
+            'Đã gửi lại mã OTP đến email của bạn!',
+            'info'
+          );
+        }
+        this.resendingOTP = false;
+      },
+      error: () => {
+        this.resendingOTP = false;
+      },
     });
   }
 
