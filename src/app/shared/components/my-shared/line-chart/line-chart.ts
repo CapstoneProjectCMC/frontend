@@ -63,6 +63,7 @@ export class LineChartComponent implements OnChanges, OnInit {
     chart: {
       type: 'bar',
       height: 350,
+      width: 1000,
       stacked: true,
       toolbar: { show: true },
       zoom: { enabled: true },
@@ -153,6 +154,7 @@ export class LineChartComponent implements OnChanges, OnInit {
       chart: {
         type: 'bar',
         height: this.height,
+        width: 1000,
         stacked: true,
         toolbar: {
           show: true,
@@ -171,7 +173,15 @@ export class LineChartComponent implements OnChanges, OnInit {
       xaxis: {
         type: 'category',
         categories: this.categories,
-        labels: { rotate: 0, style: { fontSize: '12px' } },
+        labels: {
+          show: true,
+          rotate: 0,
+          style: { fontSize: '12px' },
+          trim: false,
+          hideOverlappingLabels: false,
+          showDuplicates: true,
+          maxHeight: 120,
+        },
       },
       legend: {
         show: true,

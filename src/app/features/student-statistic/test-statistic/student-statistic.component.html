@@ -2,8 +2,8 @@
 <!-- Bắt buộc phải truyền value và labels -->
 <app-breadcrumb></app-breadcrumb>
 <fx-pie-chart
-  [value]="[50]"
-  [labels]="['Hạng 4']"
+  [value]="[20000, 18000, 14000, 8000, 1000]"
+  [labels]="['JavaScript', 'Angular', 'React', 'Vue', 'Khác']"
   [chartTitle]="'Tỷ lệ hoàn thành bài của học sinh trong tổ chức'"
 >
 </fx-pie-chart>
@@ -44,17 +44,17 @@
   ]"
   [series]="[
     {
-      name: 'số lượng bài thi',
+      name: 'Số lượng bài viết đang hiển thị',
       data: [
-        5, 12, 8, 15, 20, 18, 17, 16, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3,
-        2, 1, 0, 2, 4, 6, 8, 10, 12, 14
+        10, 12, 8, 15, 20, 18, 17, 16, 14, 13, 12, 11, 10, 9, 8, 7, 6, 15, 14,
+        7, 2, 1, 20, 12, 15, 6, 8, 10, 12, 14
       ]
     },
     {
-      name: 'Số lượng bài tập',
+      name: 'Số lượng bài viết bị báo cáo',
       data: [
-        10, 12, 8, 15, 20, 18, 17, 16, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3,
-        2, 1, 0, 2, 4, 6, 8, 10, 12, 14
+        5, 2, 8, 5, 1, 1, 1, 16, 14, 1, 1, 0, 1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
+        2, 4, 6, 1, 1, 2, 4
       ]
     }
   ]"
