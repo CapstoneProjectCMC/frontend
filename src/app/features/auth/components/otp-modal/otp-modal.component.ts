@@ -14,6 +14,7 @@ import { faTimes, faRedo, faCheck } from '@fortawesome/free-solid-svg-icons';
 export class OtpModalComponent {
   @Input() email: string = '';
   @Input() show: boolean = false;
+  @Input() loading: boolean = false;
   @Output() close = new EventEmitter<void>();
   @Output() resend = new EventEmitter<void>();
   @Output() verify = new EventEmitter<string>();
