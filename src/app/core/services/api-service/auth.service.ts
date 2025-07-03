@@ -30,4 +30,24 @@ export class AuthService {
       true
     );
   }
+
+  verifyOtp(email: string, otpCode: string) {
+    const data = {
+      email,
+      otpCode,
+    };
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.VERIFYOTP,
+      data,
+      true
+    );
+  }
+
+  sendOtp(email: string) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.SENDOTP,
+      { email },
+      true
+    );
+  }
 }

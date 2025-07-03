@@ -17,6 +17,7 @@ export class OtpModalComponent {
   @Output() close = new EventEmitter<void>();
   @Output() resend = new EventEmitter<void>();
   @Output() verify = new EventEmitter<string>();
+  @Output() emailChange = new EventEmitter<string>();
 
   otpCode: string = '';
 

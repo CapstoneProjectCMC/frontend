@@ -121,12 +121,16 @@ export class Register {
   onOtpResend() {
     // TODO: Gửi lại mã OTP cho email
     // Ví dụ: gọi API gửi lại OTP
-    sendNotification(
-      this.store,
-      'OTP',
-      'Đã gửi lại mã OTP đến email của bạn!',
-      'info'
-    );
+    this.authService.sendOtp(this.formData.email).subscribe((res) => {
+      if (res.code === 20000) {
+        sendNotification(
+          this.store,
+          'OTP',
+          'Đã gửi lại mã OTP đến email của bạn!',
+          'info'
+        );
+      }
+    });
   }
 
   onOtpClose() {
@@ -134,15 +138,20 @@ export class Register {
   }
 
   onOtpVerify(otpCode: string) {
-    // TODO: Xác thực mã OTP
-    // Ví dụ: gọi API xác thực OTP
-    sendNotification(
-      this.store,
-      'OTP',
-      `Đã xác thực OTP: ${otpCode}`,
-      'success'
-    );
-    this.router.navigate(['auth/identity/login']);
+    this.authService
+      .verifyOtp(this.formData.email, otpCode)
+      .subscribe((res) => {
+        if (res.code === 20000) {
+          sendNotification(
+            this.store,
+            'OTP',
+            `Đã xác thực OTP: ${otpCode}`,
+            'success'
+          );
+          this.router.navigate(['auth/identity/login']);
+        }
+      });
+
     this.openOTP = false;
   }
 }

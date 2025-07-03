@@ -237,6 +237,7 @@
   (resend)="onOtpResend()"
   (close)="onOtpClose()"
   (verify)="onOtpVerify($event)"
+  (emailChange)="formData.email= $event"
 ></app-otp-modal>
 
 <app-loading-overlay
