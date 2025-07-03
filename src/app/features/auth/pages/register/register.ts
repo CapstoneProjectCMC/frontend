@@ -95,23 +95,10 @@ export class Register {
             'success'
           );
           this.router.navigate(['/auth/identity/login']);
-        } else {
-          sendNotification(
-            this.store,
-            'Thất bại',
-            'Có lỗi xảy ra khi tạo tài khoản',
-            'error'
-          );
         }
       },
       error: (err) => {
         this.isLoading = false;
-        sendNotification(
-          this.store,
-          'Lỗi',
-          err.error.message || 'Đăng ký thất bại',
-          'error'
-        );
       },
     });
   }
@@ -155,6 +142,7 @@ export class Register {
       `Đã xác thực OTP: ${otpCode}`,
       'success'
     );
+    this.router.navigate(['auth/identity/login']);
     this.openOTP = false;
   }
 }

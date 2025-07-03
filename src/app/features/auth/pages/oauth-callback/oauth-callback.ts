@@ -34,7 +34,12 @@ export class OauthCallbackComponent {
             // Xử lý thành công, chuyển hướng
             this.isLoading = false;
             if (res.code === 20000) {
-              sendNotification(this.store, 'Thành công', res.status, 'success');
+              sendNotification(
+                this.store,
+                res.status,
+                'Đăng nhập thành công',
+                'success'
+              );
               this.router.navigate(['/main']);
             } else {
               this.router.navigate(['/auth/identity/login']);
@@ -43,12 +48,6 @@ export class OauthCallbackComponent {
           error: (err) => {
             // Xử lý lỗi, chuyển hướng về login
             this.isLoading = false;
-            sendNotification(
-              this.store,
-              'Thất bại',
-              'Có sự cố xảy ra khi đăng nhập',
-              'error'
-            );
             this.router.navigate(['/auth/identity/login']);
           },
         });
