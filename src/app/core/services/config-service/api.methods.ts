@@ -20,13 +20,14 @@ export class ApiMethod {
   // Hàm GET - Cho phép chọn API_URL động
   get<T>(
     endpoint: string,
+    noHeader?: boolean,
     apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
   ): Observable<T> {
     const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
     return this.http.get<T>(
       url,
       // { withCredentials: true }
-      { headers: this.getHeaders() }
+      noHeader ? undefined : { headers: this.getHeaders() }
     );
   }
 
@@ -34,6 +35,7 @@ export class ApiMethod {
   post<T>(
     endpoint: string,
     body: any,
+    noHeader?: boolean,
     apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
   ): Observable<T> {
     const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
@@ -41,7 +43,7 @@ export class ApiMethod {
       url,
       body,
       // { withCredentials: true }
-      { headers: this.getHeaders() }
+      noHeader ? undefined : { headers: this.getHeaders() }
     );
   }
 
@@ -49,6 +51,7 @@ export class ApiMethod {
   put<T>(
     endpoint: string,
     body: any,
+    noHeader?: boolean,
     apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
   ): Observable<T> {
     const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
@@ -56,7 +59,7 @@ export class ApiMethod {
       url,
       body,
       // { withCredentials: true }
-      { headers: this.getHeaders() }
+      noHeader ? undefined : { headers: this.getHeaders() }
     );
   }
 
@@ -64,32 +67,39 @@ export class ApiMethod {
   patch<T>(
     endpoint: string,
     body: any,
+    noHeader?: boolean,
     apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
   ): Observable<T> {
     const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
-    return this.http.patch<T>(url, body, { headers: this.getHeaders() });
+    return this.http.patch<T>(
+      url,
+      body,
+      noHeader ? undefined : { headers: this.getHeaders() }
+    );
   }
 
   // Hàm DELETE
   delete<T>(
     endpoint: string,
+    noHeader?: boolean,
     apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
   ): Observable<T> {
     const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
     return this.http.delete<T>(
       url,
       // { withCredentials: true }
-      { headers: this.getHeaders() }
+      noHeader ? undefined : { headers: this.getHeaders() }
     );
   }
 
   getBlob(
     endpoint: string,
+    noHeader?: boolean,
     apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
   ): Observable<Blob> {
     const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
     return this.http.get(url, {
-      headers: this.getHeaders(),
+      headers: noHeader ? undefined : this.getHeaders(),
       responseType: 'blob',
       // withCredentials: true,
     });
@@ -100,6 +110,7 @@ export class ApiMethod {
     endpoint: string,
     file: File | { [fieldName: string]: File | File[] },
     body?: Record<string, any>,
+    noHeader?: boolean,
     apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
   ): Observable<T> {
     // Thêm <T> vào Observable
@@ -129,7 +140,7 @@ export class ApiMethod {
       Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
     });
 
-    return this.http.post<T>(url, formData, { headers }); // Thêm <T> vào http.post
+    return this.http.post<T>(url, formData, noHeader ? undefined : { headers }); // Thêm <T> vào http.post
   }
 
   //Method Patch

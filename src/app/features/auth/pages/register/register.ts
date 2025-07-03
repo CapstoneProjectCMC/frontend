@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { slides } from '../../../../core/constants/value.constant';
 import { sendNotification } from '../../../../shared/utils/notification';
@@ -9,13 +8,20 @@ import { Router } from '@angular/router';
 import { ICreateUserRequest } from '../../../../core/models/data-handle';
 import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-shared/loading-overlay/loading-overlay.component';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
+import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoadingOverlayComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    LoadingOverlayComponent,
+    OtpModalComponent,
+  ],
   templateUrl: './register.html',
-  styleUrl: './register.scss',
+  styleUrls: ['./register.scss'],
 })
 export class Register {
   slides = slides;
@@ -24,6 +30,7 @@ export class Register {
   isLoading = false;
   repassword = '';
   linkInputValue = '';
+  openOTP = false;
 
   // ✅ Biến để xử lý label nổi (focus state)
   focused: { [key: string]: boolean } = {};
@@ -88,23 +95,10 @@ export class Register {
             'success'
           );
           this.router.navigate(['/auth/identity/login']);
-        } else {
-          sendNotification(
-            this.store,
-            'Thất bại',
-            'Có lỗi xảy ra khi tạo tài khoản',
-            'error'
-          );
         }
       },
       error: (err) => {
         this.isLoading = false;
-        sendNotification(
-          this.store,
-          'Lỗi',
-          err.error.message || 'Đăng ký thất bại',
-          'error'
-        );
       },
     });
   }
@@ -121,5 +115,43 @@ export class Register {
 
   removeLink(index: number) {
     this.formData.links?.splice(index, 1);
+  }
+
+  // Xử lý sự kiện OTP Modal
+  onOtpResend() {
+    // TODO: Gửi lại mã OTP cho email
+    // Ví dụ: gọi API gửi lại OTP
+    this.authService.sendOtp(this.formData.email).subscribe((res) => {
+      if (res.code === 20000) {
+        sendNotification(
+          this.store,
+          'OTP',
+          'Đã gửi lại mã OTP đến email của bạn!',
+          'info'
+        );
+      }
+    });
+  }
+
+  onOtpClose() {
+    this.openOTP = !this.openOTP;
+  }
+
+  onOtpVerify(otpCode: string) {
+    this.authService
+      .verifyOtp(this.formData.email, otpCode)
+      .subscribe((res) => {
+        if (res.code === 20000) {
+          sendNotification(
+            this.store,
+            'OTP',
+            `Đã xác thực OTP: ${otpCode}`,
+            'success'
+          );
+          this.router.navigate(['auth/identity/login']);
+        }
+      });
+
+    this.openOTP = false;
   }
 }

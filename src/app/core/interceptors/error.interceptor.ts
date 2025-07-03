@@ -12,6 +12,12 @@ const ERROR_MESSAGES: Record<number, string> = {
   50007: 'Lỗi đếm thông báo đã đọc!',
 };
 
+// Danh sách endpoint cần bỏ qua gửi thông báo lỗi
+const IGNORE_ERROR_NOTIFICATION_URLS = [
+  'dành cho endpoint API nào k cần gửi thông báo lỗi',
+  // Thêm các endpoint khác nếu cần
+];
+
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const store = inject(Store);
 
@@ -30,17 +36,12 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           ERROR_MESSAGES[errorCode] || error.error.message || errorMessage;
       }
 
-      // Gửi thông báo lỗi với NgRx Store
-      //   const notification: INotification = {
-      //     id: Date.now().toString(),
-      //     title: 'Lỗi',
-      //     message: errorMessage,
-      //     type: 'error',
-      //     timestamp: new Date(),
-      //   };
-      //   store.dispatch(addNotification({ notification }));
-
-      sendNotification(store, 'Lỗi', errorMessage, 'error');
+      // Nếu không nằm trong danh sách bỏ qua thì gửi thông báo lỗi
+      if (
+        !IGNORE_ERROR_NOTIFICATION_URLS.some((url) => req.url.includes(url))
+      ) {
+        sendNotification(store, errorStatus, errorMessage, 'error');
+      }
 
       // Trả về lỗi với cấu trúc: { code, message, status }
       return throwError(() => ({
