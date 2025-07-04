@@ -22,7 +22,7 @@
   </div>
 
   <div class="description">
-    <p [class.expanded]="isExpanded">
+    <p [class.clamp-2-lines]="!isExpanded" [class.expanded]="isExpanded">
       {{ data.description }}
     </p>
     <button
@@ -35,17 +35,27 @@
   </div>
 
   <div class="difficulty" [attr.aria-label]="'Difficulty: ' + data.difficulty">
-    <div class="difficulty-badge" [ngClass]="data.difficulty">
-      {{ data.difficulty | titlecase }}
+    <div class="part-difficulty">
+      <div class="difficulty-badge" [ngClass]="data.difficulty">
+        {{ data.difficulty | titlecase }}
+      </div>
+      <div class="difficulty-stars">
+        <span
+          class="star"
+          *ngFor="let star of difficultyStars"
+          [class.filled]="star <= difficultyLevel"
+        >
+          ★
+        </span>
+      </div>
     </div>
-    <div class="difficulty-stars">
-      <span
-        class="star"
-        *ngFor="let star of difficultyStars"
-        [class.filled]="star <= difficultyLevel"
-      >
-        ★
-      </span>
+    <div class="part-type-ex">
+      <i
+        [ngClass]="
+          data.type === 'code' ? 'fas fa-code' : 'fa-regular fa-circle-check'
+        "
+      ></i>
+      {{ data.type === "code" ? "Viết mã" : "Trắc nghiệm" }}
     </div>
   </div>
 

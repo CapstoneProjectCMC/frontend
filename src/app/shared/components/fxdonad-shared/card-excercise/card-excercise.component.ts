@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
-export interface CardData {
+export interface CardExcercise {
   name: string;
   description: string;
   uploader: {
@@ -12,16 +12,17 @@ export interface CardData {
   difficulty: 'easy' | 'medium' | 'hard';
   tags: string[];
   status: 'completed' | 'pending';
+  type: 'code' | 'quiz';
 }
 
 @Component({
-  selector: 'app-card-data',
+  selector: 'app-card-excercise',
   imports: [CommonModule],
-  templateUrl: './card-data.component.html',
-  styleUrl: './card-data.component.scss',
+  templateUrl: './card-excercise.component.html',
+  styleUrl: './card-excercise.component.scss',
 })
-export class CardDataComponent {
-  @Input() data!: CardData;
+export class CardExcerciseComponent {
+  @Input() data!: CardExcercise;
   @Input() isDarkMode = false;
 
   isExpanded = false;
