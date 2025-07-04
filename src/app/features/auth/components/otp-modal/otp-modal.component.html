@@ -1,5 +1,9 @@
-<div class="otp-modal-backdrop" *ngIf="show">
-  <div class="otp-modal">
+<div
+  class="otp-modal-backdrop"
+  [class.open]="show"
+  (click)="onBackdropClick($event)"
+>
+  <div class="otp-modal" [class.open]="show">
     <button
       class="close-btn"
       (click)="onClose()"
@@ -51,6 +55,7 @@
     </form>
     <div class="loading-overlay" *ngIf="loading">
       <div class="spinner"></div>
+      <p>Đang xử lý, xin chờ...</p>
     </div>
   </div>
 </div>

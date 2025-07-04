@@ -61,8 +61,19 @@
             ></i>
           </span>
         </div>
-        <div class="forgot">
-          <a href="#">Quên mật khẩu?</a>
+        <div class="forgot-row">
+          <label class="check-box">
+            <input
+              type="checkbox"
+              [(ngModel)]="rememberMe"
+              name="rememberMe"
+              style="margin: 0"
+            />
+            Duy trì đăng nhập
+          </label>
+          <div class="forgot">
+            <a href="#">Quên mật khẩu?</a>
+          </div>
         </div>
         <button type="submit" (click)="onLogin()">Đăng nhập</button>
       </form>

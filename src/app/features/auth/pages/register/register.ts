@@ -10,6 +10,11 @@ import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-s
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
 import { CommonModule } from '@angular/common';
+import { truncateString } from '../../../../shared/utils/stringProcess';
+import {
+  validateRegisterData,
+  validateOtp,
+} from '../../validation/register-validation';
 
 @Component({
   selector: 'app-register',
@@ -19,6 +24,7 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     LoadingOverlayComponent,
     OtpModalComponent,
+    DropdownButtonComponent,
   ],
   templateUrl: './register.html',
   styleUrls: ['./register.scss'],
@@ -32,10 +38,6 @@ export class Register {
   repassword = '';
   linkInputValue = '';
   openOTP = false;
-
-  // ✅ Biến để xử lý label nổi (focus state)
-  focused: { [key: string]: boolean } = {};
-
   formData: ICreateUserRequest = {
     username: '',
     email: '',
@@ -49,10 +51,11 @@ export class Register {
     links: [],
     city: '',
   };
+  focused: { [key: string]: boolean } = {};
 
   educationOptions = Array.from({ length: 12 }, (_, i) => ({
     value: i + 1,
-    label: `lớp ${i + 1}`,
+    label: `Lớp ${i + 1}`,
   }));
 
   constructor(
@@ -73,14 +76,14 @@ export class Register {
   }
 
   onRegister() {
-    const { username, email, password } = this.formData;
-    if (!username || !email || !password) {
-      sendNotification(
-        this.store,
-        'Thiếu dữ liệu',
-        'Vui lòng nhập các trường bắt buộc',
-        'warning'
-      );
+    const error = validateRegisterData(
+      this.formData.username,
+      this.formData.email,
+      this.formData.password,
+      this.repassword
+    );
+    if (error) {
+      sendNotification(this.store, 'Cảnh báo!', error, 'warning');
       return;
     }
 
@@ -120,8 +123,16 @@ export class Register {
 
   // Xử lý sự kiện OTP Modal
   onOtpResend() {
-    // TODO: Gửi lại mã OTP cho email
-    // Ví dụ: gọi API gửi lại OTP
+    if (!this.formData.email || !this.formData.email.includes('@')) {
+      sendNotification(
+        this.store,
+        'Cảnh báo!',
+        'Email không được để trống hoặc thiếu @',
+        'warning'
+      );
+      return;
+    }
+
     this.resendingOTP = true;
     this.authService.sendOtp(this.formData.email).subscribe({
       next: (res) => {
@@ -146,9 +157,13 @@ export class Register {
   }
 
   onOtpVerify(otpCode: string) {
-    this.authService
-      .verifyOtp(this.formData.email, otpCode)
-      .subscribe((res) => {
+    const error = validateOtp(this.formData.email, otpCode);
+    if (error) {
+      return sendNotification(this.store, 'Cảnh báo', error, 'warning');
+    }
+    this.resendingOTP = true;
+    this.authService.verifyOtp(this.formData.email, otpCode).subscribe({
+      next: (res) => {
         if (res.code === 20000) {
           sendNotification(
             this.store,
@@ -157,9 +172,16 @@ export class Register {
             'success'
           );
           this.router.navigate(['auth/identity/login']);
+          this.resendingOTP = false;
         }
-      });
+      },
+      error: (err) => {
+        this.resendingOTP = false;
+      },
+    });
+  }
 
-    this.openOTP = false;
+  truncateString(string: string) {
+    return truncateString(string, 16);
   }
 }
