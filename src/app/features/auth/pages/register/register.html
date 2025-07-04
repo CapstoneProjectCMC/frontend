@@ -106,6 +106,22 @@
           <div class="underline"></div>
         </div>
         <div class="input-container">
+          <app-dropdown-button
+            [label]="'Học vấn'"
+            [options]="educationOptions"
+            [(ngModel)]="formData.education"
+            [variant]="'primary'"
+            [size]="'medium'"
+            [customDropField]="'main-type'"
+            [isDisplaySelectedOpptionLabels]="true"
+            [disabled]="false"
+            name="education"
+            id="education"
+            typeSubmit="button"
+          ></app-dropdown-button>
+          <div class="underline"></div>
+        </div>
+        <div class="input-container">
           <input
             type="date"
             id="dob"
@@ -118,36 +134,7 @@
           <label for="dob">Ngày sinh</label>
           <div class="underline"></div>
         </div>
-        <div class="input-container">
-          <select
-            id="education"
-            name="education"
-            [(ngModel)]="formData.education"
-            (focus)="focused['education'] = true"
-            (blur)="focused['education'] = false"
-            [ngClass]="{ 'has-value': formData.education }"
-          >
-            <option [ngValue]="undefined" disabled selected></option>
-            <option
-              *ngFor="let option of educationOptions"
-              [value]="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-          <label for="education">Trình độ học vấn</label>
-          <div class="underline"></div>
-          <div class="select-arrow">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
-          </div>
-        </div>
+
         <div class="input-container">
           <input
             type="text"
@@ -178,8 +165,11 @@
             >Liên kết (VD: LinkedIn, Github... Enter để thêm)</label
           >
           <div class="link-list" *ngIf="formData.links?.length">
-            <span *ngFor="let link of formData.links; let i = index">
-              {{ link }}
+            <span
+              *ngFor="let link of formData.links; let i = index"
+              [title]="link"
+            >
+              {{ truncateString(link) }}
               <button type="button" (click)="removeLink(i)">×</button>
             </span>
           </div>

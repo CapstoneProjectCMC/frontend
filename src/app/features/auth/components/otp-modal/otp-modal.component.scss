@@ -4,14 +4,22 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  transition: all 0.3s ease-out;
+  opacity: 0;
+  pointer-events: none;
+  &.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
+
 .otp-modal {
-  background: #fff;
+  background: var(--surface-color);
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
   padding: 2rem 1.5rem 1.5rem 1.5rem;
@@ -21,7 +29,19 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  transform: translateY(40px);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.open {
+    min-width: 320px;
+    max-width: 90vw;
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
+
 .close-btn {
   position: absolute;
   top: 12px;
@@ -33,13 +53,14 @@
   cursor: pointer;
   transition: color 0.2s;
   &:hover {
-    color: #334eac;
+    color: var(--text-gray-color);
   }
 }
+
 h2 {
   margin: 0 0 1rem 0;
   text-align: center;
-  color: #334eac;
+  color: var(--title-text);
 }
 .form-group {
   display: flex;
@@ -48,17 +69,18 @@ h2 {
   label {
     margin-bottom: 0.25rem;
     font-weight: 500;
-    color: #222;
+    color: var(--text-color);
   }
   input {
     padding: 0.5rem 0.75rem;
-    border: 1px solid #ccc;
+    background-color: var(--input-primary-color);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 1rem;
     outline: none;
     transition: border 0.2s;
     &:focus {
-      border-color: #334eac;
+      border-color: var(--text-color);
     }
     &[readonly] {
       background: #f5f5f5;
@@ -81,19 +103,23 @@ h2 {
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition: all 0.2s, color 0.2s;
   }
   .resend-btn {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     background: #f5f5f5;
     color: #334eac;
     &:hover {
       background: #e0e7ff;
+      transform: translateY(-2px);
     }
   }
   .verify-btn {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
     background: #334eac;
     color: #fff;
     &:hover {
+      transform: translateY(-2px);
       background: #22337a;
     }
   }
@@ -110,20 +136,29 @@ h2 {
   left: 0;
   right: 0;
   bottom: 0;
+  border-radius: 12px;
   background: rgba(255, 255, 255, 0.7);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 10;
+  .spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #e0e7ff;
+    border-top: 5px solid #334eac;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  p {
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 4px;
+    background-color: var(--surface-color);
+  }
 }
-.spinner {
-  width: 48px;
-  height: 48px;
-  border: 5px solid #e0e7ff;
-  border-top: 5px solid #334eac;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);

@@ -12,6 +12,7 @@ import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-s
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { DecodedJwtPayload } from '../../../../core/models/data-handle';
 import { CookieService } from 'ngx-cookie-service';
+import { validateLogin } from '../../validation/login-validation';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,12 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class Login {
   isLoading = false;
+  rememberMe = false;
+  currentSlide = 0;
+
+  slides = slides;
+
+  showPassword = false;
 
   userInfo: DecodedJwtPayload = {
     sub: '',
@@ -53,12 +60,6 @@ export class Login {
     active: false,
   };
 
-  currentSlide = 0;
-
-  slides = slides;
-
-  showPassword = false;
-
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -77,13 +78,12 @@ export class Login {
   }
 
   onLogin() {
-    if (!this.dataLogin.accountName || !this.dataLogin.password) {
-      sendNotification(
-        this.store,
-        'Lỗi!',
-        'Vui lòng nhập đầy đủ tài khoản và mật khẩu!',
-        'error'
-      );
+    const warning = validateLogin(
+      this.dataLogin.accountName,
+      this.dataLogin.password
+    );
+    if (warning) {
+      sendNotification(this.store, 'Cảnh báo!', warning, 'warning');
       return;
     }
     this.isLoading = true;

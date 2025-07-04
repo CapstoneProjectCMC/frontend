@@ -174,13 +174,23 @@
           font-weight: 500;
         }
 
-        .forgot {
-          text-align: right;
+        .forgot-row {
+          display: flex;
           margin-bottom: 20px;
-          a {
-            font-size: 14px;
-            color: var(--title-text);
-            text-decoration: underline;
+          justify-content: space-between;
+          .check-box {
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+          }
+          .forgot {
+            display: flex;
+            a {
+              font-size: 14px;
+              color: var(--title-text);
+              text-decoration: underline;
+            }
           }
         }
 
