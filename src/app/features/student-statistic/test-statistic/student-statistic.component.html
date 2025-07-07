@@ -1,13 +1,11 @@
-<h2>Student Statistic</h2>
 <!-- Bắt buộc phải truyền value và labels -->
 <app-breadcrumb></app-breadcrumb>
 <fx-pie-chart
-  [value]="[20000, 18000, 14000, 8000, 1000]"
-  [labels]="['JavaScript', 'Angular', 'React', 'Vue', 'Khác']"
+  [value]="[20, 18, 10, 8, 11, 10, 23, 23]"
+  [labels]="['JavaScript', 'Angular', 'React', 'Vue', 'C#', 'Java', 'C', 'C++']"
   [chartTitle]="'Tỷ lệ hoàn thành bài của học sinh trong tổ chức'"
 >
 </fx-pie-chart>
-
 <!-- Ví dụ sử dụng fx-line-chart với đủ 7 ngày trong tuần, 2 series: Bài đã làm, Bài chưa làm -->
 <fx-line-chart
   [categories]="[
@@ -44,20 +42,39 @@
   ]"
   [series]="[
     {
-      name: 'Số lượng bài viết đang hiển thị',
+      name: 'Viết mã',
       data: [
-        10, 12, 8, 15, 20, 18, 17, 16, 14, 13, 12, 11, 10, 9, 8, 7, 6, 15, 14,
-        7, 2, 1, 20, 12, 15, 6, 8, 10, 12, 14
+        1, 12, 8, 15, 2, 0, 7, 1, 1, 13, 7, 6, 5, 0, 7, 2, 1, 2, 11, 0, 9, 8, 4,
+        12, 1, 6, 8, 10, 12, 14
       ]
     },
     {
-      name: 'Số lượng bài viết bị báo cáo',
+      name: 'Trắc nghiệm',
       data: [
-        5, 2, 8, 5, 1, 1, 1, 16, 14, 1, 1, 0, 1, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0,
-        2, 4, 6, 1, 1, 2, 4
+        1, 1, 0, 1, 9, 8, 7, 6, 5, 2, 8, 5, 1, 1, 1, 0, 8, 5, 4, 0, 2, 1, 0, 2,
+        4, 6, 1, 1, 2, 4
       ]
     }
   ]"
   [height]="350"
   [chartTitle]="'Tỷ lệ hoàn thành bài của học sinh trong tổ chức'"
 ></fx-line-chart>
+
+<fx-pie-chart
+  [value]="[200, 180, 140, 80]"
+  [labels]="['Dễ', 'Khó', 'Trung bình', 'Siêu khó']"
+  [chartTitle]="'Tỷ lệ hoàn thành bài của học sinh trong tổ chức'"
+>
+</fx-pie-chart>
+<fx-pie-chart
+  [value]="[200, 180]"
+  [labels]="['Dạng trắc nghiệm', 'Dạng viết code']"
+  [chartTitle]="'Tỷ lệ hoàn thành bài của học sinh trong tổ chức'"
+>
+</fx-pie-chart>
+<fx-pie-chart
+  [value]="[200, 80]"
+  [labels]="['Đang hoạt động', 'Đã xóa']"
+  [chartTitle]="'Tỷ lệ hoàn thành bài của học sinh trong tổ chức'"
+>
+</fx-pie-chart>
