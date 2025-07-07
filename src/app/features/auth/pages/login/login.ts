@@ -13,10 +13,11 @@ import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { DecodedJwtPayload } from '../../../../core/models/data-handle';
 import { CookieService } from 'ngx-cookie-service';
 import { validateLogin } from '../../validation/login-validation';
+import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/tooltip';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, LoadingOverlayComponent],
+  imports: [CommonModule, FormsModule, LoadingOverlayComponent, Tooltip],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

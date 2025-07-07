@@ -9,8 +9,8 @@
 .tooltip {
   position: absolute;
   font-size: 14px;
-  background: #ffffff;
-  color: #000000;
+  background: var(--tooltip-bg);
+  color: var(--text-color);
   padding: 5px 8px;
   border-radius: 5px;
   box-shadow: 0 5px 5px color.scale($blue-334eac, $lightness: 60%);
@@ -31,7 +31,7 @@
   content: "";
   height: 8px;
   width: 8px;
-  background: #ffffff;
+  background: var(--tooltip-bg);
   bottom: -3px;
   left: 50%;
   transform: translate(-50%) rotate(45deg);
@@ -49,7 +49,7 @@
   content: "";
   height: 8px;
   width: 8px;
-  background: #ffffff;
+  background: var(--tooltip-bg);
   top: -3px;
   left: 50%;
   transform: translate(-50%) rotate(45deg);
@@ -67,7 +67,7 @@
   content: "";
   height: 8px;
   width: 8px;
-  background: #ffffff;
+  background: var(--tooltip-bg);
   right: -3px;
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
@@ -85,7 +85,7 @@
   content: "";
   height: 8px;
   width: 8px;
-  background: #ffffff;
+  background: var(--tooltip-bg);
   left: -3px;
   top: 50%;
   transform: translateY(-50%) rotate(45deg);
@@ -93,6 +93,6 @@
 
 :host:hover .tooltip,
 :host:hover .tooltip::before {
-  background: $blue-081f5c;
-  color: $blue-e7f1ff;
+  background: var(--tooltip-bg);
+  color: var(--text-color);
 }

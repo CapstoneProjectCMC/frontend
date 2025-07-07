@@ -41,7 +41,8 @@ export class OtpModalComponent {
   onBackdropClick(event: MouseEvent) {
     // Nếu click vào chính backdrop (không phải modal)
     if (
-      (event.target as HTMLElement).classList.contains('otp-modal-backdrop')
+      (event.target as HTMLElement).classList.contains('otp-modal-backdrop') &&
+      !this.loading
     ) {
       this.onClose();
     }
