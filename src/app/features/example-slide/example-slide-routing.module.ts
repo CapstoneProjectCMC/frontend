@@ -9,6 +9,7 @@ import { CodeEditorPage } from './code-editor/code-editor.component';
 import { UsingTrendingComponent } from './using-trending/using-trending.component';
 import { MenuLayoutComponent } from '../../layouts/layout-components/menu/menu-layout.component';
 import { MenuDemoComponent } from './using-main-navbar/menu-demo.component';
+import { CommentComponent } from '../../shared/components/fxdonad-shared/comment/comment.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'app-menu-layout',
     component: MenuDemoComponent,
+  },
+  {
+    path: 'app-comment',
+    component: CommentComponent,
   },
 ];
 

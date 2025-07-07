@@ -1,0 +1,92 @@
+<div class="comment-section">
+  <!-- Label tổng số bình luận -->
+  <h3>Đã tải {{ totalCommentsCount }} Bình luận</h3>
+
+  <!-- Ô nhập bình luận -->
+  <div class="comment-input" *ngIf="authenticated">
+    <img
+      [src]="buildImgAvatarUrl(userAvatar, 'small')"
+      alt="User Avatar"
+      class="avatar"
+    />
+    <input [(ngModel)]="newComment" placeholder="Viết bình luận..." />
+    <button (click)="submitComment()">Gửi</button>
+  </div>
+
+  <!-- Danh sách bình luận -->
+  <div class="comment-list" (scroll)="onScroll($event)">
+    <div
+      class="comment-item"
+      *ngFor="let comment of comments"
+      [hidden]="comment.parentId !== null"
+    >
+      <!-- Thông tin bình luận -->
+      <div class="comment-header">
+        <img
+          [src]="buildImgAvatarUrl(comment.user.avatarUrl, 'tiny')"
+          class="avatar"
+        />
+        <div
+          class="line-connect"
+          [class.opened]="!!showReplies[comment.id]"
+        ></div>
+        <div class="comment-content-container">
+          <strong class="user-name">{{ comment.user.username }}</strong>
+          <span class="timestamp">{{ getTimeAgo(comment.createdAt) }}</span>
+
+          <p class="comment-content">{{ comment.content }}</p>
+
+          <!-- Nút phản hồi -->
+          <div class="comment-actions">
+            <span class="reply" (click)="toggleReplies(comment.id)"
+              >Phản hồi ({{ comment.replies?.length }})</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Vùng nhập phản hồi -->
+      <div
+        class="reply-section"
+        [class.opened]="showReplies[comment.id]"
+        *ngIf="authenticated"
+      >
+        <div class="line-connect"></div>
+        <img
+          [src]="buildImgAvatarUrl(userAvatar, 'tiny')"
+          class="avatar small"
+        />
+        <input [(ngModel)]="replyMap[comment.id]" placeholder="Phản hồi..." />
+        <button (click)="submitReplyComment(comment.id)">Gửi</button>
+      </div>
+
+      <!-- Danh sách phản hồi -->
+      <div class="replies" [class.opened]="showReplies[comment.id]">
+        <div class="comment-item-replies" *ngFor="let reply of comment.replies">
+          <div
+            class="line-connect-replies"
+            *ngIf="!isLastReply(comment, reply.id)"
+          ></div>
+          <div class="line-border-connect-replies"></div>
+          <div class="comment-header-replies">
+            <img
+              [src]="buildImgAvatarUrl(reply.user.avatarUrl, 'small')"
+              class="avatar"
+            />
+            <div class="replies-info">
+              <div class="user-replies">
+                <strong>{{ reply.user.username }}</strong>
+                <span class="timestamp">{{ getTimeAgo(reply.createdAt) }}</span>
+              </div>
+              <p class="comment-content-replies">{{ reply.content }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Loading indicator -->
+  <div class="loading-indicator" *ngIf="isLoading">
+    <p>Đang tải thêm bình luận...</p>
+  </div>
+</div>
