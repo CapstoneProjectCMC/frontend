@@ -33,6 +33,8 @@ $error-color: #e45967;
   --primary-color-lighter: #{$blue-d0e3ff};
   --primary-color-lightest: #{$blue-e7f1ff};
 
+  --tooltip-bg: #{$blue-e7f1ff};
+
   --accent-color: #{$blue-081f5c}; // dùng cho nhấn mạnh, title...
   --background-color: #{$white-f9fcff};
   --background-color-secondary: #{$blue-e7f1ff};
@@ -73,6 +75,8 @@ $error-color: #e45967;
   --primary-color: #{$blue-7096d1};
   --primary-color-dark: #{$blue-334eac};
   --primary-color-darker: #{$blue-081f5c};
+
+  --tooltip-bg: #334eac;
 
   --accent-color: #{$blue-d0e3ff}; // tạo điểm sáng trong nền tối
   --background-color: #{$dark-121212};

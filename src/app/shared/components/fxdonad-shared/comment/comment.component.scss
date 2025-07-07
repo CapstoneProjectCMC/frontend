@@ -1,0 +1,263 @@
+.comment-section {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  background-color: #d9d9d9;
+  width: 100%;
+  padding: 20px;
+  max-height: 100vh;
+  box-sizing: border-box;
+  h3 {
+    margin-bottom: 10px;
+    margin-block-start: 0px;
+  }
+
+  .comment-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    max-width: 500px;
+
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid black;
+    }
+
+    input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      height: 25px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      border: 0.5px black solid;
+    }
+
+    button {
+      background: #5d5757;
+      color: white;
+      border: none;
+      padding: 12px 16px;
+      cursor: pointer;
+      border-radius: 5px;
+      border: 1px white solid;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+
+      &:hover {
+        background: #323232;
+      }
+    }
+  }
+
+  .comment-list {
+    flex: 1;
+    border-radius: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: #ffffff;
+    width: 100%;
+    word-break: break-word; // Đảm bảo từ dài bị ngắt đúng cách
+    .comment-item {
+      width: 100%;
+      padding: 10px;
+
+      .comment-header {
+        width: 100%;
+        display: flex;
+        align-items: start;
+        gap: 10px;
+        position: relative;
+        .line-connect {
+          position: absolute;
+          transition: all 0.3s ease;
+          left: 20px; /* Điều chỉnh khoảng cách với comment chính */
+          top: 40px; /* Giúp line-connect tự động kéo dài */
+          height: 0;
+          opacity: 0;
+          border-left: 2px black solid;
+          &.opened {
+            height: calc(100% - 40px);
+            opacity: 1;
+          }
+        }
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        .comment-content-container {
+          width: 100%;
+          .comment-content {
+            margin: 5px 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            max-width: 90%;
+          }
+          .timestamp {
+            margin-left: 8px;
+            font-size: 12px;
+            color: gray;
+          }
+          .comment-actions {
+            .reply {
+              color: rgb(112, 112, 252);
+              cursor: pointer;
+              font-size: 14px;
+            }
+          }
+        }
+      }
+
+      .reply-section {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-top: 10px;
+        padding-left: 50px;
+        max-width: 400px;
+        position: relative;
+
+        .line-connect {
+          position: absolute;
+          left: 20px; /* Điều chỉnh khoảng cách với comment chính */
+          top: 0;
+          bottom: 0; /* Giúp line-connect tự động kéo dài */
+          border-left: 2px black solid;
+        }
+
+        // Ẩn ban đầu
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+        // Khi mở
+        &.opened {
+          max-height: 100px; // Đặt giá trị đủ lớn để hiển thị input và nút
+          opacity: 1;
+        }
+
+        .small {
+          width: 30px;
+          height: 30px;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+
+        input {
+          padding: 5px;
+          border-radius: 5px;
+          border: 1px solid #ccc;
+        }
+
+        button {
+          background: #4b4b4b;
+          color: white;
+          padding: 5px 10px;
+          border-radius: 5px;
+          cursor: pointer;
+
+          &:hover {
+            background: #3d3d3d;
+          }
+        }
+      }
+
+      .replies {
+        display: flex;
+        flex-direction: column;
+        margin-left: 50px;
+        width: 100%;
+        // Ẩn ban đầu
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+        .comment-item-replies {
+          width: 100%;
+          padding-top: 10px;
+          position: relative;
+          .line-border-connect-replies {
+            position: absolute;
+            left: -30px; /* Điều chỉnh khoảng cách với comment chính */
+            top: 0;
+            bottom: 0; /* Giúp line-connect tự động kéo dài */
+            width: 27px;
+            border-left: 2px black solid;
+            border-bottom: 1px black solid;
+            border-bottom-left-radius: 25px;
+            height: 30px;
+          }
+          .line-connect-replies {
+            position: absolute;
+            left: -30px; /* Điều chỉnh khoảng cách với comment chính */
+            top: 0;
+            bottom: 0; /* Giúp line-connect tự động kéo dài */
+            width: 2px;
+            border-left: 2px black solid;
+          }
+          .comment-header-replies {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            .avatar {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              object-fit: cover;
+            }
+            .replies-info {
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+              .user-replies {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                .timestamp {
+                  color: #5d5757;
+                  font-size: 12px;
+                }
+              }
+              .comment-content-replies {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+                max-width: 80%; // Đảm bảo nội dung không vượt quá container
+                overflow: hidden;
+                text-overflow: ellipsis; // Nếu cần cắt bớt nội dung dài
+                margin-block: 5px;
+              }
+            }
+          }
+        }
+
+        // Khi mở
+        &.opened {
+          max-height: 500px; // Đặt giá trị lớn hơn để chứa danh sách phản hồi
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    text-align: center;
+  }
+  .loading-indicator img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+  }
+}
