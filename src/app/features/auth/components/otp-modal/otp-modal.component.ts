@@ -37,4 +37,14 @@ export class OtpModalComponent {
   onVerify() {
     this.verify.emit(this.otpCode);
   }
+
+  onBackdropClick(event: MouseEvent) {
+    // Nếu click vào chính backdrop (không phải modal)
+    if (
+      (event.target as HTMLElement).classList.contains('otp-modal-backdrop') &&
+      !this.loading
+    ) {
+      this.onClose();
+    }
+  }
 }

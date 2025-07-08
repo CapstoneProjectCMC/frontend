@@ -1,6 +1,7 @@
 .register-main-container {
   display: flex;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   width: 100vw;
   background-color: var(--background-color);
   .registration-form {
@@ -16,16 +17,20 @@
       padding-top: 20px;
       display: flex;
       gap: 10px;
-      .router-login {
-        color: var(--primary-color);
-        cursor: pointer;
+      .func {
+        gap: 10px;
+        display: flex;
+        .router-login {
+          color: var(--primary-color);
+          cursor: pointer;
 
-        &:hover {
-          text-decoration: underline;
-        }
+          &:hover {
+            text-decoration: underline;
+          }
 
-        &:active {
-          transform: scale(0.9);
+          &:active {
+            transform: scale(0.9);
+          }
         }
       }
     }
@@ -329,5 +334,41 @@
         }
       }
     }
+  }
+}
+
+.input-container input[name="displayName"] {
+  margin-bottom: 0 !important;
+  padding-bottom: 16px !important;
+}
+
+.input-container input[name="displayName"] ~ .underline {
+  bottom: 0 !important;
+}
+
+.input-container textarea ~ .underline {
+  bottom: 7px !important;
+}
+
+@media (max-width: 980px) {
+  .register-main-container {
+    .login-slider {
+      display: none;
+    }
+
+    .registration-form {
+      .login-nav {
+        margin-bottom: 40px;
+      }
+    }
+  }
+}
+
+@media (max-width: 450px) {
+  .login-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
   }
 }

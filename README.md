@@ -4,7 +4,7 @@
 
 ## Công nghệ sử dụng
 
-- **Angular 20.0.0**: Framework chính để xây dựng ứng dụng
+- **Angular 19.2.14**: Framework chính để xây dựng ứng dụng
 - **NgRx**: State management (Store, Effects, DevTools)
 - **TypeScript**: Ngôn ngữ lập trình chính
 - **RxJS**: Xử lý bất đồng bộ và reactive programming
@@ -14,7 +14,7 @@
 
 - Node.js (phiên bản LTS mới nhất)
 - npm (được cài đặt cùng với Node.js)
-- Angular CLI (phiên bản 20.0.2 trở lên)
+- Angular CLI (phiên bản 19+)
 
 ## Cấu trúc dự án
 
@@ -119,7 +119,6 @@ npm start
 
 - `npm start`: Chạy ứng dụng ở môi trường development
 - `npm run build`: Build ứng dụng cho production
-- `npm run test`: Chạy unit tests
 - `npm run watch`: Build và watch mode cho development
 
 ## Cấu trúc State Management (NgRx)

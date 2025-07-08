@@ -19,7 +19,7 @@ $blue-light: #d0e3ff;
 $blue-lighter: #e7f1ff;
 $blue-lightest: #f9fcff;
 
-$input-primary-color: #e6e6e6;
+$input-primary-color: #f3f3f3;
 $input-secondary-color: #5d5757;
 $border-color: #ced4da;
 $error-color: #e45967;
@@ -32,6 +32,8 @@ $error-color: #e45967;
   --primary-color-light: #{$blue-7096d1};
   --primary-color-lighter: #{$blue-d0e3ff};
   --primary-color-lightest: #{$blue-e7f1ff};
+
+  --tooltip-bg: #{$blue-e7f1ff};
 
   --accent-color: #{$blue-081f5c}; // dùng cho nhấn mạnh, title...
   --background-color: #{$white-f9fcff};
@@ -74,6 +76,8 @@ $error-color: #e45967;
   --primary-color-dark: #{$blue-334eac};
   --primary-color-darker: #{$blue-081f5c};
 
+  --tooltip-bg: #334eac;
+
   --accent-color: #{$blue-d0e3ff}; // tạo điểm sáng trong nền tối
   --background-color: #{$dark-121212};
   --background-color-secondary: #{$dark-1e1e1e};
@@ -93,7 +97,7 @@ $error-color: #e45967;
   --button-color: #{$blue-dark};
   --button-color-hover: #{$blue-main};
 
-  --input-primary-color: #555555;
+  --input-primary-color: #757575;
   --input-secondary-color: #{$input-secondary-color};
   --border-color: #{$border-color};
   --error-color: #{$error-color};
