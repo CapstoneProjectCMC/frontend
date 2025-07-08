@@ -23,6 +23,13 @@ export class AuthService {
     );
   }
 
+  logout() {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.LOGOUT,
+      null
+    );
+  }
+
   verifyGoogleCode(code: string) {
     return this.api.post<ApiResponse<loginResponse>>(
       API_CONFIG.ENDPOINTS.POST.OUTBOUND_GOOGLE_LOGIN(code),

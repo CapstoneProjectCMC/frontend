@@ -10,6 +10,8 @@ import { UsingTrendingComponent } from './using-trending/using-trending.componen
 import { MenuLayoutComponent } from '../../layouts/layout-components/menu/menu-layout.component';
 import { MenuDemoComponent } from './using-main-navbar/menu-demo.component';
 import { CommentComponent } from '../../shared/components/fxdonad-shared/comment/comment.component';
+import { QuizComponent } from '../../shared/components/fxdonad-shared/quiz/quiz.component';
+import { UsingQuizComponent } from './using-quiz/using-quiz.component';
 
 const routes: Routes = [
   {
@@ -47,6 +49,10 @@ const routes: Routes = [
   {
     path: 'app-comment',
     component: CommentComponent,
+  },
+  {
+    path: 'app-quiz',
+    component: UsingQuizComponent,
   },
 ];
 
