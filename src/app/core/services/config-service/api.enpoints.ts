@@ -12,6 +12,7 @@ export const API_CONFIG = {
     POST: {
       LOGIN: '/identity/auth/login',
       REGISTER: '/identity/auth/register',
+      LOGOUT: '/identity/auth/logout',
       VERIFYOTP: '/identity/auth/verify-otp',
       SENDOTP: '/identity/auth/send-otp',
       OUTBOUND_GOOGLE_LOGIN: (code: string) =>

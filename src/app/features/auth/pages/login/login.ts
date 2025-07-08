@@ -78,6 +78,10 @@ export class Login {
     this.router.navigate(['/auth/identity/register']);
   }
 
+  goToHome() {
+    this.router.navigate(['/home']);
+  }
+
   onLogin() {
     const warning = validateLogin(
       this.dataLogin.accountName,
