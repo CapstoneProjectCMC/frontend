@@ -10,30 +10,30 @@ import { QuizComponent } from '../../../shared/components/fxdonad-shared/quiz/qu
 export class UsingQuizComponent {
   questions = [
     {
-      text: 'Câu hỏi 1 là gì?',
+      text: 'Câu hỏi H là gì?',
       options: ['A. Đáp án 1', 'B. Đáp án 2', 'C. Đáp án 3', 'D. Đáp án 4'],
       answer: '',
       done: false,
     },
     {
-      text: 'Câu hỏi 1 là gì?',
+      text: 'Câu hỏi E là gì?',
       options: ['A. Đáp án 1', 'B. Đáp án 2', 'C. Đáp án 3', 'D. Đáp án 4'],
       answer: 'C. Đáp án 3',
       done: true,
     },
     {
-      text: 'Câu hỏi 1 là gì?',
+      text: 'Câu hỏi J là gì?',
       options: ['A. Đáp án 1', 'B. Đáp án 2', 'C. Đáp án 3', 'D. Đáp án 4'],
     },
     {
-      text: 'Câu hỏi 1 là gì?',
+      text: 'Câu hỏi R là gì?',
       options: ['A. Đáp án 1', 'B. Đáp án 2', 'C. Đáp án 3', 'D. Đáp án 4'],
     },
     {
-      text: 'Câu hỏi 1 là gì?',
+      text: 'Câu hỏi M là gì?',
       options: ['A. Đáp án 1', 'B. Đáp án 2', 'C. Đáp án 3', 'D. Đáp án 4'],
     },
   ];
 
-  times = 10;
+  times = 60;
 }

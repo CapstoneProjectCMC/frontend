@@ -17,6 +17,8 @@ export const API_CONFIG = {
       SENDOTP: '/identity/auth/send-otp',
       OUTBOUND_GOOGLE_LOGIN: (code: string) =>
         `/identity/auth/login-google?code=${code}`,
+      OUTBOUND_FACEBOOK_LOGIN: (code: string) =>
+        `/identity/auth/login-facebook?code=${code}`,
     },
     PATCH: {},
     DELETE: {},
