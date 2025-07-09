@@ -38,6 +38,14 @@ export class AuthService {
     );
   }
 
+  verifyFacebookCode(code: string) {
+    return this.api.post<ApiResponse<loginResponse>>(
+      API_CONFIG.ENDPOINTS.POST.OUTBOUND_FACEBOOK_LOGIN(code),
+      null,
+      true
+    );
+  }
+
   verifyOtp(email: string, otpCode: string) {
     const data = {
       email,

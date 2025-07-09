@@ -27,30 +27,54 @@ export class OauthCallbackComponent {
     this.isLoading = true;
     this.route.queryParams.subscribe((params) => {
       const code = params['code'];
+      const state = params['state'];
       if (code) {
         // Gửi code về backend để lấy access_token
-        this.authService.verifyGoogleCode(code).subscribe({
-          next: (res) => {
-            // Xử lý thành công, chuyển hướng
-            this.isLoading = false;
-            if (res.code === 20000) {
-              sendNotification(
-                this.store,
-                res.status,
-                'Đăng nhập thành công',
-                'success'
-              );
-              this.router.navigate(['/main']);
-            } else {
-              this.router.navigate(['/auth/identity/login']);
-            }
-          },
-          error: (err) => {
-            // Xử lý lỗi, chuyển hướng về login
-            this.isLoading = false;
-            this.router.navigate(['/auth/identity/login']);
-          },
-        });
+        if (state === 'login') {
+          // Ưu tiên Google, fallback Facebook nếu cần
+          this.authService.verifyGoogleCode(code).subscribe({
+            next: (res) => {
+              this.isLoading = false;
+              if (res.code === 20000) {
+                sendNotification(
+                  this.store,
+                  res.status,
+                  'Đăng nhập Google thành công',
+                  'success'
+                );
+                this.router.navigate(['/main']);
+              } else {
+                this.router.navigate(['/auth/identity/login']);
+              }
+            },
+            error: (err) => {
+              // Nếu lỗi Google, thử Facebook
+              this.authService.verifyFacebookCode(code).subscribe({
+                next: (fbRes) => {
+                  this.isLoading = false;
+                  if (fbRes.code === 20000) {
+                    sendNotification(
+                      this.store,
+                      fbRes.status,
+                      'Đăng nhập Facebook thành công',
+                      'success'
+                    );
+                    this.router.navigate(['/main']);
+                  } else {
+                    this.router.navigate(['/auth/identity/login']);
+                  }
+                },
+                error: () => {
+                  this.isLoading = false;
+                  this.router.navigate(['/auth/identity/login']);
+                },
+              });
+            },
+          });
+        } else {
+          this.isLoading = false;
+          this.router.navigate(['/auth/identity/login']);
+        }
         console.log(code);
       } else {
         this.isLoading = false;
