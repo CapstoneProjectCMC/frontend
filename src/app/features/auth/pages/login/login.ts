@@ -78,6 +78,10 @@ export class Login {
     this.router.navigate(['/auth/identity/register']);
   }
 
+  goToHome() {
+    this.router.navigate(['/home']);
+  }
+
   onLogin() {
     const warning = validateLogin(
       this.dataLogin.accountName,
@@ -119,15 +123,30 @@ export class Login {
 
   onGoogleLogin() {
     const params = new URLSearchParams({
-      client_id: OAuthConfig.clientId,
-      redirect_uri: OAuthConfig.redirectUri,
+      client_id: OAuthConfig.google.clientId,
+      redirect_uri: OAuthConfig.google.redirectUri,
       response_type: 'code',
       scope: 'email profile openid',
       include_granted_scopes: 'true',
       state: 'login',
       prompt: 'select_account',
     });
-    window.location.href = `${OAuthConfig.authUri}?${params.toString()}`;
+    window.location.href = `${OAuthConfig.google.authUri}?${params.toString()}`;
+  }
+
+  onFacebookLogin() {
+    const params = new URLSearchParams({
+      client_id: OAuthConfig.facebook.clientId,
+      redirect_uri: OAuthConfig.facebook.redirectUri,
+      response_type: 'code',
+      scope: 'email public_profile',
+      state: 'login',
+      auth_type: 'rerequest',
+      display: 'popup',
+    });
+    window.location.href = `${
+      OAuthConfig.facebook.authUri
+    }?${params.toString()}`;
   }
 
   logout() {
@@ -140,7 +159,7 @@ export class Login {
 
   loginWithDifferentAccount() {
     const params = new URLSearchParams({
-      client_id: OAuthConfig.clientId,
+      client_id: OAuthConfig.google.clientId,
       redirect_uri: window.location.origin,
       response_type: 'token',
       scope: 'email profile openid',
@@ -148,7 +167,7 @@ export class Login {
       state: 'login',
       prompt: 'select_account consent',
     });
-    window.location.href = `${OAuthConfig.authUri}?${params.toString()}`;
+    window.location.href = `${OAuthConfig.google.authUri}?${params.toString()}`;
   }
 
   saveUserInfoToSession(userInfo: DecodedJwtPayload) {

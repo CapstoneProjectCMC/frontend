@@ -68,7 +68,13 @@ export const sidebarData: SidebarItem[] = [
       {
         id: 'app-menu-layout',
         path: secondLayout + '/example-using-component-slide/app-comment',
-        label: 'App Comment',
+        label: 'Comment',
+        icon: 'fas fa-bars',
+      },
+      {
+        id: 'app-quiz',
+        path: secondLayout + '/example-using-component-slide/app-quiz',
+        label: 'Quiz',
         icon: 'fas fa-bars',
       },
     ],

@@ -21,7 +21,7 @@
   <div class="form-container">
     <!-- Phần phải: Form login -->
     <div class="back-to-home">
-      <div class="btn-back-to-home">
+      <div class="btn-back-to-home" (click)="goToHome()">
         <app-tooltip
           [content]="'Trở về trang chủ'"
           [position]="'right'"
@@ -39,6 +39,7 @@
             stroke-linecap="round"
             stroke-linejoin="round"
             class="lucide lucide-house-icon lucide-house"
+            (click)="goToHome()"
           >
             <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
             <path
@@ -112,7 +113,7 @@
         <img src="/auth-assets/Google.png" alt="" class="google-icon" />
         Đăng nhập bằng Google
       </button>
-      <button class="social-btn facebook">
+      <button class="social-btn facebook" (click)="onFacebookLogin()">
         <img src="/auth-assets/Facebook.png" alt="" class="google-icon" />Đăng
         nhập bằng Facebook
       </button>

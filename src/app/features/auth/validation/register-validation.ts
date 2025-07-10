@@ -28,7 +28,7 @@ export function validateOtp(email: string, otpCode: string): string | null {
     return 'Email không hợp lệ';
   }
   if (!otpCode || otpCode.length !== 6) {
-    return 'Mã OTP phải gồm 6 ký tự';
+    return 'Mã OTP phải gồm 6 chữ số';
   }
   if (!/^[0-9]+$/.test(otpCode)) {
     return 'Mã OTP chỉ được chứa số';

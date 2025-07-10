@@ -69,9 +69,11 @@
       position: absolute;
       width: 100%;
       display: flex;
-      top: 10px;
+      bottom: 10px;
+      right: 10px;
       align-items: start;
-      justify-content: flex-start;
+      justify-content: flex-end;
+      overflow: hidden;
 
       .btn-back-to-home {
         display: flex;

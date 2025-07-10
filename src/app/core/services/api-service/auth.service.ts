@@ -23,9 +23,24 @@ export class AuthService {
     );
   }
 
+  logout() {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.LOGOUT,
+      null
+    );
+  }
+
   verifyGoogleCode(code: string) {
     return this.api.post<ApiResponse<loginResponse>>(
       API_CONFIG.ENDPOINTS.POST.OUTBOUND_GOOGLE_LOGIN(code),
+      null,
+      true
+    );
+  }
+
+  verifyFacebookCode(code: string) {
+    return this.api.post<ApiResponse<loginResponse>>(
+      API_CONFIG.ENDPOINTS.POST.OUTBOUND_FACEBOOK_LOGIN(code),
       null,
       true
     );
