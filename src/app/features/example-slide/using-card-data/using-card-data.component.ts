@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class UsingCardDataComponent {
   data: CardExcercise = {
-    name: 'Thuật toán tìm kiếm nhị phân',
+    name: 'Thuật toán tìm kiếm nhị phân sử dụng ngôn ngữ JavaScript',
     description:
       'Bài viết về thuật toán tìm kiếm nhị phân, một thuật toán hiệu quả để tìm kiếm một phần tử trong một mảng đã sắp xếp. Có thể là một thuật toán tuyệt vời',
     uploader: {
@@ -19,9 +19,10 @@ export class UsingCardDataComponent {
       avatar: 'https://via.placeholder.com/150',
     },
     uploadTime: new Date(),
-    difficulty: 'easy',
-    tags: ['tag1', 'tag2', 'tag3'],
+    difficulty: 'hard',
+    tags: ['tag1', 'tag2', 'tag3', 'tag2', 'tag3', 'tag2', 'tag3'],
     status: 'pending',
+    approval: 'pending',
     type: 'quiz',
   };
 }
