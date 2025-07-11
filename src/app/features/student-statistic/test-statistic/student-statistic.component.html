@@ -1,6 +1,50 @@
 <!-- Bắt buộc phải truyền value và labels -->
 <div class="statistic-container">
   <app-breadcrumb></app-breadcrumb>
+  <div style="display: flex; flex-direction: row; gap: 10px">
+    <app-post-card
+      [post]="postCardData"
+      [showControls]="true"
+      [onEdit]="handleEdit"
+      [onDelete]="handleDelete"
+      [onApprove]="handleApprove"
+      [onSummary]="handleSummary"
+      [onComment]="handleComment"
+      [onDownvote]="handleDownVote"
+      [onUpvote]="handleUpvote"
+      [onSave]="handleSave"
+      [onReport]="handleReport"
+      [popular]="3"
+    ></app-post-card>
+    <app-post-card
+      [post]="postCardDataApproved"
+      [showControls]="true"
+      [onEdit]="handleEdit"
+      [onDelete]="handleDelete"
+      [onApprove]="handleApprove"
+      [onSummary]="handleSummary"
+      [onComment]="handleComment"
+      [onDownvote]="handleDownVote"
+      [onUpvote]="handleUpvote"
+      [onSave]="handleSave"
+      [onReport]="handleReport"
+    ></app-post-card>
+    <app-post-card
+      [post]="postCardDataPending"
+      [showControls]="true"
+      [onEdit]="handleEdit"
+      [onDelete]="handleDelete"
+      [onApprove]="handleApprove"
+      [onSummary]="handleSummary"
+      [onRejected]="handleRejected"
+      [onComment]="handleComment"
+      [onDownvote]="handleDownVote"
+      [onUpvote]="handleUpvote"
+      [onSave]="handleSave"
+      [onReport]="handleReport"
+    ></app-post-card>
+  </div>
+
   <fx-pie-chart
     [value]="[20, 18, 10, 8, 11, 10, 23, 23]"
     [labels]="[
