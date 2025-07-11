@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorComponent } from '../../../shared/components/fxdonad-shared/code-editor/code-editor.component';
+import { Codingervice } from '../../../core/services/api-service/coding.service';
 
 @Component({
   selector: 'app-code-editor-page',
@@ -24,6 +25,7 @@ import { CodeEditorComponent } from '../../../shared/components/fxdonad-shared/c
 })
 export class CodeEditorPage implements OnInit, AfterViewChecked {
   @ViewChild('chatScroll') private chatScroll!: ElementRef;
+  @ViewChild(CodeEditorComponent) codeEditorComponent!: CodeEditorComponent;
 
   //đầu vào và đề bài
   problemTitle = 'Two Sum';
@@ -102,7 +104,7 @@ export class CodeEditorPage implements OnInit, AfterViewChecked {
     },
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private codingService: Codingervice) {
     this.commentForm = this.fb.group({
       comment: ['', Validators.required],
     });
@@ -150,6 +152,19 @@ export class CodeEditorPage implements OnInit, AfterViewChecked {
   }
 
   runCode() {
+    // Lấy code từ editor và in ra console
+    const code = this.codeEditorComponent.getCode();
+    console.log('Code gửi đi:', code);
+
+    this.codingService.sendCode(code).subscribe({
+      next: (res) => {
+        console.log('đã gửi request');
+      },
+      error: (err) => {
+        console.log('Lỗi gửi');
+      },
+    });
+
     this.isRunning = true;
     this.hasError = false;
     // Reset test case status

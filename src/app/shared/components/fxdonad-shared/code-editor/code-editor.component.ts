@@ -74,6 +74,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
         if (update.docChanged) {
           const code = update.state.doc.toString();
           console.log('Code changed:', code);
+          console.log('Code type:', typeof code);
         }
       }),
     ];

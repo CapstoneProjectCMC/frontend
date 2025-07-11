@@ -10,3 +10,14 @@ export class FormatViewPipe implements PipeTransform {
     return value.toLocaleString('en-US'); // Thêm dấu , vào hàng nghìn
   }
 }
+
+@Pipe({
+  name: 'truncate',
+  standalone: true,
+})
+export class TruncatePipe implements PipeTransform {
+  transform(value: string, limit: number = 20): string {
+    if (!value) return '';
+    return value.length > limit ? value.substring(0, limit) + '...' : value;
+  }
+}
