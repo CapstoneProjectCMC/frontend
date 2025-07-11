@@ -29,7 +29,7 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-bell-icon lucide-bell"
+          class="header-bell-icon"
         >
           <path d="M10.268 21a2 2 0 0 0 3.464 0" />
           <path
@@ -41,7 +41,11 @@
         </span>
       </div>
 
-      <div class="header-action-avatar">
+      <div
+        class="header-action-avatar"
+        (click)="toggleProfileMenu()"
+        style="position: relative"
+      >
         <img
           class="header-action-avatar-img"
           src="https://i.pinimg.com/736x/3f/f5/7a/3ff57a47bfb8b67da24f8f7f606b1ace.jpg"
@@ -51,3 +55,7 @@
     </div>
   </div>
 </div>
+<app-profile-menu
+  *ngIf="showProfileMenu"
+  (logout)="onLogout()"
+></app-profile-menu>

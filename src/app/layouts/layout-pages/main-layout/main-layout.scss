@@ -1,0 +1,70 @@
+.main-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-color);
+
+  router-outlet {
+    flex: 1 1 auto;
+    display: block;
+    width: 100%;
+    min-height: 0;
+    background: var(--content-bg, #fafbfc);
+    padding: 32px 0;
+    box-sizing: border-box;
+  }
+}
+
+// Responsive
+@media (max-width: 1024px) {
+  .main-layout {
+    router-outlet {
+      padding: 16px 0;
+    }
+  }
+}
+
+@media (max-width: 720px) {
+  .main-layout {
+    padding: 0;
+    app-header {
+      height: 44px;
+    }
+    router-outlet {
+      padding: 8px 0;
+    }
+    app-footer {
+      padding: 12px 0 0 0;
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .main-layout {
+    width: 100vw;
+    app-header {
+      height: 44px;
+    }
+    router-outlet {
+      padding: 4px 0;
+    }
+    app-footer {
+      padding: 8px 0 0 0;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .main-layout {
+    width: 320px;
+    app-header {
+      height: 44px;
+    }
+    router-outlet {
+      padding: 2px 0;
+    }
+    app-footer {
+      padding: 4px 0 0 0;
+    }
+  }
+}
