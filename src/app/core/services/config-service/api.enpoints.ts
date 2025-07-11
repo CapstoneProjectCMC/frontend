@@ -19,6 +19,8 @@ export const API_CONFIG = {
         `/identity/auth/login-google?code=${code}`,
       OUTBOUND_FACEBOOK_LOGIN: (code: string) =>
         `/identity/auth/login-facebook?code=${code}`,
+
+      SENDCODE: '/code-editor/ex',
     },
     PATCH: {},
     DELETE: {},

@@ -21,12 +21,14 @@
   <!-- Danh sách thông báo -->
   <div class="notification-wrapper">
     <app-notification-card
-      *ngFor="let notif of notifications$ | async"
+      *ngFor="let notif of (notifications$ | async)?.slice(0, 4); let i = index; trackBy: trackById"
       [title]="notif.title"
       [message]="notif.message"
       [type]="notif.type"
       [timestamp]="notif.timestamp"
       (closed)="removeNotification(notif.id)"
+      [ngClass]="'stack-' + i"
+      [@stackAnimation]="i"
     ></app-notification-card>
   </div>
 </div>
