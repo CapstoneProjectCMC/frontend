@@ -3,6 +3,7 @@
   display: flex;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin: 16px;
+  border: 1px solid var(--border-color);
   &:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
@@ -215,15 +216,15 @@
     align-items: center;
 
     justify-content: flex-start;
-    max-width: 50px;
-    background-color: var(--card-excercize-bg);
+    max-width: 48px;
+
     border-radius: 0 12px 12px 0;
 
     .edit-btn {
       margin-top: 12px;
       padding: 6px 16px;
       border: none;
-      border-radius: 20px;
+      border-radius: 8px;
       font-size: 0.9rem;
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
@@ -238,7 +239,7 @@
       margin-top: 12px;
       padding: 6px 16px;
       border: none;
-      border-radius: 20px;
+      border-radius: 8px;
       font-size: 0.9rem;
       cursor: pointer;
       transition: background 0.2s, color 0.2s;
@@ -253,7 +254,7 @@
       flex: 1;
       border: none;
       width: 100%;
-      background: #e8f5e9;
+      background: var(--background-color);
       color: #2e7d32;
       font-weight: 600;
       border-radius: 0 12px 0 0;
@@ -264,7 +265,8 @@
     .reject-btn {
       flex: 1;
       border: none;
-      background: #ffe6e6;
+      width: 100%;
+      background: var(--background-color);
       color: #757575;
       border-radius: 0 0 12px 0;
       &:hover {

@@ -48,27 +48,8 @@ export class OauthCallbackComponent {
               }
             },
             error: (err) => {
-              // Nếu lỗi Google, thử Facebook
-              this.authService.verifyFacebookCode(code).subscribe({
-                next: (fbRes) => {
-                  this.isLoading = false;
-                  if (fbRes.code === 20000) {
-                    sendNotification(
-                      this.store,
-                      fbRes.status,
-                      'Đăng nhập Facebook thành công',
-                      'success'
-                    );
-                    this.router.navigate(['/main']);
-                  } else {
-                    this.router.navigate(['/auth/identity/login']);
-                  }
-                },
-                error: () => {
-                  this.isLoading = false;
-                  this.router.navigate(['/auth/identity/login']);
-                },
-              });
+              this.isLoading = false;
+              this.router.navigate(['/auth/identity/login']);
             },
           });
         } else {
