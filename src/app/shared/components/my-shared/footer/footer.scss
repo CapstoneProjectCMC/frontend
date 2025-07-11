@@ -136,3 +136,98 @@
     min-width: 0;
   }
 }
+@media (max-width: 420px) {
+  .footer {
+    height: auto; /* Chiều cao tự động để phù hợp nội dung */
+    padding-bottom: 16px; /* Thêm padding dưới để tránh nội dung bị cắt */
+  }
+
+  .footer-top {
+    height: 60px; /* Giảm chiều cao phần logo */
+    padding: 8px 16px; /* Giảm padding cho gọn */
+  }
+
+  .footer-logo {
+    margin-top: 8px;
+    gap: 6px; /* Giảm khoảng cách giữa logo và text */
+    &-icon {
+      height: 40px; /* Giảm kích thước logo */
+    }
+    &-text {
+      gap: 2px;
+      &-name {
+        font-size: 18px; /* Giảm kích thước chữ tên */
+        text-underline-offset: 2px;
+      }
+      &-description {
+        font-size: 7px; /* Giảm kích thước chữ mô tả */
+      }
+    }
+  }
+
+  .footer-content {
+    padding: 16px; /* Giảm padding */
+    gap: 12px; /* Giảm khoảng cách giữa các phần */
+    flex-direction: column; /* Đặt bố cục thành cột dọc */
+    align-items: stretch; /* Đảm bảo các phần tử kéo dài toàn chiều rộng */
+  }
+
+  .footer-description {
+    position: static; /* Loại bỏ position top để phù hợp bố cục dọc */
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    text-align: center; /* Căn giữa nội dung */
+  }
+
+  .footer-col {
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    flex-direction: column; /* Chuyển các cột thành dọc */
+    gap: 16px; /* Tăng khoảng cách giữa các cột */
+    margin-left: 0;
+    &-item {
+      width: 100%; /* Chiếm toàn bộ chiều rộng */
+      text-align: center; /* Căn giữa nội dung */
+    }
+  }
+
+  .footer-name {
+    font-size: 20px; /* Giảm kích thước chữ */
+    margin-bottom: 8px;
+  }
+
+  .footer-title {
+    font-size: 12px; /* Giảm kích thước chữ */
+    margin-bottom: 8px;
+  }
+
+  .footer-desc {
+    font-size: 12px; /* Giảm kích thước chữ */
+    margin-bottom: 12px;
+  }
+
+  .footer-social {
+    gap: 20px; /* Giảm khoảng cách giữa các biểu tượng */
+    justify-content: center; /* Căn giữa các biểu tượng mạng xã hội */
+    &-icon {
+      width: 24px; /* Giảm kích thước biểu tượng */
+      height: 24px;
+    }
+  }
+
+  .footer-social img {
+    width: 20px; /* Giảm kích thước ảnh mạng xã hội */
+    height: 20px;
+  }
+
+  .footer-col ul li {
+    font-size: 12px; /* Giảm kích thước chữ trong danh sách */
+    gap: 6px;
+    justify-content: center; /* Căn giữa các mục */
+    margin-bottom: 8px;
+  }
+
+  .footer-col ul li svg {
+    width: 20px; /* Giảm kích thước biểu tượng liên hệ */
+    height: 20px;
+    margin-right: 4px;
+  }
+}
