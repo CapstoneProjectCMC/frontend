@@ -6,7 +6,7 @@
   z-index: 1000;
   height: 80px;
   background-color: var(--background-color);
-  box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
   display: flex;
   align-items: center;
   .header-container {
@@ -20,6 +20,11 @@
       align-items: center;
       gap: 8px;
       margin: 20px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
       &-icon {
         height: 47px;
       }
@@ -99,6 +104,15 @@
       .header-action-notification {
         position: relative;
         top: 5px;
+        border-radius: 50%;
+        &:hover {
+          filter: drop-shadow(0px 5px 5px rgba(0, 0, 0, 0.5));
+          cursor: pointer;
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
       }
 
       .header-notification-badge {
@@ -143,6 +157,14 @@
         align-items: center;
         justify-content: center;
         background: #f3f3f3; // tuỳ chọn, để có nền khi chưa có ảnh
+        &:hover {
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+          cursor: pointer;
+        }
+
+        &:active {
+          transform: scale(0.95);
+        }
       }
 
       &-avatar {
