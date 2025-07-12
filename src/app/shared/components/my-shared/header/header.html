@@ -1,6 +1,6 @@
 <div class="header">
   <div class="header-container">
-    <div class="header-logo">
+    <div class="header-logo" (click)="goToHome()">
       <img class="header-logo-icon" src="landing-assets/Logo.svg" alt="logo" />
       <div class="header-logo-text">
         <p class="header-logo-text-name">CodeCampus</p>
@@ -9,7 +9,21 @@
         >
       </div>
       <span class="header-logo-divider"></span>
+      <app-dropdown-button
+        [label]="'Học vấn'"
+        [options]="organizations"
+        [variant]="'primary'"
+        [size]="'medium'"
+        [customDropField]="'main-type'"
+        [isDisplaySelectedOpptionLabels]="true"
+        [disabled]="false"
+        name="education"
+        id="education"
+        typeSubmit="button"
+        (onSelect)="onSelectedOganization($event)"
+      ></app-dropdown-button>
     </div>
+
     <div class="header-auth" *ngIf="!isLoggedIn">
       <span class="header-logo-divider"></span>
       <span class="header-auth-item-text" (click)="goToLogin()">Đăng nhập</span>
