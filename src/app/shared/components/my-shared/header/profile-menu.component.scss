@@ -1,7 +1,7 @@
 .profile-menu {
   position: absolute;
   right: 0;
-  top: 150px;
+  top: 80px;
   width: 270px;
   height: 188px;
   background: var(--background-color);
@@ -14,18 +14,20 @@
   z-index: 1000;
   opacity: 0;
   transform: translateY(-20px);
-  animation: fadeSlideIn 0.3s ease forwards;
+  pointer-events: none; /* Không cho phép tương tác khi ẩn */
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-@keyframes fadeSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.profile-menu.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto; /* Cho phép tương tác khi hiển thị */
+}
+
+.profile-menu.fadeout {
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
 }
 
 .profile-menu-btn {
@@ -41,7 +43,7 @@
   transition: background 0.2s;
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 4px;
   align-items: center;
 }
 .profile-menu-btn:last-child {

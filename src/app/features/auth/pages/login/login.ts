@@ -79,7 +79,7 @@ export class Login {
   }
 
   goToHome() {
-    this.router.navigate(['/home']);
+    this.router.navigate(['/']);
   }
 
   onLogin() {
