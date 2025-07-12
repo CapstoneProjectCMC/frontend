@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayout } from './layouts/layout-pages/main-layout/main-layout';
 import { SecondLayout } from './layouts/layout-pages/second-layout/second-layout';
 import { AuthLayoutComponent } from './layouts/layout-pages/auth-layout/auth-layout.component';
+import { AppLayoutComponent } from './layouts/layout-pages/app-layout/app-layout.component';
 
 export const routes: Routes = [
   //Để test
@@ -77,6 +78,20 @@ export const routes: Routes = [
         path: 'identity',
         loadChildren: () =>
           import('./features/auth/auth.module').then((m) => m.AuthModule),
+      },
+    ],
+  },
+
+  {
+    path: '',
+    component: AppLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./features/landing/landing.module').then(
+            (m) => m.LandingModule
+          ),
       },
     ],
   },

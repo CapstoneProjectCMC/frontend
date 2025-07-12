@@ -57,5 +57,7 @@
 </div>
 <app-profile-menu
   *ngIf="showProfileMenu"
+  [isVisible]="isMenuVisible"
   (logout)="onLogout()"
+  (closeMenu)="onCloseMenu()"
 ></app-profile-menu>
