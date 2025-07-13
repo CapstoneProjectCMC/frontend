@@ -3,18 +3,18 @@ import { Component, Input } from '@angular/core';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
 
 export interface CardExcercise {
-  name: string;
+  title: string;
   description: string;
   uploader: {
     name: string;
     avatar: string;
   };
-  uploadTime: Date;
+  uploadTime: string;
   difficulty: 'easy' | 'medium' | 'hard';
-  tags: string[];
+  tags: Set<string>;
   status: 'completed' | 'pending';
   approval: 'accepted' | 'pending' | 'rejected';
-  type: 'code' | 'quiz';
+  type: 'CODE' | 'QUIZ';
 }
 
 @Component({

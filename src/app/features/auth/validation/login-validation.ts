@@ -14,8 +14,8 @@ export function validateLogin(
     return 'Tên tài khoản không được chứa ký tự đặc biệt';
   }
   // Password tối thiểu 8 ký tự
-  if (password.length < 8) {
-    return 'Mật khẩu phải có ít nhất 8 ký tự';
+  if (password.length < 5) {
+    return 'Mật khẩu phải có ít nhất 5 ký tự';
   }
   return null;
 }

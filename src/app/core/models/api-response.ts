@@ -15,3 +15,11 @@ export type loginResponse = {
   enabled: boolean;
   active: boolean;
 };
+
+export interface IPaginationResponse<T> {
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalElements: number;
+  data: T;
+}

@@ -7,8 +7,7 @@
   background: var(--background-color);
   border-bottom: 1px solid var(--border-color);
   transition: all 0.3s ease;
-  font-family: "FZ Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, sans-serif;
+  width: 100%;
 
   &.ant-menu-horizontal {
     flex-direction: row;
@@ -94,6 +93,7 @@
 .ant-menu-list {
   display: flex;
   align-items: center;
+  justify-content: center;
   list-style: none;
   margin: 0;
   padding: 0;

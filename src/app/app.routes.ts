@@ -95,6 +95,14 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'exercise',
+        loadChildren: () =>
+          import('./features/excercise/exercise.module').then(
+            (m) => m.ExerciseModule
+          ),
+        data: { breadcrumb: 'Quản lý bài tập' },
+      },
+      {
         path: 'student-management',
         loadChildren: () =>
           import(

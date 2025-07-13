@@ -9,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorComponent } from '../../../shared/components/fxdonad-shared/code-editor/code-editor.component';
-import { Codingervice } from '../../../core/services/api-service/coding.service';
+import { CodingService } from '../../../core/services/api-service/coding.service';
 
 @Component({
   selector: 'app-code-editor-page',
@@ -104,7 +104,7 @@ export class CodeEditorPage implements OnInit, AfterViewChecked {
     },
   ];
 
-  constructor(private fb: FormBuilder, private codingService: Codingervice) {
+  constructor(private fb: FormBuilder, private codingService: CodingService) {
     this.commentForm = this.fb.group({
       comment: ['', Validators.required],
     });
