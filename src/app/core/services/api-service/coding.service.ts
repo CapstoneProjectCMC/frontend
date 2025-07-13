@@ -6,7 +6,7 @@ import { API_CONFIG } from '../config-service/api.enpoints';
 @Injectable({
   providedIn: 'root',
 })
-export class Codingervice {
+export class CodingService {
   constructor(private api: ApiMethod) {}
 
   sendCode(data: string) {

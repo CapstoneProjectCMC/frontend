@@ -62,3 +62,14 @@ export type DecodedJwt = {
   expiresAt?: string; // Đã chuyển đổi từ exp sang chuỗi
   isExpired?: boolean; // Tuỳ chọn: kiểm tra hết hạn
 };
+
+export type EnumType = {
+  sort:
+    | 'CREATED_AT'
+    | 'UPDATED_AT'
+    | 'DELETED_AT'
+    | 'CREATED_BY'
+    | 'UPDATED_BY'
+    | 'DELETED_BY'
+    | 'ORDER_IN_QUIZ';
+};

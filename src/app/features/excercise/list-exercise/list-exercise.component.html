@@ -1,0 +1,14 @@
+<div class="exercise-main-container">
+  <app-main-sidebar
+    [sidebarItems]="sidebarData"
+    [isCollapsed]="isSidebarCollapsed"
+  >
+  </app-main-sidebar>
+  <div class="main-content">
+    <app-breadcrumb></app-breadcrumb>
+    <div class="list-exercise">
+      <app-card-excercise *ngFor="let item of listExercise" [data]="item">
+      </app-card-excercise>
+    </div>
+  </div>
+</div>

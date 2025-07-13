@@ -1,4 +1,5 @@
 import { environment } from '../../../../environments/environment';
+import { EnumType } from '../../models/data-handle';
 
 export const version = '/v1';
 
@@ -8,7 +9,15 @@ export const API_CONFIG = {
     SECONDARY_API: '',
   },
   ENDPOINTS: {
-    GET: {},
+    GET: {
+      GET_ALL_EXERCISE: (
+        page: number,
+        size: number,
+        sort: EnumType['sort'],
+        asc: boolean
+      ) =>
+        `/submission/exercises?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
+    },
     POST: {
       LOGIN: '/identity/auth/login',
       REGISTER: '/identity/auth/register',

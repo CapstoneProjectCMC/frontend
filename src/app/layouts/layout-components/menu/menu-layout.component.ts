@@ -87,42 +87,41 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
 
   // Hover events for submenu
   onMouseEnter(item: SidebarItem): void {
-    if (this.hasChildren(item) && this.mode === 'horizontal') {
-      // Clear any existing timeout
-      if (this.hoverTimeout) {
-        clearTimeout(this.hoverTimeout);
-      }
-
-      // Open submenu immediately
-      this.expandedItems.add(item.id);
-    }
+    // if (this.hasChildren(item) && this.mode === 'horizontal') {
+    //   // Clear any existing timeout
+    //   if (this.hoverTimeout) {
+    //     clearTimeout(this.hoverTimeout);
+    //   }
+    //   // Open submenu immediately
+    //   this.expandedItems.add(item.id);
+    // }
   }
 
   onMouseLeave(item: SidebarItem): void {
-    if (this.hasChildren(item) && this.mode === 'horizontal') {
-      // Add delay before closing to allow moving mouse to submenu
-      this.hoverTimeout = setTimeout(() => {
-        this.expandedItems.delete(item.id);
-      }, 150); // 150ms delay
-    }
+    // if (this.hasChildren(item) && this.mode === 'horizontal') {
+    //   // Add delay before closing to allow moving mouse to submenu
+    //   this.hoverTimeout = setTimeout(() => {
+    //     this.expandedItems.delete(item.id);
+    //   }, 150); // 150ms delay
+    // }
   }
 
   // Hover events for submenu container
   onSubmenuMouseEnter(item: SidebarItem): void {
-    if (this.mode === 'horizontal') {
-      // Clear timeout when hovering over submenu
-      if (this.hoverTimeout) {
-        clearTimeout(this.hoverTimeout);
-      }
-    }
+    // if (this.mode === 'horizontal') {
+    //   // Clear timeout when hovering over submenu
+    //   if (this.hoverTimeout) {
+    //     clearTimeout(this.hoverTimeout);
+    //   }
+    // }
   }
 
   onSubmenuMouseLeave(item: SidebarItem): void {
-    if (this.mode === 'horizontal') {
-      // Close submenu when leaving submenu area
-      this.hoverTimeout = setTimeout(() => {
-        this.expandedItems.delete(item.id);
-      }, 100); // 100ms delay
-    }
+    // if (this.mode === 'horizontal') {
+    //   // Close submenu when leaving submenu area
+    //   this.hoverTimeout = setTimeout(() => {
+    //     this.expandedItems.delete(item.id);
+    //   }, 100); // 100ms delay
+    // }
   }
 }
