@@ -56,14 +56,6 @@ export class HeaderComponent {
     console.log('đã bấm, showProfileMenu:', this.showProfileMenu);
   }
 
-  onLogout() {
-    // TODO: Xử lý đăng xuất
-    this.isMenuVisible = false;
-    setTimeout(() => {
-      this.showProfileMenu = false;
-    }, 300);
-  }
-
   onCloseMenu() {
     this.isMenuVisible = false;
     setTimeout(() => {
