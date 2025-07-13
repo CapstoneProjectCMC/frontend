@@ -32,6 +32,7 @@ export const routes: Routes = [
           ),
         data: { breadcrumb: 'Thống kê' },
       },
+
       {
         path: 'landing',
         loadChildren: () =>
@@ -92,6 +93,14 @@ export const routes: Routes = [
           import('./features/landing/landing.module').then(
             (m) => m.LandingModule
           ),
+      },
+      {
+        path: 'student-management',
+        loadChildren: () =>
+          import(
+            './features/admin/student-management/student-management.module'
+          ).then((m) => m.StudentManagementModule),
+        data: { breadcrumb: 'Quản lý người dùng' },
       },
     ],
   },
