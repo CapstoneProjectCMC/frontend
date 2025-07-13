@@ -15,6 +15,7 @@
         </div>
         <span class="header-logo-divider"></span>
         <app-dropdown-button
+          *ngIf="isLoggedIn"
           [label]="'Học vấn'"
           [options]="organizations"
           [variant]="'primary'"

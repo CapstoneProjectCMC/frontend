@@ -1,5 +1,5 @@
 .wrap-header {
-  height: 85px;
+  height: 80px;
 
   .header {
     width: 100%;
@@ -7,7 +7,7 @@
     top: 0;
     left: 0;
     z-index: 1000;
-    height: 90px;
+    height: 70px;
     background-color: var(--background-color);
     box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.3);
     display: flex;
@@ -188,7 +188,7 @@
   @media (max-width: 720px) {
     .header {
       width: 100vw;
-      height: 44px;
+      height: 60px;
       &-container {
         height: 100%;
         flex-direction: row;
@@ -232,9 +232,9 @@
         }
         .header-auth {
           gap: 4px;
-          &-item-text,
-          &-item-button {
-            font-size: 9px;
+          .header-auth-item-text,
+          .header-auth-item-button {
+            font-size: 9px !important;
             padding: 2px 3px;
           }
         }
@@ -242,7 +242,7 @@
     }
   }
 
-  @media (max-width: 420px) {
+  @media (max-width: 500px) {
     .header {
       width: 100vw;
       height: 55px;
@@ -290,9 +290,9 @@
         }
         .header-auth {
           gap: 4px;
-          &-item-text,
-          &-item-button {
-            font-size: 4px;
+          .header-auth-item-text,
+          .header-auth-item-button {
+            font-size: 9px !important;
             padding: 2px 3px;
           }
         }
@@ -347,9 +347,9 @@
         }
         .header-auth {
           gap: 4px;
-          &-item-text,
-          &-item-button {
-            font-size: 9px;
+          .header-auth-item-text,
+          .header-auth-item-button {
+            font-size: 9px !important;
             padding: 2px 3px;
           }
         }
