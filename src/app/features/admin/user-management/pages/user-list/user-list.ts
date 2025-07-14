@@ -25,6 +25,7 @@ import { sidebarData } from '../../../menu-router.data';
 export class UserListComponent {
   headers = userHeaders;
   sidebarData = sidebarData;
+  isCollapsed = false;
   data = [
     {
       displayName: 'nguyenvana',
