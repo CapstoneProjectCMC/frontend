@@ -18,49 +18,59 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .header-logo {
+      .logo-container {
         display: flex;
         align-items: center;
-        gap: 8px;
-        margin: 20px;
-
-        &:hover {
-          cursor: pointer;
-        }
-
-        &-icon {
-          height: 47px;
-        }
-
-        &-text {
+        .header-logo {
           display: flex;
-          flex-direction: column;
-          gap: 4px;
-          &-name {
-            color: var(--primary-color);
-            font-size: 24px;
-            font-weight: 700;
-            margin: 0;
-            padding-bottom: 0px;
-            text-decoration: underline;
-            text-underline-offset: 4px;
+          align-items: center;
+          gap: 8px;
+          margin: 20px;
+
+          &:hover {
+            cursor: pointer;
           }
-          &-description {
-            font-size: 8px;
-            color: var(--primary-color);
-            margin: 0;
-            padding: 0;
+
+          &-icon {
+            height: 47px;
+          }
+
+          &-text {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            &-name {
+              color: var(--primary-color);
+              font-size: 24px;
+              font-weight: 700;
+              margin: 0;
+              padding-bottom: 0px;
+              text-decoration: underline;
+              text-underline-offset: 4px;
+            }
+            &-description {
+              font-size: 8px;
+              color: var(--primary-color);
+              margin: 0;
+              padding: 0;
+            }
+          }
+          .header-logo-divider {
+            display: inline-block;
+            width: 1px;
+            height: 30px;
+            background-color: var(--text-color);
+            opacity: 0.3;
+            margin-left: 12px;
+            margin-top: 10px;
+            align-self: center;
           }
         }
-        .header-logo-divider {
-          display: inline-block;
-          width: 1px;
-          height: 30px;
-          background-color: var(--text-color);
-          opacity: 0.3;
-          margin-left: 12px;
-          margin-top: 10px;
-          align-self: center;
+        app-dropdown-button {
+          border-radius: 8px;
+          &:hover {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+          }
         }
       }
       .header-auth {
@@ -100,7 +110,8 @@
       }
       .header-action {
         display: flex;
-        flex-direction: row;
+        justify-content: center;
+        align-items: center;
         text-align: center;
         gap: 40px;
         margin-right: 12px;

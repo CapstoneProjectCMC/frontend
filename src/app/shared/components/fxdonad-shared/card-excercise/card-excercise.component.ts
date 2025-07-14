@@ -27,7 +27,7 @@ export class CardExcerciseComponent {
   @Input() data!: CardExcercise;
   @Input() isDarkMode = false;
 
-  role: string = 'admin';
+  role: string = 'user';
   isExpanded = false;
   isSaved = false;
   difficultyStars = [1, 2, 3];

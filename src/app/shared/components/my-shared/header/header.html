@@ -1,22 +1,24 @@
 <div class="wrap-header">
   <div class="header">
     <div class="header-container">
-      <div class="header-logo" (click)="goToHome()">
-        <img
-          class="header-logo-icon"
-          src="landing-assets/Logo.svg"
-          alt="logo"
-        />
-        <div class="header-logo-text">
-          <p class="header-logo-text-name">CodeCampus</p>
-          <span class="header-logo-text-description"
-            >Học tập và kết nối cộng đồng</span
-          >
+      <div class="logo-container">
+        <div class="header-logo" (click)="goToHome()">
+          <img
+            class="header-logo-icon"
+            src="landing-assets/Logo.svg"
+            alt="logo"
+          />
+          <div class="header-logo-text">
+            <p class="header-logo-text-name">CodeCampus</p>
+            <span class="header-logo-text-description"
+              >Học tập và kết nối cộng đồng</span
+            >
+          </div>
+          <span class="header-logo-divider"></span>
         </div>
-        <span class="header-logo-divider"></span>
         <app-dropdown-button
           *ngIf="isLoggedIn"
-          [label]="'Học vấn'"
+          [label]="'Cộng đồng'"
           [options]="organizations"
           [variant]="'primary'"
           [size]="'small'"
@@ -40,6 +42,16 @@
         >
       </div>
       <div class="header-action" *ngIf="isLoggedIn">
+        <div class="toggle-switch-container">
+          <app-toggle-switch
+            [isChecked]="isDarkMode"
+            [disabled]="false"
+            [label]="'Your Label'"
+            [size]="'medium'"
+            (toggleChange)="toggleTheme($event)"
+          >
+          </app-toggle-switch>
+        </div>
         <div class="header-action-notification">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -58,7 +70,7 @@
               d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"
             />
           </svg>
-          <span class="header-notification-badge">
+          <span class="header-notification-badge" *ngIf="notificationCount > 0">
             <p class="header-notification-badge-text">
               {{ notificationCount }}
             </p>

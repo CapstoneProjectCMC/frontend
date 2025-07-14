@@ -4,7 +4,10 @@ import { filter } from 'rxjs/operators';
 import { HeaderComponent } from '../../../shared/components/my-shared/header/header';
 import { FooterComponent } from '../../../shared/components/my-shared/footer/footer';
 import { MenuLayoutComponent } from '../../layout-components/menu/menu-layout.component';
-import { menuItems } from '../../../core/constants/menu-router.data';
+import {
+  menuItems,
+  navStudentItems,
+} from '../../../core/constants/menu-router.data';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -22,7 +25,7 @@ import { CommonModule } from '@angular/common';
 })
 export class AppLayoutComponent implements OnInit {
   visible = true;
-  menuItems = menuItems;
+  menuItems = navStudentItems;
 
   constructor(private router: Router) {}
 

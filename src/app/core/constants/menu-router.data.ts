@@ -198,3 +198,84 @@ export const menuItems: SidebarItem[] = [
     icon: 'fas fa-file-pen',
   },
 ];
+
+export const navStudentItems: SidebarItem[] = [
+  {
+    id: 'post',
+    path: 'second/example-using-component-slide/app-menu-layout',
+    label: 'Bài viết',
+    icon: 'fas fa-home',
+    isActive: true,
+  },
+  {
+    id: 'post',
+    path: 'exercise/exercise-list',
+    label: 'Bài tập',
+    icon: 'fas fa-home',
+    isActive: true,
+  },
+  {
+    id: 'components',
+    path: '/second/example-using-component-slide',
+    label: 'Components',
+    icon: 'fas fa-code',
+    children: [
+      {
+        id: 'code-editor',
+        path: '/second/example-using-component-slide/code-editor',
+        label: 'Code Editor',
+        icon: 'fas fa-file-code',
+      },
+      {
+        id: 'input-button',
+        path: '/second/example-using-component-slide/input-button',
+        label: 'Input Button',
+        icon: 'fas fa-keyboard',
+      },
+      {
+        id: 'dropdown',
+        path: '/second/example-using-component-slide/dropdown',
+        label: 'Dropdown',
+        icon: 'fas fa-chevron-down',
+      },
+      {
+        id: 'text-editor',
+        path: '/second/example-using-component-slide/text-editor',
+        label: 'Text Editor',
+        icon: 'fas fa-edit',
+      },
+      {
+        id: 'card-data',
+        path: '/second/example-using-component-slide/card-data',
+        label: 'Card Data',
+        icon: 'fas fa-id-card',
+      },
+      {
+        id: 'trending',
+        path: '/second/example-using-component-slide/trending',
+        label: 'Trending',
+        icon: 'fas fa-fire',
+      },
+    ],
+  },
+  {
+    id: 'auth',
+    path: '/main/auth',
+    label: 'Authentication',
+    icon: 'fas fa-user',
+    children: [
+      {
+        id: 'login',
+        path: '/main/auth/login',
+        label: 'Login',
+        icon: 'fas fa-sign-in-alt',
+      },
+      {
+        id: 'register',
+        path: '/main/auth/register',
+        label: 'Register',
+        icon: 'fas fa-user-plus',
+      },
+    ],
+  },
+];

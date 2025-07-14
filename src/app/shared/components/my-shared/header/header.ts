@@ -4,19 +4,40 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ProfileMenuComponent } from './profile-menu.component';
 import { DropdownButtonComponent } from '../../fxdonad-shared/dropdown/dropdown.component';
+
+import { decodeJWT } from '../../../utils/stringProcess';
+
+import { ToggleSwitch } from '../../fxdonad-shared/toggle-switch/toggle-switch';
+import { ThemeService } from '../../../../styles/theme-service/theme.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   standalone: true,
-  imports: [NgIf, ProfileMenuComponent, DropdownButtonComponent],
+  imports: [NgIf, ProfileMenuComponent, DropdownButtonComponent, ToggleSwitch],
 })
 export class HeaderComponent {
-  @Input() isLoggedIn: boolean = false;
-  @Input() notificationCount: number = 0;
+  isDarkMode: boolean = false;
+  notificationCount: number = 10;
+  isLoggedIn: boolean = false;
   showProfileMenu = false;
   isMenuVisible = false;
-  constructor(private router: Router, private store: Store) {}
+  timeExpiresAt: string = '';
+  role: string = '';
+
+  constructor(
+    private router: Router,
+    private store: Store,
+    private themeService: ThemeService
+  ) {
+    this.timeExpiresAt =
+      decodeJWT(localStorage.getItem('token') ?? '')?.expiresAt || '';
+    const expiresAt = new Date(this.timeExpiresAt).getTime();
+    this.isLoggedIn = !isNaN(expiresAt) && Date.now() < expiresAt;
+
+    this.role =
+      decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles || '';
+  }
 
   organizations = [
     { value: 0, label: 'Cộng đồng' },
@@ -55,6 +76,11 @@ export class HeaderComponent {
       this.isMenuVisible = true; // Set ngay lập tức để tránh flash
     }
     console.log('đã bấm, showProfileMenu:', this.showProfileMenu);
+  }
+
+  toggleTheme(isChecked: boolean) {
+    this.themeService.toggleTheme();
+    this.isDarkMode = isChecked;
   }
 
   onCloseMenu() {

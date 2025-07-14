@@ -1,23 +1,7 @@
 <div class="app-container">
   <router-outlet />
   <app-breadcrumb style="display: none"></app-breadcrumb>
-  <div class="toggle-switch-container">
-    <app-tooltip
-      [content]="'Đổi theme'"
-      [position]="'right'"
-      [delay]="1"
-      [distance]="10"
-    >
-      <app-toggle-switch
-        [isChecked]="isDarkMode"
-        [disabled]="false"
-        [label]="'Your Label'"
-        [size]="'medium'"
-        (toggleChange)="toggleTheme($event)"
-      >
-      </app-toggle-switch>
-    </app-tooltip>
-  </div>
+
   <!-- Danh sách thông báo -->
   <div class="notification-wrapper">
     <app-notification-card
@@ -32,3 +16,8 @@
     ></app-notification-card>
   </div>
 </div>
+
+<app-loading-overlay
+  [visible]="(isLoading$ | async) ?? false"
+  [message]="(loadingContent$ | async) ?? 'Xin chờ...'"
+></app-loading-overlay>

@@ -1,5 +1,7 @@
 // utils.ts
 
+import { DecodedJwtPayload } from '../../core/models/data-handle';
+
 /**
  * Xử lý Tên đầy đủ: Chuyển đổi chữ cái đầu mỗi từ thành chữ hoa.
  * @param fullName Tên đầy đủ người dùng.
@@ -136,7 +138,7 @@ export function decodeJWT(token: string): {
     };
 
     const header = base64UrlDecode(header64);
-    const payload = base64UrlDecode(payload64);
+    const payload = base64UrlDecode(payload64) as DecodedJwtPayload;
 
     const issuedAt = payload.iat
       ? new Date(payload.iat * 1000).toLocaleString()
