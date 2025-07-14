@@ -12,6 +12,10 @@ import { ExerciseItem } from '../../../core/models/exercise.model';
 import { sendNotification } from '../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
 import { mapExerciseResToCardUI } from '../../../shared/utils/mapData';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../shared/store/loading-state/loading.action';
 
 @Component({
   selector: 'app-list-exercise',
@@ -36,14 +40,19 @@ export class ListExerciseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(
+      setLoading({ isLoading: true, content: 'Đang xử lý...' })
+    );
     this.exerciseService.getAllExercise(1, 10, 'CREATED_AT', false).subscribe({
       next: (res) => {
         this.listExercise = this.mapExerciseResToCardDataUI(res.result.data);
 
         sendNotification(this.store, 'Thành công', res.message, 'success');
+        this.store.dispatch(clearLoading());
       },
       error: (err) => {
         console.log(err);
+        this.store.dispatch(clearLoading());
       },
     });
   }

@@ -8,6 +8,7 @@ import { formReducer } from './shared/store/open-form-state/form.reducer';
 import { notificationReducer } from './shared/store/notification/notification.reducer';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
+import { loadingReducer } from './shared/store/loading-state/loading.reduce';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,6 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideStore({
       form: formReducer,
       notification: notificationReducer,
+      loading: loadingReducer,
     }),
     provideAnimations(),
   ],
