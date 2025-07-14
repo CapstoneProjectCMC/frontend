@@ -1,0 +1,203 @@
+.table-father {
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  overflow-x: auto;
+
+  .main-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+
+    th {
+      text-align: center !important;
+      font-size: 14px;
+      font-weight: 600 !important;
+      height: 23.5px;
+      padding: 12px 15px;
+      color: #001f2d;
+      width: auto;
+    }
+
+    td {
+      text-align: left;
+      font-size: 14px;
+      height: 32.2px;
+      padding: 10px 15px;
+      color: #001f2d;
+      width: auto;
+    }
+
+    th.displayName-column,
+    td.displayName-column {
+      width: 25%;
+    }
+
+    th.dob-column,
+    td.dob-column {
+      width: 15%;
+    }
+
+    th.role-column,
+    td.role-column {
+      width: 15%;
+    }
+
+    th.status-column,
+    td.status-column {
+      width: 12%;
+    }
+
+    th.org-column,
+    td.org-column {
+      width: 33%;
+    }
+
+    .table-header {
+      background-color: #d4fdda;
+      background-color: #d4fdda;
+      th {
+        border-bottom: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        color: #001f2d;
+
+        &.termSalary-column {
+          text-align: center;
+        }
+      }
+    }
+
+    .table-content {
+      background-color: white;
+      tr {
+        transition: background-color 0.2s ease-in-out;
+        &:nth-child(even) {
+          background-color: #f5f5f5;
+        }
+        &:hover {
+          background-color: #e9f5ff;
+        }
+        td {
+          border-bottom: 1px solid #ddd;
+          span {
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .edit-button {
+            background-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease;
+
+            .label {
+              color: #009ae3;
+              font-weight: 600;
+              transition: color 0.3s ease;
+            }
+            .label:hover {
+              color: #850303;
+            }
+          }
+          .Editbutton {
+            cursor: auto;
+            background-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            .Pending {
+              background-color: #fbfeff;
+              border: 1px solid #009ae3;
+              border-radius: 8px;
+              width: 70px;
+              height: 30px;
+              color: #009ae3 !important;
+              font-size: 14px;
+              font-weight: 700;
+              cursor: pointer;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+            .Completed {
+              color: #0fa10a;
+              font-size: 14px;
+              font-weight: 400;
+            }
+            .InProgress {
+              color: #fca000;
+              font-size: 14px;
+              font-weight: 400;
+            }
+            .Rejected {
+              color: #ff1900;
+              font-size: 14px;
+              font-weight: 400;
+            }
+          }
+          .delete-button:hover {
+            background-color: #adadad;
+          }
+
+          .btn-actions {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            .delete :hover {
+              background-color: #adadad;
+            }
+            .edit :hover {
+              background-color: #adadad;
+            }
+
+            .result {
+              background-color: #1cb4a2;
+              width: 84px;
+              height: 30px;
+              .resultcomponent {
+                padding: 0px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+                .view-icon {
+                  mask-size: cover;
+                  width: 20px;
+                  height: auto;
+                  background: white;
+                  aspect-ratio: 1;
+                }
+                span {
+                  font-size: 14px;
+                }
+              }
+            }
+            .result:hover {
+              background-color: #168c7f;
+            }
+
+            .detail {
+              background-color: transparent;
+              width: 40px;
+              height: 30px;
+            }
+            .detail:hover {
+              background-color: #e9e6e6;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .main-table {
+      th,
+      td {
+        font-size: 12px;
+        padding: 8px;
+      }
+    }
+  }
+}

@@ -1,13 +1,13 @@
 // auth-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StudentListComponent } from './pages/student-list/student-list';
+import { UserListComponent } from './pages/user-list/user-list';
 
 const routes: Routes = [
   {
-    path: 'student-list',
-    component: StudentListComponent,
-    data: { skipBreadcrumb: true },
+    path: 'user-list',
+    component: UserListComponent,
+    data: { breadcrumb: 'Danh sách người dùng' },
   },
 ];
 
@@ -15,4 +15,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class StudentManagementRoutingModule {}
+export class UserManagementRoutingModule {}
