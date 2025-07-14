@@ -1,19 +1,21 @@
 <div class="wrap-header">
   <div class="header">
     <div class="header-container">
-      <div class="header-logo" (click)="goToHome()">
-        <img
-          class="header-logo-icon"
-          src="landing-assets/Logo.svg"
-          alt="logo"
-        />
-        <div class="header-logo-text">
-          <p class="header-logo-text-name">CodeCampus</p>
-          <span class="header-logo-text-description"
-            >Học tập và kết nối cộng đồng</span
-          >
+      <div class="logo-container">
+        <div class="header-logo" (click)="goToHome()">
+          <img
+            class="header-logo-icon"
+            src="landing-assets/Logo.svg"
+            alt="logo"
+          />
+          <div class="header-logo-text">
+            <p class="header-logo-text-name">CodeCampus</p>
+            <span class="header-logo-text-description"
+              >Học tập và kết nối cộng đồng</span
+            >
+          </div>
+          <span class="header-logo-divider"></span>
         </div>
-        <span class="header-logo-divider"></span>
         <app-dropdown-button
           *ngIf="isLoggedIn"
           [label]="'Học vấn'"
