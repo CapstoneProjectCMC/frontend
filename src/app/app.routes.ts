@@ -103,10 +103,10 @@ export const routes: Routes = [
         data: { breadcrumb: 'Quản lý bài tập' },
       },
       {
-        path: 'student-management',
+        path: 'user-management',
         loadChildren: () =>
           import(
-            './features/admin/student-management/student-management.module'
+            './features/admin/user-management/user-management.module'
           ).then((m) => m.StudentManagementModule),
         data: { breadcrumb: 'Quản lý người dùng' },
       },
