@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { HeaderComponent } from '../../../shared/components/my-shared/header/header';
@@ -27,11 +27,14 @@ export class AppLayoutComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
+    // Cập nhật visible ngay khi khởi tạo dựa trên url hiện tại
+    const currentUrl = this.router.url;
+    this.visible = currentUrl !== '/';
+
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         console.log('Current URL:', event.urlAfterRedirects);
-        // Nếu url là "/" thì ẩn, ngược lại thì hiện
         this.visible = event.urlAfterRedirects !== '/';
       });
   }
