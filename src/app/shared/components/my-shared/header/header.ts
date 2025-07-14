@@ -40,6 +40,7 @@ export class HeaderComponent {
   }
 
   goToHome() {
+    console.log('Click về trang chủ');
     this.router.navigate(['/']);
   }
 
