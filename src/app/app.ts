@@ -58,11 +58,6 @@ export class App implements OnInit {
     this.isDarkMode = this.themeService.getCurrentTheme() === 'dark';
   }
 
-  toggleTheme(isChecked: boolean) {
-    this.themeService.toggleTheme();
-    this.isDarkMode = isChecked;
-  }
-
   trackById(index: number, notif: any) {
     return notif.id;
   }

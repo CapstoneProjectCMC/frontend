@@ -18,7 +18,7 @@
         </div>
         <app-dropdown-button
           *ngIf="isLoggedIn"
-          [label]="'Học vấn'"
+          [label]="'Cộng đồng'"
           [options]="organizations"
           [variant]="'primary'"
           [size]="'small'"
@@ -42,6 +42,16 @@
         >
       </div>
       <div class="header-action" *ngIf="isLoggedIn">
+        <div class="toggle-switch-container">
+          <app-toggle-switch
+            [isChecked]="isDarkMode"
+            [disabled]="false"
+            [label]="'Your Label'"
+            [size]="'medium'"
+            (toggleChange)="toggleTheme($event)"
+          >
+          </app-toggle-switch>
+        </div>
         <div class="header-action-notification">
           <svg
             xmlns="http://www.w3.org/2000/svg"

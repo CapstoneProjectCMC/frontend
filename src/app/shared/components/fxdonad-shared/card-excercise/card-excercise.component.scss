@@ -77,6 +77,7 @@
 
       .clamp-2-lines {
         display: -webkit-box;
+        /* stylelint-disable-next-line property-no-unknown */
         -webkit-line-clamp: 2; //tối đa 2 dòng, bị thừa thì sẽ ẩn đi
         -webkit-box-orient: vertical;
         overflow: hidden;

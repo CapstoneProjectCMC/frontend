@@ -5,6 +5,11 @@
   display: inline-block;
   width: 64px;
   height: 34px;
+  cursor: pointer;
+
+  &:hover {
+    filter: drop-shadow(0 2px 4px rgba(0 0 0.5));
+  }
 }
 
 .switch input {
@@ -15,7 +20,6 @@
 
 .slider {
   position: absolute;
-  cursor: pointer;
   top: 0;
   left: 0;
   right: 0;
