@@ -13,7 +13,7 @@
     background: var(--card-excercize-bg);
     padding: 10px;
     transition: all 0.3s ease;
-    max-width: 350px;
+    width: 350px;
     border-radius: 12px 0 0 12px;
 
     &.border {
@@ -174,7 +174,7 @@
 
     .actions {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       margin-top: 16px;
       .status-toggle {

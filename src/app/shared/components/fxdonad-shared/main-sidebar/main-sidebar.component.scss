@@ -14,7 +14,7 @@
   // );
   background-color: transparent;
   color: var(--text-color);
-  border-right: 1px solid var(--text-color);
+  border-right: 1px solid var(--border-color);
   position: relative;
   overflow: hidden;
   transition: width 0.3s, min-width 0.3s, max-width 0.3s;

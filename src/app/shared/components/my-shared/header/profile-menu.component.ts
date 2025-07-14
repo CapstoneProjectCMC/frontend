@@ -51,5 +51,6 @@ export class ProfileMenuComponent {
         console.log('lỗi logout');
       },
     });
+    localStorage.removeItem('token');
   }
 }

@@ -106,13 +106,11 @@ export class Login {
       next: (res) => {
         this.loginResponse = res.result;
         this.isLoading = false;
-        this.userInfo = decodeJWT(res.result.accessToken)?.payload;
 
-        //Hiện có thể lưu tại 3 chỗ
-        this.saveUserInfoToSession(this.userInfo);
-        this.saveUserInfoToCookie(this.userInfo);
         localStorage.setItem('token', res.result.accessToken);
         sendNotification(this.store, res.status, res.message, 'success');
+
+        this.router.navigate(['/exercise/exercise-list']);
       },
       error: (err) => {
         console.log(err);
@@ -147,14 +145,6 @@ export class Login {
     window.location.href = `${
       OAuthConfig.facebook.authUri
     }?${params.toString()}`;
-  }
-
-  logout() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('token_type');
-    localStorage.removeItem('token_expiry');
-    localStorage.removeItem('token_scope');
-    localStorage.removeItem('user_info');
   }
 
   loginWithDifferentAccount() {

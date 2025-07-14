@@ -100,7 +100,6 @@ export const routes: Routes = [
           import('./features/excercise/exercise.module').then(
             (m) => m.ExerciseModule
           ),
-        data: { skipBreadcrumb: true },
       },
       {
         path: 'user-management',
