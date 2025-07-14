@@ -4,10 +4,9 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ProfileMenuComponent } from './profile-menu.component';
 import { DropdownButtonComponent } from '../../fxdonad-shared/dropdown/dropdown.component';
-import { DecodedJwtPayload } from '../../../../core/models/data-handle';
+
 import { decodeJWT } from '../../../utils/stringProcess';
-import { timeout } from 'rxjs';
-import { Tooltip } from '../../fxdonad-shared/tooltip/tooltip';
+
 import { ToggleSwitch } from '../../fxdonad-shared/toggle-switch/toggle-switch';
 import { ThemeService } from '../../../../styles/theme-service/theme.service';
 @Component({
@@ -15,13 +14,7 @@ import { ThemeService } from '../../../../styles/theme-service/theme.service';
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   standalone: true,
-  imports: [
-    NgIf,
-    ProfileMenuComponent,
-    DropdownButtonComponent,
-    Tooltip,
-    ToggleSwitch,
-  ],
+  imports: [NgIf, ProfileMenuComponent, DropdownButtonComponent, ToggleSwitch],
 })
 export class HeaderComponent {
   isDarkMode: boolean = false;

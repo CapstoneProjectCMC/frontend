@@ -8,10 +8,13 @@ import { Store } from '@ngrx/store';
 import { AlertNotificationComponent } from './shared/components/fxdonad-shared/alert-notification/alert-notification.component';
 import { removeNotification } from './shared/store/notification/notification.action';
 import { CommonModule } from '@angular/common';
-import { Tooltip } from './shared/components/fxdonad-shared/tooltip/tooltip';
-import { ToggleSwitch } from './shared/components/fxdonad-shared/toggle-switch/toggle-switch';
 import { BreadcrumbComponent } from './shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { LoadingOverlayComponent } from './shared/components/fxdonad-shared/loading-overlay/loading-overlay.component';
+import {
+  selectIsLoading,
+  selectLoadingContent,
+} from './shared/store/loading-state/loading.selector';
 
 @Component({
   selector: 'app-root',
@@ -19,9 +22,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
     CommonModule,
     RouterOutlet,
     AlertNotificationComponent,
-    Tooltip,
-    ToggleSwitch,
     BreadcrumbComponent,
+    LoadingOverlayComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',
@@ -44,12 +46,17 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ],
 })
 export class App implements OnInit {
+  isLoading$: Observable<boolean>;
+  loadingContent$: Observable<string>;
   notifications$: Observable<INotification[]>;
   protected title = 'codecampus';
   isDarkMode: boolean = false;
 
   constructor(private themeService: ThemeService, private store: Store) {
     this.notifications$ = this.store.select(selectNotifications);
+
+    this.isLoading$ = this.store.select(selectIsLoading);
+    this.loadingContent$ = this.store.select(selectLoadingContent);
   }
 
   ngOnInit() {

@@ -16,3 +16,8 @@
     ></app-notification-card>
   </div>
 </div>
+
+<app-loading-overlay
+  [visible]="(isLoading$ | async) ?? false"
+  [message]="(loadingContent$ | async) ?? 'Xin chờ...'"
+></app-loading-overlay>
