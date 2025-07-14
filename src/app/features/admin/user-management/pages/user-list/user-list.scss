@@ -1,0 +1,30 @@
+.layout-container {
+  display: flex;
+  height: 100vh; // hoặc 100% nếu bạn muốn điều chỉnh trong bố cục cha
+
+  .sidebar-container {
+    width: 240px;
+    transition: width 0.3s ease;
+
+    &.collapsed {
+      width: 60px;
+    }
+  }
+
+  .main-container {
+    flex: 1; // Tự động chiếm phần còn lại
+    display: flex;
+    flex-direction: column;
+    padding: 16px; // hoặc tuỳ chỉnh
+    overflow: auto;
+
+    app-breadcrumb {
+      margin-bottom: 12px;
+    }
+
+    app-table {
+      flex: 1;
+      overflow: auto;
+    }
+  }
+}

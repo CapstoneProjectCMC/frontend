@@ -1,6 +1,6 @@
 .table-father {
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: var(--background-color);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   overflow-x: auto;
 
@@ -15,7 +15,7 @@
       font-weight: 600 !important;
       height: 23.5px;
       padding: 12px 15px;
-      color: #001f2d;
+      color: var(--text-color);
       width: auto;
     }
 
