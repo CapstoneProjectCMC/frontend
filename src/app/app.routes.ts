@@ -100,7 +100,7 @@ export const routes: Routes = [
           import('./features/excercise/exercise.module').then(
             (m) => m.ExerciseModule
           ),
-        data: { breadcrumb: 'Quản lý bài tập' },
+        data: { skipBreadcrumb: true },
       },
       {
         path: 'student-management',

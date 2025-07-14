@@ -1,9 +1,10 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { SidebarItem } from '../../../core/models/data-handle';
 import { ThemeService } from '../../../styles/theme-service/theme.service';
 import { Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-menu-layout',
@@ -22,13 +23,18 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
   private themeSubscription?: Subscription;
   private hoverTimeout?: any;
 
-  constructor(private themeService: ThemeService) {}
+  constructor(private themeService: ThemeService, private router: Router) {}
 
   ngOnInit() {
-    // Set first item as active by default
-    if (this.menuItems.length > 0) {
-      this.activeItem = this.menuItems[0].id;
-    }
+    // Đồng bộ activeItem với url hiện tại khi khởi tạo
+    this.updateActiveItemByUrl(this.router.url);
+
+    // Lắng nghe sự kiện chuyển route để cập nhật activeItem
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.updateActiveItemByUrl(event.urlAfterRedirects);
+      });
 
     // Subscribe to theme changes
     this.theme = this.themeService.getCurrentTheme();
@@ -37,6 +43,30 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
         this.theme = newTheme;
       }
     );
+  }
+
+  /**
+   * Cập nhật activeItem dựa trên url hiện tại, kiểm tra cả menu con
+   */
+  updateActiveItemByUrl(url: string) {
+    // Tìm item có path khớp với url hiện tại
+    const found = this.menuItems.find((item) => item.path === url);
+    if (found) {
+      this.activeItem = found.id;
+      return;
+    }
+    // Kiểm tra children (submenu)
+    for (const item of this.menuItems) {
+      if (item.children) {
+        const child = item.children.find((child) => child.path === url);
+        if (child) {
+          this.activeItem = child.id;
+          return;
+        }
+      }
+    }
+    // Nếu không tìm thấy, bỏ active
+    this.activeItem = '';
   }
 
   ngOnDestroy() {
