@@ -9,6 +9,11 @@ import {
 import { AuthService } from '../../../../core/services/api-service/auth.service';
 import { sendNotification } from '../../../utils/notification';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../store/loading-state/loading.action';
 
 @Component({
   selector: 'app-profile-menu',
@@ -25,7 +30,8 @@ export class ProfileMenuComponent {
   constructor(
     private elementRef: ElementRef,
     private authService: AuthService,
-    private store: Store
+    private store: Store,
+    private router: Router
   ) {}
 
   @HostListener('document:click', ['$event'])
@@ -39,15 +45,19 @@ export class ProfileMenuComponent {
   }
 
   onLogout() {
-    this.loading = true;
+    this.store.dispatch(
+      setLoading({ isLoading: true, content: 'Đang đăng xuất, xin chờ...' })
+    );
     this.authService.logout().subscribe({
       next: (res) => {
-        this.loading = false;
+        this.store.dispatch(clearLoading());
         this.status = res.status;
         sendNotification(this.store, 'Thông báo', res.message, 'success');
+
+        this.router.navigate(['/auth/identity/login']);
       },
       error: (err) => {
-        this.loading = false;
+        this.store.dispatch(clearLoading());
         console.log('lỗi logout');
       },
     });

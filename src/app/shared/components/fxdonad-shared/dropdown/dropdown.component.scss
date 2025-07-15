@@ -43,9 +43,10 @@
     }
 
     &.secondary {
-      padding: 8px 12px;
+      padding: 14px 12px;
       color: rgb(99, 99, 99);
-      background-color: #cfcfcf;
+      background-color: var(--background-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     }
 
     &.outlined {

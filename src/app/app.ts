@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './styles/theme-service/theme.service';
 import { INotification } from './core/models/notification.models';
@@ -15,6 +20,8 @@ import {
   selectIsLoading,
   selectLoadingContent,
 } from './shared/store/loading-state/loading.selector';
+import { ChangeDetectorRef } from '@angular/core';
+import { startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -45,24 +52,34 @@ import {
     ]),
   ],
 })
-export class App implements OnInit {
+export class App implements OnInit, AfterViewInit {
   isLoading$: Observable<boolean>;
   loadingContent$: Observable<string>;
   notifications$: Observable<INotification[]>;
   protected title = 'codecampus';
   isDarkMode: boolean = false;
 
-  constructor(private themeService: ThemeService, private store: Store) {
+  constructor(
+    private themeService: ThemeService,
+    private store: Store,
+    private cdr: ChangeDetectorRef
+  ) {
     this.notifications$ = this.store.select(selectNotifications);
 
-    this.isLoading$ = this.store.select(selectIsLoading);
-    this.loadingContent$ = this.store.select(selectLoadingContent);
+    this.isLoading$ = this.store.select(selectIsLoading).pipe(startWith(false));
+    this.loadingContent$ = this.store
+      .select(selectLoadingContent)
+      .pipe(startWith('Xin chờ...'));
   }
 
   ngOnInit() {
     // Khởi tạo theme từ localStorage
     this.themeService.initTheme();
     this.isDarkMode = this.themeService.getCurrentTheme() === 'dark';
+  }
+
+  ngAfterViewInit() {
+    this.cdr.detectChanges();
   }
 
   trackById(index: number, notif: any) {
@@ -72,5 +89,6 @@ export class App implements OnInit {
   // Xóa thông báo theo ID
   removeNotification(id: string) {
     this.store.dispatch(removeNotification({ id }));
+    this.cdr.markForCheck();
   }
 }

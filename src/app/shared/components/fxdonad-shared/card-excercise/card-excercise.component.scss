@@ -8,6 +8,10 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 
+  &:active {
+    box-shadow: none;
+  }
+
   .info-card {
     flex: 4;
     background: var(--card-excercize-bg);
@@ -115,15 +119,15 @@
           border-radius: 12px;
           font-size: 0.8rem;
           font-weight: 500;
-          &.easy {
+          &.EASY {
             background: #e8f5e9;
             color: #2e7d32;
           }
-          &.medium {
+          &.MEDIUM {
             background: #fff3e0;
             color: #f57c00;
           }
-          &.hard {
+          &.HARD {
             background: #ffebee;
             color: #c62828;
           }
