@@ -1,13 +1,63 @@
 .exercise-main-container {
   display: flex;
+  width: 100%;
+  height: calc(100vh - 130px);
 
   .main-content {
     display: flex;
     flex-direction: column;
+    flex: 1;
+    height: calc(100vh - 140px);
+    margin-left: 12px;
+    box-sizing: border-box;
+
+    app-breadcrumb {
+      margin-left: 16px;
+    }
+
+    .filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      max-width: calc(100vw - 350px);
+      gap: 16px;
+      align-items: center;
+      justify-content: flex-start;
+      margin: 0 0 12px 16px;
+
+      app-input {
+        flex: 2 1 300px;
+        min-width: 200px;
+        max-width: 400px;
+        width: 100%;
+      }
+
+      .dropdown-filter {
+        flex: 1 1 180px;
+        min-width: 140px;
+        max-width: 220px;
+        width: 100%;
+      }
+    }
+
     .list-exercise {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
+      overflow: auto;
+
+      flex: 1;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
     }
+
+    .loading-more {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .list-exercise {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,7 +1,8 @@
 .app-default-container {
   display: flex;
-  max-width: 100vw;
-  box-sizing: border-box;
-  flex-direction: column;
   width: 100%;
+  flex-direction: column;
+  .main-content-app-container {
+    max-width: 100%;
+  }
 }

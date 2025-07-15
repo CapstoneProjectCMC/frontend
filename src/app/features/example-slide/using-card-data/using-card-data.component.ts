@@ -21,7 +21,7 @@ export class UsingCardDataComponent {
       avatar: 'https://via.placeholder.com/150',
     },
     uploadTime: this.newDate.toString(),
-    difficulty: 'hard',
+    difficulty: 'HARD',
     tags: new Set(['tag1', 'tag2', 'tag3', 'tag2', 'tag3', 'tag2', 'tag3']),
     status: 'pending',
     approval: 'pending',

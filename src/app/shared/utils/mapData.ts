@@ -6,11 +6,11 @@ export function mapExerciseResToCardUI(exercise: ExerciseItem): CardExcercise {
     title: exercise.title,
     description: exercise.description,
     uploader: {
-      name: 'Chưa rõ',
+      name: 'Ẩn danh',
       avatar: '',
     },
     uploadTime: exercise.createdAt,
-    difficulty: 'easy',
+    difficulty: exercise.difficulty,
     tags: exercise.tags,
     status: 'completed',
     approval: 'accepted',

@@ -2,6 +2,8 @@
   <app-header></app-header>
   <app-menu-layout [menuItems]="menuItems" mode="horizontal" *ngIf="visible">
   </app-menu-layout>
-  <router-outlet />
+  <div class="main-content-app-container">
+    <router-outlet />
+  </div>
   <app-footer></app-footer>
 </div>

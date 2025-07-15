@@ -3,21 +3,25 @@
   <app-breadcrumb style="display: none"></app-breadcrumb>
 
   <!-- Danh sách thông báo -->
-  <div class="notification-wrapper">
-    <app-notification-card
-      *ngFor="let notif of (notifications$ | async)?.slice(0, 4); let i = index; trackBy: trackById"
-      [title]="notif.title"
-      [message]="notif.message"
-      [type]="notif.type"
-      [timestamp]="notif.timestamp"
-      (closed)="removeNotification(notif.id)"
-      [ngClass]="'stack-' + i"
-      [@stackAnimation]="i"
-    ></app-notification-card>
-  </div>
+  <ng-container *ngIf="notifications$ | async as notifications">
+    <div class="notification-wrapper">
+      <app-notification-card
+        *ngFor="let notif of notifications.slice(0, 4); trackBy: trackById; let i = index"
+        [title]="notif.title"
+        [message]="notif.message"
+        [type]="notif.type"
+        [timestamp]="notif.timestamp"
+        (closed)="removeNotification(notif.id)"
+        [@stackAnimation]="i"
+        [ngClass]="'stack-' + i"
+      ></app-notification-card>
+    </div>
+  </ng-container>
 </div>
 
-<app-loading-overlay
-  [visible]="(isLoading$ | async) ?? false"
-  [message]="(loadingContent$ | async) ?? 'Xin chờ...'"
-></app-loading-overlay>
+<ng-container *ngIf="(isLoading$ | async) as isLoading">
+  <app-loading-overlay
+    [visible]="isLoading"
+    [message]="(loadingContent$ | async) ?? 'Xin chờ...'"
+  ></app-loading-overlay>
+</ng-container>

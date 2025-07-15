@@ -6,9 +6,90 @@
   </app-main-sidebar>
   <div class="main-content">
     <app-breadcrumb></app-breadcrumb>
-    <div class="list-exercise">
+    <div class="filter-container">
+      <app-input
+        label=""
+        placeholder="Bài tập muốn tìm"
+        [value]="username"
+        (valueChange)="handleInputChange($event)"
+        [required]="false"
+        [minLength]="3"
+        [variant]="'primary'"
+        [errorMessage]="usernameError"
+        [isSvg]="false"
+        [icon]="'fas fa-search'"
+      ></app-input>
+
+      <div class="dropdown-filter">
+        <app-dropdown-button
+          [label]="'Tags'"
+          [options]="genres"
+          [variant]="'secondary'"
+          [size]="'medium'"
+          [customDropField]="'main-type'"
+          [disabled]="false"
+          [multiSelect]="true"
+          [isDisplayCheckbox]="false"
+          (onSelect)="handleSelect('tags', $event)"
+          [isOpen]="activeDropdown === 'tags'"
+          (toggle)="toggleDropdown('tags')"
+          [isDisplaySelectedOpptionLabels]="true"
+          [isButtonControl]="false"
+          [isSearchable]="true"
+          [minHeight]="true"
+          [needIndexColor]="true"
+        >
+        </app-dropdown-button>
+      </div>
+      <div class="dropdown-filter">
+        <app-dropdown-button
+          [label]="'Độ khó'"
+          [options]="genres"
+          [variant]="'secondary'"
+          [size]="'medium'"
+          [customDropField]="'main-type'"
+          [disabled]="false"
+          [multiSelect]="true"
+          [isDisplayCheckbox]="false"
+          (onSelect)="handleSelect('do-kho', $event)"
+          [isOpen]="activeDropdown === 'do-kho'"
+          (toggle)="toggleDropdown('do-kho')"
+          [isDisplaySelectedOpptionLabels]="true"
+          [isButtonControl]="false"
+          [isSearchable]="true"
+          [minHeight]="true"
+          [needIndexColor]="true"
+        >
+        </app-dropdown-button>
+      </div>
+      <div class="dropdown-filter">
+        <app-dropdown-button
+          [label]="'Trạng thái'"
+          [options]="genres"
+          [variant]="'secondary'"
+          [size]="'medium'"
+          [customDropField]="'main-type'"
+          [disabled]="false"
+          [multiSelect]="true"
+          [isDisplayCheckbox]="false"
+          (onSelect)="handleSelect('trang-thai', $event)"
+          [isOpen]="activeDropdown === 'trang-thai'"
+          (toggle)="toggleDropdown('trang-thai')"
+          [isDisplaySelectedOpptionLabels]="true"
+          [isButtonControl]="false"
+          [isSearchable]="true"
+          [minHeight]="true"
+          [needIndexColor]="true"
+        >
+        </app-dropdown-button>
+      </div>
+    </div>
+    <div class="list-exercise" (scroll)="onListScroll($event)">
       <app-card-excercise *ngFor="let item of listExercise" [data]="item">
       </app-card-excercise>
+    </div>
+    <div *ngIf="isLoadingMore" class="loading-more">
+      Đang tải thêm, xin chờ...
     </div>
   </div>
 </div>

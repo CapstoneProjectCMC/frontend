@@ -10,11 +10,11 @@ export interface CardExcercise {
     avatar: string;
   };
   uploadTime: string;
-  difficulty: 'easy' | 'medium' | 'hard';
+  difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   tags: Set<string>;
   status: 'completed' | 'pending';
   approval: 'accepted' | 'pending' | 'rejected';
-  type: 'CODE' | 'QUIZ';
+  type: 'CODING' | 'QUIZ';
 }
 
 @Component({
@@ -39,13 +39,13 @@ export class CardExcerciseComponent {
 
   setDifficultyLevel() {
     switch (this.data.difficulty) {
-      case 'easy':
+      case 'EASY':
         this.difficultyLevel = 1;
         break;
-      case 'medium':
+      case 'MEDIUM':
         this.difficultyLevel = 2;
         break;
-      case 'hard':
+      case 'HARD':
         this.difficultyLevel = 3;
         break;
     }

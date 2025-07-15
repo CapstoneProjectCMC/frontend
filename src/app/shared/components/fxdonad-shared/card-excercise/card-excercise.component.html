@@ -58,10 +58,12 @@
       <div class="part-type-ex">
         <i
           [ngClass]="
-            data.type === 'CODE' ? 'fas fa-code' : 'fa-regular fa-circle-check'
+            data.type === 'CODING'
+              ? 'fas fa-code'
+              : 'fa-regular fa-circle-check'
           "
         ></i>
-        {{ data.type === "QUIZ" ? "Viết mã" : "Trắc nghiệm" }}
+        {{ data.type === "CODING" ? "Viết mã" : "Trắc nghiệm" }}
       </div>
     </div>
 
