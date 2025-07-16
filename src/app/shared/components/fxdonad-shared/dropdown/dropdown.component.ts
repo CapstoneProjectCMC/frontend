@@ -138,9 +138,9 @@ export class DropdownButtonComponent
       this.isDisplaySelectedOpptionLabels &&
       this.selectedOptions.length > 0
     ) {
-      if (this.selectedOptions.length > 3) {
+      if (this.selectedOptions.length > 2) {
         return `${this.selectedOptions
-          .slice(0, 3)
+          .slice(0, 2)
           .map((o) => o.label)
           .join(', ')} ...`;
       }

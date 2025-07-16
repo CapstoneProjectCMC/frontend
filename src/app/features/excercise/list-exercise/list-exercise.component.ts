@@ -19,6 +19,7 @@ import {
 import { InputComponent } from '../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { EnumType } from '../../../core/models/data-handle';
+import { SkeletonLoadingComponent } from '../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 
 @Component({
   selector: 'app-list-exercise',
@@ -29,6 +30,7 @@ import { EnumType } from '../../../core/models/data-handle';
     CardExcerciseComponent,
     InputComponent,
     DropdownButtonComponent,
+    SkeletonLoadingComponent,
   ],
   templateUrl: './list-exercise.component.html',
   styleUrl: './list-exercise.component.scss',
@@ -43,6 +45,7 @@ export class ListExerciseComponent implements OnInit {
   sortBy: EnumType['sort'] = 'CREATED_AT';
   asc: boolean = false;
 
+  isLoading = false;
   isLoadingMore = false;
   hasMore = true;
 
@@ -72,12 +75,13 @@ export class ListExerciseComponent implements OnInit {
 
   ngOnInit(): void {
     //promise để tránh gọi quá sớm bị angular báo lỗi
-    Promise.resolve().then(() => {
-      this.store.dispatch(
-        setLoading({ isLoading: true, content: 'Đang tải dữ liệu, xin chờ...' })
-      );
-    });
+    // Promise.resolve().then(() => {
+    //   this.store.dispatch(
+    //     setLoading({ isLoading: true, content: 'Đang tải dữ liệu, xin chờ...' })
+    //   );
+    // });
 
+    this.isLoading = true;
     this.exerciseService
       .getAllExercise(this.pageIndex, this.itemsPerPage, this.sortBy, this.asc)
       .subscribe({
@@ -88,10 +92,12 @@ export class ListExerciseComponent implements OnInit {
             this.hasMore = false;
           }
           sendNotification(this.store, 'Thành công', res.message, 'success');
+          this.isLoading = false;
           this.store.dispatch(clearLoading());
         },
         error: (err) => {
           console.log(err);
+          this.isLoading = false;
           this.store.dispatch(clearLoading());
         },
       });

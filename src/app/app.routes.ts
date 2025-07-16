@@ -109,6 +109,13 @@ export const routes: Routes = [
           ).then((m) => m.StudentManagementModule),
         data: { breadcrumb: 'Quản lý người dùng' },
       },
+      {
+        path: '**',
+        loadComponent: () =>
+          import('./features/auth/pages/error-404/error-404.component').then(
+            (m) => m.Error404Component
+          ),
+      },
     ],
   },
 ];
