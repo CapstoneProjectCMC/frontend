@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, NavigationEnd } from '@angular/router';
 import { SidebarItem } from '../../../core/models/data-handle';
@@ -22,8 +29,13 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
   expandedItems: Set<string> = new Set();
   private themeSubscription?: Subscription;
   private hoverTimeout?: any;
+  submenuState: { [key: string]: 'open' | 'close' } = {};
 
-  constructor(private themeService: ThemeService, private router: Router) {}
+  constructor(
+    private themeService: ThemeService,
+    private router: Router,
+    private eRef: ElementRef
+  ) {}
 
   ngOnInit() {
     // Đồng bộ activeItem với url hiện tại khi khởi tạo
@@ -97,22 +109,41 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
     event.stopPropagation();
 
     if (this.hasChildren(item)) {
-      if (this.expandedItems.has(item.id)) {
-        this.expandedItems.delete(item.id);
+      const label = item.id;
+      if (this.submenuState[label] === 'open') {
+        this.submenuState[label] = 'close';
       } else {
-        this.expandedItems.add(item.id);
+        // Đóng tất cả submenu khác
+        Object.keys(this.submenuState).forEach((key) => {
+          this.submenuState[key] = 'close';
+        });
+        this.submenuState[label] = 'open';
       }
     }
   }
 
   isExpanded(item: SidebarItem): boolean {
-    return this.expandedItems.has(item.id);
+    return this.submenuState[item.id] === 'open';
   }
 
   onSubmenuItemClick(childItem: SidebarItem): void {
     this.setActiveItem(childItem);
-    // Close all submenus when a submenu item is clicked
-    this.expandedItems.clear();
+    // Đóng tất cả submenu khi click vào submenu item
+    Object.keys(this.submenuState).forEach((key) => {
+      this.submenuState[key] = 'close';
+    });
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: Event) {
+    if (!this.eRef.nativeElement.contains(event.target)) {
+      // Đóng tất cả submenu
+      Object.keys(this.submenuState).forEach((label) => {
+        if (this.submenuState[label] === 'open') {
+          this.submenuState[label] = 'close';
+        }
+      });
+    }
   }
 
   // Hover events for submenu
