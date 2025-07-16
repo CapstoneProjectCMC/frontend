@@ -46,7 +46,8 @@
         <div
           *ngIf="hasChildren(item)"
           class="ant-submenu"
-          [class.ant-submenu-open]="isExpanded(item)"
+          [class.open]="submenuState[item.id] === 'open'"
+          [class.close]="submenuState[item.id] === 'close'"
           (mouseenter)="onSubmenuMouseEnter(item)"
           (mouseleave)="onSubmenuMouseLeave(item)"
         >

@@ -231,16 +231,24 @@
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1000;
   margin-top: 4px;
   pointer-events: none;
 
-  &.ant-submenu-open {
+  &.open {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
     pointer-events: auto;
+  }
+  &.close {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    pointer-events: none;
   }
 
   .ant-menu-dark & {
@@ -291,7 +299,7 @@
 
   &.ant-submenu-item-selected {
     background-color: var(--dropdown-selected-color);
-    color: var(--primary-color);
+    color: var(--reverse-color-text);
     font-weight: 500;
   }
 
@@ -457,10 +465,10 @@
 }
 
 // Focus styles for accessibility
-.ant-menu-item:focus {
-  outline: 2px solid var(--primary-color);
-  outline-offset: 2px;
-}
+// .ant-menu-item:focus {
+//   outline: 1px solid var(--primary-color);
+//   outline-offset: 1px;
+// }
 
 // Loading state
 .ant-menu-loading {

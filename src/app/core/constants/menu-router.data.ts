@@ -207,7 +207,7 @@ export const navStudentItems: SidebarItem[] = [
     icon: 'fas fa-newspaper',
   },
   {
-    id: 'post',
+    id: 'exercise',
     path: 'exercise/exercise-list',
     label: 'Bài tập',
     icon: 'fas fa-tasks',

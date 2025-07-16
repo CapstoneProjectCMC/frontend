@@ -1,0 +1,40 @@
+<div class="skeleton-list-grid" *ngIf="type === 'card'">
+  <div
+    class="skeleton-card skeleton-animate"
+    *ngFor="let i of [].constructor(count)"
+  >
+    <div class="skeleton-card-thumb"></div>
+    <div class="skeleton-card-content">
+      <div class="skeleton-line skeleton-title"></div>
+      <div class="skeleton-line skeleton-subtitle"></div>
+      <div class="skeleton-line skeleton-text"></div>
+      <div class="skeleton-line skeleton-text short"></div>
+    </div>
+  </div>
+</div>
+<ng-container *ngIf="type === 'list'">
+  <div
+    class="skeleton-list skeleton-animate"
+    *ngFor="let i of [].constructor(count)"
+  >
+    <div class="skeleton-list-avatar"></div>
+    <div class="skeleton-list-lines">
+      <div class="skeleton-line skeleton-title"></div>
+      <div class="skeleton-line skeleton-text short"></div>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="type === 'post'">
+  <div
+    class="skeleton-post skeleton-animate"
+    *ngFor="let i of [].constructor(count)"
+  >
+    <div class="skeleton-post-header">
+      <div class="skeleton-post-avatar"></div>
+      <div class="skeleton-line skeleton-title"></div>
+    </div>
+    <div class="skeleton-line skeleton-text"></div>
+    <div class="skeleton-line skeleton-text"></div>
+    <div class="skeleton-line skeleton-text short"></div>
+  </div>
+</ng-container>

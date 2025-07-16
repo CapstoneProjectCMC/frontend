@@ -84,10 +84,25 @@
         </app-dropdown-button>
       </div>
     </div>
-    <div class="list-exercise" (scroll)="onListScroll($event)">
+    <div
+      class="list-exercise"
+      *ngIf="listExercise && !isLoading"
+      (scroll)="onListScroll($event)"
+    >
       <app-card-excercise *ngFor="let item of listExercise" [data]="item">
       </app-card-excercise>
     </div>
+
+    <app-skeleton-loading
+      *ngIf="isLoading || isLoadingMore"
+      type="card"
+      [count]="8"
+    ></app-skeleton-loading>
+
+    <div class="no-content" *ngIf="listExercise.length === 0 && !isLoading">
+      Không có dữ liệu
+    </div>
+
     <div *ngIf="isLoadingMore" class="loading-more">
       Đang tải thêm, xin chờ...
     </div>
