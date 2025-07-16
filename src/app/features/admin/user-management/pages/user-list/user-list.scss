@@ -1,30 +1,151 @@
-.layout-container {
-  display: flex;
-  height: 100vh; // hoặc 100% nếu bạn muốn điều chỉnh trong bố cục cha
-
-  .sidebar-container {
-    width: 240px;
-    transition: width 0.3s ease;
-
-    &.collapsed {
-      width: 60px;
-    }
-  }
-
-  .main-container {
-    flex: 1; // Tự động chiếm phần còn lại
-    display: flex;
-    flex-direction: column;
-    padding: 16px; // hoặc tuỳ chỉnh
-    overflow: auto;
-
-    app-breadcrumb {
-      margin-bottom: 12px;
-    }
-
+.content-container {
+  flex: 1;
+  .filter-table {
     app-table {
       flex: 1;
       overflow: auto;
     }
+    .control {
+      .filter {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        max-width: calc(100vw - 350px);
+        gap: 16px;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 0 0 12px 16px;
+      }
+      .button-user {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+        justify-content: center;
+        margin: 0 0 12px 16px;
+        app-interactive-button {
+          .button-wrapper {
+            .custom-button primary small {
+              align-self: center;
+              .button-content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
+  app-pagination {
+    width: 100%;
+  }
+}
+
+.profile-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInOverlay 0.2s;
+  pointer-events: auto;
+}
+
+.profile-popup-overlay.hide {
+  animation: fadeOutOverlay 0.2s forwards;
+}
+
+.profile-popup-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+  animation: fadeInOverlay 0.2s;
+}
+
+.profile-popup-backdrop.hide {
+  animation: fadeOutOverlay 0.2s forwards;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fadeOutOverlay {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.profile-popup-container {
+  position: relative;
+  z-index: 2;
+  background: transparent;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  animation: popupScaleFadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-popup-container.hide {
+  animation: popupScaleFadeOut 0.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes popupScaleFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes popupScaleFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 3;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  transition: background 0.2s;
+}
+.close-btn:hover {
+  background: #eee;
 }

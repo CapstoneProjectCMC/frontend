@@ -3,6 +3,7 @@ import { MainLayout } from './layouts/layout-pages/main-layout/main-layout';
 import { SecondLayout } from './layouts/layout-pages/second-layout/second-layout';
 import { AuthLayoutComponent } from './layouts/layout-pages/auth-layout/auth-layout.component';
 import { AppLayoutComponent } from './layouts/layout-pages/app-layout/app-layout.component';
+import { AdminLayoutComponent } from './layouts/layout-pages/admin-layout/admin-layout';
 
 export const routes: Routes = [
   //Để test
@@ -101,6 +102,13 @@ export const routes: Routes = [
             (m) => m.ExerciseModule
           ),
       },
+    ],
+  },
+
+  {
+    path: 'admin',
+    component: AdminLayoutComponent,
+    children: [
       {
         path: 'user-management',
         loadChildren: () =>

@@ -12,6 +12,6 @@ import { sidebarData } from '../../../core/constants/menu-router.data';
 })
 export class SecondLayout {
   isSidebarCollapsed = false;
-  // Example data structure for sidebar items
+
   sidebarData = sidebarData;
 }

@@ -22,7 +22,7 @@
             <ng-container
               *ngTemplateOutlet="
                 templateMap[header.value];
-                context: { $implicit: row }
+                context: { $implicit: row, rowIndex: i }
               "
             ></ng-container>
           </ng-container>
