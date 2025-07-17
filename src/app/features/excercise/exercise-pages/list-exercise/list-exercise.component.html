@@ -89,7 +89,11 @@
       *ngIf="listExercise && !isLoading"
       (scroll)="onListScroll($event)"
     >
-      <app-card-excercise *ngFor="let item of listExercise" [data]="item">
+      <app-card-excercise
+        *ngFor="let item of listExercise"
+        [data]="item"
+        (click)="clickItem(item.id)"
+      >
       </app-card-excercise>
     </div>
 

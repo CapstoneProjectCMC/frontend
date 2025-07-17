@@ -13,6 +13,7 @@ export class UsingCardDataComponent {
   newDate = new Date();
 
   data: CardExcercise = {
+    id: 'kjdhajsdas-sdadadas-fsdgadfa',
     title: 'Thuật toán tìm kiếm nhị phân sử dụng ngôn ngữ JavaScript',
     description:
       'Bài viết về thuật toán tìm kiếm nhị phân, một thuật toán hiệu quả để tìm kiếm một phần tử trong một mảng đã sắp xếp. Có thể là một thuật toán tuyệt vời',

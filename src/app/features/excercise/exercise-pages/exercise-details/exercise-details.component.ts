@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ExerciseQuiz } from '../../../core/models/exercise.model';
+import { ExerciseQuiz } from '../../../../core/models/exercise.model';
 
 @Component({
   selector: 'app-exercise-details',

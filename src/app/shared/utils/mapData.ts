@@ -3,6 +3,7 @@ import { CardExcercise } from '../components/fxdonad-shared/card-excercise/card-
 
 export function mapExerciseResToCardUI(exercise: ExerciseItem): CardExcercise {
   return {
+    id: exercise.id,
     title: exercise.title,
     description: exercise.description,
     uploader: {
