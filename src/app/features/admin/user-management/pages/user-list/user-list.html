@@ -12,14 +12,51 @@
           [isSvg]="false"
           [icon]="'fa fa-search'"
         ></app-input>
+        <app-dropdown-button
+          [label]="'Vai trò'"
+          [options]="role"
+          [variant]="'secondary'"
+          [size]="'small'"
+          [customDropField]="'main-type'"
+          [disabled]="false"
+          [multiSelect]="true"
+          [isDisplayCheckbox]="false"
+          (onSelect)="handleSelect('role', $event)"
+          [isOpen]="activeDropdown === 'role'"
+          (toggle)="toggleDropdown('role')"
+          [isDisplaySelectedOpptionLabels]="true"
+          [isButtonControl]="true"
+          [isSearchable]="true"
+          [minHeight]="true"
+          [needIndexColor]="true"
+        ></app-dropdown-button>
+        <app-dropdown-button
+          [label]="'Trạng thái'"
+          [options]="status"
+          [variant]="'secondary'"
+          [size]="'small'"
+          [customDropField]="'main-type'"
+          [disabled]="false"
+          [multiSelect]="true"
+          [isDisplayCheckbox]="false"
+          (onSelect)="handleSelect('status', $event)"
+          [isOpen]="activeDropdown === 'status'"
+          (toggle)="toggleDropdown('status')"
+          [isDisplaySelectedOpptionLabels]="true"
+          [isButtonControl]="true"
+          [isSearchable]="true"
+          [minHeight]="true"
+          [needIndexColor]="true"
+        ></app-dropdown-button>
       </div>
       <div class="button-user">
-        <app-interactive-button
-          [buttonType]="'primary'"
-          [buttonSize]="'small'"
-          [isDisabled]="false"
-          [tooltipText]="'Nhấn để xác nhận'"
-          ><svg
+        <app-button
+          [onClick]="handleImport"
+          [width]="'50px'"
+          [height]="'50px'"
+          variant="solid"
+        >
+          <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -38,7 +75,41 @@
             <path d="M12 18v-6" />
             <path d="m9 15 3 3 3-3" />
           </svg>
-        </app-interactive-button>
+        </app-button>
+        <app-button
+          [onClick]="handleImport"
+          [width]="'50px'"
+          [height]="'50px'"
+          variant="solid"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-file-up-icon lucide-file-up"
+          >
+            <path
+              d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+            />
+            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+            <path d="M12 12v6" />
+            <path d="m15 15-3-3-3 3" />
+          </svg>
+        </app-button>
+        <app-button
+          [onClick]="handleAdd"
+          [width]="'50px'"
+          [height]="'50px'"
+          variant="outline"
+        >
+          <span style="font-size: 24px">+</span>
+        </app-button>
       </div>
     </div>
 
@@ -50,6 +121,11 @@
       [needDelete]="false"
       [needEdit]="false"
       [needViewResult]="false"
+      [needswitch]="true"
+      [onSwitchClick]="handleSwitch"
+      [switchField]="'status'"
+      [lockValue]="0"
+      [openValue]="1"
     >
       <!-- Avatar + DisplayName + Popup Links -->
       <ng-template #cell_displayName let-row let-i="rowIndex">

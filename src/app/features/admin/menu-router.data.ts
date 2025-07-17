@@ -1,6 +1,6 @@
 import { SidebarItem } from '../../core/models/data-handle';
 
-const adminLayout = '/admin';
+const adminLayout = '';
 const usermanagement = '/user-management';
 export const sidebarData: SidebarItem[] = [
   {

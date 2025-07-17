@@ -27,6 +27,11 @@ export class TableComponent implements AfterContentInit {
   @Input() needEdit = false;
   @Input() needDelete = false;
   @Input() needViewResult = false;
+  @Input() needswitch = false;
+  @Input() onSwitchClick: (row: any) => void = () => {};
+  @Input() switchField: string = '';
+  @Input() lockValue: any = null;
+  @Input() openValue: any = null;
 
   @ContentChildren(TemplateRef) templates!: QueryList<TemplateRef<any>>;
   templateMap: { [key: string]: TemplateRef<any> } = {};

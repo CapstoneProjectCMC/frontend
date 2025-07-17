@@ -4,9 +4,11 @@
   box-sizing: border-box;
   flex-direction: column;
   width: 100%;
+
   .layout-container {
     display: flex;
     height: 100vh;
+    height: calc(100vh - 130px);
 
     .sidebar-container {
       width: 240px;
