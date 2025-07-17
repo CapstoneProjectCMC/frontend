@@ -172,17 +172,51 @@
         flex-direction: column;
         gap: 2px;
       }
-      .edit-btn {
-        background: var(--button-color);
-        color: #fff;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: background 0.2s;
-        &:hover {
-          background: var(--button-color-hover);
+      .btn-container {
+        display: flex;
+        gap: 8px;
+        .edit-btn {
+          background: var(--button-color);
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 8px 16px;
+          cursor: pointer;
+          font-weight: 500;
+          transition: background 0.2s;
+
+          &:hover {
+            background: var(--button-color-hover);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+          }
+        }
+        .start-btn {
+          background: var(--button-color);
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 8px 16px;
+          cursor: pointer;
+          font-weight: 500;
+          transition: background 0.2s;
+          &:hover {
+            background: var(--button-color-hover);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+          }
+        }
+        .back-btn {
+          background: var(--button-color);
+          color: #fff;
+          border: none;
+          border-radius: 6px;
+          padding: 8px 16px;
+          cursor: pointer;
+          font-weight: 500;
+          transition: background 0.2s;
+          &:hover {
+            background: var(--button-color-hover);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+          }
         }
       }
     }

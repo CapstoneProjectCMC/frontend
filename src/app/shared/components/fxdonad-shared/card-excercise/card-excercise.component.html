@@ -1,7 +1,7 @@
 <div class="excercise-card-container">
   <div class="info-card" [class.border]="role !== 'admin'">
     <div class="card-header">
-      <h2 class="title" [title]="data.title">
+      <h2 class="title" [title]="data.title" (click)="onTitleClick()">
         {{ data.title | truncate : 30 }}
       </h2>
     </div>

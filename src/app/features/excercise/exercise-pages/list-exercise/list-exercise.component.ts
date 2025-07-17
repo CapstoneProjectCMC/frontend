@@ -141,10 +141,6 @@ export class ListExerciseComponent implements OnInit {
     console.log(this.selectedOptions);
   }
 
-  clickItem(id: string) {
-    this.router.navigate(['/exercise/exercise-layout/exercise-details', id]);
-  }
-
   toggleDropdown(id: string): void {
     // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
     this.activeDropdown = this.activeDropdown === id ? null : id;
