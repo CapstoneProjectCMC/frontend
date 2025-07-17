@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MainSidebarComponent } from '../../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { sidebarExercises } from '../../../../core/constants/menu-router.data';
 import { BreadcrumbComponent } from '../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 import {
@@ -9,13 +8,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { ExerciseItem } from '../../../../core/models/exercise.model';
-import { sendNotification } from '../../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
 import { mapExerciseResToCardUI } from '../../../../shared/utils/mapData';
-import {
-  clearLoading,
-  setLoading,
-} from '../../../../shared/store/loading-state/loading.action';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { EnumType } from '../../../../core/models/data-handle';
@@ -26,7 +20,6 @@ import { Router } from '@angular/router';
   selector: 'app-list-exercise',
   imports: [
     CommonModule,
-    MainSidebarComponent,
     BreadcrumbComponent,
     CardExcerciseComponent,
     InputComponent,
@@ -96,14 +89,13 @@ export class ListExerciseComponent implements OnInit {
           if (data.length < this.itemsPerPage) {
             this.hasMore = false;
           }
-          sendNotification(this.store, 'Thành công', res.message, 'success');
           this.isLoading = false;
-          this.store.dispatch(clearLoading());
+          // this.store.dispatch(clearLoading());
         },
         error: (err) => {
           console.log(err);
           this.isLoading = false;
-          this.store.dispatch(clearLoading());
+          // this.store.dispatch(clearLoading());
         },
       });
   }
@@ -150,7 +142,7 @@ export class ListExerciseComponent implements OnInit {
   }
 
   clickItem(id: string) {
-    this.router.navigate(['/exercise/exercise-list/exercise-details', id]);
+    this.router.navigate(['/exercise/exercise-layout/exercise-details', id]);
   }
 
   toggleDropdown(id: string): void {

@@ -208,7 +208,7 @@ export const navStudentItems: SidebarItem[] = [
   },
   {
     id: 'exercise',
-    path: 'exercise/exercise-list',
+    path: 'exercise/exercise-layout/list',
     label: 'Bài tập',
     icon: 'fas fa-tasks',
   },
@@ -217,44 +217,6 @@ export const navStudentItems: SidebarItem[] = [
     path: '/resource',
     label: 'Kho tài liệu',
     icon: 'fas fa-book',
-    // children: [
-    //   {
-    //     id: 'code-editor',
-    //     path: '/second/example-using-component-slide/code-editor',
-    //     label: 'Code Editor',
-    //     icon: 'fas fa-file-code',
-    //   },
-    //   {
-    //     id: 'input-button',
-    //     path: '/second/example-using-component-slide/input-button',
-    //     label: 'Input Button',
-    //     icon: 'fas fa-keyboard',
-    //   },
-    //   {
-    //     id: 'dropdown',
-    //     path: '/second/example-using-component-slide/dropdown',
-    //     label: 'Dropdown',
-    //     icon: 'fas fa-chevron-down',
-    //   },
-    //   {
-    //     id: 'text-editor',
-    //     path: '/second/example-using-component-slide/text-editor',
-    //     label: 'Text Editor',
-    //     icon: 'fas fa-edit',
-    //   },
-    //   {
-    //     id: 'card-data',
-    //     path: '/second/example-using-component-slide/card-data',
-    //     label: 'Card Data',
-    //     icon: 'fas fa-id-card',
-    //   },
-    //   {
-    //     id: 'trending',
-    //     path: '/second/example-using-component-slide/trending',
-    //     label: 'Trending',
-    //     icon: 'fas fa-fire',
-    //   },
-    // ],
   },
   {
     id: 'message',

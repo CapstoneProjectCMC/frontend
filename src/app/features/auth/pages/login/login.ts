@@ -110,7 +110,7 @@ export class Login {
         localStorage.setItem('token', res.result.accessToken);
         sendNotification(this.store, res.status, res.message, 'success');
 
-        this.router.navigate(['/exercise/exercise-list']);
+        this.router.navigate(['/exercise/exercise-layout/list']);
       },
       error: (err) => {
         console.log(err);
