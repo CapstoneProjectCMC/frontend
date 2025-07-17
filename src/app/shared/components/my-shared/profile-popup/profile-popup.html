@@ -1,0 +1,63 @@
+<div class="profile-popup">
+  <div class="avt-bg">
+    <img [src]="user.backgroundUrl" alt="" class="bg" />
+    <img [src]="user.avatarUrl" alt="" class="avt" />
+  </div>
+  <div class="general-infor">
+    <span class="display-name">{{user.displayName}}</span>
+    <span class="bio">{{user.bio}}</span>
+    <div class="follow">
+      <div class="follow-item">
+        <span class="follow-item-label">Người theo dõi</span>
+        <span class="follow-item-value">{{user.followers}}</span>
+      </div>
+      <div class="follow-item">
+        <span class="follow-item-label">Đang theo dõi</span>
+        <span class="follow-item-value">{{user.following}}</span>
+      </div>
+    </div>
+    <div class="line"></div>
+    <div class="detail-infor">
+      <div class="detail-infor-item">
+        <span class="detail-infor-label">Họ tên: </span>
+        <span class="detail-infor-value">{{user.firstname+user.lastname}}</span>
+      </div>
+      <div class="detail-infor-item">
+        <span class="detail-infor-label">Học vấn: </span>
+        <span class="detail-infor-value">{{user.education}}</span>
+      </div>
+      <div class="detail-infor-item">
+        <span class="detail-infor-label">Giới tính: </span>
+        <span class="detail-infor-value">{{user.gender}}</span>
+      </div>
+      <div class="detail-infor-item">
+        <span class="detail-infor-label">Ngày sinh: </span>
+        <span class="detail-infor-value">{{formatDate(user.dob)}}</span>
+      </div>
+    </div>
+    <div class="line"></div>
+    <div class="social-link">
+      <div *ngFor="let link of user.links" class="social-link-item">
+        <a [href]="link.url" target="_blank">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-link2-icon lucide-link-2"
+          >
+            <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+            <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+            <line x1="8" x2="16" y1="12" y2="12" />
+          </svg>
+          <span>{{ link.type }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

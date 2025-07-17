@@ -5,7 +5,7 @@ export const version = '/v1';
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: environment.IP_SERVER + version,
+    MAIN_API: environment.IP_SERVER_RADMIN + version,
     SECONDARY_API: '',
   },
   ENDPOINTS: {
