@@ -1,9 +1,11 @@
-<div class="main-exercise-container">
+<div class="main-exercise-container-layout">
   <app-main-sidebar
     [sidebarItems]="sidebarData"
     [isCollapsed]="isSidebarCollapsed"
   >
   </app-main-sidebar>
 
-  <router-outlet />
+  <div class="content-container">
+    <router-outlet />
+  </div>
 </div>

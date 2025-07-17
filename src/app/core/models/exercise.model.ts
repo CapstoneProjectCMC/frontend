@@ -51,7 +51,7 @@ export interface QuizDetail {
   currentPage: number;
   totalPages: number;
   pageSize: number;
-  totalElements: number;
+  totalElements: number | null;
   questions: QuizQuestion[];
   createdBy: string;
   createdAt: string;
@@ -80,7 +80,7 @@ export interface ExerciseQuiz {
   resourceIds: string[];
   tags: string[];
   allowAiQuestion: boolean;
-  quizDetail: QuizDetail;
+  quizDetail: QuizDetail | null;
   createdBy: string;
   createdAt: string;
   updatedBy: string;

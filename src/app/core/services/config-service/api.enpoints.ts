@@ -5,11 +5,19 @@ export const version = '/v1';
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: environment.IP_SERVER_RADMIN + version,
+    MAIN_API: environment.IP_SERVER + version,
     SECONDARY_API: '',
   },
   ENDPOINTS: {
     GET: {
+      GET_EXERCISE_DETAILS: (
+        page: number,
+        size: number,
+        sort: EnumType['sort'],
+        asc: boolean,
+        exerciseId: string
+      ) =>
+        `/submission/exercise/${exerciseId}?qPage=${page}&qSize=${size}&qSortBy=${sort}&qAsc=${asc}`,
       GET_ALL_EXERCISE: (
         page: number,
         size: number,
