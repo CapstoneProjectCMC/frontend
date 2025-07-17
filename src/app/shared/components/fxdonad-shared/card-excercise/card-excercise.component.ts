@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
+import { Router } from '@angular/router';
 
 export interface CardExcercise {
   id: string;
@@ -27,12 +28,15 @@ export interface CardExcercise {
 export class CardExcerciseComponent {
   @Input() data!: CardExcercise;
   @Input() isDarkMode = false;
+  @Input() exerciseId: string = '';
 
   role: string = 'user';
   isExpanded = false;
   isSaved = false;
   difficultyStars = [1, 2, 3];
   difficultyLevel = 1;
+
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.setDifficultyLevel();
@@ -67,6 +71,13 @@ export class CardExcerciseComponent {
 
   onTagClick(tag: string) {
     console.log(`Tag clicked: ${tag}`);
+  }
+
+  onTitleClick() {
+    this.router.navigate([
+      '/exercise/exercise-layout/exercise-details',
+      this.exerciseId,
+    ]);
   }
 
   handleImageError(event: Event) {

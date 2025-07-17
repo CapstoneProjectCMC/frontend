@@ -69,7 +69,11 @@
         <span>Giá: ${{ exercise.cost }}</span>
       </div>
 
-      <button class="edit-btn">Sửa</button>
+      <div class="btn-container">
+        <button class="edit-btn" *ngIf="true">Sửa</button>
+        <button class="start-btn">Bắt đầu</button>
+        <button class="back-btn">Quay lại</button>
+      </div>
     </div>
 
     <!-- Vế phải: Danh sách câu hỏi -->

@@ -8,10 +8,6 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
 
-  &:active {
-    box-shadow: none;
-  }
-
   .info-card {
     flex: 4;
     background: var(--card-excercize-bg);
@@ -31,6 +27,10 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
     }
 
     .metadata {

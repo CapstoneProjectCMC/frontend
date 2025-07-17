@@ -87,13 +87,13 @@
       <app-card-excercise
         *ngFor="let item of listExercise"
         [data]="item"
-        (click)="clickItem(item.id)"
+        [exerciseId]="item.id"
       >
       </app-card-excercise>
     </div>
 
     <app-skeleton-loading
-      *ngIf="isLoading || isLoadingMore"
+      *ngIf="isLoading"
       type="card"
       [count]="8"
     ></app-skeleton-loading>
