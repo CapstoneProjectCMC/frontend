@@ -1,25 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
-import { sidebarExercises } from '../../../core/constants/menu-router.data';
-import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
+import { MainSidebarComponent } from '../../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
+import { sidebarExercises } from '../../../../core/constants/menu-router.data';
+import { BreadcrumbComponent } from '../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 import {
   CardExcercise,
   CardExcerciseComponent,
-} from '../../../shared/components/fxdonad-shared/card-excercise/card-excercise.component';
+} from '../../../../shared/components/fxdonad-shared/card-excercise/card-excercise.component';
 import { CommonModule } from '@angular/common';
-import { ExerciseService } from '../../../core/services/api-service/exercise.service';
-import { ExerciseItem } from '../../../core/models/exercise.model';
-import { sendNotification } from '../../../shared/utils/notification';
+import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
+import { ExerciseItem } from '../../../../core/models/exercise.model';
+import { sendNotification } from '../../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
-import { mapExerciseResToCardUI } from '../../../shared/utils/mapData';
+import { mapExerciseResToCardUI } from '../../../../shared/utils/mapData';
 import {
   clearLoading,
   setLoading,
-} from '../../../shared/store/loading-state/loading.action';
-import { InputComponent } from '../../../shared/components/fxdonad-shared/input/input';
-import { DropdownButtonComponent } from '../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { EnumType } from '../../../core/models/data-handle';
-import { SkeletonLoadingComponent } from '../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
+} from '../../../../shared/store/loading-state/loading.action';
+import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
+import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
+import { EnumType } from '../../../../core/models/data-handle';
+import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-exercise',
@@ -56,7 +57,11 @@ export class ListExerciseComponent implements OnInit {
   username: string | number = '';
   usernameError: string | null = '';
 
-  constructor(private store: Store, private exerciseService: ExerciseService) {
+  constructor(
+    private store: Store,
+    private exerciseService: ExerciseService,
+    private router: Router
+  ) {
     this.genres = [
       { value: 'action', label: 'Hành động' },
       { value: 'comedy', label: 'Hài hước' },
@@ -142,6 +147,10 @@ export class ListExerciseComponent implements OnInit {
     // this.router.navigate(['/', dropdownKey, selected.label]);
 
     console.log(this.selectedOptions);
+  }
+
+  clickItem(id: string) {
+    this.router.navigate(['/exercise/exercise-list/exercise-details', id]);
   }
 
   toggleDropdown(id: string): void {

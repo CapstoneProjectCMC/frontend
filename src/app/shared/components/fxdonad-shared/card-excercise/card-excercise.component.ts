@@ -3,6 +3,7 @@ import { Component, Input } from '@angular/core';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
 
 export interface CardExcercise {
+  id: string;
   title: string;
   description: string;
   uploader: {
