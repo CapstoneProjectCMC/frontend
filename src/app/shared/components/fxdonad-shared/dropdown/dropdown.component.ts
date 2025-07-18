@@ -313,4 +313,13 @@ export class DropdownButtonComponent
       }
     );
   }
+
+  removeSelectedOption(option: DropdownOption, event: MouseEvent): void {
+    event.stopPropagation();
+    this.selectedOptions = this.selectedOptions.filter(
+      (o) => o.value !== option.value
+    );
+    this.onSelect.emit(this.selectedOptions);
+    this.onChange(this.selectedOptions.map((opt) => opt.value));
+  }
 }

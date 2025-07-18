@@ -22,12 +22,29 @@
     #dropdownButton
   >
     <span class="button-label">
-      <ng-container *ngIf="multiSelect; else singleLabel">
-        {{ selectedLabels }}
-      </ng-container>
-      <ng-template #singleLabel>
-        {{ truncateString(selectedLabels, 12) }}
-      </ng-template>
+      <span class="chip-list">
+        <ng-container *ngIf="multiSelect; else singleLabel">
+          <ng-container *ngFor="let selected of selectedOptions">
+            <span class="chip">
+              {{ selected.label }}
+              <button
+                type="button"
+                class="chip-remove"
+                (click)="removeSelectedOption(selected, $event)"
+                aria-label="Remove"
+              >
+                ×
+              </button>
+            </span>
+          </ng-container>
+          <ng-container *ngIf="selectedOptions.length === 0">
+            {{ label }}
+          </ng-container>
+        </ng-container>
+        <ng-template #singleLabel>
+          {{ truncateString(selectedLabels, 12) }}
+        </ng-template>
+      </span>
     </span>
 
     <span class="arrow-icon" [class.open]="isOpen">

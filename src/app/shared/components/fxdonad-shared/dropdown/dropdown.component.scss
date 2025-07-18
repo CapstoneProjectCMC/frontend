@@ -323,6 +323,59 @@
   opacity: 0.6;
 }
 
+.button-label {
+  max-width: 85%;
+  // Đặt chiều cao cố định nếu muốn không bị phình lên khi có scrollbar
+  height: 18px; // hoặc min-height: 32px;
+  display: flex;
+  align-items: center;
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    background: #e0e0e0;
+    color: #333;
+    border-radius: 16px;
+    padding: 2px 8px;
+    margin-right: 4px;
+    font-size: 13px;
+    margin-bottom: 2px;
+    .chip-remove {
+      background: transparent;
+      border: none;
+      color: #888;
+      font-size: 16px;
+      margin-left: 4px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+      &:hover {
+        color: #d32f2f;
+      }
+    }
+  }
+
+  .chip-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 2px 4px;
+    max-width: 100%;
+    overflow-x: auto;
+    align-items: center;
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+  }
+}
+
+.chip-list::-webkit-scrollbar {
+  height: 5px;
+}
+.chip-list::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.chip-list::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
 @media (min-width: 1068px) {
   .dropdown-menu.first-type {
     &.open {

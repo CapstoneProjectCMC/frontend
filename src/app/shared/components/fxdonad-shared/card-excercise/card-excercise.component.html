@@ -43,7 +43,15 @@
     >
       <div class="part-difficulty">
         <div class="difficulty-badge" [ngClass]="data.difficulty">
-          {{ data.difficulty | titlecase }}
+          {{
+            data.difficulty === "EASY"
+              ? "Dễ"
+              : data.difficulty === "MEDIUM"
+              ? "Trung bình"
+              : data.difficulty === "HARD"
+              ? "Khó"
+              : (data.difficulty | titlecase)
+          }}
         </div>
         <div class="difficulty-stars">
           <!-- <span
