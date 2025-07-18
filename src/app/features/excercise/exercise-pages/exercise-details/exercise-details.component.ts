@@ -289,6 +289,7 @@ export class ExerciseDetailsComponent implements OnInit {
           next: (res) => {
             if (res && res.result) {
               this.exercise = res.result;
+              this.setDifficultyLevel();
               console.log(this.exercise.tags);
             }
           },

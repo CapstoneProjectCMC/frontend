@@ -166,6 +166,9 @@
         font-size: 14px;
         color: var(--text-muted-color);
         margin-top: 4px;
+        p {
+          margin-bottom: 0;
+        }
       }
       .stats {
         display: flex;

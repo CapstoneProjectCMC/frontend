@@ -38,6 +38,9 @@ export const API_CONFIG = {
         `/identity/auth/login-facebook?code=${code}`,
 
       SENDCODE: '/code-editor/ex',
+      CREATE_EXERCISE: '/submission/exercise',
+      ADD_QUESTION: (exerciseId: string) =>
+        `/submission/quiz/${exerciseId}/question`,
     },
     PATCH: {},
     DELETE: {},

@@ -12,6 +12,6 @@ export class LandingComponent {
   constructor(private router: Router) {}
 
   getStart() {
-    this.router.navigate(['/exercise/exercise-list']);
+    this.router.navigate(['/exercise/exercise-layout/list']);
   }
 }

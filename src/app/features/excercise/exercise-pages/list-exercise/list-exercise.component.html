@@ -78,6 +78,14 @@
         >
         </app-dropdown-button>
       </div>
+
+      <div
+        class="create-btn"
+        (click)="toggleOpenModalCreate()"
+        title="Tạo mới bài tập"
+      >
+        +
+      </div>
     </div>
     <div
       class="list-exercise"
@@ -107,3 +115,9 @@
     </div>
   </div>
 </div>
+
+<app-exercise-modal
+  (submitExercise)="onModalCreateSubmit($event)"
+  (cancel)="onModalCreateCancel()"
+  [isOpen]="showModalCreate"
+></app-exercise-modal>
