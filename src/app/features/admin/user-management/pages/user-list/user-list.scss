@@ -170,3 +170,22 @@
 .close-btn:hover {
   background: #eee;
 }
+
+@media (max-width: 780px) {
+  .content-container {
+    .filter-table {
+      .control {
+        flex-direction: column;
+        align-items: stretch;
+        .filter {
+          width: 100%;
+          margin-bottom: 16px;
+        }
+        .button-user {
+          margin-bottom: 10px;
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+}
