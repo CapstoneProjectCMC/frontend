@@ -98,6 +98,9 @@
               color: var(--error-color);
             }
           }
+          .label:hover {
+            color: var(--error-color);
+          }
           .Editbutton {
             cursor: auto;
             background-color: transparent;
@@ -194,8 +197,69 @@
       th,
       td {
         font-size: 12px;
-        padding: 8px;
+        // padding: 8px;
       }
+    }
+  }
+
+  @media (max-width: 600px) {
+    .main-table,
+    thead,
+    tbody,
+    th,
+    td,
+    tr {
+      display: block;
+    }
+    td {
+      text-align: left;
+      font-size: 14px;
+      height: 32.2px;
+      padding: 10px 15px;
+      color: var(--text-color);
+      width: 100% !important;
+      box-sizing: border-box;
+    }
+    thead {
+      display: none;
+    }
+
+    .table-content tr {
+      margin-bottom: 16px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      background: var(--surface-color);
+      padding: 12px;
+      display: block;
+    }
+
+    .table-content td {
+      position: relative;
+      padding-left: 50%;
+      text-align: left;
+      min-height: 32px;
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+    }
+
+    .table-content td:before {
+      content: attr(data-label);
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-weight: 600;
+      color: var(--text-color);
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .btn-actions {
+      justify-content: flex-start;
+      gap: 8px;
+      margin-top: 8px;
     }
   }
 }
