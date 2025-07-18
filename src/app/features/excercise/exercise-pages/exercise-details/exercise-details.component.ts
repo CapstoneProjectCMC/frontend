@@ -1,45 +1,47 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ExerciseQuiz } from '../../../../core/models/exercise.model';
+import { BreadcrumbComponent } from '../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
+import { ActivatedRoute } from '@angular/router';
+import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 
 @Component({
   selector: 'app-exercise-details',
-  imports: [CommonModule],
+  imports: [CommonModule, BreadcrumbComponent],
   templateUrl: './exercise-details.component.html',
   styleUrl: './exercise-details.component.scss',
 })
-export class ExerciseDetailsComponent {
+export class ExerciseDetailsComponent implements OnInit {
   exercise: ExerciseQuiz = {
-    id: 'ex1',
-    userId: 'user1',
-    title: 'Bài kiểm tra kiến thức cơ bản',
-    description:
-      'Bài kiểm tra gồm các câu hỏi trắc nghiệm về kiến thức cơ bản.',
+    id: 'Không có',
+    userId: 'Không có',
+    title: 'Chưa có nội dung',
+    description: 'Chưa có nội dung',
     exerciseType: 'QUIZ',
-    difficulty: 'HARD',
-    orgId: 'org1',
-    active: true,
-    cost: 10,
+    difficulty: 'EASY',
+    orgId: '',
+    active: false,
+    cost: 0,
     freeForOrg: false,
     startTime: '2024-06-01T00:00:00Z',
     endTime: '2024-06-10T23:59:00Z',
-    duration: 30,
-    allowDiscussionId: 'dis1',
-    resourceIds: ['res1', 'res2'],
-    tags: ['Toán', 'Lập trình', 'Cơ bản'],
+    duration: 0,
+    allowDiscussionId: 'chưa có',
+    resourceIds: ['chưa có', 'chưa có'],
+    tags: [],
     allowAiQuestion: false,
     quizDetail: {
-      id: 'quiz1',
-      numQuestions: 2,
+      id: 'Mẫu 1',
+      numQuestions: 0,
       totalPoints: 20,
       currentPage: 1,
       totalPages: 1,
       pageSize: 10,
-      totalElements: 2,
+      totalElements: 0,
       questions: [
         {
           id: 'q1',
-          text: 'Đâu là kết quả của 2 + 2?',
+          text: 'Ví dụ 1',
           points: 10,
           type: 'SINGLE_CHOICE',
           orderInQuiz: 1,
@@ -102,15 +104,15 @@ export class ExerciseDetailsComponent {
         },
         {
           id: 'q2',
-          text: 'Biến trong lập trình là gì?',
+          text: 'Ví dụ 2',
           points: 10,
           type: 'SINGLE_CHOICE',
           orderInQuiz: 2,
           options: [
             {
               id: 'o1',
-              optionText: 'Hàm',
-              correct: false,
+              optionText: 'Lựa chọn 1',
+              correct: true,
               order: 'A',
               createdBy: '',
               createdAt: '',
@@ -121,8 +123,8 @@ export class ExerciseDetailsComponent {
             },
             {
               id: 'o2',
-              optionText: 'Giá trị lưu trữ',
-              correct: true,
+              optionText: 'Lựa chọn 2',
+              correct: false,
               order: 'B',
               createdBy: '',
               createdAt: '',
@@ -133,7 +135,7 @@ export class ExerciseDetailsComponent {
             },
             {
               id: 'o3',
-              optionText: 'Câu lệnh',
+              optionText: 'Lựa chọn 3',
               correct: false,
               order: 'C',
               createdBy: '',
@@ -145,7 +147,7 @@ export class ExerciseDetailsComponent {
             },
             {
               id: 'o4',
-              optionText: 'Vòng lặp',
+              optionText: 'Lựa chọn 4',
               correct: false,
               order: 'D',
               createdBy: '',
@@ -165,60 +167,11 @@ export class ExerciseDetailsComponent {
         },
         {
           id: 'q2',
-          text: 'Biến trong lập trình là gì?',
+          text: 'Ví dụ FILL_BLANK ____',
           points: 10,
-          type: 'SINGLE_CHOICE',
+          type: 'FILL_BLANK',
           orderInQuiz: 2,
-          options: [
-            {
-              id: 'o1',
-              optionText: 'Hàm',
-              correct: false,
-              order: 'A',
-              createdBy: '',
-              createdAt: '',
-              updatedBy: '',
-              updatedAt: '',
-              deletedBy: '',
-              deletedAt: '',
-            },
-            {
-              id: 'o2',
-              optionText: 'Giá trị lưu trữ',
-              correct: true,
-              order: 'B',
-              createdBy: '',
-              createdAt: '',
-              updatedBy: '',
-              updatedAt: '',
-              deletedBy: '',
-              deletedAt: '',
-            },
-            {
-              id: 'o3',
-              optionText: 'Câu lệnh',
-              correct: false,
-              order: 'C',
-              createdBy: '',
-              createdAt: '',
-              updatedBy: '',
-              updatedAt: '',
-              deletedBy: '',
-              deletedAt: '',
-            },
-            {
-              id: 'o4',
-              optionText: 'Vòng lặp',
-              correct: false,
-              order: 'D',
-              createdBy: '',
-              createdAt: '',
-              updatedBy: '',
-              updatedAt: '',
-              deletedBy: '',
-              deletedAt: '',
-            },
-          ],
+          options: [],
           createdBy: '',
           createdAt: '',
           updatedBy: '',
@@ -230,7 +183,7 @@ export class ExerciseDetailsComponent {
           id: 'q2',
           text: 'Biến trong lập trình là gì?',
           points: 10,
-          type: 'SINGLE_CHOICE',
+          type: 'MULTI_CHOICE',
           orderInQuiz: 2,
           options: [
             {
@@ -304,6 +257,49 @@ export class ExerciseDetailsComponent {
     deletedBy: '',
     deletedAt: '',
   };
+  difficultyStars = [1, 2, 3];
+  difficultyLevel = 1;
+
+  constructor(
+    private route: ActivatedRoute,
+    private exerciseService: ExerciseService
+  ) {}
+
+  setDifficultyLevel() {
+    switch (this.exercise.difficulty) {
+      case 'EASY':
+        this.difficultyLevel = 1;
+        break;
+      case 'MEDIUM':
+        this.difficultyLevel = 2;
+        break;
+      case 'HARD':
+        this.difficultyLevel = 3;
+        break;
+    }
+  }
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      // page, size, sort, asc có thể lấy mặc định hoặc từ query param nếu cần
+      this.exerciseService
+        .getExerciseDetails(1, 10, 'CREATED_AT', false, id)
+        .subscribe({
+          next: (res) => {
+            if (res && res.result) {
+              this.exercise = res.result;
+              this.setDifficultyLevel();
+              console.log(this.exercise.tags);
+            }
+          },
+          error: (err) => {
+            // Xử lý lỗi nếu cần
+            console.error('Lỗi lấy chi tiết bài tập:', err);
+          },
+        });
+    }
+  }
 
   getOptionLabel(index: number): string {
     return String.fromCharCode(65 + index);

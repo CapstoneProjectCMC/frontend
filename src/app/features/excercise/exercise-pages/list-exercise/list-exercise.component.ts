@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MainSidebarComponent } from '../../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { sidebarExercises } from '../../../../core/constants/menu-router.data';
 import { BreadcrumbComponent } from '../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 import {
@@ -8,30 +7,33 @@ import {
 } from '../../../../shared/components/fxdonad-shared/card-excercise/card-excercise.component';
 import { CommonModule } from '@angular/common';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
-import { ExerciseItem } from '../../../../core/models/exercise.model';
-import { sendNotification } from '../../../../shared/utils/notification';
-import { Store } from '@ngrx/store';
-import { mapExerciseResToCardUI } from '../../../../shared/utils/mapData';
 import {
-  clearLoading,
-  setLoading,
-} from '../../../../shared/store/loading-state/loading.action';
+  CreateExerciseRequest,
+  ExerciseItem,
+} from '../../../../core/models/exercise.model';
+import { Store } from '@ngrx/store';
+import {
+  mapCreateExerciseToCardUI,
+  mapExerciseResToCardUI,
+} from '../../../../shared/utils/mapData';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { EnumType } from '../../../../core/models/data-handle';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
+import { ExerciseModalComponent } from '../../exercise-modal/exercise-modal.component';
+import { sendNotification } from '../../../../shared/utils/notification';
 
 @Component({
   selector: 'app-list-exercise',
   imports: [
     CommonModule,
-    MainSidebarComponent,
     BreadcrumbComponent,
     CardExcerciseComponent,
     InputComponent,
     DropdownButtonComponent,
     SkeletonLoadingComponent,
+    ExerciseModalComponent, // thêm vào imports
   ],
   templateUrl: './list-exercise.component.html',
   styleUrl: './list-exercise.component.scss',
@@ -42,7 +44,7 @@ export class ListExerciseComponent implements OnInit {
   listExercise: CardExcercise[] = [];
 
   pageIndex: number = 1;
-  itemsPerPage: number = 8;
+  itemsPerPage: number = 6;
   sortBy: EnumType['sort'] = 'CREATED_AT';
   asc: boolean = false;
 
@@ -56,6 +58,8 @@ export class ListExerciseComponent implements OnInit {
 
   username: string | number = '';
   usernameError: string | null = '';
+
+  showModalCreate = false;
 
   constructor(
     private store: Store,
@@ -78,6 +82,12 @@ export class ListExerciseComponent implements OnInit {
     return data.map((info) => mapExerciseResToCardUI(info));
   }
 
+  private mapCreateExerciseToCardDataUI(
+    data: CreateExerciseRequest
+  ): CardExcercise {
+    return mapCreateExerciseToCardUI(data);
+  }
+
   ngOnInit(): void {
     //promise để tránh gọi quá sớm bị angular báo lỗi
     // Promise.resolve().then(() => {
@@ -96,14 +106,13 @@ export class ListExerciseComponent implements OnInit {
           if (data.length < this.itemsPerPage) {
             this.hasMore = false;
           }
-          sendNotification(this.store, 'Thành công', res.message, 'success');
           this.isLoading = false;
-          this.store.dispatch(clearLoading());
+          // this.store.dispatch(clearLoading());
         },
         error: (err) => {
           console.log(err);
           this.isLoading = false;
-          this.store.dispatch(clearLoading());
+          // this.store.dispatch(clearLoading());
         },
       });
   }
@@ -149,13 +158,35 @@ export class ListExerciseComponent implements OnInit {
     console.log(this.selectedOptions);
   }
 
-  clickItem(id: string) {
-    this.router.navigate(['/exercise/exercise-list/exercise-details', id]);
-  }
-
   toggleDropdown(id: string): void {
     // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
     this.activeDropdown = this.activeDropdown === id ? null : id;
+  }
+
+  toggleOpenModalCreate() {
+    this.showModalCreate = !this.showModalCreate;
+  }
+
+  onModalCreateSubmit(data: CreateExerciseRequest) {
+    // TODO: Gọi API tạo mới exercise ở đây
+    console.log('CreateExerciseRequest:', data);
+    this.exerciseService.createExercise(data).subscribe({
+      next: (res) => {
+        // Assuming res contains the created exercise with all required fields
+        const newExercise = this.mapCreateExerciseToCardDataUI(data);
+        this.listExercise = [newExercise, ...this.listExercise];
+        this.showModalCreate = false;
+        sendNotification(this.store, 'Thành công', res.message, 'success');
+      },
+      error: (err) => {
+        console.error('Failed to create exercise:', err);
+        this.showModalCreate = false;
+      },
+    });
+  }
+
+  onModalCreateCancel() {
+    this.showModalCreate = false;
   }
 
   handleInputChange($event: string | number) {

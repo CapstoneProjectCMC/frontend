@@ -11,13 +11,17 @@
     </thead>
     <tbody class="table-content">
       <tr *ngFor="let row of data; let i = index">
-        <td *ngIf="needNo" style="text-align: center">
+        <td *ngIf="needNo" style="text-align: center" [attr.data-label]="'STT'">
           {{
             i + 1 + amountDataPerPage * (currentIndex ? currentIndex - 1 : 0)
           }}
         </td>
 
-        <td *ngFor="let header of headers" [ngClass]="header.value + '-column'">
+        <td
+          *ngFor="let header of headers"
+          [ngClass]="header.value + '-column'"
+          [attr.data-label]="header.label"
+        >
           <ng-container *ngIf="templateMap[header.value]; else defaultCell">
             <ng-container
               *ngTemplateOutlet="

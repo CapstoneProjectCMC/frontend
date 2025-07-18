@@ -51,7 +51,7 @@ export interface QuizDetail {
   currentPage: number;
   totalPages: number;
   pageSize: number;
-  totalElements: number;
+  totalElements: number | null;
   questions: QuizQuestion[];
   createdBy: string;
   createdAt: string;
@@ -80,7 +80,7 @@ export interface ExerciseQuiz {
   resourceIds: string[];
   tags: string[];
   allowAiQuestion: boolean;
-  quizDetail: QuizDetail;
+  quizDetail: QuizDetail | null;
   createdBy: string;
   createdAt: string;
   updatedBy: string;
@@ -88,3 +88,47 @@ export interface ExerciseQuiz {
   deletedBy: string;
   deletedAt: string;
 }
+
+export type CreateExerciseRequest = {
+  title: string; // required
+  description?: string;
+  difficulty: DifficultyLevel; // required enum
+  exerciseType: ExerciseType; // required enum
+  orgId?: string;
+  cost: number; // required, BigDecimal → number
+  freeForOrg: boolean; // required
+  startTime?: string; // Instant → string (ISO format)
+  endTime?: string; // Instant → string
+  duration?: number; // int → number
+  allowDiscussionId?: string;
+  resourceIds?: string[];
+  tags?: string[];
+  allowAiQuestion?: boolean;
+};
+
+// Enum for difficulty
+export enum DifficultyLevel {
+  EASY = 'EASY',
+  MEDIUM = 'MEDIUM',
+  HARD = 'HARD',
+}
+
+// Enum for exercise type
+export enum ExerciseType {
+  CODING = 'CODING',
+  QUIZ = 'QUIZ',
+}
+
+export type QuizQuestionCreate = {
+  text: string;
+  questionType: 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'FILL_BLANK'; // hoặc dùng enum nếu cần
+  points: number;
+  orderInQuiz: number;
+  options: QuizOption[];
+};
+
+export type QuizOptionCreate = {
+  optionText: string;
+  correct: boolean;
+  order: string; // A, B, C, D,...
+};

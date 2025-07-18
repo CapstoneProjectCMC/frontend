@@ -1,9 +1,4 @@
 <div class="exercise-main-container">
-  <app-main-sidebar
-    [sidebarItems]="sidebarData"
-    [isCollapsed]="isSidebarCollapsed"
-  >
-  </app-main-sidebar>
   <div class="main-content">
     <app-breadcrumb></app-breadcrumb>
     <div class="filter-container">
@@ -83,6 +78,14 @@
         >
         </app-dropdown-button>
       </div>
+
+      <div
+        class="create-btn"
+        (click)="toggleOpenModalCreate()"
+        title="Tạo mới bài tập"
+      >
+        +
+      </div>
     </div>
     <div
       class="list-exercise"
@@ -92,13 +95,13 @@
       <app-card-excercise
         *ngFor="let item of listExercise"
         [data]="item"
-        (click)="clickItem(item.id)"
+        [exerciseId]="item.id"
       >
       </app-card-excercise>
     </div>
 
     <app-skeleton-loading
-      *ngIf="isLoading || isLoadingMore"
+      *ngIf="isLoading"
       type="card"
       [count]="8"
     ></app-skeleton-loading>
@@ -112,3 +115,9 @@
     </div>
   </div>
 </div>
+
+<app-exercise-modal
+  (submitExercise)="onModalCreateSubmit($event)"
+  (cancel)="onModalCreateCancel()"
+  [isOpen]="showModalCreate"
+></app-exercise-modal>

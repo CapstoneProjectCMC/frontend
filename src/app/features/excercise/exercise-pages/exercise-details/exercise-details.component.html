@@ -1,87 +1,124 @@
 <div class="exercise-details-container">
-  <!-- Vế trái: Thông tin bài tập -->
-  <div class="exercise-info">
-    <div class="header">
-      <!-- Avatar và author không còn trong cấu trúc mới, có thể bỏ hoặc thay thế -->
-      <div class="info-main">
-        <h2>{{ exercise.title }}</h2>
-        <div class="author-time">
-          <span>ID tác giả: {{ exercise.userId }}</span>
-          <span class="dot">•</span>
-          <span
-            >Thời gian bắt đầu:
-            {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }}</span
-          >
-        </div>
-      </div>
-      <button class="edit-btn">Sửa</button>
-    </div>
-    <div class="meta">
-      <span class="badge">{{ exercise.exerciseType }}</span>
-      <span class="badge" *ngIf="exercise.active">Đang hoạt động</span>
-      <span class="badge" *ngIf="!exercise.active">Ngừng hoạt động</span>
-      <span class="badge difficulty-{{ exercise.difficulty.toLowerCase() }}">
-        {{
-          exercise.difficulty === "EASY"
-            ? "Dễ"
-            : exercise.difficulty === "MEDIUM"
-            ? "Trung bình"
-            : exercise.difficulty === "HARD"
-            ? "Khó"
-            : exercise.difficulty
-        }}
-      </span>
-    </div>
-    <div class="details">
-      <h4>Mô tả</h4>
-      <p>{{ exercise.description }}</p>
-    </div>
-    <div class="tags">
-      <h4>Tags</h4>
-      <div class="tag-list">
-        <span *ngFor="let tag of exercise.tags" class="tag">{{ tag }}</span>
-      </div>
-    </div>
-    <div class="time-info">
-      <span
-        >Thời gian khả dụng:
-        {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} -
-        {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}</span
-      >
-    </div>
-    <div class="stats">
-      <span>Số lượng câu hỏi: {{ exercise.quizDetail.numQuestions }}</span>
-      <span>Thời gian làm bài: {{ exercise.duration }} phút</span>
-      <span>Giá: ${{ exercise.cost }}</span>
-    </div>
-  </div>
+  <app-breadcrumb></app-breadcrumb>
 
-  <!-- Vế phải: Danh sách câu hỏi -->
-  <div class="exercise-questions">
-    <div class="questions-list">
-      <div
-        *ngFor="let q of exercise.quizDetail.questions; let i = index"
-        class="question-item"
-      >
-        <div class="question-header">
-          <span class="question-index">Câu {{ i + 1 }}</span>
-          <button class="edit-icon-btn" title="Chỉnh sửa">
-            <span>✏️</span>
-          </button>
+  <div class="exercise-details-content">
+    <!-- Vế trái: Thông tin bài tập -->
+
+    <div class="exercise-info">
+      <div class="header">
+        <div class="info-main">
+          <h2>{{ exercise.title }}</h2>
+          <div class="author-time">
+            <div class="avatar">
+              <img
+                [src]="
+                  'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50'
+                "
+                alt="Avatar"
+                class="avatar"
+              />
+            </div>
+            <span>ID tác giả: {{ exercise.userId }}</span>
+          </div>
         </div>
-        <div class="question-title">{{ q.text }}</div>
-        <div class="question-content">(Điểm: {{ q.points }})</div>
-        <div class="question-options">
-          <div
-            *ngFor="let opt of q.options; let j = index"
-            class="option"
-            [class.correct]="opt.correct"
-          >
-            <span class="option-label">{{ getOptionLabel(j) }}.</span>
-            {{ opt.optionText }}
-            <span *ngIf="opt.correct" class="correct-icon" title="Đáp án đúng"
-              >✔️</span
+      </div>
+      <div class="meta">
+        <div class="badge-container">
+          <span class="badge">{{ exercise.exerciseType }}</span>
+          <span class="badge" *ngIf="!exercise.orgId">Công khai</span>
+          <span class="badge" *ngIf="exercise.orgId">Nội bộ</span>
+        </div>
+        <div
+          class="difficulty"
+          [attr.aria-label]="'Difficulty: ' + exercise.difficulty"
+        >
+          <div class="part-difficulty">
+            <div class="difficulty-badge" [ngClass]="exercise.difficulty">
+              {{ exercise.difficulty | titlecase }}
+            </div>
+            <div class="difficulty-stars">
+              <span
+                class="star"
+                *ngFor="let star of difficultyStars"
+                [class.filled]="star <= difficultyLevel"
+              >
+                ★
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="details">
+        <p>{{ exercise.description }}</p>
+      </div>
+      <div class="tags">
+        <div class="tag-list">
+          <span *ngFor="let tag of exercise.tags" class="tag">#{{ tag }}</span>
+        </div>
+      </div>
+      <div class="time-info">
+        <span
+          >Thời gian khả dụng:
+          <p *ngIf="exercise.startTime">
+            - Từ {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} đến ngày
+            {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}
+          </p></span
+        >
+      </div>
+      <div class="stats">
+        <span>Số lượng câu hỏi: {{ exercise.quizDetail?.totalElements }}</span>
+        <span>Thời gian làm bài: {{ exercise.duration }} phút</span>
+        <span>Giá: ${{ exercise.cost }}</span>
+      </div>
+
+      <div class="btn-container">
+        <button class="edit-btn" *ngIf="true">Sửa</button>
+        <button class="start-btn">Bắt đầu</button>
+        <button class="back-btn">Quay lại</button>
+      </div>
+    </div>
+
+    <!-- Vế phải: Danh sách câu hỏi -->
+    <div class="exercise-questions">
+      <div class="questions-list">
+        <div
+          *ngFor="let q of exercise.quizDetail?.questions; let i = index"
+          class="question-item"
+        >
+          <div class="question-header">
+            <span class="question-index">Câu {{ i + 1 }}</span>
+            <div class="type-quiz">
+              Loại:
+              <span class="type-label">
+                {{
+                  q.type === "MULTI_CHOICE"
+                    ? "Nhiều lựa chọn"
+                    : q.type === "SINGLE_CHOICE"
+                    ? "Một lựa chọn"
+                    : q.type === "FILL_BLANK"
+                    ? "Điền chỗ trống"
+                    : q.type
+                }}
+              </span>
+            </div>
+            <button class="edit-icon-btn" title="Chỉnh sửa">
+              <span><i class="fa fa-edit"></i></span>
+            </button>
+          </div>
+          <div class="question-title">{{ q.text }}</div>
+          <div class="question-content">(Điểm: {{ q.points }})</div>
+          <div class="question-options">
+            <div
+              *ngFor="let opt of q.options; let j = index"
+              class="option"
+              [class.correct]="opt.correct"
             >
+              <span class="option-label">{{ getOptionLabel(j) }}.</span>
+              {{ opt.optionText }}
+              <span *ngIf="opt.correct" class="correct-icon" title="Đáp án đúng"
+                ><i class="fa fa-check"></i
+              ></span>
+            </div>
           </div>
         </div>
       </div>
