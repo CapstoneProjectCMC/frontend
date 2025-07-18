@@ -12,14 +12,14 @@ export interface UserInfor {
   role: number;
   status: number;
   org: string;
-  links: { type: string; url: string }[];
+  links: string[];
   followers: number;
   following: number;
   bio: string;
-  firstname: string;
-  lastname: string;
+  firstName: string;
+  lastName: string;
   education: string;
-  gender: string;
+  gender: boolean;
 }
 
 @Component({

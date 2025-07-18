@@ -20,7 +20,9 @@
     <div class="detail-infor">
       <div class="detail-infor-item">
         <span class="detail-infor-label">Họ tên: </span>
-        <span class="detail-infor-value">{{user.firstname+user.lastname}}</span>
+        <span class="detail-infor-value"
+          >{{user.firstName+" "+user.lastName}}</span
+        >
       </div>
       <div class="detail-infor-item">
         <span class="detail-infor-label">Học vấn: </span>
@@ -28,17 +30,17 @@
       </div>
       <div class="detail-infor-item">
         <span class="detail-infor-label">Giới tính: </span>
-        <span class="detail-infor-value">{{user.gender}}</span>
+        <span class="detail-infor-value">{{user.gender?"Nữ":"Nam"}}</span>
       </div>
       <div class="detail-infor-item">
         <span class="detail-infor-label">Ngày sinh: </span>
-        <span class="detail-infor-value">{{formatDate(user.dob)}}</span>
+        <span class="detail-infor-value">{{user.dob}}</span>
       </div>
     </div>
     <div class="line"></div>
     <div class="social-link">
       <div *ngFor="let link of user.links" class="social-link-item">
-        <a [href]="link.url" target="_blank">
+        <a [href]="link" target="_blank">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -55,7 +57,15 @@
             <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
             <line x1="8" x2="16" y1="12" y2="12" />
           </svg>
-          <span>{{ link.type }}</span>
+          <span
+            style="
+              width: 80%;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            "
+            >{{ link }}</span
+          >
         </a>
       </div>
     </div>

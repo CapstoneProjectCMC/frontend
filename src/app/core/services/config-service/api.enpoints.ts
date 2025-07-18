@@ -25,6 +25,12 @@ export const API_CONFIG = {
         asc: boolean
       ) =>
         `/submission/exercises?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
+      GET_ALL_USER: (
+        page: number,
+        size: number,
+        sort: EnumType['sort'],
+        asc: boolean
+      ) => `/profile/users?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',

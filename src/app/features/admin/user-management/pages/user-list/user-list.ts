@@ -6,7 +6,7 @@ import {
   formatDate,
   formatDateToDDMMYYYY,
 } from '../../../../../shared/utils/stringProcess';
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { NgFor, NgClass, NgIf } from '@angular/common';
 import { TableFormatViewPipe } from '../../../../../shared/pipes/table-formatview';
 import { MainSidebarComponent } from '../../../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { sidebarData } from '../../../menu-router.data';
@@ -17,6 +17,12 @@ import { InputComponent } from '../../../../../shared/components/fxdonad-shared/
 import { InteractiveButtonComponent } from '../../../../../shared/components/fxdonad-shared/button/button.component';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
+import { User } from '../../../../../core/models/user.models';
+import { UserService } from '../../../../../core/services/api-service/user.service';
+import { EnumType } from '../../../../../core/models/data-handle';
+import { sendNotification } from '../../../../../shared/utils/notification';
+import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-user-list',
@@ -88,12 +94,20 @@ export class UserListComponent {
   status: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
+  ListUser: User[] = [];
+  pageIndex: number = 1;
+  itemsPerPage: number = 8;
+  sortBy: EnumType['sort'] = 'CREATED_AT';
+  asc: boolean = false;
+  isLoading = false;
+  isLoadingMore = false;
+  hasMore = true;
   // Parse ra data cho bảng
   data = JSON.parse(this.dataJson).map((u: any) => ({
     ...u,
     dob: new Date(u.dob),
   }));
-  constructor() {
+  constructor(private userService: UserService, private store: Store) {
     // Mock data for role
     this.role = [
       { value: '1', label: 'Học sinh' },
@@ -110,6 +124,32 @@ export class UserListComponent {
     ];
   }
 
+  ngOnInit(): void {
+    this.isLoading = true;
+    this.userService
+      .getAllUser(this.pageIndex, this.itemsPerPage, this.sortBy, this.asc)
+      .subscribe({
+        next: (res) => {
+          this.ListUser = res.result.data;
+          if (this.ListUser.length < this.itemsPerPage) {
+            this.hasMore = false;
+          }
+          sendNotification(
+            this.store,
+            'Thành công',
+            'Lấy danh sách người dùng thành công',
+            'success'
+          );
+          this.isLoading = false;
+          this.store.dispatch(clearLoading());
+        },
+        error: (err) => {
+          console.log(err);
+          this.isLoading = false;
+          this.store.dispatch(clearLoading());
+        },
+      });
+  }
   handlePageChange(page: number) {
     console.log('chuyển trang');
   }
@@ -142,16 +182,6 @@ export class UserListComponent {
   handleInputChange(value: string | number): void {
     this.username = value.toString();
 
-    // // Validate input
-    // if (!this.username) {
-    //   this.usernameError = 'Không được để trống';
-    // } else if (this.username.length < 3) {
-    //   this.usernameError = 'Tối thiểu 3 ký tự';
-    // } else {
-    //   this.usernameError = null;
-    // }
-
-    // Emit changes if needed
     console.log('Input changed:', this.username);
   }
 
