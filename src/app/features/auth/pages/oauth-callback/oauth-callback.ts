@@ -42,7 +42,8 @@ export class OauthCallbackComponent {
                   'Đăng nhập Google thành công',
                   'success'
                 );
-                this.router.navigate(['/main']);
+                this.router.navigate(['/exercise/exercise-layout/list']);
+                localStorage.setItem('token', res.result.accessToken);
               } else {
                 this.router.navigate(['/auth/identity/login']);
               }

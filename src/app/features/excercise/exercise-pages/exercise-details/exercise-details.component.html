@@ -59,8 +59,10 @@
       <div class="time-info">
         <span
           >Thời gian khả dụng:
-          {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} -
-          {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}</span
+          <p *ngIf="exercise.startTime">
+            - Từ {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} đến ngày
+            {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}
+          </p></span
         >
       </div>
       <div class="stats">
