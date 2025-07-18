@@ -115,7 +115,7 @@
 
     <app-table
       [headers]="headers"
-      [data]="data"
+      [data]="ListUser"
       [amountDataPerPage]="10"
       [needNo]="true"
       [needDelete]="false"
@@ -131,6 +131,7 @@
       <ng-template #cell_displayName let-row let-i="rowIndex">
         <div style="display: flex; align-items: center; position: relative">
           <img
+            *ngIf="row.avatarUrl!=null"
             [src]="row.avatarUrl"
             alt="avatar"
             width="36"
@@ -147,7 +148,7 @@
       </ng-template>
 
       <!-- Ngày sinh -->
-      <ng-template #cell_dob let-row> {{ formatDate(row.dob) }} </ng-template>
+      <ng-template #cell_dob let-row> {{ row.dob }} </ng-template>
 
       <!-- Vai trò -->
       <ng-template #cell_role let-row>

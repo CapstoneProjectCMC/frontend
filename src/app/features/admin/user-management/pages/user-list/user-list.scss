@@ -170,7 +170,10 @@
 .close-btn:hover {
   background: #eee;
 }
-
+app-profile-popup {
+  max-height: 90vh;
+  width: auto;
+}
 @media (max-width: 780px) {
   .content-container {
     .filter-table {

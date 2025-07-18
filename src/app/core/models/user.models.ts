@@ -1,10 +1,21 @@
 //ví dụ
 
-export interface User {
+export type User = {
   id: string;
-  name: string;
-  email: string;
-}
+  userId: string;
+  firstName: string;
+  lastName: string;
+  dob: string;
+  bio: string;
+  gender: boolean;
+  displayName: string;
+  education: number;
+  links: string[];
+  city: string;
+  avatarUrl: string;
+  backgroundUrl: string;
+  createdAt: string;
+};
 
 export enum GenderEnum {
   Male = 'male',
