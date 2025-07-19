@@ -1,15 +1,13 @@
 .app-default-container {
   display: flex;
-  max-width: 100vw;
   box-sizing: border-box;
   flex-direction: column;
-  width: 100%;
 
   .layout-container {
     display: flex;
-    height: 100vh;
-    height: calc(100vh - 130px);
-
+    app-main-sidebar {
+      height: 100%;
+    }
     .sidebar-container {
       width: 240px;
       transition: width 0.3s ease;
@@ -23,12 +21,9 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 16px;
+      padding-left: 16px;
+      // height: calc(100vh - 130px);
       overflow: auto;
-
-      app-breadcrumb {
-        margin-bottom: 12px;
-      }
     }
   }
 }

@@ -31,11 +31,19 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
   private hoverTimeout?: any;
   submenuState: { [key: string]: 'open' | 'close' } = {};
 
+  isMobileMenuOpen: boolean = false;
+  submenuPopoverPosition: {
+    [key: string]: { top: number; left: number; width: number };
+  } = {};
+  private resizeListener: (() => void) | undefined;
+
   constructor(
     private themeService: ThemeService,
     private router: Router,
     private eRef: ElementRef
-  ) {}
+  ) {
+    this.handleResize();
+  }
 
   ngOnInit() {
     // Đồng bộ activeItem với url hiện tại khi khởi tạo
@@ -46,6 +54,7 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.updateActiveItemByUrl(event.urlAfterRedirects);
+        this.handleResize();
       });
 
     // Subscribe to theme changes
@@ -55,6 +64,11 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
         this.theme = newTheme;
       }
     );
+
+    this.resizeListener = () => {
+      this.handleResize();
+    };
+    window.addEventListener('resize', this.resizeListener);
   }
 
   /**
@@ -90,6 +104,20 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
     }
+    if (this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener);
+    }
+  }
+
+  handleResize() {
+    if (!this.isMobileView && this.isMobileMenuOpen) {
+      this.isMobileMenuOpen = false;
+    }
+  }
+
+  toggleMobileMenu(event: Event) {
+    event.stopPropagation();
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
   setActiveItem(item: SidebarItem): void {
@@ -107,17 +135,31 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
   toggleSubmenu(item: SidebarItem, event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-
     if (this.hasChildren(item)) {
       const label = item.id;
       if (this.submenuState[label] === 'open') {
         this.submenuState[label] = 'close';
+        if (this.isMobileView) {
+          this.submenuPopoverPosition[label] = { top: 0, left: 0, width: 0 };
+        }
       } else {
-        // Đóng tất cả submenu khác
         Object.keys(this.submenuState).forEach((key) => {
           this.submenuState[key] = 'close';
         });
         this.submenuState[label] = 'open';
+        if (this.isMobileView) {
+          const liElem = (event.currentTarget as HTMLElement).closest('li');
+          if (liElem) {
+            const rect = liElem.getBoundingClientRect();
+            const submenuWidth = window.innerWidth * 0.4; // 40vw
+            const left = rect.left + (rect.width - submenuWidth) / 2;
+            this.submenuPopoverPosition[label] = {
+              top: rect.bottom,
+              left,
+              width: submenuWidth,
+            };
+          }
+        }
       }
     }
   }
@@ -143,6 +185,10 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
           this.submenuState[label] = 'close';
         }
       });
+      // Đóng menu chính nếu đang ở mobile
+      if (this.isMobileView && this.isMobileMenuOpen) {
+        this.isMobileMenuOpen = false;
+      }
     }
   }
 
@@ -184,5 +230,9 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
     //     this.expandedItems.delete(item.id);
     //   }, 100); // 100ms delay
     // }
+  }
+
+  get isMobileView(): boolean {
+    return window.innerWidth <= 770;
   }
 }
