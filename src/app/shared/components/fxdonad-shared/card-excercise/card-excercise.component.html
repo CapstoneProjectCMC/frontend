@@ -29,7 +29,7 @@
         {{ data.description }}
       </p>
       <button
-        *ngIf="data.description.length > 150"
+        *ngIf="data.description.length > 100"
         (click)="toggleDescription()"
         class="read-more"
       >

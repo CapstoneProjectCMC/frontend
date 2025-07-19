@@ -124,11 +124,15 @@ export type QuizQuestionCreate = {
   questionType: 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE' | 'FILL_BLANK'; // hoặc dùng enum nếu cần
   points: number;
   orderInQuiz: number;
-  options: QuizOption[];
+  options: QuizOptionCreate[];
 };
 
 export type QuizOptionCreate = {
   optionText: string;
   correct: boolean;
   order: string; // A, B, C, D,...
+};
+
+export type QuizDetailCreateStupid = {
+  questions: QuizQuestionCreate[];
 };

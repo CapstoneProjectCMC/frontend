@@ -72,9 +72,12 @@
       </div>
 
       <div class="btn-container">
-        <button class="edit-btn" *ngIf="true">Sửa</button>
-        <button class="start-btn">Bắt đầu</button>
-        <button class="back-btn">Quay lại</button>
+        <button class="btn" *ngIf="true">Sửa</button>
+        <button class="btn" *ngIf="true" (click)="openAddNewQuestion()">
+          Thêm câu hỏi
+        </button>
+        <button class="btn">Bắt đầu</button>
+        <button class="btn">Quay lại</button>
       </div>
     </div>
 
@@ -125,3 +128,10 @@
     </div>
   </div>
 </div>
+
+<app-add-new-question
+  (submitQuestion)="onSubmitQuestion($event)"
+  [isOpen]="isOpenAddNewQuestion"
+  (cancel)="cancelAddNew()"
+>
+</app-add-new-question>

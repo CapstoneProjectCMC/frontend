@@ -7,8 +7,10 @@
   &:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
+  min-width: 300px;
 
   .info-card {
+    min-width: 280px;
     flex: 4;
     background: var(--card-excercize-bg);
     padding: 10px;

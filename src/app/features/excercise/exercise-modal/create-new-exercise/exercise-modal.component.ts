@@ -11,7 +11,7 @@ import {
   CreateExerciseRequest,
   DifficultyLevel,
   ExerciseType,
-} from '../../../core/models/exercise.model';
+} from '../../../../core/models/exercise.model';
 
 @Component({
   selector: 'app-exercise-modal',
