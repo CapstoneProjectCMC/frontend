@@ -7,6 +7,7 @@ import {
   CreateExerciseRequest,
   ExerciseItem,
   ExerciseQuiz,
+  QuizDetailCreateStupid,
   QuizQuestionCreate,
 } from '../../models/exercise.model';
 
@@ -52,13 +53,28 @@ export class ExerciseService {
     );
   }
 
-  addQuestionIntoBlankExercise(
+  addQuestionIntoExercise(
     exerciseId: string,
     dataQuestion: QuizQuestionCreate
   ) {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ADD_QUESTION(exerciseId),
       dataQuestion
+    );
+  }
+
+  inititalAddQuestionStupid(
+    exerciseId: string,
+    dataQuestion: QuizQuestionCreate
+  ) {
+    const quizDetailCreateStupid: QuizDetailCreateStupid = {
+      questions: [dataQuestion],
+    };
+    console.log(quizDetailCreateStupid);
+
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.ADD_QUESTION_STUPID(exerciseId),
+      quizDetailCreateStupid
     );
   }
 }

@@ -21,8 +21,12 @@ import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-s
 import { EnumType } from '../../../../core/models/data-handle';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
-import { ExerciseModalComponent } from '../../exercise-modal/exercise-modal.component';
+import { ExerciseModalComponent } from '../../exercise-modal/create-new-exercise/exercise-modal.component';
 import { sendNotification } from '../../../../shared/utils/notification';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../shared/store/loading-state/loading.action';
 
 @Component({
   selector: 'app-list-exercise',
@@ -169,6 +173,16 @@ export class ListExerciseComponent implements OnInit {
 
   onModalCreateSubmit(data: CreateExerciseRequest) {
     // TODO: Gọi API tạo mới exercise ở đây
+
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({
+          isLoading: true,
+          content: 'Đang thêm mới bài tập, xin chờ...',
+        })
+      );
+    });
+
     console.log('CreateExerciseRequest:', data);
     this.exerciseService.createExercise(data).subscribe({
       next: (res) => {
@@ -177,10 +191,12 @@ export class ListExerciseComponent implements OnInit {
         this.listExercise = [newExercise, ...this.listExercise];
         this.showModalCreate = false;
         sendNotification(this.store, 'Thành công', res.message, 'success');
+        this.store.dispatch(clearLoading());
       },
       error: (err) => {
         console.error('Failed to create exercise:', err);
         this.showModalCreate = false;
+        this.store.dispatch(clearLoading());
       },
     });
   }

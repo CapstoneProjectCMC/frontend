@@ -1,0 +1,154 @@
+<div
+  class="modal-overlay"
+  [class.open]="isOpen"
+  (click)="onOverlayClick($event)"
+>
+  <div class="modal-content" [class.open]="isOpen">
+    <h2 class="modal-title">Tạo câu hỏi mới</h2>
+    <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
+      <div class="modal-body">
+        <div class="form-steps-wrapper">
+          <!-- Step 1: Thông tin câu hỏi -->
+          <div
+            class="form-step step-1"
+            [class.active]="step === 1"
+            [class.inactive]="step !== 1"
+          >
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="text">Nội dung câu hỏi *</label>
+                <input
+                  id="text"
+                  formControlName="text"
+                  type="text"
+                  placeholder="Nhập nội dung câu hỏi"
+                />
+                <div
+                  class="error"
+                  *ngIf="
+                    questionForm.get('text')?.touched &&
+                    questionForm.get('text')?.invalid
+                  "
+                >
+                  Nội dung là bắt buộc
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="questionType">Loại câu hỏi *</label>
+                <select id="questionType" formControlName="questionType">
+                  <option
+                    *ngFor="let type of questionTypes"
+                    [value]="type.value"
+                  >
+                    {{ type.label }}
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="points">Điểm *</label>
+                <input
+                  id="points"
+                  formControlName="points"
+                  type="number"
+                  min="1"
+                  placeholder="Nhập số điểm"
+                />
+                <div
+                  class="error"
+                  *ngIf="
+                    questionForm.get('points')?.touched &&
+                    questionForm.get('points')?.invalid
+                  "
+                >
+                  Điểm là bắt buộc và >= 1
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="orderInQuiz">Thứ tự trong bài *</label>
+                <input
+                  id="orderInQuiz"
+                  formControlName="orderInQuiz"
+                  type="number"
+                  min="1"
+                  placeholder="Nhập thứ tự"
+                />
+                <div
+                  class="error"
+                  *ngIf="
+                    questionForm.get('orderInQuiz')?.touched &&
+                    questionForm.get('orderInQuiz')?.invalid
+                  "
+                >
+                  Thứ tự là bắt buộc và >= 1
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Step 2: Danh sách đáp án -->
+          <div
+            class="form-step step-2"
+            [class.active]="step === 2"
+            [class.inactive]="step !== 2"
+          >
+            <div class="form-grid">
+              <div class="form-group" style="grid-column: 1 / -1">
+                <label>Danh sách đáp án *</label>
+                <div formArrayName="options" class="options">
+                  <div
+                    *ngFor="let option of options.controls; let i = index"
+                    [formGroupName]="i"
+                    class="option-fields"
+                  >
+                    <span class="option-order">{{
+                      option.get("order")?.value
+                    }}</span>
+                    <input
+                      type="text"
+                      formControlName="optionText"
+                      placeholder="Nội dung đáp án"
+                      class="option-text"
+                    />
+                    <label class="option-correct">
+                      <input type="checkbox" formControlName="correct" /> Đúng
+                    </label>
+                    <button
+                      type="button"
+                      class="btn btn-secondary remove"
+                      (click)="removeOption(i)"
+                      [disabled]="options.length <= 2"
+                    >
+                      Xóa
+                    </button>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  class="btn btn-primary add"
+                  (click)="addOption()"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <ng-container *ngIf="step === 1">
+          <button type="button" class="btn btn-primary" (click)="nextStep()">
+            Tiếp tục
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="onCancel()">
+            Hủy
+          </button>
+        </ng-container>
+        <ng-container *ngIf="step === 2">
+          <button type="button" class="btn btn-secondary" (click)="prevStep()">
+            Quay lại
+          </button>
+          <button type="submit" class="btn btn-primary">Tạo câu hỏi</button>
+        </ng-container>
+      </div>
+    </form>
+  </div>
+</div>
