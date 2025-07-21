@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   ExerciseQuiz,
+  OptionCreate,
   QuizDetailCreateStupid,
   QuizQuestionCreate,
 } from '../../../../core/models/exercise.model';
@@ -11,16 +12,42 @@ import { ExerciseService } from '../../../../core/services/api-service/exercise.
 import { AddNewQuestionComponent } from '../../exercise-modal/add-new-question/add-new-question.component';
 import { sendNotification } from '../../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
+import { HostListener } from '@angular/core';
+import { AddNewOptionComponent } from '../../exercise-modal/add-new-option/add-new-option.component';
 
 @Component({
   selector: 'app-exercise-details',
-  imports: [CommonModule, BreadcrumbComponent, AddNewQuestionComponent],
+  imports: [
+    CommonModule,
+    BreadcrumbComponent,
+    AddNewQuestionComponent,
+    AddNewOptionComponent,
+  ],
   templateUrl: './exercise-details.component.html',
   styleUrl: './exercise-details.component.scss',
+  animations: [
+    trigger('dropdownAnimation', [
+      state('void', style({ opacity: 0, transform: 'scaleY(0.95)' })),
+      state('*', style({ opacity: 1, transform: 'scaleY(1)' })),
+      transition('void <=> *', animate('150ms cubic-bezier(0.4,0,0.2,1)')),
+    ]),
+  ],
 })
 export class ExerciseDetailsComponent implements OnInit {
   isOpenAddNewQuestion = false;
+  isOpenAddNewOption: boolean = false;
   exerciseId: string | null = '';
+  quizDetailsId: string = '';
+
+  // Dropdown state: index of question with open dropdown, or null
+  openDropdownIndex: number | null = null;
 
   exercise: ExerciseQuiz = {
     id: '',
@@ -120,6 +147,10 @@ export class ExerciseDetailsComponent implements OnInit {
     this.isOpenAddNewQuestion = false;
   }
 
+  cancelAddNewOption() {
+    this.isOpenAddNewOption = false;
+  }
+
   onSubmitQuestion(data: QuizQuestionCreate) {
     if (this.exercise.quizDetail === null) {
       this.exerciseService
@@ -156,7 +187,66 @@ export class ExerciseDetailsComponent implements OnInit {
     }
   }
 
+  onSubmitOption(data: OptionCreate) {
+    this.exerciseService
+      .addOptionsIntoQuestion(this.quizDetailsId, data)
+      .subscribe({
+        next: (res) => {
+          if (res.code === 20000) {
+            if (this.exerciseId) {
+              // page, size, sort, asc có thể lấy mặc định hoặc từ query param nếu cần
+              this.fetchingData(this.exerciseId);
+            }
+            sendNotification(this.store, 'Thành công', res.message, 'success');
+            this.isOpenAddNewOption = false;
+          }
+        },
+        error: (err) => {
+          this.isOpenAddNewOption = false;
+          console.log(err);
+        },
+      });
+  }
+
+  // Dropdown logic
+  toggleDropdown(index: number) {
+    if (this.openDropdownIndex === index) {
+      this.openDropdownIndex = null;
+    } else {
+      this.openDropdownIndex = index;
+    }
+  }
+
+  closeDropdown() {
+    this.openDropdownIndex = null;
+  }
+
+  onEditQuestion(index: number, quizDetailId?: string) {
+    // TODO: Implement edit question logic
+    this.quizDetailsId = quizDetailId ?? '';
+    this.closeDropdown();
+  }
+
+  onAddOption(index: number, quizDetailId?: string) {
+    // TODO: Implement add option logic
+    // quizDetailId có thể được sử dụng ở đây nếu cần
+    this.quizDetailsId = quizDetailId ?? '';
+    this.isOpenAddNewOption = true;
+    this.closeDropdown();
+  }
+
   getOptionLabel(index: number): string {
     return String.fromCharCode(65 + index);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (
+      !target.closest('.edit-icon-btn') &&
+      !target.closest('.edit-dropdown')
+    ) {
+      this.closeDropdown();
+    }
   }
 }

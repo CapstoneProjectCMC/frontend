@@ -12,13 +12,14 @@ import {
   QuizQuestionCreate,
   QuizOptionCreate,
 } from '../../../../core/models/exercise.model';
+import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/tooltip';
 
 @Component({
   selector: 'app-add-new-question',
   templateUrl: './add-new-question.component.html',
   styleUrls: ['./add-new-question.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, Tooltip],
 })
 export class AddNewQuestionComponent {
   @Input() isOpen: boolean = false;

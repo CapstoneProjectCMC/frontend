@@ -1,0 +1,61 @@
+<div
+  class="modal-overlay"
+  [class.open]="isOpen"
+  (click)="onOverlayClick($event)"
+>
+  <div
+    class="modal-content"
+    [class.open]="isOpen"
+    (click)="$event.stopPropagation()"
+  >
+    <h2 class="modal-title">Tạo mới đáp án</h2>
+    <form [formGroup]="optionForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="optionText">Nội dung đáp án</label>
+        <input
+          id="optionText"
+          type="text"
+          formControlName="optionText"
+          placeholder="Nhập nội dung đáp án"
+        />
+        <div
+          class="error"
+          *ngIf="
+            optionForm.get('optionText')?.touched &&
+            optionForm.get('optionText')?.invalid
+          "
+        >
+          Vui lòng nhập nội dung đáp án
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="order">Thứ tự (A, B, C...)</label>
+        <input
+          id="order"
+          type="text"
+          formControlName="order"
+          maxlength="1"
+          placeholder="A, B, C..."
+        />
+        <div
+          class="error"
+          *ngIf="
+            optionForm.get('order')?.touched && optionForm.get('order')?.invalid
+          "
+        >
+          Vui lòng nhập thứ tự đáp án
+        </div>
+      </div>
+      <div class="form-group checkbox-group">
+        <input id="correct" type="checkbox" formControlName="correct" />
+        <label for="correct">Là đáp án đúng</label>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-primary">Tạo mới</button>
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">
+          Hủy
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

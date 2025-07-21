@@ -121,13 +121,20 @@
                     </button>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-primary add"
-                  (click)="addOption()"
+                <app-tooltip
+                  [distance]="0"
+                  [position]="'right'"
+                  [delay]="1"
+                  content="Thêm mới câu hỏi"
                 >
-                  +
-                </button>
+                  <button
+                    type="button"
+                    class="btn btn-primary add"
+                    (click)="addOption()"
+                  >
+                    +
+                  </button>
+                </app-tooltip>
               </div>
             </div>
           </div>
