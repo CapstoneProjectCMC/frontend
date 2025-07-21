@@ -136,3 +136,9 @@ export type QuizOptionCreate = {
 export type QuizDetailCreateStupid = {
   questions: QuizQuestionCreate[];
 };
+
+export type OptionCreate = {
+  optionText: string;
+  correct: boolean;
+  order: string;
+};

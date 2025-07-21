@@ -104,9 +104,33 @@
                 }}
               </span>
             </div>
-            <button class="edit-icon-btn" title="Chỉnh sửa">
+            <button
+              class="edit-icon-btn"
+              title="Chỉnh sửa"
+              (click)="toggleDropdown(i)"
+            >
               <span><i class="fa fa-edit"></i></span>
             </button>
+            <div
+              class="edit-dropdown"
+              *ngIf="openDropdownIndex === i"
+              [@dropdownAnimation]
+            >
+              <ul>
+                <li
+                  *ngIf="exercise.quizDetail?.questions?.[i]"
+                  (click)="onEditQuestion(i, exercise.quizDetail?.questions?.[i]?.id)"
+                >
+                  <i class="fa fa-pen"></i> Sửa câu hỏi
+                </li>
+                <li
+                  *ngIf="exercise.quizDetail?.questions?.[i]"
+                  (click)="onAddOption(i, exercise.quizDetail?.questions?.[i]?.id)"
+                >
+                  <i class="fa fa-plus"></i> Thêm đáp án
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="question-title">{{ q.text }}</div>
           <div class="question-content">(Điểm: {{ q.points }})</div>
@@ -135,3 +159,10 @@
   (cancel)="cancelAddNew()"
 >
 </app-add-new-question>
+
+<app-add-new-option
+  [isOpen]="isOpenAddNewOption"
+  (cancel)="cancelAddNewOption()"
+  (submitOption)="onSubmitOption($event)"
+>
+</app-add-new-option>

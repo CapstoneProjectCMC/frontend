@@ -99,7 +99,10 @@ export class ListExerciseComponent implements OnInit {
     //     setLoading({ isLoading: true, content: 'Đang tải dữ liệu, xin chờ...' })
     //   );
     // });
+    this.fetchData();
+  }
 
+  fetchData() {
     this.isLoading = true;
     this.exerciseService
       .getAllExercise(this.pageIndex, this.itemsPerPage, this.sortBy, this.asc)
@@ -188,7 +191,7 @@ export class ListExerciseComponent implements OnInit {
       next: (res) => {
         // Assuming res contains the created exercise with all required fields
         const newExercise = this.mapCreateExerciseToCardDataUI(data);
-        this.listExercise = [newExercise, ...this.listExercise];
+        this.fetchData();
         this.showModalCreate = false;
         sendNotification(this.store, 'Thành công', res.message, 'success');
         this.store.dispatch(clearLoading());

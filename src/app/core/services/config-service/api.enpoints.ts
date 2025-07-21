@@ -49,6 +49,8 @@ export const API_CONFIG = {
         `/submission/quiz/${exerciseId}/question`,
       ADD_QUESTION_STUPID: (exerciseId: string) =>
         `/submission/quiz/exercise/${exerciseId}/quiz-detail`,
+      ADD_OPTION_INTO_QUESTION: (questionId: string) =>
+        `/submission/quiz/question/${questionId}/option`,
     },
     PATCH: {},
     DELETE: {},

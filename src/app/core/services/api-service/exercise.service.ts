@@ -7,6 +7,7 @@ import {
   CreateExerciseRequest,
   ExerciseItem,
   ExerciseQuiz,
+  OptionCreate,
   QuizDetailCreateStupid,
   QuizQuestionCreate,
 } from '../../models/exercise.model';
@@ -60,6 +61,13 @@ export class ExerciseService {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ADD_QUESTION(exerciseId),
       dataQuestion
+    );
+  }
+
+  addOptionsIntoQuestion(questionId: string, option: OptionCreate) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.ADD_OPTION_INTO_QUESTION(questionId),
+      option
     );
   }
 
