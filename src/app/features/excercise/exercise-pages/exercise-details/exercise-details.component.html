@@ -72,7 +72,9 @@
       </div>
 
       <div class="btn-container">
-        <button class="btn" *ngIf="true">Sửa</button>
+        <button class="btn" *ngIf="true" (click)="openUpdateExercise()">
+          Sửa
+        </button>
         <button class="btn" *ngIf="true" (click)="openAddNewQuestion()">
           Thêm câu hỏi
         </button>
@@ -166,3 +168,11 @@
   (submitOption)="onSubmitOption($event)"
 >
 </app-add-new-option>
+
+<app-update-exercise
+  [isOpen]="isOpenUpdateExercise"
+  (cancel)="cancelUpdateExercise()"
+  [exercise]="exercise"
+  (updateSuccess)="onUpdateExercise()"
+>
+</app-update-exercise>

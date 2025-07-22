@@ -106,6 +106,21 @@ export type CreateExerciseRequest = {
   allowAiQuestion?: boolean;
 };
 
+export type PatchUpdateExerciseRequest = {
+  title: String;
+  description: String;
+  difficulty: DifficultyLevel;
+  cost: number;
+  freeForOrg: boolean;
+  startTime: string;
+  endTime: string;
+  duration: number;
+  allowDiscussionId: String;
+  resourceIds: string[];
+  tags: string[];
+  allowAiQuestion: boolean;
+};
+
 // Enum for difficulty
 export enum DifficultyLevel {
   EASY = 'EASY',
