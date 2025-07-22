@@ -8,6 +8,7 @@ import {
   ExerciseItem,
   ExerciseQuiz,
   OptionCreate,
+  PatchUpdateExerciseRequest,
   QuizDetailCreateStupid,
   QuizQuestionCreate,
 } from '../../models/exercise.model';
@@ -68,6 +69,13 @@ export class ExerciseService {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ADD_OPTION_INTO_QUESTION(questionId),
       option
+    );
+  }
+
+  updateExercise(exerciseId: string, dataUpdate: PatchUpdateExerciseRequest) {
+    return this.api.patch<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PATCH.UPDATE_EXERCISE(exerciseId),
+      dataUpdate
     );
   }
 
