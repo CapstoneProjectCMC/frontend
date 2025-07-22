@@ -21,6 +21,7 @@ import {
 } from '@angular/animations';
 import { HostListener } from '@angular/core';
 import { AddNewOptionComponent } from '../../exercise-modal/add-new-option/add-new-option.component';
+import { UpdateExerciseComponent } from '../../exercise-modal/update-exercise/update-exercise.component';
 
 @Component({
   selector: 'app-exercise-details',
@@ -29,6 +30,7 @@ import { AddNewOptionComponent } from '../../exercise-modal/add-new-option/add-n
     BreadcrumbComponent,
     AddNewQuestionComponent,
     AddNewOptionComponent,
+    UpdateExerciseComponent,
   ],
   templateUrl: './exercise-details.component.html',
   styleUrl: './exercise-details.component.scss',
@@ -43,6 +45,8 @@ import { AddNewOptionComponent } from '../../exercise-modal/add-new-option/add-n
 export class ExerciseDetailsComponent implements OnInit {
   isOpenAddNewQuestion = false;
   isOpenAddNewOption: boolean = false;
+  isOpenUpdateExercise: boolean = false;
+
   exerciseId: string | null = '';
   quizDetailsId: string = '';
 
@@ -143,12 +147,34 @@ export class ExerciseDetailsComponent implements OnInit {
     this.isOpenAddNewQuestion = true;
   }
 
+  openUpdateExercise() {
+    this.isOpenUpdateExercise = true;
+  }
+
+  onEditQuestion(index: number, quizDetailId?: string) {
+    // TODO: Implement edit question logic
+    this.quizDetailsId = quizDetailId ?? '';
+    this.closeDropdown();
+  }
+
+  onAddOption(index: number, quizDetailId?: string) {
+    // TODO: Implement add option logic
+    // quizDetailId có thể được sử dụng ở đây nếu cần
+    this.quizDetailsId = quizDetailId ?? '';
+    this.isOpenAddNewOption = true;
+    this.closeDropdown();
+  }
+
   cancelAddNew() {
     this.isOpenAddNewQuestion = false;
   }
 
   cancelAddNewOption() {
     this.isOpenAddNewOption = false;
+  }
+
+  cancelUpdateExercise() {
+    this.isOpenUpdateExercise = false;
   }
 
   onSubmitQuestion(data: QuizQuestionCreate) {
@@ -208,6 +234,11 @@ export class ExerciseDetailsComponent implements OnInit {
       });
   }
 
+  onUpdateExercise() {
+    this.fetchingData(this.exercise.id);
+    this.isOpenUpdateExercise = false;
+  }
+
   // Dropdown logic
   toggleDropdown(index: number) {
     if (this.openDropdownIndex === index) {
@@ -219,20 +250,6 @@ export class ExerciseDetailsComponent implements OnInit {
 
   closeDropdown() {
     this.openDropdownIndex = null;
-  }
-
-  onEditQuestion(index: number, quizDetailId?: string) {
-    // TODO: Implement edit question logic
-    this.quizDetailsId = quizDetailId ?? '';
-    this.closeDropdown();
-  }
-
-  onAddOption(index: number, quizDetailId?: string) {
-    // TODO: Implement add option logic
-    // quizDetailId có thể được sử dụng ở đây nếu cần
-    this.quizDetailsId = quizDetailId ?? '';
-    this.isOpenAddNewOption = true;
-    this.closeDropdown();
   }
 
   getOptionLabel(index: number): string {

@@ -52,7 +52,10 @@ export const API_CONFIG = {
       ADD_OPTION_INTO_QUESTION: (questionId: string) =>
         `/submission/quiz/question/${questionId}/option`,
     },
-    PATCH: {},
+    PATCH: {
+      UPDATE_EXERCISE: (exerciseId: string) =>
+        `/submission/exercise/${exerciseId}`,
+    },
     DELETE: {},
   },
   HEADERS: {
