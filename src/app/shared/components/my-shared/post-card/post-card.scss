@@ -1,6 +1,8 @@
 .post-card {
-  width: 506px;
-  height: 282px;
+  max-width: 500px;
+  min-width: 400px;
+  flex: 1 1 440px; // Cho phép xuống dòng linh hoạt, nhưng đều nhau
+  height: 283px;
   display: flex;
   flex-direction: row;
   background: #fff;
@@ -13,9 +15,9 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     .post-card-header {
-      padding: 24px;
+      padding: 16px;
       padding-bottom: 0px;
       display: flex;
       align-items: center;
@@ -56,6 +58,7 @@
       }
       .post-card-description {
         font-size: 14px;
+        width: 100%;
         overflow: hidden;
         display: -webkit-box;
         -webkit-line-clamp: 3;
@@ -144,7 +147,6 @@
       align-items: center;
       justify-content: center;
       height: 32px;
-      margin: 8px;
       cursor: pointer;
     }
   }
@@ -232,7 +234,7 @@
 .post-card-separator.pending {
   background-color: #f5d905;
 }
-.post-card-separator.approved {
+.post-card-separator.accepted {
   background-color: #09d3ae;
 }
 

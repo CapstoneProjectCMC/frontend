@@ -103,10 +103,7 @@ export class UserListComponent {
   isLoadingMore = false;
   hasMore = true;
   // Parse ra data cho bảng
-  data = JSON.parse(this.dataJson).map((u: any) => ({
-    ...u,
-    dob: new Date(u.dob),
-  }));
+
   constructor(private userService: UserService, private store: Store) {
     // Mock data for role
     this.role = [

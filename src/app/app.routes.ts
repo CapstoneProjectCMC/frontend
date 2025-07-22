@@ -118,6 +118,14 @@ export const routes: Routes = [
         data: { breadcrumb: 'Quản lý người dùng' },
       },
       {
+        path: 'post-management',
+        loadChildren: () =>
+          import(
+            './features/admin/post-management/post-management-routing.module'
+          ).then((m) => m.PostManagementRoutingModule),
+        data: { breadcrumb: 'Quản lý bài đăng' },
+      },
+      {
         path: '**',
         loadComponent: () =>
           import('./features/auth/pages/error-404/error-404.component').then(

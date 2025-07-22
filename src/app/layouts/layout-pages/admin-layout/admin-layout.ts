@@ -14,7 +14,7 @@ import { sidebarData } from '../../../features/admin/menu-router.data';
 import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 
 @Component({
-  selector: 'app-app-layout',
+  selector: 'app-admin-layout',
   standalone: true,
   imports: [
     CommonModule,
@@ -43,7 +43,6 @@ export class AdminLayoutComponent implements OnInit {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        console.log('Current URL:', event.urlAfterRedirects);
         this.visible = event.urlAfterRedirects !== '/';
       });
   }
