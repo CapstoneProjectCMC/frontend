@@ -2,9 +2,14 @@
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
-
+  width: calc(100vw - 15px);
+  overflow: hidden; // ⚠️ KHÔNG scroll bản thân container
+  app-menu-layout {
+    height: 50%;
+  }
   .layout-container {
     display: flex;
+    flex: 1;
     app-main-sidebar {
       height: 100%;
     }
@@ -23,7 +28,15 @@
       flex-direction: column;
       padding-left: 16px;
       // height: calc(100vh - 130px);
-      overflow: auto;
+      overflow: hidden;
+      min-height: 0;
+      .content-container {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-height: 0; // cực kỳ quan trọng!
+      }
     }
   }
 }

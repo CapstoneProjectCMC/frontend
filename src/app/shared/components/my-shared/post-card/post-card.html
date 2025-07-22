@@ -135,12 +135,12 @@
       [ngClass]="{
     'rejected': post.status.toLowerCase() === 'rejected',
     'pending': post.status.toLowerCase() === 'pending',
-    'approved': post.status.toLowerCase() === 'approved'
+    'accepted': post.status.toLowerCase() === 'accepted'
   }"
     ></div>
     <div
       class="post-card-control-button"
-      *ngIf="post.status?.toLowerCase() === 'approved'"
+      *ngIf="post.status?.toLowerCase() === 'accepted'"
     >
       <button (click)="handleEdit()" title="Sửa">
         <svg

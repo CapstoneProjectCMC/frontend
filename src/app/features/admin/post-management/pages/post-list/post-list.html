@@ -1,0 +1,99 @@
+<div class="post-container">
+  <div class="post-list-container">
+    <div class="post-list-control">
+      <div class="post-list-filter">
+        <app-input
+          placeholder="Nhập tên..."
+          [value]="postname"
+          (valueChange)="handleInputChange($event)"
+          [required]="false"
+          [minLength]="3"
+          [variant]="'primary'"
+          [isSvg]="false"
+          [icon]="'fa fa-search'"
+        ></app-input>
+        <app-dropdown-button
+          [label]="'Vai trò'"
+          [options]="tag"
+          [variant]="'secondary'"
+          [size]="'small'"
+          [customDropField]="'main-type'"
+          [disabled]="false"
+          [multiSelect]="true"
+          [isDisplayCheckbox]="false"
+          (onSelect)="handleSelect('tag', $event)"
+          [isOpen]="activeDropdown === 'tag'"
+          (toggle)="toggleDropdown('tag')"
+          [isDisplaySelectedOpptionLabels]="true"
+          [isButtonControl]="true"
+          [isSearchable]="true"
+          [minHeight]="true"
+          [needIndexColor]="true"
+        ></app-dropdown-button>
+        <app-dropdown-button
+          [label]="'Trạng thái'"
+          [options]="status"
+          [variant]="'secondary'"
+          [size]="'small'"
+          [customDropField]="'main-type'"
+          [disabled]="false"
+          [multiSelect]="true"
+          [isDisplayCheckbox]="false"
+          (onSelect)="handleSelect('status', $event)"
+          [isOpen]="activeDropdown === 'status'"
+          (toggle)="toggleDropdown('status')"
+          [isDisplaySelectedOpptionLabels]="true"
+          [isButtonControl]="true"
+          [isSearchable]="true"
+          [minHeight]="true"
+          [needIndexColor]="true"
+        ></app-dropdown-button>
+      </div>
+      <div class="post-list-button">
+        <app-button
+          [onClick]="handleAdd"
+          [width]="'50px'"
+          [height]="'50px'"
+          variant="outline"
+        >
+          <span style="font-size: 24px">+</span>
+        </app-button>
+      </div>
+    </div>
+    <div class="note-card">
+      <div class="note-card-item">
+        <div class="line" style="background-color: #09d3ae"></div>
+        <span>Đã duyệt</span>
+      </div>
+
+      <div class="note-card-item">
+        <div class="line" style="background-color: #f5d905"></div>
+        <span>Chờ duyệt</span>
+      </div>
+      <div class="note-card-item">
+        <div class="line" style="background-color: #ff7a7c"></div>
+        <span>Đã từ chối</span>
+      </div>
+    </div>
+
+    <div class="list-post-card-container">
+      <div class="list-post-card">
+        <div *ngFor="let post of posts">
+          <app-post-card [post]="post"></app-post-card>
+        </div>
+      </div>
+      <div class="list-post-pagination">
+        <app-pagination
+          [totalData]="posts.length"
+          [amountDataPerPage]="10"
+          [currentPageIndex]=" 1"
+          (onPageChange)="handlePageChange($event)"
+        ></app-pagination>
+      </div>
+    </div>
+  </div>
+  <div class="popular">
+    <div class="popular-content"></div>
+    <div class="popular-post"></div>
+  </div>
+</div>
