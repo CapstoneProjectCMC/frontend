@@ -10,6 +10,7 @@ import {
   PopularContentComponent,
   TagInfo,
 } from '../../component/popular-content/popular-content';
+import { PopularPostComponent } from '../../component/popular-post/popular-post';
 
 @Component({
   selector: 'app-post-list',
@@ -24,6 +25,7 @@ import {
     PostCardComponent,
     NgFor,
     PopularContentComponent,
+    PopularPostComponent,
   ],
 })
 export class PostListComponent {

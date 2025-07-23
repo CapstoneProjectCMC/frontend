@@ -1,0 +1,93 @@
+.popular-content-container {
+  width: 95%;
+  min-width: 282px;
+  box-sizing: border-box;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: oklch(from var(--card-excercize-bg) calc(l + 0.15) c h);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  .content {
+    display: flex;
+    flex-direction: column;
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+  }
+  .line {
+    width: 90%;
+    height: 2px;
+    opacity: 0.2;
+    background-color: oklch(from var(--text-color) calc(l + 0.15) c h);
+  }
+  .posts {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    .post {
+      display: flex;
+      flex-direction: column;
+      padding: 10px;
+      background-color: oklch(from var(--card-excercize-bg) calc(l + 0.1) c h);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      .post-name {
+        font-size: 16px;
+        font-weight: bold;
+        color: var(--primary-color);
+        width: 50px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .post-inf {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        font-size: 14px;
+        color: var(--text-gray-color);
+        .post-author {
+          font-style: italic;
+          color: var(--text-color);
+        }
+      }
+    }
+  }
+  .popular-post-button {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s linear;
+    margin-top: 10px;
+    .button-add {
+      width: 50px;
+      height: 50px;
+      background-color: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      align-self: center;
+      border-radius: 8px;
+      border: 1px solid var(--primary-color);
+
+      svg {
+        padding-left: 5px;
+        stroke: var(--primary-color);
+        transition: stroke 0.2s;
+      }
+      &:hover {
+        background-color: var(--button-color-hover);
+        svg {
+          stroke: #fff;
+        }
+      }
+    }
+  }
+}
