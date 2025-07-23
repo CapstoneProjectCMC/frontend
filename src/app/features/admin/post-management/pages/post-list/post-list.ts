@@ -6,6 +6,10 @@ import { PostCardComponent } from '../../../../../shared/components/my-shared/po
 import { NgFor } from '@angular/common';
 import { PostCardInfo } from '../../../../../core/models/post.models';
 import { PaginationComponent } from '../../../../../shared/components/fxdonad-shared/pagination/pagination.component';
+import {
+  PopularContentComponent,
+  TagInfo,
+} from '../../component/popular-content/popular-content';
 
 @Component({
   selector: 'app-post-list',
@@ -19,6 +23,7 @@ import { PaginationComponent } from '../../../../../shared/components/fxdonad-sh
     PaginationComponent,
     PostCardComponent,
     NgFor,
+    PopularContentComponent,
   ],
 })
 export class PostListComponent {
@@ -164,6 +169,16 @@ export class PostListComponent {
       status: 'Accepted',
       public: true,
     },
+  ];
+  fakeTags: TagInfo[] = [
+    { name: 'React', level: 4, count: 49348 },
+    { name: 'Vue', level: 3, count: 75 },
+    { name: 'NodeJS', level: 2, count: 60 },
+    { name: 'TypeScript', level: 1, count: 45 },
+    { name: 'C#', level: 2, count: 60 },
+    { name: 'Java', level: 1, count: 45 },
+    { name: 'Python', level: 2, count: 60 },
+    { name: 'C', level: 1, count: 45 },
   ];
   isLoading = false;
   isLoadingMore = false;

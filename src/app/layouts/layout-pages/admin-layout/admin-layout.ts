@@ -20,7 +20,6 @@ import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadc
     CommonModule,
     RouterOutlet,
     HeaderComponent,
-    FooterComponent,
     MenuLayoutComponent,
     MainSidebarComponent,
     BreadcrumbComponent,

@@ -93,7 +93,12 @@
     </div>
   </div>
   <div class="popular">
-    <div class="popular-content"></div>
+    <div class="popular-content">
+      <app-popular-content
+        [numTags]="fakeTags.length"
+        [tags]="fakeTags"
+      ></app-popular-content>
+    </div>
     <div class="popular-post"></div>
   </div>
 </div>
