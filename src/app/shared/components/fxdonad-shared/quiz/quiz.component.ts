@@ -9,6 +9,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DurationFormatPipe } from '../../../pipes/duration-format.pipe';
+import { QuizQuestion } from '../../../../core/models/exercise.model';
+
+export interface QuizQuestionExtends extends QuizQuestion {
+  done?: boolean;
+}
 
 @Component({
   selector: 'app-quiz',
@@ -18,12 +23,7 @@ import { DurationFormatPipe } from '../../../pipes/duration-format.pipe';
   styleUrls: ['./quiz.component.scss'],
 })
 export class QuizComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() questions: Array<{
-    text: string;
-    options: string[];
-    answer?: string;
-    done?: boolean;
-  }> = [];
+  @Input() questions: Array<QuizQuestionExtends> = [];
   @Input() totalTime: number = 1800;
 
   currentQuestionIndex = 0;

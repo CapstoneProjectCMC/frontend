@@ -34,7 +34,7 @@
       <label
         class="option"
         *ngFor="let opt of questions[currentQuestionIndex]?.options"
-        [class.selected]="selectedAnswer === opt"
+        [class.selected]="selectedAnswer === opt.optionText"
       >
         <input
           type="radio"
@@ -43,7 +43,7 @@
           [value]="opt"
           (change)="markDone(currentQuestionIndex)"
         />
-        {{ opt }}
+        {{ opt.optionText }}
       </label>
     </div>
 

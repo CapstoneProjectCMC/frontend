@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
 import { Router } from '@angular/router';
+import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
+import { parseISO } from 'date-fns/parseISO';
+import { vi } from 'date-fns/locale/vi';
 
 export interface CardExcercise {
   id: string;
@@ -54,6 +57,13 @@ export class CardExcerciseComponent {
         this.difficultyLevel = 3;
         break;
     }
+  }
+
+  getTimeAgo(timestamp: string): string {
+    return formatDistanceToNow(parseISO(timestamp), {
+      addSuffix: true,
+      locale: vi,
+    });
   }
 
   toggleDescription() {
