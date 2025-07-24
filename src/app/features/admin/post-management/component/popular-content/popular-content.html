@@ -1,0 +1,35 @@
+<div class="popular-content-container">
+  <div class="content">
+    <span class="title">Top nội dung phổ biến</span>
+    <span class="num-tags">{{ numTags }} tags</span>
+  </div>
+  <div class="line"></div>
+  <div class="tags">
+    <div
+      *ngFor="let tag of randomTags"
+      class="tag"
+      [ngClass]="'level-' + tag.level"
+    >
+      <span class="tag-name">{{ tag.name }}</span>
+      <span class="tag-count">{{ formatCount(tag.count) }}</span>
+    </div>
+  </div>
+  <div class="level-annotation">
+    <div class="level-1">
+      <div class="row"></div>
+      <span class="level-label">Đang nổi</span>
+    </div>
+    <div class="level-2">
+      <div class="row"></div>
+      <span class="level-label">Vừa phải</span>
+    </div>
+    <div class="level-3">
+      <div class="row"></div>
+      <span class="level-label">Phổ biến</span>
+    </div>
+    <div class="level-4">
+      <div class="row"></div>
+      <span class="level-label">Nổi bật</span>
+    </div>
+  </div>
+</div>
