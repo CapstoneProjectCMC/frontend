@@ -4,7 +4,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   background-color: var(--background-color);
   border: 1px solid var(--border-color);
   overflow: hidden;
@@ -155,14 +154,23 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
+      width: 50%;
       height: 100%;
       background-color: var(--background-color);
       z-index: 10;
       display: flex;
       flex-direction: column;
       border-right: 1px solid var(--border-color);
-      animation: slideIn 0.3s ease;
+      transition: transform 0.3s ease;
+      transform: translateX(0);
+
+      &.open {
+        transform: translateX(0);
+      }
+
+      &.close {
+        transform: translateX(-100%);
+      }
 
       .context-list-header {
         display: flex;
@@ -450,16 +458,6 @@
 :host-context(body.resizing) {
   cursor: ew-resize !important;
   user-select: none;
-}
-
-// Animations
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
 }
 
 @keyframes typing {

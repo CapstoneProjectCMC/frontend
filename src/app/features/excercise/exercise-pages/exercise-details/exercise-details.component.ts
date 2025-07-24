@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   ExerciseQuiz,
@@ -101,7 +101,8 @@ export class ExerciseDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private exerciseService: ExerciseService,
     private store: Store,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -245,6 +246,10 @@ export class ExerciseDetailsComponent implements OnInit {
       '/exercise/exercise-layout/quiz-submission',
       this.exerciseId,
     ]);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   // Dropdown logic

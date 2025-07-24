@@ -2,19 +2,18 @@
   display: flex;
   width: 100%;
   height: calc(100vh - 132px);
-  min-height: 600px;
   justify-content: space-between;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  gap: 20px;
+  gap: 12px;
 
   app-quiz {
     flex: 1;
     min-width: 0;
     overflow-y: auto;
-    padding-right: 20px;
     box-sizing: border-box;
+    padding: 12px 0 12px 12px;
 
     &.compact-view {
       // Styles for when the quiz needs to be more compact

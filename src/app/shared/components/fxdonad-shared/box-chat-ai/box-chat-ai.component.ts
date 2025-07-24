@@ -62,6 +62,8 @@ export class BoxChatAiComponent
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild('chatBox') chatBoxElement!: ElementRef;
   @ViewChild('resizeHandle') resizeHandleElement!: ElementRef;
+  @ViewChild('contextListRef') contextListRef!: ElementRef;
+  @ViewChild('contextButtonRef') contextButtonRef!: ElementRef;
 
   newMessage: string = '';
   isExpanded: boolean = true;
@@ -78,7 +80,7 @@ export class BoxChatAiComponent
   private mouseMoveListenerFn: (() => void) | null = null;
   private mouseUpListenerFn: (() => void) | null = null;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
 
   ngOnInit(): void {
     // Initialize with default context if none exists
@@ -179,7 +181,6 @@ export class BoxChatAiComponent
   onSelectContext(contextId: string): void {
     this.currentContextId = contextId;
     this.selectContext.emit(contextId);
-    this.showContextList = false;
     this.shouldScrollToBottom = true;
   }
 
@@ -332,6 +333,20 @@ export class BoxChatAiComponent
     if (this.mouseUpListenerFn) {
       this.mouseUpListenerFn();
       this.mouseUpListenerFn = null;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const clickedElement = event.target as HTMLElement;
+
+    const clickedInsideContextList =
+      this.contextListRef?.nativeElement.contains(clickedElement);
+    const clickedContextButton =
+      this.contextButtonRef?.nativeElement.contains(clickedElement);
+
+    if (!clickedInsideContextList && !clickedContextButton) {
+      this.showContextList = false;
     }
   }
 }

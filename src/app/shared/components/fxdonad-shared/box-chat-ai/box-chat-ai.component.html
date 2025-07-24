@@ -11,7 +11,11 @@
 
   <div class="chat-header">
     <div class="header-left">
-      <button class="context-button" (click)="toggleContextList()">
+      <button
+        #contextButtonRef
+        class="context-button"
+        (click)="toggleContextList()"
+      >
         <i class="fas fa-comments"></i>
       </button>
       <h3 class="chat-title">{{ getCurrentContext()?.title || aiName }}</h3>
@@ -31,8 +35,8 @@
       >
         <i
           class="fas"
-          [class.fa-chevron-down]="isExpanded"
-          [class.fa-chevron-up]="!isExpanded"
+          [class.fa-chevron-up]="isExpanded"
+          [class.fa-chevron-down]="!isExpanded"
         ></i>
       </button>
     </div>
@@ -40,7 +44,12 @@
 
   <div class="chat-body" *ngIf="isExpanded">
     <!-- Context list sidebar -->
-    <div class="context-list" *ngIf="showContextList">
+    <div
+      #contextListRef
+      class="context-list"
+      [class.open]="showContextList"
+      [class.close]="!showContextList"
+    >
       <div class="context-list-header">
         <h4>Lịch sử trò chuyện</h4>
         <button class="close-button" (click)="toggleContextList()">

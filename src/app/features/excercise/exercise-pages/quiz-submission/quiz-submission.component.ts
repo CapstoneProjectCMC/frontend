@@ -13,6 +13,7 @@ import {
   ChatContext,
   ChatMessage,
 } from '../../../../shared/components/fxdonad-shared/box-chat-ai/box-chat-ai.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-quiz-submission',
@@ -22,6 +23,7 @@ import {
   styleUrl: './quiz-submission.component.scss',
 })
 export class QuizSubmissionComponent implements OnInit, AfterViewInit {
+  exerciseId: string | null = '';
   questions: Array<QuizQuestion> = [];
   times = 0;
 
@@ -38,6 +40,7 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
   containerHeight: number = 0;
 
   constructor(
+    private route: ActivatedRoute,
     private exerciseService: ExerciseService,
     private renderer: Renderer2,
     private el: ElementRef
@@ -47,25 +50,22 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.exerciseService
-      .getExerciseDetails(
-        1,
-        10,
-        'CREATED_AT',
-        false,
-        'a78b4179-be9c-4934-847e-912c9cde5615'
-      )
-      .subscribe({
-        next: (res) => {
-          this.questions = res.result.quizDetail?.questions ?? [];
-          this.times = res.result.duration;
-        },
-      });
+    this.exerciseId = this.route.snapshot.paramMap.get('id');
+    if (this.exerciseId) {
+      this.exerciseService
+        .getExerciseDetails(1, 99999, 'CREATED_AT', false, this.exerciseId)
+        .subscribe({
+          next: (res) => {
+            this.questions = res.result.quizDetail?.questions ?? [];
+            this.times = res.result.duration;
+          },
+        });
 
-    // Try to restore saved width from localStorage if available
-    const savedWidth = localStorage.getItem('chatBoxWidth');
-    if (savedWidth) {
-      this.currentChatWidth = savedWidth;
+      // Try to restore saved width from localStorage if available
+      const savedWidth = localStorage.getItem('chatBoxWidth');
+      if (savedWidth) {
+        this.currentChatWidth = savedWidth;
+      }
     }
 
     // Add resize event listener
