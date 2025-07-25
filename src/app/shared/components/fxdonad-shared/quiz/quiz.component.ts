@@ -103,6 +103,10 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
     this.questions[index].done = !!answer;
   }
 
+  goToQuestion(index: number): void {
+    this.currentQuestionIndex = index;
+  }
+
   submitQuiz(): void {
     this.clearTimer();
     console.log('User answers:', this.selectedAnswers);
