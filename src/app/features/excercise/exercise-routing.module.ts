@@ -5,11 +5,13 @@ import { ListExerciseComponent } from './exercise-pages/list-exercise/list-exerc
 import { ExerciseDetailsComponent } from './exercise-pages/exercise-details/exercise-details.component';
 import { ExerciseLayoutComponent } from './exercise-layout/exercise-layout.component';
 import { QuizSubmissionComponent } from './exercise-pages/quiz-submission/quiz-submission.component';
+import { ConfirmExitGuard } from '../../core/guards/confirm-exit/confirm-exit.guard';
 
 const routes: Routes = [
   {
     path: 'exercise-layout',
     component: ExerciseLayoutComponent,
+    data: { breadcrumb: 'Bài tập' },
     children: [
       {
         path: 'exercise-details/:id',
@@ -25,6 +27,7 @@ const routes: Routes = [
         path: 'quiz-submission/:id',
         component: QuizSubmissionComponent,
         data: { breadcrumb: 'Làm bài' },
+        canDeactivate: [ConfirmExitGuard],
       },
     ],
   },

@@ -14,6 +14,8 @@ import {
   ChatMessage,
 } from '../../../../shared/components/fxdonad-shared/box-chat-ai/box-chat-ai.component';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs/internal/Observable';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'app-quiz-submission',
@@ -26,6 +28,7 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
   exerciseId: string | null = '';
   questions: Array<QuizQuestion> = [];
   times = 0;
+  quizStarted = true;
 
   // Chat data
   chatContexts: ChatContext[] = [];
@@ -47,6 +50,15 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
   ) {
     // Initialize fake chat data
     this.initializeFakeChatData();
+  }
+
+  canDeactivate(): Observable<boolean> {
+    if (!this.quizStarted) return of(true);
+
+    const confirmResult = window.confirm(
+      'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.'
+    );
+    return of(confirmResult);
   }
 
   ngOnInit() {
