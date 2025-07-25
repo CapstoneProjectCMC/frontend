@@ -1,0 +1,151 @@
+<div
+  class="chat-box"
+  #chatBox
+  [style.width]="currentWidth"
+  [class.expanded]="isExpanded"
+  [class.resizing]="isResizing"
+  [class.position-right]="position === 'right'"
+  [class.position-left]="position === 'left'"
+>
+  <div class="resize-handle" #resizeHandle></div>
+
+  <div class="chat-header">
+    <div class="header-left">
+      <button
+        #contextButtonRef
+        class="context-button"
+        (click)="toggleContextList()"
+      >
+        <i class="fas fa-comments"></i>
+      </button>
+      <h3 class="chat-title">{{ getCurrentContext()?.title || aiName }}</h3>
+    </div>
+    <div class="header-right">
+      <button
+        class="new-chat-button"
+        (click)="onCreateNewChat()"
+        title="Tạo cuộc trò chuyện mới"
+      >
+        <i class="fas fa-plus"></i>
+      </button>
+      <button
+        class="toggle-button"
+        (click)="toggleExpand()"
+        title="Thu gọn/Mở rộng"
+      >
+        <i
+          class="fas"
+          [class.fa-chevron-up]="isExpanded"
+          [class.fa-chevron-down]="!isExpanded"
+        ></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="chat-body" *ngIf="isExpanded">
+    <!-- Context list sidebar -->
+    <div
+      #contextListRef
+      class="context-list"
+      [class.open]="showContextList"
+      [class.close]="!showContextList"
+    >
+      <div class="context-list-header">
+        <h4>Lịch sử trò chuyện</h4>
+        <button class="close-button" (click)="toggleContextList()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="context-items">
+        <div
+          *ngFor="let context of chatContexts; trackBy: trackByContextId"
+          class="context-item"
+          [class.active]="context.id === currentContextId"
+          (click)="onSelectContext(context.id)"
+        >
+          <span class="context-title">{{ context.title }}</span>
+          <button
+            class="delete-context-button"
+            (click)="onDeleteContext($event, context.id)"
+            title="Xóa cuộc trò chuyện"
+          >
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat messages -->
+    <div class="chat-messages" #chatContainer>
+      @if (getCurrentContext()) { @if (getCurrentContext()!.messages.length) {
+      @for (message of getCurrentContext()!.messages; track message.id) {
+      <div
+        class="message"
+        [class.user-message]="message.sender === 'user'"
+        [class.ai-message]="message.sender === 'ai'"
+      >
+        <div class="message-content">
+          <div class="message-header">
+            <span class="sender-name">{{
+              message.sender === "user" ? "Bạn" : aiName
+            }}</span>
+            <span class="message-time">{{
+              getMessageTime(message.timestamp)
+            }}</span>
+          </div>
+          <div
+            class="message-text"
+            [class.you-color-text]="message.sender === 'user'"
+          >
+            {{ message.content }}
+          </div>
+        </div>
+      </div>
+      } } @else {
+      <div class="empty-chat">
+        <div class="empty-chat-icon">
+          <i class="fas fa-robot"></i>
+        </div>
+        <p>Hãy bắt đầu cuộc trò chuyện với AI</p>
+      </div>
+      } } @else {
+      <div class="empty-chat">
+        <div class="empty-chat-icon">
+          <i class="fas fa-robot"></i>
+        </div>
+        <p>Không có cuộc trò chuyện nào. Hãy tạo một cuộc trò chuyện mới.</p>
+      </div>
+      } @if (isLoading) {
+      <div class="message ai-message">
+        <div class="message-content">
+          <div class="message-header">
+            <span class="sender-name">{{ aiName }}</span>
+          </div>
+          <div class="typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+
+    <!-- Chat input -->
+    <div class="chat-input">
+      <textarea
+        [(ngModel)]="newMessage"
+        [placeholder]="placeholder"
+        (keydown)="handleKeyDown($event)"
+        [disabled]="isLoading"
+      ></textarea>
+      <button
+        class="send-button"
+        (click)="onSendMessage()"
+        [disabled]="!newMessage.trim() || isLoading || !getCurrentContext()"
+      >
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+</div>

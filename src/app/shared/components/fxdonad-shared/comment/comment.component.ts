@@ -3,7 +3,6 @@ import { vi } from 'date-fns/locale'; // Tiếng Việt
 import { CookieService } from 'ngx-cookie-service';
 import { sendNotification } from '../../../utils/notification';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';

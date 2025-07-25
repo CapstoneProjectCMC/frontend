@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   ExerciseQuiz,
@@ -7,7 +7,7 @@ import {
   QuizQuestionCreate,
 } from '../../../../core/models/exercise.model';
 import { BreadcrumbComponent } from '../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { AddNewQuestionComponent } from '../../exercise-modal/add-new-question/add-new-question.component';
 import { sendNotification } from '../../../../shared/utils/notification';
@@ -100,7 +100,9 @@ export class ExerciseDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private exerciseService: ExerciseService,
-    private store: Store
+    private store: Store,
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -237,6 +239,17 @@ export class ExerciseDetailsComponent implements OnInit {
   onUpdateExercise() {
     this.fetchingData(this.exercise.id);
     this.isOpenUpdateExercise = false;
+  }
+
+  doingQuiz() {
+    this.router.navigate([
+      '/exercise/exercise-layout/quiz-submission',
+      this.exerciseId,
+    ]);
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   // Dropdown logic
