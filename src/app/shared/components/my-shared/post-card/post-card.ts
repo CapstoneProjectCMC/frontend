@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { formatDate } from '../../../utils/stringProcess';
 
 export interface PostCardInfo {
+  id: string;
   avatar: string;
   author: string;
   title: string;
@@ -38,10 +39,11 @@ export class PostCardComponent {
   @Input() onComment?: () => void;
   @Input() onReport?: () => void;
   @Input() onSave?: () => void;
-  @Input() onMain?: () => void;
+  @Input() onMain?: (postId: string) => void;
+
   @Input() popular?: number = 0;
   handleMain() {
-    this.onMain && this.onMain();
+    this.onMain && this.onMain(this.post?.['id']);
   }
   handleEdit() {
     this.onEdit && this.onEdit();

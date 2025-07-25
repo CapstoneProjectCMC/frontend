@@ -77,10 +77,18 @@
     </div>
 
     <div class="list-post-card-container">
-      <div class="list-post-card">
+      <div *ngIf="!isLoading && posts" class="list-post-card">
         <div *ngFor="let post of posts">
-          <app-post-card [post]="post"></app-post-card>
+          <app-post-card [post]="post" [onMain]="goToDetail"></app-post-card>
         </div>
+      </div>
+
+      <div *ngIf="isLoading " class="list-post-card">
+        <app-skeleton-loading
+          *ngIf="isLoading"
+          type="card"
+          [count]="8"
+        ></app-skeleton-loading>
       </div>
       <div class="list-post-pagination">
         <app-pagination

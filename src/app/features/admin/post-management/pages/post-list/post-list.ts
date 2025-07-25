@@ -3,7 +3,7 @@ import { InputComponent } from '../../../../../shared/components/fxdonad-shared/
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { PostCardComponent } from '../../../../../shared/components/my-shared/post-card/post-card';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { PostCardInfo } from '../../../../../core/models/post.models';
 import { PaginationComponent } from '../../../../../shared/components/fxdonad-shared/pagination/pagination.component';
 import {
@@ -11,6 +11,8 @@ import {
   TagInfo,
 } from '../../component/popular-content/popular-content';
 import { PopularPostComponent } from '../../component/popular-post/popular-post';
+import { SkeletonLoadingComponent } from '../../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-list',
@@ -24,14 +26,16 @@ import { PopularPostComponent } from '../../component/popular-post/popular-post'
     PaginationComponent,
     PostCardComponent,
     NgFor,
+    NgIf,
     PopularContentComponent,
     PopularPostComponent,
+    SkeletonLoadingComponent,
   ],
 })
 export class PostListComponent {
   posts: PostCardInfo[] = [
     {
-      id: '0000000000000000',
+      id: '1',
       avatar: 'https://example.com/avatar1.png',
       author: 'John Doe',
       title: 'Introduction to React',
@@ -46,7 +50,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '2',
       avatar: 'https://example.com/avatar2.png',
       author: 'Jane Smith',
       title: 'Advanced JavaScript Patterns',
@@ -60,7 +64,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '3',
       avatar: 'https://example.com/avatar3.png',
       author: 'Alice Johnson',
       title: 'C# for Beginners',
@@ -74,7 +78,7 @@ export class PostListComponent {
       public: false,
     },
     {
-      id: '0000000000000000',
+      id: '4',
       avatar: 'https://example.com/avatar4.png',
       author: 'Bob Wilson',
       title: 'Java Concurrency',
@@ -88,7 +92,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '5',
       avatar: 'https://example.com/avatar5.png',
       author: 'Emma Davis',
       title: 'Python Data Analysis',
@@ -102,7 +106,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '6',
       avatar: 'https://example.com/avatar6.png',
       author: 'Michael Brown',
       title: 'React Hooks Tutorial',
@@ -116,7 +120,7 @@ export class PostListComponent {
       public: false,
     },
     {
-      id: '0000000000000000',
+      id: '7',
       avatar: 'https://example.com/avatar7.png',
       author: 'Sarah Taylor',
       title: 'Java Spring Boot',
@@ -130,7 +134,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '8',
       avatar: 'https://example.com/avatar8.png',
       author: 'David Lee',
       title: 'JavaScript ES6 Features',
@@ -144,7 +148,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '9',
       avatar: 'https://example.com/avatar9.png',
       author: 'Laura Martinez',
       title: 'C# ASP.NET Core',
@@ -158,7 +162,7 @@ export class PostListComponent {
       public: false,
     },
     {
-      id: '0000000000000000',
+      id: '10',
       avatar: 'https://example.com/avatar10.png',
       author: 'Chris Evans',
       title: 'Python Flask Tutorial',
@@ -190,7 +194,7 @@ export class PostListComponent {
   status: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
-  constructor() {
+  constructor(private router: Router) {
     this.tag = [
       { value: '1', label: 'react' },
       { value: '0', label: 'javascript' },
@@ -232,4 +236,10 @@ export class PostListComponent {
   handlePageChange(page: number) {
     console.log('chuyển trang');
   }
+
+  goToDetail = (postId: string) => {
+    console.log('Navigating to post detail with ID:', postId);
+    this.router.navigate(['/post-management/post', postId]);
+  };
+  // ...existing code...
 }
