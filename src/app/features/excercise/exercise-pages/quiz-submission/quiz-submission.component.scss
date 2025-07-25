@@ -1,0 +1,67 @@
+.quiz-submission-container {
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 132px);
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  gap: 12px;
+
+  app-quiz {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    box-sizing: border-box;
+    padding: 12px 0 12px 12px;
+
+    &.compact-view {
+      // Styles for when the quiz needs to be more compact
+      // due to the chat taking up more space
+      .question-container {
+        padding: 10px;
+      }
+
+      .option-item {
+        padding: 8px;
+        margin-bottom: 8px;
+      }
+
+      .question-text {
+        font-size: 0.95rem;
+      }
+    }
+  }
+
+  app-box-chat-ai {
+    height: calc(100vh - 132px);
+    min-width: 300px;
+    max-width: 500px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+  }
+}
+
+// Media query for mobile devices
+@media (max-width: 768px) {
+  .quiz-submission-container {
+    flex-direction: column;
+    gap: 10px;
+    height: auto;
+    min-height: 100vh;
+
+    app-quiz {
+      width: 100% !important;
+      height: 60vh;
+      min-height: 400px;
+      padding-right: 0;
+    }
+
+    app-box-chat-ai {
+      width: 100% !important;
+      height: 40vh;
+      min-height: 300px;
+      max-width: 100% !important;
+    }
+  }
+}

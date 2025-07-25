@@ -1,0 +1,18 @@
+<div class="quiz-submission-container">
+  <app-quiz [questions]="questions" [totalTime]="times * 60"></app-quiz>
+
+  <app-box-chat-ai
+    [chatContexts]="chatContexts"
+    [currentContextId]="currentContextId"
+    [isLoading]="isLoading"
+    [initialWidth]="currentChatWidth"
+    [minWidth]="'300px'"
+    [maxWidth]="'500px'"
+    [position]="'right'"
+    (widthChanged)="onWidthChanged($event)"
+    (sendMessage)="handleSendMessage($event)"
+    (createNewChat)="handleCreateNewChat()"
+    (selectContext)="handleSelectContext($event)"
+    (deleteContext)="handleDeleteContext($event)"
+  ></app-box-chat-ai>
+</div>

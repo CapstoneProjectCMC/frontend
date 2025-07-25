@@ -20,7 +20,7 @@
         <span class="username">{{ data.uploader.name }}</span>
       </div>
       <div class="timestamp" [title]="data.uploadTime | date : 'full'">
-        {{ data.uploadTime | date : "medium" }}
+        {{ getTimeAgo(data.uploadTime) }}
       </div>
     </div>
 
