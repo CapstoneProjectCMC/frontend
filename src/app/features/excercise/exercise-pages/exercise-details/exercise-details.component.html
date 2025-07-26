@@ -72,14 +72,14 @@
       </div>
 
       <div class="btn-container">
-        <button class="btn" *ngIf="true" (click)="openUpdateExercise()">
+        <button class="btn other" *ngIf="true" (click)="openUpdateExercise()">
           Sửa
         </button>
-        <button class="btn" *ngIf="true" (click)="openAddNewQuestion()">
+        <button class="btn other" *ngIf="true" (click)="openAddNewQuestion()">
           Thêm câu hỏi
         </button>
-        <button class="btn" (click)="doingQuiz()">Bắt đầu</button>
-        <button class="btn" (click)="goBack()">Quay lại</button>
+        <button class="btn main" (click)="doingQuiz()">Bắt đầu</button>
+        <button class="btn other" (click)="goBack()">Quay lại</button>
       </div>
     </div>
 
@@ -106,13 +106,22 @@
                 }}
               </span>
             </div>
-            <button
-              class="edit-icon-btn"
-              title="Chỉnh sửa"
-              (click)="toggleDropdown(i)"
-            >
-              <span><i class="fa fa-edit"></i></span>
-            </button>
+            <div class="btn-control">
+              <button
+                class="edit-icon-btn"
+                title="Chỉnh sửa"
+                (click)="toggleDropdown(i)"
+              >
+                <span><i class="fa fa-edit"></i></span>
+              </button>
+              <button
+                class="edit-icon-btn"
+                title="Xóa câu hỏi"
+                (click)="toggleConfirmDelete(i)"
+              >
+                <span><i class="fa fa-trash"></i></span>
+              </button>
+            </div>
             <div
               class="edit-dropdown"
               *ngIf="openDropdownIndex === i"
@@ -121,7 +130,7 @@
               <ul>
                 <li
                   *ngIf="exercise.quizDetail?.questions?.[i]"
-                  (click)="onEditQuestion(i, exercise.quizDetail?.questions?.[i]?.id)"
+                  (click)="onEditQuestion(i, exercise.quizDetail?.questions?.[i])"
                 >
                   <i class="fa fa-pen"></i> Sửa câu hỏi
                 </li>
@@ -130,6 +139,20 @@
                   (click)="onAddOption(i, exercise.quizDetail?.questions?.[i]?.id)"
                 >
                   <i class="fa fa-plus"></i> Thêm đáp án
+                </li>
+              </ul>
+            </div>
+            <div
+              class="edit-dropdown"
+              *ngIf="opentDeleteConfirm === i"
+              [@dropdownAnimation]
+            >
+              <ul>
+                <li
+                  *ngIf="exercise.quizDetail?.questions?.[i] as question"
+                  (click)="onDeleteQuestion(exercise.id, question.id)"
+                >
+                  <i class="fa fa-check"></i> Xác nhận xóa
                 </li>
               </ul>
             </div>
@@ -176,3 +199,11 @@
   (updateSuccess)="onUpdateExercise()"
 >
 </app-update-exercise>
+
+<app-update-question-option
+  [isOpen]="isUpdateQuestion"
+  [exerciseId]="exerciseId ?? ''"
+  [question]="selectedQuestion"
+  (updateSuccess)="onUpdateQuestionSuccess()"
+  (cancel)="closeUpdateModal()"
+></app-update-question-option>

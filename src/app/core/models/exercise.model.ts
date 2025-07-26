@@ -157,3 +157,32 @@ export type OptionCreate = {
   correct: boolean;
   order: string;
 };
+
+export type UpdateQuestionRequest = {
+  text: string;
+  questionType: 'SINGLE_CHOICE' | ' MULTI_CHOICE ' | 'FILL_BLANK';
+  points: number;
+  orderInQuiz: number;
+};
+
+export type UpdateOptionRequest = {
+  optionText: string;
+  correct: boolean;
+  order: string;
+};
+
+export interface QuizOptionWithQuestionRequest {
+  id: string;
+  optionText: string;
+  correct: boolean;
+  order: string; // A, B, C,...
+  delete: boolean; // true nếu muốn xoá option này
+}
+
+export interface QuizQuestionWithOptionRequest {
+  text: string;
+  questionType: UpdateQuestionRequest['questionType'];
+  points: number;
+  orderInQuiz: number;
+  options: QuizOption[];
+}
