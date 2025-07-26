@@ -1,10 +1,9 @@
 <div
   class="modal-overlay"
   [class.open]="isOpen"
-  [class.close]="!isOpen"
   (click)="onOverlayClick($event)"
 >
-  <div class="modal-content" [class.open]="isOpen" [class.close]="!isOpen">
+  <div class="modal-content" [class.open]="isOpen">
     <h2 class="modal-title">Cập nhật câu hỏi và đáp án</h2>
 
     @if (errorMessage) {

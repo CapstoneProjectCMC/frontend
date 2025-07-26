@@ -179,18 +179,29 @@
         display: flex;
         gap: 8px;
         .btn {
-          background: var(--button-color);
-          color: #fff;
           border: none;
           border-radius: 6px;
           padding: 8px 16px;
           cursor: pointer;
           font-weight: 500;
           transition: background 0.2s;
+          color: var(--reverse-text-color);
 
-          &:hover {
-            background: var(--button-color-hover);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+          &.main {
+            background: var(--button-color);
+            color: #fff;
+            &:hover {
+              background: oklch(from var(--button-color) calc(l * 0.8) c h);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            }
+          }
+
+          &.other {
+            background-color: oklch(from var(--button-color) calc(l * 2) c h);
+            &:hover {
+              background: oklch(from var(--button-color) calc(l * 1.5) c h);
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            }
           }
         }
       }

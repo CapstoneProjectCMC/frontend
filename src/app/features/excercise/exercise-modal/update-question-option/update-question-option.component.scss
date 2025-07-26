@@ -10,19 +10,15 @@
   align-items: center;
   z-index: 1000;
   transition: opacity 0.3s ease, visibility 0.3s ease;
-
+  opacity: 0;
+  visibility: hidden;
   &.open {
     opacity: 1;
     visibility: visible;
   }
 
-  &.close {
-    opacity: 0;
-    visibility: hidden;
-  }
-
   .modal-content {
-    background-color: white;
+    background-color: oklch(from var(--surface-color) l c h);
     border-radius: 8px;
     padding: 24px;
     width: 90%;
@@ -31,29 +27,26 @@
     overflow-y: auto;
     transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-20px);
+    opacity: 0;
 
     &.open {
       transform: translateY(0);
       opacity: 1;
     }
 
-    &.close {
-      transform: translateY(-20px);
-      opacity: 0;
-    }
-
     .modal-title {
       margin-top: 0;
       margin-bottom: 20px;
       font-size: 1.5rem;
-      color: #333;
-      border-bottom: 1px solid #eee;
+      color: oklch(from var(--title-text) l c h);
+      border-bottom: 1px solid oklch(from var(--border-color) l c h);
       padding-bottom: 10px;
     }
 
     .error-banner {
-      background-color: #ffebee;
-      color: #d32f2f;
+      background-color: oklch(from var(--error-color) l c h / 0.1);
+      color: oklch(from var(--error-color) l c h);
       padding: 10px;
       border-radius: 4px;
       margin-bottom: 16px;
@@ -103,11 +96,12 @@
           .form-group {
             margin-bottom: 16px;
             box-sizing: border-box;
+
             label {
               display: block;
               margin-bottom: 6px;
               font-weight: 500;
-              color: #555;
+              color: oklch(from var(--text-muted-color) l c h);
             }
 
             input[type="text"],
@@ -116,15 +110,17 @@
             textarea {
               width: 100%;
               padding: 10px;
-              border: 1px solid #ddd;
+              border: 1px solid oklch(from var(--border-color) l c h);
               border-radius: 4px;
               font-size: 1rem;
+              background-color: oklch(from var(--input-primary-color) l c h);
+              color: oklch(from var(--text-color) l c h);
               box-sizing: border-box;
               transition: border-color 0.2s;
 
               &:focus {
                 outline: none;
-                border-color: #4a90e2;
+                border-color: oklch(from var(--primary-color) l c h);
               }
             }
 
@@ -134,7 +130,7 @@
             }
 
             .error {
-              color: #d32f2f;
+              color: oklch(from var(--error-color) l c h);
               font-size: 0.8rem;
               margin-top: 4px;
             }
@@ -151,19 +147,21 @@
 
           .options {
             margin-top: 10px;
-            border: 1px solid #eee;
+            border: 1px solid oklch(from var(--border-color) l c h);
             border-radius: 4px;
             padding: 10px;
-            background-color: #f9f9f9;
+            background-color: oklch(
+              from var(--background-color-secondary) calc(l * 2) c h
+            );
 
             .option-fields {
               display: flex;
               align-items: center;
               margin-bottom: 10px;
               padding: 10px;
-              background-color: white;
+              background-color: oklch(from var(--surface-color) l c h);
               border-radius: 4px;
-              border: 1px solid #eee;
+              border: 1px solid oklch(from var(--border-color) l c h);
 
               .option-order {
                 font-weight: bold;
@@ -173,7 +171,9 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                background-color: #f0f0f0;
+                background-color: oklch(
+                  from var(--dropdown-hover-color) l c h / 0.1
+                );
                 border-radius: 50%;
               }
 
@@ -194,17 +194,17 @@
                 font-size: 0.8rem;
                 background: none;
                 border: none;
-                color: #d32f2f;
+                color: oklch(from var(--error-color) l c h);
                 font-size: 1.2rem;
                 cursor: pointer;
                 transition: color 0.2s;
 
                 &:hover {
-                  color: #b71c1c;
+                  color: oklch(from var(--error-color) l c h / 0.8);
                 }
 
                 &:disabled {
-                  color: #ccc;
+                  color: oklch(from var(--disabled-color) l c h);
                   cursor: not-allowed;
                 }
               }
@@ -230,25 +230,25 @@
       transition: background-color 0.2s;
 
       &.btn-primary {
-        background-color: #4a90e2;
-        color: white;
+        background-color: oklch(from var(--button-color) l c h);
+        color: oklch(from var(--reverse-color-text) l c h);
 
         &:hover {
-          background-color: #3a7bc8;
+          background-color: oklch(from var(--button-color-hover) l c h);
         }
 
         &:disabled {
-          background-color: #a0c3e8;
+          background-color: oklch(from var(--disabled-color) l c h);
           cursor: not-allowed;
         }
       }
 
       &.btn-secondary {
-        background-color: #f0f0f0;
-        color: #333;
+        background-color: oklch(from var(--input-primary-color) l c h);
+        color: oklch(from var(--text-dark-gray-color) l c h);
 
         &:hover {
-          background-color: #e0e0e0;
+          background-color: oklch(from var(--dropdown-hover-color) l c h);
         }
       }
 

@@ -126,6 +126,7 @@ export class ExerciseDetailsComponent implements OnInit {
     deletedBy: '',
     deletedAt: '',
   };
+
   difficultyStars = [1, 2, 3];
   difficultyLevel = 1;
 
