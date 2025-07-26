@@ -10,6 +10,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorComponent } from '../../../shared/components/fxdonad-shared/code-editor/code-editor.component';
 import { CodingService } from '../../../core/services/api-service/coding.service';
+import { CodeSubmission } from '../../../core/models/coding.model';
+import { sendNotification } from '../../../shared/utils/notification';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-code-editor-page',
@@ -104,7 +107,11 @@ export class CodeEditorPage implements OnInit, AfterViewChecked {
     },
   ];
 
-  constructor(private fb: FormBuilder, private codingService: CodingService) {
+  constructor(
+    private fb: FormBuilder,
+    private codingService: CodingService,
+    private store: Store
+  ) {
     this.commentForm = this.fb.group({
       comment: ['', Validators.required],
     });
@@ -153,12 +160,26 @@ export class CodeEditorPage implements OnInit, AfterViewChecked {
 
   runCode() {
     // Lấy code từ editor và in ra console
-    const code = this.codeEditorComponent.getCode();
+    const code: CodeSubmission = {
+      submissionId: 4,
+      submittedCode: this.codeEditorComponent.getCode(),
+      userId: 'hdawhdjhawdbasj',
+      exerciseId: '1',
+      memory: 256,
+      cpus: 1,
+    };
+
     console.log('Code gửi đi:', code);
 
     this.codingService.sendCode(code).subscribe({
       next: (res) => {
         console.log('đã gửi request');
+        sendNotification(
+          this.store,
+          'Thành công',
+          res.result.actualOutput,
+          'success'
+        );
       },
       error: (err) => {
         console.log('Lỗi gửi');
