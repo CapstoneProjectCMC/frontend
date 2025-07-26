@@ -43,7 +43,7 @@ export const API_CONFIG = {
       OUTBOUND_FACEBOOK_LOGIN: (code: string) =>
         `/identity/auth/login-facebook?code=${code}`,
 
-      SENDCODE: '/code-editor/ex',
+      SENDCODE: '/coding/code/compile',
       CREATE_EXERCISE: '/submission/exercise',
       ADD_QUESTION: (exerciseId: string) =>
         `/submission/quiz/${exerciseId}/question`,
@@ -52,9 +52,17 @@ export const API_CONFIG = {
       ADD_OPTION_INTO_QUESTION: (questionId: string) =>
         `/submission/quiz/question/${questionId}/option`,
     },
+    PUT: {
+      UPDATE_QUESTION_WITH_OPTION: (exerciseId: string, questionId: string) =>
+        `/submission/quiz/${exerciseId}/question/${questionId}`,
+    },
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
         `/submission/exercise/${exerciseId}`,
+      UPDATE_QUESTION: (exerciseId: string, questionId: string) =>
+        `/submission/quiz/${exerciseId}/question/${questionId}`,
+      UPDATE_OPTION: (optionId: string) =>
+        `/submission/quiz/question/option/${optionId}`,
     },
     DELETE: {},
   },

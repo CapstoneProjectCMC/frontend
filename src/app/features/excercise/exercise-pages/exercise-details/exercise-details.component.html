@@ -121,7 +121,7 @@
               <ul>
                 <li
                   *ngIf="exercise.quizDetail?.questions?.[i]"
-                  (click)="onEditQuestion(i, exercise.quizDetail?.questions?.[i]?.id)"
+                  (click)="onEditQuestion(i, exercise.quizDetail?.questions?.[i])"
                 >
                   <i class="fa fa-pen"></i> Sửa câu hỏi
                 </li>
@@ -176,3 +176,11 @@
   (updateSuccess)="onUpdateExercise()"
 >
 </app-update-exercise>
+
+<app-update-question-option
+  [isOpen]="isUpdateQuestion"
+  [exerciseId]="exerciseId ?? ''"
+  [question]="selectedQuestion"
+  (updateSuccess)="onUpdateQuestionSuccess()"
+  (cancel)="closeUpdateModal()"
+></app-update-question-option>

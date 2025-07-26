@@ -5,6 +5,12 @@ export type ApiResponse<T> = {
   result: T;
 };
 
+export type XuanApiResponse<T> = {
+  message: string;
+  status: string;
+  result: T;
+};
+
 export type loginResponse = {
   tokenAccessType: string;
   accessToken: string;

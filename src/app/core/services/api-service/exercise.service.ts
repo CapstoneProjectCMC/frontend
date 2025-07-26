@@ -11,6 +11,9 @@ import {
   PatchUpdateExerciseRequest,
   QuizDetailCreateStupid,
   QuizQuestionCreate,
+  QuizQuestionWithOptionRequest,
+  UpdateOptionRequest,
+  UpdateQuestionRequest,
 } from '../../models/exercise.model';
 
 @Injectable({
@@ -76,6 +79,38 @@ export class ExerciseService {
     return this.api.patch<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.PATCH.UPDATE_EXERCISE(exerciseId),
       dataUpdate
+    );
+  }
+
+  updateQuestion(
+    exerciseId: string,
+    questionId: string,
+    dataRequest: UpdateQuestionRequest
+  ) {
+    return this.api.patch<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PATCH.UPDATE_QUESTION(exerciseId, questionId),
+      dataRequest
+    );
+  }
+
+  updateOption(optionId: string, dataRequest: UpdateOptionRequest) {
+    return this.api.patch<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PATCH.UPDATE_OPTION(optionId),
+      dataRequest
+    );
+  }
+
+  updateQuestionAndOption(
+    exerciseId: string,
+    questionId: string,
+    dataRequest: QuizQuestionWithOptionRequest
+  ) {
+    return this.api.put<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PUT.UPDATE_QUESTION_WITH_OPTION(
+        exerciseId,
+        questionId
+      ),
+      dataRequest
     );
   }
 

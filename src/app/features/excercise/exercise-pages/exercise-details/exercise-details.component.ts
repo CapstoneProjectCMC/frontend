@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import {
   ExerciseQuiz,
   OptionCreate,
-  QuizDetailCreateStupid,
+  QuizQuestion,
   QuizQuestionCreate,
 } from '../../../../core/models/exercise.model';
 import { BreadcrumbComponent } from '../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
@@ -22,6 +22,7 @@ import {
 import { HostListener } from '@angular/core';
 import { AddNewOptionComponent } from '../../exercise-modal/add-new-option/add-new-option.component';
 import { UpdateExerciseComponent } from '../../exercise-modal/update-exercise/update-exercise.component';
+import { UpdateQuestionOptionComponent } from '../../exercise-modal/update-question-option/update-question-option.component';
 
 @Component({
   selector: 'app-exercise-details',
@@ -31,6 +32,7 @@ import { UpdateExerciseComponent } from '../../exercise-modal/update-exercise/up
     AddNewQuestionComponent,
     AddNewOptionComponent,
     UpdateExerciseComponent,
+    UpdateQuestionOptionComponent,
   ],
   templateUrl: './exercise-details.component.html',
   styleUrl: './exercise-details.component.scss',
@@ -46,9 +48,39 @@ export class ExerciseDetailsComponent implements OnInit {
   isOpenAddNewQuestion = false;
   isOpenAddNewOption: boolean = false;
   isOpenUpdateExercise: boolean = false;
+  isUpdateQuestion: boolean = false;
+
+  initialSelectedQuestion: QuizQuestion = {
+    id: '',
+    text: '',
+    points: 1,
+    type: '',
+    orderInQuiz: 1,
+    options: [
+      {
+        id: '',
+        optionText: '',
+        correct: false,
+        order: '',
+        createdBy: '',
+        createdAt: '',
+        updatedBy: '',
+        updatedAt: '',
+        deletedBy: '',
+        deletedAt: '',
+      },
+    ],
+    createdBy: '',
+    createdAt: '',
+    updatedBy: '',
+    updatedAt: '',
+    deletedBy: '',
+    deletedAt: '',
+  };
 
   exerciseId: string | null = '';
   quizDetailsId: string = '';
+  selectedQuestion: QuizQuestion = this.initialSelectedQuestion;
 
   // Dropdown state: index of question with open dropdown, or null
   openDropdownIndex: number | null = null;
@@ -153,9 +185,14 @@ export class ExerciseDetailsComponent implements OnInit {
     this.isOpenUpdateExercise = true;
   }
 
-  onEditQuestion(index: number, quizDetailId?: string) {
+  onEditQuestion(index: number, QuizQuestion: QuizQuestion | undefined) {
     // TODO: Implement edit question logic
-    this.quizDetailsId = quizDetailId ?? '';
+    this.isUpdateQuestion = true;
+    if (QuizQuestion) {
+      this.selectedQuestion = QuizQuestion;
+    } else {
+      sendNotification(this.store, 'Opps!', 'Không lấy được dữ liệu', 'error');
+    }
     this.closeDropdown();
   }
 
@@ -177,6 +214,11 @@ export class ExerciseDetailsComponent implements OnInit {
 
   cancelUpdateExercise() {
     this.isOpenUpdateExercise = false;
+  }
+
+  closeUpdateModal(): void {
+    this.isUpdateQuestion = false;
+    this.selectedQuestion = this.initialSelectedQuestion;
   }
 
   onSubmitQuestion(data: QuizQuestionCreate) {
@@ -239,6 +281,13 @@ export class ExerciseDetailsComponent implements OnInit {
   onUpdateExercise() {
     this.fetchingData(this.exercise.id);
     this.isOpenUpdateExercise = false;
+  }
+
+  onUpdateQuestionSuccess(): void {
+    this.closeUpdateModal();
+    if (this.exerciseId) {
+      this.fetchingData(this.exerciseId);
+    } // Reload data after update
   }
 
   doingQuiz() {
