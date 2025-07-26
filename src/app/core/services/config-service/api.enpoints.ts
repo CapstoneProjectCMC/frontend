@@ -64,7 +64,10 @@ export const API_CONFIG = {
       UPDATE_OPTION: (optionId: string) =>
         `/submission/quiz/question/option/${optionId}`,
     },
-    DELETE: {},
+    DELETE: {
+      DELETE_QUESTION: (exerciseId: string, questionId: string) =>
+        `/submission/quiz/${exerciseId}/question/${questionId}`,
+    },
   },
   HEADERS: {
     'Content-Type': 'application/json',

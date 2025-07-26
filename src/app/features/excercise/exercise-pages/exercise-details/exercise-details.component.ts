@@ -84,6 +84,7 @@ export class ExerciseDetailsComponent implements OnInit {
 
   // Dropdown state: index of question with open dropdown, or null
   openDropdownIndex: number | null = null;
+  opentDeleteConfirm: number | null = null;
 
   exercise: ExerciseQuiz = {
     id: '',
@@ -291,6 +292,21 @@ export class ExerciseDetailsComponent implements OnInit {
     } // Reload data after update
   }
 
+  onDeleteQuestion(exerciseId: string, questionId: string) {
+    this.exerciseService.deleteQuestion(exerciseId, questionId).subscribe({
+      next: () => {
+        sendNotification(
+          this.store,
+          'Đã xóa',
+          'Xóa thành công câu hỏi',
+          'success'
+        );
+
+        this.fetchingData(exerciseId);
+      },
+    });
+  }
+
   doingQuiz() {
     this.router.navigate([
       '/exercise/exercise-layout/quiz-submission',
@@ -308,11 +324,22 @@ export class ExerciseDetailsComponent implements OnInit {
       this.openDropdownIndex = null;
     } else {
       this.openDropdownIndex = index;
+      this.opentDeleteConfirm = null;
+    }
+  }
+
+  toggleConfirmDelete(index: number) {
+    if (this.opentDeleteConfirm === index) {
+      this.opentDeleteConfirm = null;
+    } else {
+      this.opentDeleteConfirm = index;
+      this.openDropdownIndex = null;
     }
   }
 
   closeDropdown() {
     this.openDropdownIndex = null;
+    this.opentDeleteConfirm = null;
   }
 
   getOptionLabel(index: number): string {

@@ -114,6 +114,12 @@ export class ExerciseService {
     );
   }
 
+  deleteQuestion(exerciseId: string, questionId: string) {
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.DELETE_QUESTION(exerciseId, questionId)
+    );
+  }
+
   inititalAddQuestionStupid(
     exerciseId: string,
     dataQuestion: QuizQuestionCreate

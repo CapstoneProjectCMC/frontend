@@ -106,13 +106,22 @@
                 }}
               </span>
             </div>
-            <button
-              class="edit-icon-btn"
-              title="Chỉnh sửa"
-              (click)="toggleDropdown(i)"
-            >
-              <span><i class="fa fa-edit"></i></span>
-            </button>
+            <div class="btn-control">
+              <button
+                class="edit-icon-btn"
+                title="Chỉnh sửa"
+                (click)="toggleDropdown(i)"
+              >
+                <span><i class="fa fa-edit"></i></span>
+              </button>
+              <button
+                class="edit-icon-btn"
+                title="Xóa câu hỏi"
+                (click)="toggleConfirmDelete(i)"
+              >
+                <span><i class="fa fa-trash"></i></span>
+              </button>
+            </div>
             <div
               class="edit-dropdown"
               *ngIf="openDropdownIndex === i"
@@ -130,6 +139,20 @@
                   (click)="onAddOption(i, exercise.quizDetail?.questions?.[i]?.id)"
                 >
                   <i class="fa fa-plus"></i> Thêm đáp án
+                </li>
+              </ul>
+            </div>
+            <div
+              class="edit-dropdown"
+              *ngIf="opentDeleteConfirm === i"
+              [@dropdownAnimation]
+            >
+              <ul>
+                <li
+                  *ngIf="exercise.quizDetail?.questions?.[i] as question"
+                  (click)="onDeleteQuestion(exercise.id, question.id)"
+                >
+                  <i class="fa fa-check"></i> Xác nhận xóa
                 </li>
               </ul>
             </div>
