@@ -13,6 +13,10 @@ import {
 import { PopularPostComponent } from '../../component/popular-post/popular-post';
 import { SkeletonLoadingComponent } from '../../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
+import {
+  TrendingComponent,
+  TrendingItem,
+} from '../../../../../shared/components/fxdonad-shared/trending/trending.component';
 
 @Component({
   selector: 'app-post-list',
@@ -23,13 +27,12 @@ import { Router } from '@angular/router';
     InputComponent,
     DropdownButtonComponent,
     ButtonComponent,
-    PaginationComponent,
     PostCardComponent,
     NgFor,
     NgIf,
-    PopularContentComponent,
     PopularPostComponent,
     SkeletonLoadingComponent,
+    TrendingComponent,
   ],
 })
 export class PostListComponent {
@@ -176,15 +179,22 @@ export class PostListComponent {
       public: true,
     },
   ];
-  fakeTags: TagInfo[] = [
-    { name: 'React', level: 4, count: 49348 },
-    { name: 'Vue', level: 3, count: 75 },
-    { name: 'NodeJS', level: 2, count: 60 },
-    { name: 'TypeScript', level: 1, count: 45 },
-    { name: 'C#', level: 2, count: 60 },
-    { name: 'Java', level: 1, count: 45 },
-    { name: 'Python', level: 2, count: 60 },
-    { name: 'C', level: 1, count: 45 },
+  // fakeTags: TagInfo[] = [
+  //   { name: 'React', level: 4, count: 49348 },
+  //   { name: 'Vue', level: 3, count: 75 },
+  //   { name: 'NodeJS', level: 2, count: 60 },
+  //   { name: 'TypeScript', level: 1, count: 45 },
+  //   { name: 'C#', level: 2, count: 60 },
+  //   { name: 'Java', level: 1, count: 45 },
+  //   { name: 'Python', level: 2, count: 60 },
+  //   { name: 'C', level: 1, count: 45 },
+  // ];
+  trendingData: TrendingItem[] = [
+    { name: 'Angular', views: 15000 },
+    { name: 'React', views: 12000 },
+    { name: 'Vue', views: 8000 },
+    { name: 'TypeScript', views: 5000 },
+    { name: 'JavaScript', views: 20000 },
   ];
   isLoading = false;
   isLoadingMore = false;

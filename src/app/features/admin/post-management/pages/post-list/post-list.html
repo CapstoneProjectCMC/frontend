@@ -90,22 +90,28 @@
           [count]="8"
         ></app-skeleton-loading>
       </div>
-      <div class="list-post-pagination">
+      <!-- <div class="list-post-pagination">
         <app-pagination
           [totalData]="posts.length"
           [amountDataPerPage]="10"
           [currentPageIndex]=" 1"
           (onPageChange)="handlePageChange($event)"
         ></app-pagination>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="popular">
     <div class="popular-content">
-      <app-popular-content
+      <!-- <app-popular-content
         [numTags]="fakeTags.length"
         [tags]="fakeTags"
-      ></app-popular-content>
+      ></app-popular-content> -->
+      <app-trending
+        [items]="trendingData"
+        title="Popular Technologies"
+        [maxItems]="15"
+      >
+      </app-trending>
     </div>
     <div class="popular-post">
       <app-popular-post [ListPost]="posts"></app-popular-post>

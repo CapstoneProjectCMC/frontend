@@ -1,7 +1,48 @@
-<div>
-  <h2>Chi tiết bài viết</h2>
-  <p>ID bài viết: {{ postId }}</p>
-  <!-- Các nội dung khác -->
+<div class="post-detail-container">
+  <div class="post-detail-content">
+    <h2 class="post-title">{{ postInfo.title }}</h2>
+    <div class="post-author">
+      <img src="{{ authorInfo.avatarUrl }}" alt="" />
+      <div class="post-basic-info">
+        <h3 class="author-name">{{ authorInfo.displayName }}</h3>
+        <p class="post-time">{{formatTime(time) }}</p>
+      </div>
+    </div>
+    <div
+      class="content markdown-body"
+      [class.collapsed]="!isExpanded"
+      [class.expanded]="isExpanded"
+      #markdownContent
+      #markdownRef
+    >
+      <markdown [data]="postInfo.content"></markdown>
+    </div>
+
+    <button class="expand-button" (click)="toggleExpand()">
+      {{ isExpanded ? 'Thu gọn' : 'Xem thêm' }}
+    </button>
+
+    <div class="post-tags">
+      <span *ngFor="let tag of postInfo.tags" class="post-tag">
+        #{{ tag.label }}
+      </span>
+    </div>
+    <div class="post-button">
+      <app-button [width]="'130px'" [variant]="'outline'">Từ chối</app-button>
+      <app-button [width]="'130px'" [variant]="'solid'">Chấp nhận</app-button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="post-main-content">
+    <div class="title">Các phần nội dung</div>
+    <ul class="toc-list">
+      <li *ngFor="let item of tocItems" [class]="'level-' + item.level">
+        <a [href]="'#' + item.anchor" (click)="disableLink($event)"
+          >{{ item.text }}</a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <!-- <app-comment></app-comment> -->
 </div>
-<p>using-comment works!</p>
-<app-comment />

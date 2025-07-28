@@ -14,7 +14,7 @@ const routes: Routes = [
   {
     path: 'post/:id',
     component: PostDetailComponent,
-    data: { breadcrumb: 'Chỉnh sửa bài đăng' },
+    data: { breadcrumb: 'Chi tiết bài đăng' },
   },
 ];
 

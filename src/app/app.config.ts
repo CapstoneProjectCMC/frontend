@@ -9,6 +9,7 @@ import { notificationReducer } from './shared/store/notification/notification.re
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { loadingReducer } from './shared/store/loading-state/loading.reduce';
+import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,5 +23,6 @@ export const appConfig: ApplicationConfig = {
       loading: loadingReducer,
     }),
     provideAnimations(),
+    provideMarkdown(),
   ],
 };

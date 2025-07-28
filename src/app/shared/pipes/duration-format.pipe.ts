@@ -14,4 +14,14 @@ export class DurationFormatPipe implements PipeTransform {
   private pad(num: number): string {
     return num < 10 ? '0' + num : num.toString();
   }
+  formatTime(time: string | Date): string {
+    const date = new Date(time);
+    const pad = (n: number) => (n < 10 ? '0' + n : n);
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const day = pad(date.getDate());
+    const month = pad(date.getMonth() + 1);
+    const year = date.getFullYear();
+    return `${hours}:${minutes} ${day}/${month}/${year}`;
+  }
 }
