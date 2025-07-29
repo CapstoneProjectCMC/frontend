@@ -58,6 +58,7 @@ export class ProfileMenuComponent {
       },
       error: (err) => {
         this.store.dispatch(clearLoading());
+        this.router.navigate(['/auth/identity/login']);
         console.log('lỗi logout');
       },
     });

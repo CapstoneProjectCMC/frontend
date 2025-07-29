@@ -260,6 +260,12 @@ export const sidebarExercises: SidebarItem[] = [
     icon: 'fas fa-file-alt',
   },
   {
+    id: 'exercise',
+    path: 'exercise/exercise-layout/list-assign',
+    label: 'Bài tập được giao',
+    icon: 'fas fa-tasks',
+  },
+  {
     id: 'saved-exercises',
     path: 'exercise/exercise-list/code',
     label: 'Bài tập đã lưu',
