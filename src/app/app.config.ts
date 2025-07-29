@@ -9,6 +9,7 @@ import { notificationReducer } from './shared/store/notification/notification.re
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { loadingReducer } from './shared/store/loading-state/loading.reduce';
+import { modalNoticeReducer } from './shared/store/modal-notice-state/modal-notice.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,7 @@ export const appConfig: ApplicationConfig = {
       form: formReducer,
       notification: notificationReducer,
       loading: loadingReducer,
+      modalNotice: modalNoticeReducer,
     }),
     provideAnimations(),
   ],

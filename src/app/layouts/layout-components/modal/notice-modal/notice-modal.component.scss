@@ -1,0 +1,67 @@
+.notice-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+}
+
+.notice-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 8px;
+  min-width: 320px;
+  max-width: 90vw;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  z-index: 1001;
+  padding: 0;
+  overflow: hidden;
+}
+.notice-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 8px 20px;
+  border-bottom: 1px solid #eee;
+}
+.notice-modal-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+.notice-modal-body {
+  padding: 20px;
+}
+.notice-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 12px 20px 16px 20px;
+  border-top: 1px solid #eee;
+}
+.notice-modal-footer button {
+  min-width: 80px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+.notice-modal-footer button:last-child {
+  background: #1976d2;
+  color: #fff;
+}
+.notice-modal-footer button:first-child {
+  background: #eee;
+  color: #333;
+}

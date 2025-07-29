@@ -22,6 +22,7 @@ import {
 } from './shared/store/loading-state/loading.selector';
 import { ChangeDetectorRef } from '@angular/core';
 import { startWith } from 'rxjs/operators';
+import { NoticeModalComponent } from './layouts/layout-components/modal/notice-modal/notice-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +32,7 @@ import { startWith } from 'rxjs/operators';
     AlertNotificationComponent,
     BreadcrumbComponent,
     LoadingOverlayComponent,
+    NoticeModalComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

@@ -30,6 +30,14 @@ export class AuthService {
     );
   }
 
+  refreshToken(token: string) {
+    return this.api.post<ApiResponse<loginResponse>>(
+      API_CONFIG.ENDPOINTS.POST.REFRESH_TOKEN,
+      { token },
+      true
+    );
+  }
+
   verifyGoogleCode(code: string) {
     return this.api.post<ApiResponse<loginResponse>>(
       API_CONFIG.ENDPOINTS.POST.OUTBOUND_GOOGLE_LOGIN(code),

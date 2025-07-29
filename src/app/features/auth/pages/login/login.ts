@@ -108,6 +108,7 @@ export class Login {
         this.isLoading = false;
 
         localStorage.setItem('token', res.result.accessToken);
+        localStorage.setItem('refreshToken', res.result.refreshToken);
         sendNotification(this.store, res.status, res.message, 'success');
 
         this.router.navigate(['/exercise/exercise-layout/list']);

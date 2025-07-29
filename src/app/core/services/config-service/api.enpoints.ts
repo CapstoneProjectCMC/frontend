@@ -36,6 +36,7 @@ export const API_CONFIG = {
       LOGIN: '/identity/auth/login',
       REGISTER: '/identity/auth/register',
       LOGOUT: '/identity/auth/logout',
+      REFRESH_TOKEN: '/identity/auth/refresh',
       VERIFYOTP: '/identity/auth/verify-otp',
       SENDOTP: '/identity/auth/send-otp',
       OUTBOUND_GOOGLE_LOGIN: (code: string) =>
