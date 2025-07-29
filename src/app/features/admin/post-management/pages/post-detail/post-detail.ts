@@ -5,14 +5,21 @@ import { Post } from '../../../../../core/models/post.models';
 import { User } from '../../../../../core/models/user.models';
 import { DurationFormatPipe } from '../../../../../shared/pipes/duration-format.pipe';
 import { MarkdownModule } from 'ngx-markdown';
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 @Component({
   selector: 'app-post-detail',
   templateUrl: './post-detail.html',
   styleUrl: './post-detail.scss',
   standalone: true,
-  imports: [CommentComponent, NgIf, MarkdownModule, NgFor, ButtonComponent],
+  imports: [
+    CommentComponent,
+    NgIf,
+    NgStyle,
+    MarkdownModule,
+    NgFor,
+    ButtonComponent,
+  ],
 })
 export class PostDetailComponent {
   postInfo: Post = {
@@ -70,6 +77,7 @@ Rất mong nhận được sự hỗ trợ từ các bạn!
       down: 12,
       commentCount: 45,
     },
+    status: 'APPROVED',
   };
   authorInfo: User = {
     id: 'user_123',
@@ -97,7 +105,31 @@ Rất mong nhận được sự hỗ trợ từ các bạn!
     this.postId = this.route.snapshot.paramMap.get('id');
     this.generateTOC(this.postInfo.content);
   }
+  showComment = false;
+  commentMaxHeight = '0px';
+  commentOverflow = 'hidden';
+  toggleComment() {
+    const commentContainer = document.querySelector(
+      '.comment-content-container'
+    ) as HTMLElement;
 
+    if (!this.showComment) {
+      // Mở bình luận
+      const scrollHeight = commentContainer.scrollHeight;
+      this.commentMaxHeight = `${scrollHeight}px`;
+
+      setTimeout(() => {
+        this.commentOverflow = 'visible';
+      }, 300); // khớp với transition
+    } else {
+      // Ẩn bình luận
+      this.commentOverflow = 'hidden';
+      this.commentMaxHeight = '0px';
+    }
+
+    this.showComment = !this.showComment;
+  }
+  //hàm lấy tiêu đề từ markdown và tạo danh sách mục lục
   generateTOC(markdown: string) {
     const lines = markdown.split('\n');
     this.tocItems = lines
@@ -112,7 +144,7 @@ Rất mong nhận được sự hỗ trợ từ các bạn!
       })
       .filter(Boolean) as { text: string; level: number; anchor: string }[];
   }
-
+  // Hàm chuyển đổi tiêu đề thành anchor slug
   slugify(text: string): string {
     return text
       .toLowerCase()
@@ -146,5 +178,13 @@ Rất mong nhận được sự hỗ trợ từ các bạn!
     } else {
       markdownContent.style.maxHeight = '300px';
     }
+  }
+  handleUpVote() {
+    // Xử lý sự kiện khi người dùng nhấn nút upvote
+    console.log('Upvote clicked');
+  }
+  handleDownVote() {
+    // Xử lý sự kiện khi người dùng nhấn nút downvote
+    console.log('Downvote clicked');
   }
 }

@@ -241,7 +241,7 @@ export class PostListComponent {
     this.activeDropdown = this.activeDropdown === id ? null : id;
   }
   handleAdd = () => {
-    console.log('Add button clicked');
+    this.router.navigate(['/post-management/post-create']);
   };
   handlePageChange(page: number) {
     console.log('chuyển trang');

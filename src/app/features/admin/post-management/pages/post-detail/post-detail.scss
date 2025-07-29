@@ -11,8 +11,8 @@
   .post-detail-content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    width: 70%;
+    gap: 10px;
+    flex: 1;
     max-height: calc(100vh - 56px - 50px - 99px);
     overflow-y: auto; // ✅ scroll tại đây
     .post-title {
@@ -20,39 +20,60 @@
       font-weight: 700;
       color: var(--accent-color);
       margin-bottom: 0.25rem;
+      margin-top: 0px;
     }
-
-    .post-author {
+    .post-general-info {
       display: flex;
-      gap: 1rem;
+      flex-direction: row;
       align-items: center;
-      margin-bottom: 10px;
+      justify-content: space-between;
 
-      img {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 1px solid var(--text-color);
+      .post-author {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 10px;
+
+        img {
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          object-fit: cover;
+          border: 1px solid var(--text-color);
+        }
+
+        .post-basic-info {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          align-items: center;
+          .author-name {
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0;
+          }
+
+          .post-time {
+            font-size: 12px;
+            color: var(--text-gray-color);
+          }
+        }
       }
-
-      .post-basic-info {
+      .post-votes {
         display: flex;
         flex-direction: row;
         gap: 10px;
         align-items: center;
-        .author-name {
-          font-size: 16px;
-          font-weight: 600;
-          margin: 0;
-        }
 
-        .post-time {
-          font-size: 12px;
-          color: var(--text-gray-color);
+        .vote-button {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          cursor: pointer;
         }
       }
     }
+
     .post-title,
     .post-author,
     .post-tags,
@@ -66,7 +87,7 @@
       margin: 10px;
       ///
       // overflow: visible;
-      transition: max-height 1s ease-in-out;
+      transition: max-height 0.3s ease-in-out;
 
       &.collapsed {
         max-height: 300px;
@@ -197,7 +218,7 @@
 
       .post-tag {
         background: var(--text-gray-color);
-        padding: 0.25rem 0.75rem;
+        padding: 10px;
         border-radius: 9999px;
         font-size: 0.875rem;
         color: var(--text-dark-gray-color);
@@ -206,7 +227,7 @@
     }
 
     .post-button {
-      margin-top: 2rem;
+      margin-top: 0px;
       display: flex;
       gap: 1rem;
       justify-content: flex-end;
@@ -214,6 +235,20 @@
       app-button {
         font-weight: 600;
       }
+    }
+    .comment-content-container {
+      transition: max-height 0.3s ease;
+      overflow: hidden;
+    }
+    .toggle-comment-button {
+      background: none;
+      border: none;
+      color: var(--accent-color);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1rem;
+      padding: 0;
     }
   }
   .divider {
@@ -223,7 +258,7 @@
     align-self: stretch;
   }
   .post-main-content {
-    flex: 1;
+    width: 300px;
     display: flex;
     flex-direction: column;
     gap: 1rem;

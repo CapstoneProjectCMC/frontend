@@ -33,4 +33,5 @@ export interface Post {
   tags: Tag[];
   field: string[]; // list of URLs to images, documents, videos, etc.
   metrics: Metrics;
+  status: string;
 }
