@@ -1,0 +1,27 @@
+.post-create-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: 16px;
+  width: 70%;
+  .input-title {
+    width: 100%;
+    font-size: 1.5rem;
+  }
+  .input-info {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+  }
+  .input-content {
+    width: 100%;
+  }
+  .post-create-button {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
+}

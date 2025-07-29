@@ -15,6 +15,7 @@ import {
 })
 export class StudentStatisticComponent {
   postCardData: PostCardInfo = {
+    id: '1',
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
@@ -30,6 +31,7 @@ export class StudentStatisticComponent {
     public: true,
   };
   postCardDataApproved: PostCardInfo = {
+    id: '2',
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
@@ -45,6 +47,7 @@ export class StudentStatisticComponent {
     public: true,
   };
   postCardDataPending: PostCardInfo = {
+    id: '1',
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',

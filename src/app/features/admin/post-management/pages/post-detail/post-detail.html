@@ -1,0 +1,103 @@
+<div class="post-detail-container">
+  <div class="post-detail-content">
+    <h2 class="post-title">{{ postInfo.title }}</h2>
+    <div class="post-general-info">
+      <div class="post-author">
+        <img src="{{ authorInfo.avatarUrl }}" alt="" />
+        <div class="post-basic-info">
+          <h3 class="author-name">{{ authorInfo.displayName }}</h3>
+          <p class="post-time">{{formatTime(time) }}</p>
+        </div>
+      </div>
+
+      <div class="post-votes">
+        <app-button (click)="handleUpVote()" [variant]="'onlyContent'">
+          {{postInfo.metrics.up}}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-chevron-up-icon lucide-chevron-up"
+          >
+            <path d="m18 15-6-6-6 6" />
+          </svg>
+        </app-button>
+        <app-button (click)="handleDownVote()" [variant]="'onlyContent'">
+          {{postInfo.metrics.down}}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-chevron-down-icon lucide-chevron-down"
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </app-button>
+      </div>
+    </div>
+    <div
+      class="content markdown-body"
+      [class.collapsed]="!isExpanded"
+      [class.expanded]="isExpanded"
+      #markdownContent
+      #markdownRef
+    >
+      <markdown [data]="postInfo.content"></markdown>
+    </div>
+
+    <button class="expand-button" (click)="toggleExpand()">
+      {{ isExpanded ? 'Thu gọn' : 'Xem thêm' }}
+    </button>
+
+    <div class="post-tags">
+      <span *ngFor="let tag of postInfo.tags" class="post-tag">
+        #{{ tag.label }}
+      </span>
+    </div>
+    <div class="post-button">
+      <app-button [width]="'130px'" [variant]="'outline'">Từ chối</app-button>
+      <app-button [width]="'130px'" [variant]="'solid'">Chấp nhận</app-button>
+    </div>
+    <button
+      *ngIf="postInfo.status.toLocaleUpperCase() === 'APPROVED'"
+      class="toggle-comment-button"
+      (click)="toggleComment()"
+    >
+      {{ showComment ? 'Thu gọn bình luận' : 'Xem bình luận' }}
+    </button>
+
+    <div
+      *ngIf="postInfo.status.toLocaleUpperCase() === 'APPROVED'"
+      class="comment-content-container"
+      [ngStyle]="{
+    'max-height': commentMaxHeight,
+    overflow: commentOverflow
+  }"
+    >
+      <app-comment></app-comment>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="post-main-content">
+    <div class="title">Các phần nội dung</div>
+    <ul class="toc-list">
+      <li *ngFor="let item of tocItems" [class]="'level-' + item.level">
+        <a [href]="'#' + item.anchor" (click)="disableLink($event)"
+          >{{ item.text }}</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>
