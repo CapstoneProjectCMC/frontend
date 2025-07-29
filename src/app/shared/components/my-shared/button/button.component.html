@@ -3,7 +3,7 @@
   [ngClass]="variant"
   [ngStyle]="{ width: width, height: height }"
   [class.disabled]="disabled"
-  (click)="!disabled && onClick()"
+  (click)="handleClick()"
   tabindex="0"
 >
   <div class="label">

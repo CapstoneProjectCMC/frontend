@@ -13,7 +13,8 @@ export const mockComments: ICommentFilmResponse[] = [
       username: 'hoanganh',
       email: 'hoanganh@example.com',
       role: 'user',
-      avatarUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [
       {
@@ -26,7 +27,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u2',
           username: 'linhpham',
-          avatarUrl: 'https://randomuser.me/api/portraits/women/21.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
       {
@@ -39,7 +41,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u3',
           username: 'davidnguyen',
-          avatarUrl: 'https://randomuser.me/api/portraits/men/31.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
     ],
@@ -54,7 +57,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u3',
       username: 'davidnguyen',
-      avatarUrl: 'https://randomuser.me/api/portraits/men/31.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [
       {
@@ -67,7 +71,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u4',
           username: 'minhthuy',
-          avatarUrl: 'https://randomuser.me/api/portraits/women/41.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
     ],
@@ -82,7 +87,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u4',
       username: 'minhthuy',
-      avatarUrl: 'https://randomuser.me/api/portraits/women/41.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [
       {
@@ -95,7 +101,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u5',
           username: 'tranquang',
-          avatarUrl: 'https://randomuser.me/api/portraits/men/51.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
     ],
@@ -110,7 +117,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u5',
       username: 'tranquang',
-      avatarUrl: 'https://randomuser.me/api/portraits/men/51.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [
       {
@@ -123,7 +131,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u6',
           username: 'kimanh',
-          avatarUrl: 'https://randomuser.me/api/portraits/women/61.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
     ],
@@ -138,7 +147,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u6',
       username: 'kimanh',
-      avatarUrl: 'https://randomuser.me/api/portraits/women/61.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [
       {
@@ -151,7 +161,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u7',
           username: 'tuanle',
-          avatarUrl: 'https://randomuser.me/api/portraits/men/71.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
     ],
@@ -166,7 +177,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u7',
       username: 'tuanle',
-      avatarUrl: 'https://randomuser.me/api/portraits/men/71.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [],
   },
@@ -180,7 +192,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u8',
       username: 'ngocmai',
-      avatarUrl: 'https://randomuser.me/api/portraits/women/81.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [
       {
@@ -193,7 +206,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u9',
           username: 'longvu',
-          avatarUrl: 'https://randomuser.me/api/portraits/men/91.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
     ],
@@ -208,7 +222,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u9',
       username: 'longvu',
-      avatarUrl: 'https://randomuser.me/api/portraits/men/91.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [],
   },
@@ -222,7 +237,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u10',
       username: 'quynhhoa',
-      avatarUrl: 'https://randomuser.me/api/portraits/women/92.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [
       {
@@ -235,7 +251,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u11',
           username: 'hoainam',
-          avatarUrl: 'https://randomuser.me/api/portraits/men/93.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
     ],
@@ -250,7 +267,8 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u11',
       username: 'hoainam',
-      avatarUrl: 'https://randomuser.me/api/portraits/men/93.jpg',
+      avatarUrl:
+        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
     },
     replies: [
       {
@@ -263,7 +281,8 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u1',
           username: 'hoanganh',
-          avatarUrl: 'https://randomuser.me/api/portraits/men/11.jpg',
+          avatarUrl:
+            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
         },
       },
     ],

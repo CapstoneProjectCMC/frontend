@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgClass, NgStyle } from '@angular/common';
 
 @Component({
@@ -10,8 +10,14 @@ import { NgClass, NgStyle } from '@angular/common';
 })
 export class ButtonComponent {
   @Input() disabled: boolean = false;
-  @Input() onClick: () => void = () => {};
+
   @Input() width: string = '40px';
   @Input() height: string = '40px';
-  @Input() variant: 'solid' | 'outline' = 'solid'; // loại button
+  @Input() variant: 'solid' | 'outline' | 'onlyContent' | 'cancel' = 'solid'; // loại button
+  @Output() onClick = new EventEmitter<void>();
+  handleClick(): void {
+    if (!this.disabled) {
+      this.onClick.emit();
+    }
+  }
 }

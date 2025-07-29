@@ -3,9 +3,20 @@ import { InputComponent } from '../../../../../shared/components/fxdonad-shared/
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { PostCardComponent } from '../../../../../shared/components/my-shared/post-card/post-card';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { PostCardInfo } from '../../../../../core/models/post.models';
 import { PaginationComponent } from '../../../../../shared/components/fxdonad-shared/pagination/pagination.component';
+import {
+  PopularContentComponent,
+  TagInfo,
+} from '../../component/popular-content/popular-content';
+import { PopularPostComponent } from '../../component/popular-post/popular-post';
+import { SkeletonLoadingComponent } from '../../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
+import { Router } from '@angular/router';
+import {
+  TrendingComponent,
+  TrendingItem,
+} from '../../../../../shared/components/fxdonad-shared/trending/trending.component';
 
 @Component({
   selector: 'app-post-list',
@@ -16,15 +27,18 @@ import { PaginationComponent } from '../../../../../shared/components/fxdonad-sh
     InputComponent,
     DropdownButtonComponent,
     ButtonComponent,
-    PaginationComponent,
     PostCardComponent,
     NgFor,
+    NgIf,
+    PopularPostComponent,
+    SkeletonLoadingComponent,
+    TrendingComponent,
   ],
 })
 export class PostListComponent {
   posts: PostCardInfo[] = [
     {
-      id: '0000000000000000',
+      id: '1',
       avatar: 'https://example.com/avatar1.png',
       author: 'John Doe',
       title: 'Introduction to React',
@@ -39,7 +53,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '2',
       avatar: 'https://example.com/avatar2.png',
       author: 'Jane Smith',
       title: 'Advanced JavaScript Patterns',
@@ -53,7 +67,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '3',
       avatar: 'https://example.com/avatar3.png',
       author: 'Alice Johnson',
       title: 'C# for Beginners',
@@ -67,7 +81,7 @@ export class PostListComponent {
       public: false,
     },
     {
-      id: '0000000000000000',
+      id: '4',
       avatar: 'https://example.com/avatar4.png',
       author: 'Bob Wilson',
       title: 'Java Concurrency',
@@ -81,7 +95,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '5',
       avatar: 'https://example.com/avatar5.png',
       author: 'Emma Davis',
       title: 'Python Data Analysis',
@@ -95,7 +109,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '6',
       avatar: 'https://example.com/avatar6.png',
       author: 'Michael Brown',
       title: 'React Hooks Tutorial',
@@ -109,7 +123,7 @@ export class PostListComponent {
       public: false,
     },
     {
-      id: '0000000000000000',
+      id: '7',
       avatar: 'https://example.com/avatar7.png',
       author: 'Sarah Taylor',
       title: 'Java Spring Boot',
@@ -123,7 +137,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '8',
       avatar: 'https://example.com/avatar8.png',
       author: 'David Lee',
       title: 'JavaScript ES6 Features',
@@ -137,7 +151,7 @@ export class PostListComponent {
       public: true,
     },
     {
-      id: '0000000000000000',
+      id: '9',
       avatar: 'https://example.com/avatar9.png',
       author: 'Laura Martinez',
       title: 'C# ASP.NET Core',
@@ -151,7 +165,7 @@ export class PostListComponent {
       public: false,
     },
     {
-      id: '0000000000000000',
+      id: '10',
       avatar: 'https://example.com/avatar10.png',
       author: 'Chris Evans',
       title: 'Python Flask Tutorial',
@@ -165,6 +179,23 @@ export class PostListComponent {
       public: true,
     },
   ];
+  // fakeTags: TagInfo[] = [
+  //   { name: 'React', level: 4, count: 49348 },
+  //   { name: 'Vue', level: 3, count: 75 },
+  //   { name: 'NodeJS', level: 2, count: 60 },
+  //   { name: 'TypeScript', level: 1, count: 45 },
+  //   { name: 'C#', level: 2, count: 60 },
+  //   { name: 'Java', level: 1, count: 45 },
+  //   { name: 'Python', level: 2, count: 60 },
+  //   { name: 'C', level: 1, count: 45 },
+  // ];
+  trendingData: TrendingItem[] = [
+    { name: 'Angular', views: 15000 },
+    { name: 'React', views: 12000 },
+    { name: 'Vue', views: 8000 },
+    { name: 'TypeScript', views: 5000 },
+    { name: 'JavaScript', views: 20000 },
+  ];
   isLoading = false;
   isLoadingMore = false;
   hasMore = true;
@@ -173,7 +204,7 @@ export class PostListComponent {
   status: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
-  constructor() {
+  constructor(private router: Router) {
     this.tag = [
       { value: '1', label: 'react' },
       { value: '0', label: 'javascript' },
@@ -210,9 +241,15 @@ export class PostListComponent {
     this.activeDropdown = this.activeDropdown === id ? null : id;
   }
   handleAdd = () => {
-    console.log('Add button clicked');
+    this.router.navigate(['/post-management/post-create']);
   };
   handlePageChange(page: number) {
     console.log('chuyển trang');
   }
+
+  goToDetail = (postId: string) => {
+    console.log('Navigating to post detail with ID:', postId);
+    this.router.navigate(['/post-management/post', postId]);
+  };
+  // ...existing code...
 }

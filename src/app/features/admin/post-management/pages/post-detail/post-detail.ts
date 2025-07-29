@@ -1,0 +1,190 @@
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CommentComponent } from '../../../../../shared/components/fxdonad-shared/comment/comment.component';
+import { Post } from '../../../../../core/models/post.models';
+import { User } from '../../../../../core/models/user.models';
+import { DurationFormatPipe } from '../../../../../shared/pipes/duration-format.pipe';
+import { MarkdownModule } from 'ngx-markdown';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
+import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
+@Component({
+  selector: 'app-post-detail',
+  templateUrl: './post-detail.html',
+  styleUrl: './post-detail.scss',
+  standalone: true,
+  imports: [
+    CommentComponent,
+    NgIf,
+    NgStyle,
+    MarkdownModule,
+    NgFor,
+    ButtonComponent,
+  ],
+})
+export class PostDetailComponent {
+  postInfo: Post = {
+    id: 'post_001',
+    userId: 'user_123',
+    orgId: 'org_456',
+    title: 'Giới thiệu về lập trình Web',
+    content: `
+# 1. Mở đầu bài viết
+
+Chào mọi người, dạo gần đây dự án của mình gặp phải vấn đề về hiệu năng trên các trang có nhiều component.
+
+Mình muốn hỏi cộng đồng về các best practice để tối ưu một ứng dụng React.
+
+# 2. Vấn đề cần giải quyết
+
+Mình đã thử dùng \`React.memo\` cho một vài component nhưng chưa thấy cải thiện rõ rệt.
+
+Liệu có cách nào để xác định "узкое место" (bottleneck) không?
+
+Đây là một blockquote mẫu để mình hoạ styling. Thảo luận cần tập trung vào các giải pháp thực tế.
+
+# 3. Vấn đề liên quan
+
+Ngoài ra, mình có một đoạn code ví dụ về một list lớn, scroll rất giật:
+
+\`\`\`js
+const BigList = ({ items }) => {
+  return (
+    <ul>
+      {items.map(item => (
+        <li key={item.id}>{item.text}</li>
+      ))}
+    </ul>
+  );
+};
+\`\`\`
+
+Rất mong nhận được sự hỗ trợ từ các bạn!
+`,
+    tags: [
+      { id: 'html', label: 'HTML' },
+      { id: 'css', label: 'CSS' },
+      { id: 'js', label: 'JavaScript' },
+      { id: 'web', label: 'Web Development' },
+    ],
+    field: [
+      'https://example.com/images/html-structure.png',
+      'https://example.com/documents/css-guide.pdf',
+      'https://example.com/videos/js-basics.mp4',
+    ],
+    metrics: {
+      view: 1243,
+      up: 320,
+      down: 12,
+      commentCount: 45,
+    },
+    status: 'APPROVED',
+  };
+  authorInfo: User = {
+    id: 'user_123',
+    userId: 'user_123',
+    city: 'Hanoi',
+    createdAt: '2023-01-01T00:00:00Z',
+    displayName: 'nguyenvana',
+    avatarUrl:
+      'https://i.pinimg.com/736x/06/b7/2c/06b72cd4cbbfb9996d27334d48e50b70.jpg',
+    backgroundUrl:
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
+    dob: '2020-01-01T00:00:00.000Z',
+    links: ['https://facebook.com/nguyenvana', 'https://github.com/nguyenvana'],
+    bio: 'Yêu thích lập trình, thích chia sẻ kiến thức.',
+    firstName: 'Nguyen',
+    lastName: 'Van A',
+    education: 8,
+    gender: true,
+  };
+  tocItems: { text: string; level: number; anchor: string }[] = [];
+  time = new Date();
+  isExpanded = false;
+  postId: string | null = null;
+  constructor(private route: ActivatedRoute) {
+    this.postId = this.route.snapshot.paramMap.get('id');
+    this.generateTOC(this.postInfo.content);
+  }
+  showComment = false;
+  commentMaxHeight = '0px';
+  commentOverflow = 'hidden';
+  toggleComment() {
+    const commentContainer = document.querySelector(
+      '.comment-content-container'
+    ) as HTMLElement;
+
+    if (!this.showComment) {
+      // Mở bình luận
+      const scrollHeight = commentContainer.scrollHeight;
+      this.commentMaxHeight = `${scrollHeight}px`;
+
+      setTimeout(() => {
+        this.commentOverflow = 'visible';
+      }, 300); // khớp với transition
+    } else {
+      // Ẩn bình luận
+      this.commentOverflow = 'hidden';
+      this.commentMaxHeight = '0px';
+    }
+
+    this.showComment = !this.showComment;
+  }
+  //hàm lấy tiêu đề từ markdown và tạo danh sách mục lục
+  generateTOC(markdown: string) {
+    const lines = markdown.split('\n');
+    this.tocItems = lines
+      .filter((line) => /^#{1,6}\s/.test(line)) // dòng có tiêu đề markdown
+      .map((line) => {
+        const match = line.match(/^(#{1,6})\s+(.*)/);
+        if (!match) return null;
+        const level = match[1].length;
+        const text = match[2].trim();
+        const anchor = this.slugify(text);
+        return { text, level, anchor };
+      })
+      .filter(Boolean) as { text: string; level: number; anchor: string }[];
+  }
+  // Hàm chuyển đổi tiêu đề thành anchor slug
+  slugify(text: string): string {
+    return text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') // remove accents
+      .replace(/[^a-z0-9 ]/g, '')
+      .replace(/\s+/g, '-');
+  }
+  formatTime(time: string | Date): string {
+    return new DurationFormatPipe().formatTime(time);
+  }
+  disableLink(event: Event) {
+    event.preventDefault();
+  }
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
+    const markdownContent = document.querySelector(
+      '.markdown-body'
+    ) as HTMLElement;
+    const parentContainer = document.querySelector(
+      '.post-detail-content'
+    ) as HTMLElement;
+
+    if (this.isExpanded) {
+      const fullHeight = markdownContent.scrollHeight; // Chiều cao thực tế của nội dung
+      const parentMaxHeight = parentContainer.getBoundingClientRect().height; // Chiều cao tối đa của container cha
+      markdownContent.style.maxHeight = `${Math.min(
+        fullHeight,
+        parentMaxHeight
+      )}px`; // Giới hạn max-height
+    } else {
+      markdownContent.style.maxHeight = '300px';
+    }
+  }
+  handleUpVote() {
+    // Xử lý sự kiện khi người dùng nhấn nút upvote
+    console.log('Upvote clicked');
+  }
+  handleDownVote() {
+    // Xử lý sự kiện khi người dùng nhấn nút downvote
+    console.log('Downvote clicked');
+  }
+}

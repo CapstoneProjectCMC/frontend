@@ -51,7 +51,7 @@
       </div>
       <div class="post-list-button">
         <app-button
-          [onClick]="handleAdd"
+          (onClick)="handleAdd()"
           [width]="'50px'"
           [height]="'50px'"
           variant="outline"
@@ -77,23 +77,44 @@
     </div>
 
     <div class="list-post-card-container">
-      <div class="list-post-card">
+      <div *ngIf="!isLoading && posts" class="list-post-card">
         <div *ngFor="let post of posts">
-          <app-post-card [post]="post"></app-post-card>
+          <app-post-card [post]="post" [onMain]="goToDetail"></app-post-card>
         </div>
       </div>
-      <div class="list-post-pagination">
+
+      <div *ngIf="isLoading " class="list-post-card">
+        <app-skeleton-loading
+          *ngIf="isLoading"
+          type="card"
+          [count]="8"
+        ></app-skeleton-loading>
+      </div>
+      <!-- <div class="list-post-pagination">
         <app-pagination
           [totalData]="posts.length"
           [amountDataPerPage]="10"
           [currentPageIndex]=" 1"
           (onPageChange)="handlePageChange($event)"
         ></app-pagination>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="popular">
-    <div class="popular-content"></div>
-    <div class="popular-post"></div>
+    <div class="popular-content">
+      <!-- <app-popular-content
+        [numTags]="fakeTags.length"
+        [tags]="fakeTags"
+      ></app-popular-content> -->
+      <app-trending
+        [items]="trendingData"
+        title="Popular Technologies"
+        [maxItems]="15"
+      >
+      </app-trending>
+    </div>
+    <div class="popular-post">
+      <app-popular-post [ListPost]="posts"></app-popular-post>
+    </div>
   </div>
 </div>

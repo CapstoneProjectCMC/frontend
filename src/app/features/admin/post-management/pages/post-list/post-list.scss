@@ -96,7 +96,7 @@
         gap: 24px;
         transition: all 0.3s ease;
         flex: 1;
-        max-height: calc(100vh - 322.5px - 65px);
+        max-height: calc(100vh - 322.5px);
         min-height: 0; // ✅ tránh overflow
         overflow-y: auto; // ✅ scroll tại đây
         // ==== Custom Scrollbar Start ====
@@ -142,16 +142,14 @@
 
     .popular-content,
     .popular-post {
-      width: 100%;
-      height: 120px;
-      background: var(--text-color);
+      width: 300px;
+      height: auto;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1rem;
-      color: #888;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+      // color: #888;
+      // box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
     }
   }
 }
