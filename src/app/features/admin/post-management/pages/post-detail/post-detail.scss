@@ -162,7 +162,7 @@
       }
 
       ::ng-deep pre {
-        background: #f3f4f6;
+        background: var(--background-color);
         color: oklch(from var(--text-color) l c h);
         border-radius: 8px;
         padding: 1rem;
