@@ -90,6 +90,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
               },
             })
           );
+        } else {
+          sendNotification(store, errorStatus, errorMessage, 'error');
         }
       }
 

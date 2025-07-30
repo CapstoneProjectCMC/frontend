@@ -261,7 +261,7 @@ export const sidebarExercises: SidebarItem[] = [
   },
   {
     id: 'exercise',
-    path: 'exercise/exercise-layout/list-assign',
+    path: 'list',
     label: 'Bài tập được giao',
     icon: 'fas fa-tasks',
   },
