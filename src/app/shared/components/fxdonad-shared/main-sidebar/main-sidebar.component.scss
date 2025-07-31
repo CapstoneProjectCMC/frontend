@@ -11,7 +11,7 @@
   color: var(--text-color);
   border-right: 1px solid var(--border-color);
   position: relative;
-  overflow: hidden;
+
   transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
   box-sizing: border-box;
 
@@ -23,7 +23,7 @@
 
     .sidebar-header {
       padding: 20px 8px;
-      justify-content: center;
+      justify-content: flex-start;
     }
     .sidebar-nav {
       .sidebar-menu {
@@ -50,7 +50,7 @@
     padding: 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-items: center;
     margin-top: auto;
     position: sticky;
@@ -302,10 +302,15 @@
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
-    position: relative;
+    position: absolute;
+    z-index: 999;
+    background-color: oklch(from var(--background-color) l c h);
 
     &.collapsed {
-      width: 100%;
+      transform: translateX(-70px);
+      .sidebar-header {
+        transform: translateX(70px);
+      }
     }
   }
 }

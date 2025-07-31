@@ -425,7 +425,7 @@
     display: block;
   }
   ul.ant-menu-list {
-    width: 400px !important;
+    width: clamp(200px, 280px, 100vw) !important;
     max-width: 100vw;
     min-width: 200px;
     display: none;
@@ -482,6 +482,11 @@
     line-height: 48px;
     font-size: 16px;
     box-sizing: border-box;
+    .ant-menu-title-content {
+      width: 100%;
+      justify-content: start;
+      margin: 0 0 0 12px;
+    }
   }
   .ant-submenu {
     position: absolute;
