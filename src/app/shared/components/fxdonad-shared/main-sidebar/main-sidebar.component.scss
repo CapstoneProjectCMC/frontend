@@ -13,11 +13,13 @@
   position: relative;
   overflow: hidden;
   transition: width 0.3s ease, min-width 0.3s ease, max-width 0.3s ease;
+  box-sizing: border-box;
 
   &.collapsed {
     width: 70px;
     min-width: 70px;
     max-width: 70px;
+    box-sizing: border-box;
 
     .sidebar-header {
       padding: 20px 8px;
@@ -56,7 +58,7 @@
     background: var(--background-color);
     z-index: 2;
     transition: padding 0.3s ease, justify-content 0.3s ease;
-    transform: translateX(5px);
+    // Loại bỏ transform translateX(5px) để tránh tràn ngang
 
     h3 {
       margin: 0;
@@ -95,7 +97,8 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(var(--text-color-rgb), 0.5) transparent;
     width: 100%;
-    transform: translateX(5px);
+    box-sizing: border-box;
+    // Loại bỏ transform translateX(5px) để tránh tràn ngang
 
     .sidebar-menu {
       list-style: none;
@@ -121,6 +124,8 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          box-sizing: border-box;
+          width: calc(100% - 20px); // Đảm bảo không vượt quá container
 
           &:hover {
             background-color: var(--primary-color-lighter);
@@ -211,6 +216,8 @@
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
+              box-sizing: border-box;
+              width: calc(100% - 20px); // Đảm bảo không vượt quá container
 
               &:hover {
                 background-color: var(--primary-color-lighter);
