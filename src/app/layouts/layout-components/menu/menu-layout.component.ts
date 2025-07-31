@@ -233,6 +233,6 @@ export class MenuLayoutComponent implements OnInit, OnDestroy {
   }
 
   get isMobileView(): boolean {
-    return window.innerWidth <= 770;
+    return window.innerWidth <= 800;
   }
 }
