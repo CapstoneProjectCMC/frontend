@@ -36,6 +36,7 @@
       .description {
         font-size: 18px;
         color: var(--text-color);
+        margin: auto 32px auto 32px;
       }
 
       .dots {
@@ -67,7 +68,7 @@
 
     .back-to-home {
       position: absolute;
-      width: 100%;
+      width: fit-content;
       display: flex;
       bottom: 10px;
       right: 10px;
