@@ -3,7 +3,6 @@ import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ProfileMenuComponent } from './profile-menu.component';
-import { DropdownButtonComponent } from '../../fxdonad-shared/dropdown/dropdown.component';
 
 import { decodeJWT } from '../../../utils/stringProcess';
 
@@ -14,7 +13,7 @@ import { ThemeService } from '../../../../styles/theme-service/theme.service';
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   standalone: true,
-  imports: [NgIf, ProfileMenuComponent, DropdownButtonComponent, ToggleSwitch],
+  imports: [NgIf, ProfileMenuComponent, ToggleSwitch],
 })
 export class HeaderComponent {
   isDarkMode: boolean = false;
