@@ -13,10 +13,10 @@
           routerLinkActive="active"
         >
           <i *ngIf="item.icon" [class]="item.icon" class="sidebar-icon"></i>
-          <span *ngIf="!isCollapsed" class="sidebar-label">{{
+          <!-- <span *ngIf="!isCollapsed" class="sidebar-label">{{
             item.label
-          }}</span>
-
+          }}</span> -->
+          <span class="sidebar-label">{{ item.label }}</span>
           <i
             *ngIf="item.children && item.children.length > 0 && !isCollapsed"
             class="fas fa-chevron-down expand-icon"
@@ -35,11 +35,13 @@
             !isCollapsed
           "
           class="submenu"
+          [class.expanded]="item.isExpanded"
         >
           <li
             *ngFor="let child of item.children"
             class="submenu-item"
             [class.active]="child.isActive"
+            [class.visible]="child.isVisible"
           >
             <a
               class="submenu-link"

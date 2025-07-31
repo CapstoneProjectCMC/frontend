@@ -16,6 +16,14 @@ export class MainSidebarComponent {
   toggleItem(item: SidebarItem): void {
     if (item.children && item.children.length > 0) {
       item.isExpanded = !item.isExpanded;
+
+      if (item.isExpanded && item.children) {
+        // Add animation for submenu items when opening
+        this.animateSubmenuItems(item.children);
+      } else if (!item.isExpanded && item.children) {
+        // Reset visibility when closing
+        this.resetSubmenuItemsVisibility(item.children);
+      }
     }
   }
 
@@ -32,6 +40,21 @@ export class MainSidebarComponent {
       if (item.children) {
         this.resetActiveItems(item.children);
       }
+    });
+  }
+
+  private animateSubmenuItems(children: SidebarItem[]): void {
+    children.forEach((child, index) => {
+      // Add delay for staggered animation
+      setTimeout(() => {
+        child.isVisible = true;
+      }, index * 50); // 50ms delay between each item
+    });
+  }
+
+  private resetSubmenuItemsVisibility(children: SidebarItem[]): void {
+    children.forEach((child) => {
+      child.isVisible = false;
     });
   }
 }
