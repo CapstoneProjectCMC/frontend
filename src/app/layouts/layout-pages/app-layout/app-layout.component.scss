@@ -1,8 +1,14 @@
 .app-default-container {
   display: flex;
-  width: 100%;
+  max-width: calc(100vw - 15px);
   flex-direction: column;
+  min-height: 100vh; // Ngăn tràn ngang
+  box-sizing: border-box; // Đảm bảo padding/border được tính vào width
+
   .main-content-app-container {
     max-width: 100%;
+    width: 100%;
+    overflow-x: hidden; // Ngăn tràn ngang cho content
+    box-sizing: border-box;
   }
 }
