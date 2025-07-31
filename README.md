@@ -16,44 +16,65 @@
 - npm (được cài đặt cùng với Node.js)
 - Angular CLI (phiên bản 19+)
 
-## Cấu trúc dự án
+## Cấu trúc dự án (Tổng quan & Minh họa)
 
 ```
 frontend/
-├── src/                    # Source code chính
-│   ├── app/               # Components, services, và các module
-│   │   ├── core/         # Core module - chứa các thành phần cốt lõi
-│   │   │   ├── services/    # Các service dùng chung (auth, api, etc.)
-│   │   │   ├── models/      # Interface và type definitions
-│   │   │   ├── interceptors/# HTTP interceptors
-│   │   │   └── constants/   # Constants và enums
-│   │   │
-│   │   ├── features/     # Feature modules - các tính năng chính
-│   │   │   ├── auth/        # Module xác thực (login, register, etc.)
-│   │   │   └── dashboard/   # Module dashboard
-│   │   │
-│   │   ├── shared/       # Shared module - các thành phần dùng chung
-│   │   │   ├── components/  # Shared components (buttons, cards, etc.)
-│   │   │   ├── utils/       # Utility functions và helpers
-│   │   │   ├── store/       # NgRx store configurations
-│   │   │   └── pipes/       # Custom pipes
-│   │   │
-│   │   ├── layouts/      # Layout components (header, footer, sidebar)
-│   │   │
-│   │   ├── styles/       # Global styles và themes
-│   │   │
-│   │   ├── app.routes.ts # Route configurations
-│   │   ├── app.config.ts # App configurations
+├── src/
+│   ├── app/
+│   │   ├── core/         # Thành phần cốt lõi, dịch vụ dùng chung, models, guards, interceptors
+│   │   ├── features/     # Các module tính năng (auth, dashboard, exercise, ...)
+│   │   ├── layouts/      # Các layout tổng thể (header, menu, modal, ...)
+│   │   ├── shared/       # Thành phần dùng chung (components, pipes, store, utils)
+│   │   ├── styles/       # Style và theme toàn cục
+│   │   ├── app.routes.ts # Định nghĩa route tổng
+│   │   ├── app.config.ts # Cấu hình ứng dụng
 │   │   └── app.ts        # Root component
-│   │
-│   ├── environments/     # Cấu hình môi trường
-│   └── styles/          # Global styles
-│
-├── public/              # Public assets
-├── .angular/           # Angular cache
-├── node_modules/       # Dependencies
-└── configuration files # Các file cấu hình (angular.json, tsconfig.json, etc.)
+│   ├── environments/     # Cấu hình môi trường (dev, prod)
+│   ├── index.html        # HTML entry point
+│   └── styles.scss       # Global style entry
+├── public/               # Tài nguyên tĩnh (ảnh, icon, ...)
+├── cấu hình & tài liệu   # angular.json, package.json, README.md, ...
 ```
+
+### Minh họa luồng hoạt động
+
+```mermaid
+flowchart TD
+    A["Người dùng"] -->|Truy cập| B["index.html"]
+    B --> C["app.ts (Root Component)"]
+    C --> D["layouts/ (Giao diện tổng thể)"]
+    C --> E["features/ (Tính năng)"]
+    C --> F["shared/ (Thành phần dùng chung)"]
+    C --> G["core/ (Dịch vụ, models, guards)"]
+
+    E -->|Ví dụ:| E1["auth/ (Đăng nhập, đăng ký)"]
+    E --> E2["dashboard/ (Trang chính)"]
+    E --> E3["exercise/ (Bài tập, quiz)"]
+
+    G --> G1["services/ (API, Auth, ...)"]
+    G --> G2["models/ (Kiểu dữ liệu)"]
+    G --> G3["guards/ (Bảo vệ route)"]
+    G --> G4["interceptors/ (Xử lý HTTP)"]
+
+    F --> F1["components/ (Button, Card, Modal, ...)"]
+    F --> F2["pipes/ (Chuyển đổi dữ liệu)"]
+    F --> F3["store/ (NgRx State)"]
+    F --> F4["utils/ (Hàm tiện ích)"]
+```
+
+### Mô tả tổng quan
+
+- **core/**: Chứa các thành phần cốt lõi như dịch vụ (services), kiểu dữ liệu (models), bảo vệ route (guards), và interceptors cho HTTP.
+- **features/**: Mỗi tính năng lớn của ứng dụng (auth, dashboard, exercise, ...) là một module riêng biệt, dễ mở rộng và bảo trì.
+- **layouts/**: Định nghĩa các layout tổng thể như header, menu, modal, giúp tái sử dụng giao diện.
+- **shared/**: Các thành phần dùng chung trên toàn ứng dụng như button, card, pipes, store (NgRx), và các hàm tiện ích.
+- **styles/**: Quản lý style, theme, font cho toàn bộ ứng dụng.
+- **environments/**: Cấu hình môi trường (dev, prod) để dễ dàng chuyển đổi khi deploy.
+- **public/**: Lưu trữ tài nguyên tĩnh như ảnh, icon, logo.
+
+> **Luồng hoạt động:**  
+Người dùng truy cập vào ứng dụng qua `index.html`, Angular khởi tạo `app.ts` (root component), sau đó điều phối đến các layout, module tính năng (features), và sử dụng các thành phần dùng chung (shared) cũng như các dịch vụ cốt lõi (core).
 
 ### Chi tiết các module chính
 
