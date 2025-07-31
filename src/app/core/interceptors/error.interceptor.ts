@@ -1,12 +1,11 @@
-import { HttpInterceptorFn } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
-import { sendNotification } from '../../shared/utils/notification';
-import { Router } from '@angular/router';
+import { of, throwError } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { openNoticeModal } from '../../shared/store/modal-notice-state/modal-notice.actions';
+import { sendNotification } from '../../shared/utils/notification';
+import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import { AuthService } from '../services/api-service/auth.service';
 
 // Bản đồ lỗi từ mã lỗi API sang thông báo tiếng Việt
@@ -29,50 +28,59 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Mặc định lấy HTTP status code và status text
       let errorCode = error.status;
       let errorMessage = 'Không thể kết nối tới máy chủ!';
       const errorStatus = `${error.status}`;
 
-      // Nếu lỗi có response body là object, lấy code và message từ đó
       if (error.error && typeof error.error === 'object') {
-        console.log(error.error);
         errorCode = error.error.code || error.status;
         errorMessage =
           ERROR_MESSAGES[errorCode] || error.error.message || errorMessage;
       }
 
-      // Nếu không nằm trong danh sách bỏ qua thì gửi thông báo lỗi
-      if (
-        !IGNORE_ERROR_NOTIFICATION_URLS.some((url) => req.url.includes(url))
-      ) {
-        if (errorCode === 4018801 && refreshToken) {
-          authService.refreshToken(refreshToken).subscribe({
-            next: (res) => {
-              localStorage.setItem('token', res.result.accessToken);
-              localStorage.setItem('refreshToken', res.result.refreshToken);
-              window.location.reload();
-            },
-            error: (err) => {
-              store.dispatch(
-                openNoticeModal({
-                  payload: {
-                    title: 'Hết hạn đăng nhập',
-                    message: 'Để tiếp tục sử dụng yêu cầu đăng nhập lại!',
-                    confirmText: 'Đồng ý',
-                    cancelText: 'Hủy',
-                    onConfirm: () => {
-                      router.navigate(['/auth/identity/login']);
-                    },
-                    onCancel: () => {
-                      // Hành động khi hủy
-                    },
+      const shouldSkip = IGNORE_ERROR_NOTIFICATION_URLS.some((url) =>
+        req.url.includes(url)
+      );
+
+      // Trường hợp đặc biệt: Token hết hạn & có refreshToken
+      if (errorCode === 4018801 && refreshToken) {
+        return authService.refreshToken(refreshToken).pipe(
+          switchMap((res) => {
+            localStorage.setItem('token', res.result.accessToken);
+            localStorage.setItem('refreshToken', res.result.refreshToken);
+
+            // Thêm Authorization mới vào headers
+            const clonedReq = req.clone({
+              setHeaders: {
+                Authorization: `Bearer ${res.result.accessToken}`,
+              },
+            });
+
+            // Gọi lại request ban đầu
+            return next(clonedReq);
+          }),
+          catchError((refreshErr) => {
+            store.dispatch(
+              openNoticeModal({
+                payload: {
+                  title: 'Thông tin xác thực không hợp lệ',
+                  message: 'Yêu cầu đăng nhập lại!',
+                  confirmText: 'Đồng ý',
+                  cancelText: 'Hủy',
+                  onConfirm: () => {
+                    router.navigate(['/auth/identity/login']);
                   },
-                })
-              );
-            },
-          });
-        } else if (errorCode === 4018801 && !refreshToken) {
+                },
+              })
+            );
+            return throwError(() => refreshErr);
+          })
+        );
+      }
+
+      // Hiển thị thông báo nếu không nằm trong danh sách bỏ qua
+      if (!shouldSkip) {
+        if (errorCode === 4018801 && !refreshToken) {
           store.dispatch(
             openNoticeModal({
               payload: {
@@ -84,18 +92,21 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                   router.navigate(['/auth/identity/login']);
                 },
                 onCancel: () => {
-                  // Hành động khi hủy
                   sendNotification(store, errorStatus, errorMessage, 'error');
                 },
               },
             })
           );
         } else {
-          sendNotification(store, errorStatus, errorMessage, 'error');
+          sendNotification(
+            store,
+            errorStatus === '0' ? 'Lỗi kết nối!' : errorStatus,
+            errorMessage,
+            'error'
+          );
         }
       }
 
-      // Trả về lỗi với cấu trúc: { code, message, status }
       return throwError(() => ({
         code: errorCode,
         message: errorMessage,
