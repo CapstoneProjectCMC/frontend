@@ -186,3 +186,23 @@ export interface QuizQuestionWithOptionRequest {
   orderInQuiz: number;
   options: QuizOption[];
 }
+
+export interface IExerciseAnswerRequest {
+  exerciseId: string;
+  studentId: string;
+  answers: IAnswer[];
+  timeTakenSeconds: number;
+}
+
+export interface IAnswer {
+  questionId: string;
+  selectedOptionId: string;
+  answerText: string;
+}
+
+export interface IExerciseResultResponse {
+  score: number;
+  totalPoints: number;
+  passed: boolean;
+  timeTakenSeconds: number;
+}

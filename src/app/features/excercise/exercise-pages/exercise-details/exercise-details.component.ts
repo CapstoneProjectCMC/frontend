@@ -49,6 +49,7 @@ export class ExerciseDetailsComponent implements OnInit {
   isOpenAddNewOption: boolean = false;
   isOpenUpdateExercise: boolean = false;
   isUpdateQuestion: boolean = false;
+  resetLoadingFlag = false;
 
   initialSelectedQuestion: QuizQuestion = {
     id: '',
@@ -223,6 +224,11 @@ export class ExerciseDetailsComponent implements OnInit {
     this.selectedQuestion = this.initialSelectedQuestion;
   }
 
+  loadingHandler() {
+    this.resetLoadingFlag = true;
+    setTimeout(() => (this.resetLoadingFlag = false), 100);
+  }
+
   onSubmitQuestion(data: QuizQuestionCreate) {
     if (this.exercise.quizDetail === null) {
       this.exerciseService
@@ -235,9 +241,11 @@ export class ExerciseDetailsComponent implements OnInit {
               this.fetchingData(this.exerciseId);
             }
             this.isOpenAddNewQuestion = false;
+            this.loadingHandler();
           },
           error: (err) => {
             console.log(err);
+            this.loadingHandler();
           },
         });
     } else {
@@ -251,9 +259,11 @@ export class ExerciseDetailsComponent implements OnInit {
               this.fetchingData(this.exerciseId);
             }
             this.isOpenAddNewQuestion = false;
+            this.loadingHandler();
           },
           error: (err) => {
             console.log(err);
+            this.loadingHandler();
           },
         });
     }
