@@ -1,5 +1,10 @@
 <div class="quiz-submission-container">
-  <app-quiz [questions]="questions" [totalTime]="times * 60"></app-quiz>
+  <app-quiz
+    [questions]="questions"
+    [totalTime]="times * 60"
+    [quizId]="quizId"
+    [exerciseId]="exerciseId ?? ''"
+  ></app-quiz>
 
   <app-box-chat-ai
     *ngIf="allowChatbot"

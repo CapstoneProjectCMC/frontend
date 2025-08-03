@@ -31,6 +31,7 @@ export class QuizSubmissionComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   exerciseId: string | null = '';
+  quizId: string = '';
   questions: Array<QuizQuestion> = [];
   times = 0;
   quizStarted = true;
@@ -83,6 +84,7 @@ export class QuizSubmissionComponent
         .subscribe({
           next: (res) => {
             this.questions = res.result.quizDetail?.questions ?? [];
+            this.quizId = res.result.quizDetail?.id || '';
             this.times = res.result.duration;
             this.allowChatbot = res.result.allowAiQuestion;
           },

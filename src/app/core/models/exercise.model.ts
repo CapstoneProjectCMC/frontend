@@ -198,8 +198,8 @@ export interface IExerciseAnswerRequest {
 
 export interface IAnswer {
   questionId: string;
-  selectedOptionId: string;
-  answerText: string;
+  selectedOptionId?: string;
+  answerText?: string;
 }
 
 export interface IExerciseResultResponse {

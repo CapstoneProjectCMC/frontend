@@ -39,14 +39,14 @@
         <label
           class="option"
           *ngFor="let opt of questions[currentQuestionIndex]?.options"
-          [class.selected]="selectedAnswer === opt.optionText"
+          [class.selected]="selectedAnswer?.selectedOption?.id === opt.id"
         >
           <input
             type="radio"
             name="answer{{ currentQuestionIndex }}"
-            [(ngModel)]="selectedAnswers[currentQuestionIndex]"
             [value]="opt"
-            (change)="markDone(currentQuestionIndex)"
+            [checked]="selectedAnswer?.selectedOption?.id === opt.id"
+            (change)="selectAnswer(currentQuestionIndex, opt)"
           />
           {{ opt.optionText }}
         </label>
