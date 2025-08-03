@@ -24,7 +24,7 @@ export interface QuizQuestionExtends extends QuizQuestion {
 })
 export class QuizComponent implements OnInit, OnDestroy, OnChanges {
   @Input() questions: Array<QuizQuestionExtends> = [];
-  @Input() totalTime: number = 1800;
+  @Input() totalTime: number = 0;
 
   currentQuestionIndex = 0;
   selectedAnswers: string[] = [];

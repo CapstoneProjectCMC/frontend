@@ -2,6 +2,7 @@
   <app-quiz [questions]="questions" [totalTime]="times * 60"></app-quiz>
 
   <app-box-chat-ai
+    *ngIf="allowChatbot"
     [chatContexts]="chatContexts"
     [currentContextId]="currentContextId"
     [isLoading]="isLoading"

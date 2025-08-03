@@ -4,6 +4,8 @@ import {
   ElementRef,
   Renderer2,
   AfterViewInit,
+  OnDestroy,
+  HostListener,
 } from '@angular/core';
 import { QuizComponent } from '../../../../shared/components/fxdonad-shared/quiz/quiz.component';
 import { QuizQuestion } from '../../../../core/models/exercise.model';
@@ -16,19 +18,23 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-quiz-submission',
   standalone: true,
-  imports: [QuizComponent, BoxChatAiComponent],
+  imports: [CommonModule, QuizComponent, BoxChatAiComponent],
   templateUrl: './quiz-submission.component.html',
   styleUrl: './quiz-submission.component.scss',
 })
-export class QuizSubmissionComponent implements OnInit, AfterViewInit {
+export class QuizSubmissionComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   exerciseId: string | null = '';
   questions: Array<QuizQuestion> = [];
   times = 0;
   quizStarted = true;
+  allowChatbot = false;
 
   // Chat data
   chatContexts: ChatContext[] = [];
@@ -61,6 +67,14 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
     return of(confirmResult);
   }
 
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.quizStarted) {
+      event.preventDefault();
+      event.returnValue = 'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.';
+    }
+  }
+
   ngOnInit() {
     this.exerciseId = this.route.snapshot.paramMap.get('id');
     if (this.exerciseId) {
@@ -70,6 +84,7 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
           next: (res) => {
             this.questions = res.result.quizDetail?.questions ?? [];
             this.times = res.result.duration;
+            this.allowChatbot = res.result.allowAiQuestion;
           },
         });
 
@@ -163,9 +178,6 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
 
     // Adjust component sizes
     this.adjustComponentSizes();
-
-    // Log the width change for debugging
-    console.log(`Chat width changed to: ${newWidth}`);
   }
 
   private initializeFakeChatData(): void {

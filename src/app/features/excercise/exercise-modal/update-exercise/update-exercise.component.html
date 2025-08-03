@@ -21,6 +21,18 @@
           [class.inactive]="step !== 1"
         >
           <div class="form-grid">
+            <div class="form-group checkbox-group">
+              <label>
+                <input type="checkbox" formControlName="freeForOrg" />
+                Miễn phí cho tổ chức
+              </label>
+            </div>
+            <div class="form-group checkbox-group">
+              <label>
+                <input type="checkbox" formControlName="visibility" />
+                Công khai bài tập
+              </label>
+            </div>
             <div class="form-group">
               <label for="title">Tiêu đề *</label>
               <input
@@ -75,13 +87,6 @@
               >
                 Chi phí là bắt buộc và phải >= 0
               </div>
-            </div>
-
-            <div class="form-group checkbox-group">
-              <label>
-                <input type="checkbox" formControlName="freeForOrg" />
-                Miễn phí cho tổ chức
-              </label>
             </div>
           </div>
 

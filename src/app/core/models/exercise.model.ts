@@ -104,6 +104,7 @@ export type CreateExerciseRequest = {
   resourceIds?: string[];
   tags?: string[];
   allowAiQuestion?: boolean;
+  visibility?: boolean;
 };
 
 export type PatchUpdateExerciseRequest = {
@@ -119,6 +120,7 @@ export type PatchUpdateExerciseRequest = {
   resourceIds: string[];
   tags: string[];
   allowAiQuestion: boolean;
+  visibility: boolean;
 };
 
 // Enum for difficulty

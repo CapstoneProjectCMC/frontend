@@ -150,7 +150,7 @@ export class ExerciseDetailsComponent implements OnInit {
 
   fetchingData(id: string) {
     this.exerciseService
-      .getExerciseDetails(1, 10, 'CREATED_AT', false, id)
+      .getExerciseDetails(1, 99999, 'CREATED_AT', false, id)
       .subscribe({
         next: (res) => {
           if (res && res.result) {
