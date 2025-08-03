@@ -7,13 +7,13 @@
   overflow: hidden;
   box-sizing: border-box;
   gap: 12px;
+  padding: 12px 0 12px 0;
 
   app-quiz {
     flex: 1;
     min-width: 0;
     overflow-y: auto;
     box-sizing: border-box;
-    padding: 12px 0 12px 12px;
 
     &.compact-view {
       // Styles for when the quiz needs to be more compact
@@ -34,10 +34,10 @@
   }
 
   app-box-chat-ai {
-    height: calc(100vh - 132px);
     min-width: 300px;
     max-width: 500px;
     box-sizing: border-box;
+    margin: 0 2px 0 0;
     flex-shrink: 0;
   }
 }

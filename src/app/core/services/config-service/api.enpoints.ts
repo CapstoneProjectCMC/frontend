@@ -52,6 +52,7 @@ export const API_CONFIG = {
         `/submission/quiz/exercise/${exerciseId}/quiz-detail`,
       ADD_OPTION_INTO_QUESTION: (questionId: string) =>
         `/submission/quiz/question/${questionId}/option`,
+      SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
     },
     PUT: {
       UPDATE_QUESTION_WITH_OPTION: (exerciseId: string, questionId: string) =>

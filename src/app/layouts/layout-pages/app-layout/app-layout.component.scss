@@ -1,9 +1,9 @@
 .app-default-container {
   display: flex;
-  max-width: calc(100vw - 15px);
   flex-direction: column;
   min-height: 100vh; // Ngăn tràn ngang
   box-sizing: border-box; // Đảm bảo padding/border được tính vào width
+  overflow: hidden;
 
   .main-content-app-container {
     max-width: 100%;

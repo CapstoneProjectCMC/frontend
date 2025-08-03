@@ -23,10 +23,16 @@ import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/to
 })
 export class AddNewQuestionComponent {
   @Input() isOpen: boolean = false;
+  @Input() set resetLoading(value: boolean) {
+    if (value) {
+      this.isLoading = false;
+    }
+  }
   @Output() submitQuestion = new EventEmitter<QuizQuestionCreate>();
   @Output() cancel = new EventEmitter<void>();
 
   step = 1;
+  isLoading = false;
   questionForm: FormGroup;
   questionTypes = [
     { value: 'SINGLE_CHOICE', label: 'Một đáp án' },
@@ -93,6 +99,7 @@ export class AddNewQuestionComponent {
 
   onSubmit() {
     if (this.questionForm.valid && this.options.length >= 2) {
+      this.isLoading = true;
       const value = this.questionForm.value;
       // Lọc bỏ option không có nội dung
       const filteredOptions = value.options.filter(
@@ -116,6 +123,7 @@ export class AddNewQuestionComponent {
   }
 
   onCancel() {
+    this.isLoading = false;
     this.cancel.emit();
   }
 

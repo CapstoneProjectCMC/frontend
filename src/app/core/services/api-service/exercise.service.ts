@@ -7,6 +7,8 @@ import {
   CreateExerciseRequest,
   ExerciseItem,
   ExerciseQuiz,
+  IExerciseAnswerRequest,
+  IExerciseResultResponse,
   OptionCreate,
   PatchUpdateExerciseRequest,
   QuizDetailCreateStupid,
@@ -132,6 +134,13 @@ export class ExerciseService {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ADD_QUESTION_STUPID(exerciseId),
       quizDetailCreateStupid
+    );
+  }
+
+  submitQuiz(quizId: string, dataRequest: IExerciseAnswerRequest) {
+    return this.api.post<ApiResponse<IExerciseResultResponse>>(
+      API_CONFIG.ENDPOINTS.POST.SUBMITQUIZ(quizId),
+      dataRequest
     );
   }
 }

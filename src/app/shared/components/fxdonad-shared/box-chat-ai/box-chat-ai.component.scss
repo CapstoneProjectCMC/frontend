@@ -9,6 +9,7 @@
   overflow: hidden;
   transition: all 0.3s ease;
   position: relative;
+  border-radius: 12px;
 
   &.expanded {
     height: 100%;

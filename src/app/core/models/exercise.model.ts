@@ -104,6 +104,7 @@ export type CreateExerciseRequest = {
   resourceIds?: string[];
   tags?: string[];
   allowAiQuestion?: boolean;
+  visibility?: boolean;
 };
 
 export type PatchUpdateExerciseRequest = {
@@ -119,6 +120,7 @@ export type PatchUpdateExerciseRequest = {
   resourceIds: string[];
   tags: string[];
   allowAiQuestion: boolean;
+  visibility: boolean;
 };
 
 // Enum for difficulty
@@ -185,4 +187,24 @@ export interface QuizQuestionWithOptionRequest {
   points: number;
   orderInQuiz: number;
   options: QuizOption[];
+}
+
+export interface IExerciseAnswerRequest {
+  exerciseId: string;
+  studentId: string;
+  answers: IAnswer[];
+  timeTakenSeconds: number;
+}
+
+export interface IAnswer {
+  questionId: string;
+  selectedOptionId?: string;
+  answerText?: string;
+}
+
+export interface IExerciseResultResponse {
+  score: number;
+  totalPoints: number;
+  passed: boolean;
+  timeTakenSeconds: number;
 }
