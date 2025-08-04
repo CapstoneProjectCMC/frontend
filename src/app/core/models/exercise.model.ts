@@ -208,3 +208,30 @@ export interface IExerciseResultResponse {
   passed: boolean;
   timeTakenSeconds: number;
 }
+
+export type ExercisePreview = {
+  exercise: {
+    id: string;
+    title: string;
+    description: string;
+    totalpoints: number;
+    numquestions: number;
+    duration: number; // tính theo giây/phút tùy backend
+  };
+  questions: QuestionPreview[];
+};
+
+export type QuestionPreview = {
+  id: string;
+  text: string;
+  questiontype: 'SINGLE_CHOICE' | 'MULTI_CHOICE' | 'FILL_BLANK';
+  points: number;
+  orderinquiz: number;
+  options: QuestionOption[];
+};
+
+export type QuestionOption = {
+  id: string;
+  optiontext: string;
+  order: string; // ví dụ: "A", "B", "C"
+};

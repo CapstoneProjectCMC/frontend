@@ -6,6 +6,7 @@ import { EnumType } from '../../models/data-handle';
 import {
   CreateExerciseRequest,
   ExerciseItem,
+  ExercisePreview,
   ExerciseQuiz,
   IExerciseAnswerRequest,
   IExerciseResultResponse,
@@ -134,6 +135,12 @@ export class ExerciseService {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ADD_QUESTION_STUPID(exerciseId),
       quizDetailCreateStupid
+    );
+  }
+
+  loadQuiz(quizId: string) {
+    return this.api.get<ApiResponse<ExercisePreview>>(
+      API_CONFIG.ENDPOINTS.GET.LOADQUIZ(quizId)
     );
   }
 

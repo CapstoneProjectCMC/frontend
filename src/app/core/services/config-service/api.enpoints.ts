@@ -31,6 +31,7 @@ export const API_CONFIG = {
         sort: EnumType['sort'],
         asc: boolean
       ) => `/profile/users?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
+      LOADQUIZ: (quizId: string) => `/quiz/${quizId}/load`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
