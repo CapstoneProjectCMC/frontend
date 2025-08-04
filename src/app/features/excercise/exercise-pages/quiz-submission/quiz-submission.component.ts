@@ -8,7 +8,10 @@ import {
   HostListener,
 } from '@angular/core';
 import { QuizComponent } from '../../../../shared/components/fxdonad-shared/quiz/quiz.component';
-import { QuizQuestion } from '../../../../core/models/exercise.model';
+import {
+  QuestionPreview,
+  QuizQuestion,
+} from '../../../../core/models/exercise.model';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import {
   BoxChatAiComponent,
@@ -32,10 +35,11 @@ export class QuizSubmissionComponent
 {
   exerciseId: string | null = '';
   quizId: string = '';
-  questions: Array<QuizQuestion> = [];
   times = 0;
   quizStarted = true;
   allowChatbot = false;
+  questions: Array<QuestionPreview> = [];
+  startDoing = false;
 
   // Trạng thái quiz từ child component
   isQuizSubmitted = false;
@@ -99,10 +103,10 @@ export class QuizSubmissionComponent
         .getExerciseDetails(1, 99999, 'CREATED_AT', false, this.exerciseId)
         .subscribe({
           next: (res) => {
-            this.questions = res.result.quizDetail?.questions ?? [];
             this.quizId = res.result.quizDetail?.id || '';
             this.times = res.result.duration;
             this.allowChatbot = res.result.allowAiQuestion;
+            this.fetchQuiz();
           },
           error: (err) => {
             console.error('Error loading exercise:', err);
@@ -119,6 +123,18 @@ export class QuizSubmissionComponent
 
     // Add resize event listener
     window.addEventListener('resize', this.handleResize.bind(this));
+  }
+
+  fetchQuiz() {
+    this.exerciseService.loadQuiz(this.quizId).subscribe({
+      next: (res) => {
+        this.questions = res.result.questions;
+        this.startDoing = true;
+      },
+      error: (err) => {
+        console.error('Error loading quiz:', err);
+      },
+    });
   }
 
   /**
@@ -166,11 +182,6 @@ export class QuizSubmissionComponent
   }): void {
     this.isQuizSubmitted = state.isSubmitted;
     this.hasQuizDataChanges = state.hasDataChanges;
-
-    console.log('Quiz state changed:', {
-      isSubmitted: this.isQuizSubmitted,
-      hasDataChanges: this.hasQuizDataChanges,
-    });
   }
 
   /////////////////////////////////////////////Phần này code cho chatboxAi chỉ để test/////////////////////////////

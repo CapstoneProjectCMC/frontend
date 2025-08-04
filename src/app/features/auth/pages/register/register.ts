@@ -87,6 +87,11 @@ export class Register {
       return;
     }
 
+    // Xử lý dob về đúng định dạng
+    if (this.formData.dob && !this.formData.dob.endsWith('T00:00:00Z')) {
+      this.formData.dob = this.formData.dob + 'T00:00:00Z';
+    }
+
     this.isLoading = true;
     this.authService.register(this.formData).subscribe({
       next: (res) => {
@@ -95,10 +100,10 @@ export class Register {
           sendNotification(
             this.store,
             'Thành công',
-            'Tài khoản đã được tạo!',
+            'Tài khoản đã được tạo, nhập OTP để kích hoạt!',
             'success'
           );
-          this.router.navigate(['/auth/identity/login']);
+          this.openOTP = true;
         }
       },
       error: (err) => {
@@ -168,7 +173,7 @@ export class Register {
           sendNotification(
             this.store,
             'OTP',
-            `Đã xác thực OTP: ${otpCode}`,
+            `Tài khoản đã xác thực OTP thành công`,
             'success'
           );
           this.router.navigate(['auth/identity/login']);

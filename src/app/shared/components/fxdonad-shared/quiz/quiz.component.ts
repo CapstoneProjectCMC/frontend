@@ -15,6 +15,7 @@ import {
   QuizQuestion,
   IAnswer,
   IExerciseAnswerRequest,
+  QuestionPreview,
 } from '../../../../core/models/exercise.model';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import {
@@ -31,7 +32,7 @@ import {
 } from '../../../store/loading-state/loading.action';
 import { Router } from '@angular/router';
 
-export interface QuizQuestionExtends extends QuizQuestion {
+export interface QuizQuestionExtends extends QuestionPreview {
   done?: boolean;
 }
 
@@ -49,11 +50,10 @@ export interface QuizAnswer {
   styleUrls: ['./quiz.component.scss'],
 })
 export class QuizComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() questions: Array<QuizQuestionExtends> = [];
   @Input() quizId: string = '';
   @Input() exerciseId: string = '';
+  @Input() questions: Array<QuizQuestionExtends> = [];
   @Input() totalTime: number = 0;
-
   userId: string = '';
 
   currentQuestionIndex = 0;
@@ -172,15 +172,6 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
     console.log('Quay lại làm bài tại câu hỏi:', this.currentQuestionIndex + 1);
   }
 
-  /**
-   * Tính số câu trả lời đúng
-   */
-  private calculateCorrectAnswers(result: any): number {
-    if (!result || !result.answers) return 0;
-
-    return result.answers.filter((answer: any) => answer.isCorrect).length;
-  }
-
   startTimer(): void {
     this.clearTimer();
     this.timerId = setInterval(() => {
@@ -293,7 +284,6 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
               userAnswers: this.selectedAnswers,
               timeTaken: this.totalTime - this.timeLeft,
               totalQuestions: this.questions.length,
-              correctAnswers: this.calculateCorrectAnswers(res.result),
             },
           }
         );
