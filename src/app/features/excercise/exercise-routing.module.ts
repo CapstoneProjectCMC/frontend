@@ -6,6 +6,7 @@ import { ExerciseDetailsComponent } from './exercise-pages/exercise-details/exer
 import { ExerciseLayoutComponent } from './exercise-layout/exercise-layout.component';
 import { QuizSubmissionComponent } from './exercise-pages/quiz-submission/quiz-submission.component';
 import { ConfirmExitGuard } from '../../core/guards/confirm-exit/confirm-exit.guard';
+import { DisplayScoreComponent } from './exercise-pages/display-score/display-score.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,12 @@ const routes: Routes = [
         component: QuizSubmissionComponent,
         data: { breadcrumb: 'Làm bài' },
         canDeactivate: [ConfirmExitGuard],
+        runGuardsAndResolvers: 'always',
+      },
+      {
+        path: 'quiz-submission/scored/:id',
+        component: DisplayScoreComponent,
+        data: { breadcrumb: 'Kết quả' },
       },
     ],
   },

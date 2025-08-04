@@ -318,10 +318,15 @@ export class ExerciseDetailsComponent implements OnInit {
   }
 
   doingQuiz() {
-    this.router.navigate([
-      '/exercise/exercise-layout/quiz-submission',
-      this.exerciseId,
-    ]);
+    // Lưu thông tin truy cập vào session storage
+    if (this.exerciseId) {
+      sessionStorage.setItem('quiz-access-' + this.exerciseId, 'true');
+    }
+
+    this.router.navigate(
+      ['/exercise/exercise-layout/quiz-submission', this.exerciseId],
+      { replaceUrl: true }
+    );
   }
 
   goBack() {

@@ -1,6 +1,8 @@
 import {
   Component,
   Input,
+  Output,
+  EventEmitter,
   OnInit,
   OnDestroy,
   OnChanges,
@@ -15,10 +17,19 @@ import {
   IExerciseAnswerRequest,
 } from '../../../../core/models/exercise.model';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
-import { sendNotification } from '../../../utils/notification';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../utils/notification';
 import { Store } from '@ngrx/store';
 import { getUserInfoFromLocalStorage } from '../../../utils/userInfo';
 import { decodeJWT } from '../../../utils/stringProcess';
+import { openNoticeModal } from '../../../store/modal-notice-state/modal-notice.actions';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../store/loading-state/loading.action';
+import { Router } from '@angular/router';
 
 export interface QuizQuestionExtends extends QuizQuestion {
   done?: boolean;
@@ -50,7 +61,21 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
   timeLeft: number = this.totalTime;
   timerId: any;
 
-  constructor(private exerciseService: ExerciseService, private store: Store) {
+  // Biến theo dõi trạng thái
+  isSubmitted = false;
+  hasDataChanges = false;
+
+  // Output để thông báo trạng thái cho parent
+  @Output() quizStateChanged = new EventEmitter<{
+    isSubmitted: boolean;
+    hasDataChanges: boolean;
+  }>();
+
+  constructor(
+    private exerciseService: ExerciseService,
+    private store: Store,
+    private router: Router
+  ) {
     const token = localStorage.getItem('token');
     if (token) {
       this.userId = decodeJWT(token)?.payload.userId;
@@ -61,6 +86,18 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
       console.warn('No userId found, using fallback');
       // this.userId = 'your-test-user-id'; // Uncomment và thay thế bằng ID thực
     }
+  }
+
+  openModalConfirm() {
+    openModalNotification(
+      this.store,
+      'Xác nhận nộp bài',
+      'Bạn có chắc chắn hoàn thành bài thi?',
+      'Đồng ý',
+      'Soát lại',
+      () => this.submitQuiz(),
+      () => this.cancelSubmit()
+    );
   }
 
   get selectedAnswer(): QuizAnswer | null {
@@ -103,6 +140,45 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnDestroy(): void {
     this.clearTimer();
+  }
+
+  /**
+   * Emit trạng thái quiz cho parent component
+   */
+  private emitQuizState(): void {
+    this.quizStateChanged.emit({
+      isSubmitted: this.isSubmitted,
+      hasDataChanges: this.hasDataChanges,
+    });
+  }
+
+  /**
+   * Hủy nộp bài và quay lại làm bài
+   */
+  cancelSubmit(): void {
+    // Tìm câu hỏi đầu tiên chưa được trả lời
+    const firstUnansweredIndex = this.questions.findIndex(
+      (question) => !question.done
+    );
+
+    if (firstUnansweredIndex !== -1) {
+      // Chuyển đến câu hỏi đầu tiên chưa trả lời
+      this.currentQuestionIndex = firstUnansweredIndex;
+    } else {
+      // Nếu tất cả câu hỏi đã trả lời, chuyển về câu đầu tiên
+      this.currentQuestionIndex = 0;
+    }
+
+    console.log('Quay lại làm bài tại câu hỏi:', this.currentQuestionIndex + 1);
+  }
+
+  /**
+   * Tính số câu trả lời đúng
+   */
+  private calculateCorrectAnswers(result: any): number {
+    if (!result || !result.answers) return 0;
+
+    return result.answers.filter((answer: any) => answer.isCorrect).length;
   }
 
   startTimer(): void {
@@ -164,6 +240,10 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
 
     // Đánh dấu câu hỏi đã hoàn thành
     this.questions[questionIndex].done = true;
+
+    // Đánh dấu có dữ liệu thay đổi
+    this.hasDataChanges = true;
+    this.emitQuizState();
   }
 
   goToQuestion(index: number): void {
@@ -172,7 +252,6 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
 
   submitQuiz(): void {
     this.clearTimer();
-    console.log('User answers:', this.selectedAnswers);
 
     // Chuyển đổi sang format IAnswer để gửi lên server
     const answers: IAnswer[] = this.selectedAnswers.map((answer) => ({
@@ -188,18 +267,42 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
       timeTakenSeconds: this.totalTime - this.timeLeft,
     };
 
-    console.log('Formatted answers for submission:', answers);
+    this.store.dispatch(
+      setLoading({ isLoading: true, content: 'Đang chấm điểm, xin chờ...' })
+    );
     this.exerciseService.submitQuiz(this.quizId, dataSendRequest).subscribe({
       next: (res) => {
+        // Đánh dấu đã nộp bài
+        this.isSubmitted = true;
+        this.hasDataChanges = false;
+        this.emitQuizState();
         sendNotification(
           this.store,
           'Đã hoàn thành',
           'Bài thi đã được chấm điểm',
           'success'
         );
+        this.store.dispatch(clearLoading());
+
+        // Truyền dữ liệu kết quả đến trang display-score
+        this.router.navigate(
+          ['/exercise/exercise-layout/quiz-submission/scored', this.exerciseId],
+          {
+            state: {
+              quizResult: res.result,
+              userAnswers: this.selectedAnswers,
+              timeTaken: this.totalTime - this.timeLeft,
+              totalQuestions: this.questions.length,
+              correctAnswers: this.calculateCorrectAnswers(res.result),
+            },
+          }
+        );
       },
       error: (err) => {
         console.log(err);
+        this.store.dispatch(clearLoading());
+        // Nếu lỗi, reset lại trạng thái nộp bài
+        this.isSubmitted = false;
       },
     });
   }

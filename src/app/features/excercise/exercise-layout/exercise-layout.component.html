@@ -1,5 +1,6 @@
 <div class="main-exercise-container-layout">
   <app-main-sidebar
+    *ngIf="showSidebar"
     [sidebarItems]="sidebarData"
     [isCollapsed]="isSidebarCollapsed"
   >

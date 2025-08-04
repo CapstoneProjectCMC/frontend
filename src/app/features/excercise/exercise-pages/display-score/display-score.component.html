@@ -1,0 +1,35 @@
+<div class="score-container" *ngIf="quizData">
+  <div class="score-header">
+    <h1>Kết quả bài thi: {{ quizData.quizResult.passed ? "Đạt" : "Trượt" }}</h1>
+  </div>
+
+  <div class="score-summary">
+    <div class="score-card">
+      <div class="score-circle">
+        <span class="score-number"
+          >{{ quizData.quizResult.score }}/{{
+            quizData.quizResult.totalpoints
+          }}</span
+        >
+        <span class="score-label">Điểm số</span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-number">{{ quizData.totalQuestions }}</div>
+        <div class="stat-label">Tổng câu hỏi</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">{{ timeFormatted }}</div>
+        <div class="stat-label">Thời gian</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="btn btn-secondary" (click)="goBackToList()">
+      Về danh sách bài tập
+    </button>
+  </div>
+</div>
