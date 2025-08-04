@@ -153,7 +153,11 @@
           <button type="button" class="btn btn-secondary" (click)="prevStep()">
             Quay lại
           </button>
-          <button type="submit" class="btn btn-primary">Tạo câu hỏi</button>
+          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+            <i class="fa fa-spinner fa-spin" *ngIf="isLoading"></i>
+            <span *ngIf="!isLoading">Tạo câu hỏi</span>
+            <span *ngIf="isLoading">Đang tạo...</span>
+          </button>
         </ng-container>
       </div>
     </form>

@@ -248,6 +248,18 @@
   border: 1px solid #e0e0e0 !important;
 }
 
+.btn.btn-primary[disabled],
+.btn.btn-primary:disabled {
+  background: var(--button-color) !important;
+  color: white !important;
+  cursor: not-allowed !important;
+  opacity: 0.7 !important;
+}
+
+.btn i.fa-spinner {
+  margin-right: 0.5rem;
+}
+
 .options {
   /* Bọc danh sách đáp án */
 }

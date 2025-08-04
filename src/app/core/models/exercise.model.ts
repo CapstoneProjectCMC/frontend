@@ -104,6 +104,7 @@ export type CreateExerciseRequest = {
   resourceIds?: string[];
   tags?: string[];
   allowAiQuestion?: boolean;
+  visibility?: boolean;
 };
 
 export type PatchUpdateExerciseRequest = {
@@ -119,6 +120,7 @@ export type PatchUpdateExerciseRequest = {
   resourceIds: string[];
   tags: string[];
   allowAiQuestion: boolean;
+  visibility: boolean;
 };
 
 // Enum for difficulty
@@ -186,3 +188,50 @@ export interface QuizQuestionWithOptionRequest {
   orderInQuiz: number;
   options: QuizOption[];
 }
+
+export interface IExerciseAnswerRequest {
+  exerciseId: string;
+  studentId: string;
+  answers: IAnswer[];
+  timeTakenSeconds: number;
+}
+
+export interface IAnswer {
+  questionId: string;
+  selectedOptionId?: string;
+  answerText?: string;
+}
+
+export interface IExerciseResultResponse {
+  score: number;
+  totalpoints: number;
+  passed: boolean;
+  timeTakenSeconds: number;
+}
+
+export type ExercisePreview = {
+  exercise: {
+    id: string;
+    title: string;
+    description: string;
+    totalpoints: number;
+    numquestions: number;
+    duration: number; // tính theo giây/phút tùy backend
+  };
+  questions: QuestionPreview[];
+};
+
+export type QuestionPreview = {
+  id: string;
+  text: string;
+  questiontype: 'SINGLE_CHOICE' | 'MULTI_CHOICE' | 'FILL_BLANK';
+  points: number;
+  orderinquiz: number;
+  options: QuestionOption[];
+};
+
+export type QuestionOption = {
+  id: string;
+  optiontext: string;
+  order: string; // ví dụ: "A", "B", "C"
+};

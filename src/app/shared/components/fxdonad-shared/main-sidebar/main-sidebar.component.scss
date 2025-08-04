@@ -309,7 +309,11 @@
     &.collapsed {
       transform: translateX(-70px);
       .sidebar-header {
-        transform: translateX(70px);
+        .toggle-btn {
+          transform: translateX(80px);
+          border: 1px solid var(--border-color);
+          box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+        }
       }
     }
   }

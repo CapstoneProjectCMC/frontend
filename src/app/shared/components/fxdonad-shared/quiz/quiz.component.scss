@@ -57,12 +57,15 @@
       margin: 0;
       border-top: 1px solid #ddd;
       padding-top: 10px;
+      overflow-y: auto;
 
       li {
         list-style: none;
         padding: 6px 12px;
         font-size: 13px;
-        background-color: #f0f0f0;
+        background-color: oklch(
+          from var(--background-color) calc(l * 0.97) c h
+        );
         border-radius: 20px;
         border: 1px solid #ccc;
         cursor: pointer;
@@ -73,10 +76,17 @@
           background-color: #4caf50;
           color: white;
           border-color: #4caf50;
+          &:hover {
+            background-color: oklch(from #4caf50 calc(l * 0.9) c h);
+            color: #e0e0e0;
+          }
         }
 
         &:hover {
-          background-color: #e0e0e0;
+          background-color: oklch(
+            from var(--background-color) calc(l * 1.2) c h
+          );
+          color: var(--reverse-text-color);
         }
       }
     }

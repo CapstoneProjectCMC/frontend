@@ -48,6 +48,7 @@ export class ExerciseModalComponent {
       resourceIds: [''],
       tags: [''],
       allowAiQuestion: [false],
+      visibility: [false, Validators.required],
     });
   }
 
@@ -58,12 +59,14 @@ export class ExerciseModalComponent {
     controls['difficulty'].markAsTouched();
     controls['exerciseType'].markAsTouched();
     controls['cost'].markAsTouched();
+    controls['visibility'].markAsTouched();
     controls['freeForOrg'].markAsTouched();
     if (
       controls['title'].valid &&
       controls['difficulty'].valid &&
       controls['exerciseType'].valid &&
       controls['cost'].valid &&
+      controls['visibility'].valid &&
       controls['freeForOrg'].valid
     ) {
       this.step = 2;

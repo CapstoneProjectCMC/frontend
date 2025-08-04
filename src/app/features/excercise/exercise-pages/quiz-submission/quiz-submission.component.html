@@ -1,7 +1,15 @@
 <div class="quiz-submission-container">
-  <app-quiz [questions]="questions" [totalTime]="times * 60"></app-quiz>
+  <app-quiz
+    *ngIf="startDoing"
+    [questions]="questions"
+    [totalTime]="times * 60"
+    [quizId]="quizId"
+    [exerciseId]="exerciseId ?? ''"
+    (quizStateChanged)="onQuizStateChanged($event)"
+  ></app-quiz>
 
   <app-box-chat-ai
+    *ngIf="allowChatbot"
     [chatContexts]="chatContexts"
     [currentContextId]="currentContextId"
     [isLoading]="isLoading"

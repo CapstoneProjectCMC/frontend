@@ -4,31 +4,46 @@ import {
   ElementRef,
   Renderer2,
   AfterViewInit,
+  OnDestroy,
+  HostListener,
 } from '@angular/core';
 import { QuizComponent } from '../../../../shared/components/fxdonad-shared/quiz/quiz.component';
-import { QuizQuestion } from '../../../../core/models/exercise.model';
+import {
+  QuestionPreview,
+  QuizQuestion,
+} from '../../../../core/models/exercise.model';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import {
   BoxChatAiComponent,
   ChatContext,
   ChatMessage,
 } from '../../../../shared/components/fxdonad-shared/box-chat-ai/box-chat-ai.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-quiz-submission',
   standalone: true,
-  imports: [QuizComponent, BoxChatAiComponent],
+  imports: [CommonModule, QuizComponent, BoxChatAiComponent],
   templateUrl: './quiz-submission.component.html',
   styleUrl: './quiz-submission.component.scss',
 })
-export class QuizSubmissionComponent implements OnInit, AfterViewInit {
+export class QuizSubmissionComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   exerciseId: string | null = '';
-  questions: Array<QuizQuestion> = [];
+  quizId: string = '';
   times = 0;
   quizStarted = true;
+  allowChatbot = false;
+  questions: Array<QuestionPreview> = [];
+  startDoing = false;
+
+  // Trạng thái quiz từ child component
+  isQuizSubmitted = false;
+  hasQuizDataChanges = false;
 
   // Chat data
   chatContexts: ChatContext[] = [];
@@ -44,6 +59,7 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private exerciseService: ExerciseService,
     private renderer: Renderer2,
     private el: ElementRef
@@ -54,22 +70,47 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
 
   canDeactivate(): Observable<boolean> {
     if (!this.quizStarted) return of(true);
+    if (this.hasQuizDataChanges) {
+      const confirmResult = window.confirm(
+        'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.'
+      );
+      return of(confirmResult);
+    } else {
+      return of(true);
+    }
+  }
 
-    const confirmResult = window.confirm(
-      'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.'
-    );
-    return of(confirmResult);
+  @HostListener('window:beforeunload', ['$event'])
+  onBeforeUnload(event: BeforeUnloadEvent): void {
+    // Chỉ hiện cảnh báo khi: có dữ liệu thay đổi VÀ chưa nộp bài
+    if (this.quizStarted && this.hasQuizDataChanges && !this.isQuizSubmitted) {
+      event.preventDefault();
+      event.returnValue = 'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.';
+    }
   }
 
   ngOnInit() {
     this.exerciseId = this.route.snapshot.paramMap.get('id');
+
+    // Kiểm tra xem có phải truy cập trực tiếp không
+    if (!this.exerciseId || !this.isValidAccess()) {
+      this.router.navigate(['/exercise/exercise-layout/list']);
+      return;
+    }
+
     if (this.exerciseId) {
       this.exerciseService
         .getExerciseDetails(1, 99999, 'CREATED_AT', false, this.exerciseId)
         .subscribe({
           next: (res) => {
-            this.questions = res.result.quizDetail?.questions ?? [];
+            this.quizId = res.result.quizDetail?.id || '';
             this.times = res.result.duration;
+            this.allowChatbot = res.result.allowAiQuestion;
+            this.fetchQuiz();
+          },
+          error: (err) => {
+            console.error('Error loading exercise:', err);
+            this.router.navigate(['/exercise/exercise-layout/list']);
           },
         });
 
@@ -84,6 +125,36 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
     window.addEventListener('resize', this.handleResize.bind(this));
   }
 
+  fetchQuiz() {
+    this.exerciseService.loadQuiz(this.quizId).subscribe({
+      next: (res) => {
+        this.questions = res.result.questions;
+        this.startDoing = true;
+      },
+      error: (err) => {
+        console.error('Error loading quiz:', err);
+      },
+    });
+  }
+
+  /**
+   * Kiểm tra xem có phải truy cập hợp lệ không
+   */
+  private isValidAccess(): boolean {
+    // Kiểm tra referrer hoặc session storage để đảm bảo user đến từ trang exercise details
+    const referrer = document.referrer;
+    const hasValidReferrer =
+      referrer.includes('/exercise-details') ||
+      referrer.includes('/exercise-layout');
+
+    // Hoặc kiểm tra session storage nếu có lưu thông tin truy cập
+    const hasValidSession = sessionStorage.getItem(
+      'quiz-access-' + this.exerciseId
+    );
+
+    return hasValidReferrer || !!hasValidSession;
+  }
+
   ngAfterViewInit() {
     // Initialize container dimensions
     setTimeout(() => {
@@ -95,7 +166,25 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
   ngOnDestroy() {
     // Remove resize event listener
     window.removeEventListener('resize', this.handleResize.bind(this));
+
+    // Xóa session storage khi rời khỏi quiz
+    if (this.exerciseId) {
+      sessionStorage.removeItem('quiz-access-' + this.exerciseId);
+    }
   }
+
+  /**
+   * Nhận trạng thái từ QuizComponent
+   */
+  onQuizStateChanged(state: {
+    isSubmitted: boolean;
+    hasDataChanges: boolean;
+  }): void {
+    this.isQuizSubmitted = state.isSubmitted;
+    this.hasQuizDataChanges = state.hasDataChanges;
+  }
+
+  /////////////////////////////////////////////Phần này code cho chatboxAi chỉ để test/////////////////////////////
 
   handleResize() {
     this.updateContainerDimensions();
@@ -163,9 +252,6 @@ export class QuizSubmissionComponent implements OnInit, AfterViewInit {
 
     // Adjust component sizes
     this.adjustComponentSizes();
-
-    // Log the width change for debugging
-    console.log(`Chat width changed to: ${newWidth}`);
   }
 
   private initializeFakeChatData(): void {

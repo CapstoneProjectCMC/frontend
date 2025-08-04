@@ -49,6 +49,7 @@ export class ExerciseDetailsComponent implements OnInit {
   isOpenAddNewOption: boolean = false;
   isOpenUpdateExercise: boolean = false;
   isUpdateQuestion: boolean = false;
+  resetLoadingFlag = false;
 
   initialSelectedQuestion: QuizQuestion = {
     id: '',
@@ -149,7 +150,7 @@ export class ExerciseDetailsComponent implements OnInit {
 
   fetchingData(id: string) {
     this.exerciseService
-      .getExerciseDetails(1, 10, 'CREATED_AT', false, id)
+      .getExerciseDetails(1, 99999, 'CREATED_AT', false, id)
       .subscribe({
         next: (res) => {
           if (res && res.result) {
@@ -223,6 +224,11 @@ export class ExerciseDetailsComponent implements OnInit {
     this.selectedQuestion = this.initialSelectedQuestion;
   }
 
+  loadingHandler() {
+    this.resetLoadingFlag = true;
+    setTimeout(() => (this.resetLoadingFlag = false), 100);
+  }
+
   onSubmitQuestion(data: QuizQuestionCreate) {
     if (this.exercise.quizDetail === null) {
       this.exerciseService
@@ -235,9 +241,11 @@ export class ExerciseDetailsComponent implements OnInit {
               this.fetchingData(this.exerciseId);
             }
             this.isOpenAddNewQuestion = false;
+            this.loadingHandler();
           },
           error: (err) => {
             console.log(err);
+            this.loadingHandler();
           },
         });
     } else {
@@ -251,9 +259,11 @@ export class ExerciseDetailsComponent implements OnInit {
               this.fetchingData(this.exerciseId);
             }
             this.isOpenAddNewQuestion = false;
+            this.loadingHandler();
           },
           error: (err) => {
             console.log(err);
+            this.loadingHandler();
           },
         });
     }
@@ -308,10 +318,15 @@ export class ExerciseDetailsComponent implements OnInit {
   }
 
   doingQuiz() {
-    this.router.navigate([
-      '/exercise/exercise-layout/quiz-submission',
-      this.exerciseId,
-    ]);
+    // Lưu thông tin truy cập vào session storage
+    if (this.exerciseId) {
+      sessionStorage.setItem('quiz-access-' + this.exerciseId, 'true');
+    }
+
+    this.router.navigate(
+      ['/exercise/exercise-layout/quiz-submission', this.exerciseId],
+      { replaceUrl: true }
+    );
   }
 
   goBack() {

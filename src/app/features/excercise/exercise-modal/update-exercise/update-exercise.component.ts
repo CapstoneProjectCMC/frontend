@@ -66,6 +66,7 @@ export class UpdateExerciseComponent implements OnInit {
       resourceIds: [''],
       tags: [''],
       allowAiQuestion: [false],
+      visibility: [false, Validators.required],
     });
 
     if (this.exercise) {
@@ -111,11 +112,13 @@ export class UpdateExerciseComponent implements OnInit {
     controls['difficulty'].markAsTouched();
     controls['cost'].markAsTouched();
     controls['freeForOrg'].markAsTouched();
+    controls['visibility'].markAsTouched();
 
     if (
       controls['title'].valid &&
       controls['difficulty'].valid &&
       controls['cost'].valid &&
+      controls['visibility'].valid &&
       controls['freeForOrg'].valid
     ) {
       this.step = 2;
