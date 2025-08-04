@@ -1,20 +1,13 @@
 import { Component } from '@angular/core';
-import { BreadcrumbComponent } from '../../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 import { TableComponent } from '../../../../../shared/components/my-shared/table/table.component';
 import { userHeaders } from './user-table-headers';
-import {
-  formatDate,
-  formatDateToDDMMYYYY,
-} from '../../../../../shared/utils/stringProcess';
-import { NgFor, NgClass, NgIf } from '@angular/common';
-import { TableFormatViewPipe } from '../../../../../shared/pipes/table-formatview';
-import { MainSidebarComponent } from '../../../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
+import { formatDate } from '../../../../../shared/utils/stringProcess';
+import { NgClass, NgIf } from '@angular/common';
 import { sidebarData } from '../../../menu-router.data';
 import { PaginationComponent } from '../../../../../shared/components/fxdonad-shared/pagination/pagination.component';
 import { ProfilePopupComponent } from '../../../../../shared/components/my-shared/profile-popup/profile-popup';
 import { UserInfor } from '../../../../../shared/components/my-shared/profile-popup/profile-popup';
 import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
-import { InteractiveButtonComponent } from '../../../../../shared/components/fxdonad-shared/button/button.component';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { User } from '../../../../../core/models/user.models';

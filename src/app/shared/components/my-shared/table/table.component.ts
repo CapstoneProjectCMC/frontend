@@ -8,13 +8,21 @@ import {
 } from '@angular/core';
 import { NgIf, NgFor, NgClass, CommonModule } from '@angular/common';
 import { InteractiveButtonComponent } from '../../fxdonad-shared/button/button.component';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, NgClass, CommonModule, InteractiveButtonComponent],
+  imports: [
+    NgIf,
+    NgFor,
+    NgClass,
+    CommonModule,
+    InteractiveButtonComponent,
+    ButtonComponent,
+  ],
 })
 export class TableComponent implements AfterContentInit {
   @Input() data: Array<{ [key: string]: any }> = [];
@@ -29,9 +37,14 @@ export class TableComponent implements AfterContentInit {
   @Input() needViewResult = false;
   @Input() needswitch = false;
   @Input() onSwitchClick: (row: any) => void = () => {};
+  @Input() onDeleteClick: (id: string | number) => void = () => {};
+  @Input() onEditClick: (id: string | number) => void = () => {};
+  @Input() onPendingClick: (id: string | number, status: number) => void =
+    () => {};
   @Input() switchField: string = '';
   @Input() lockValue: any = null;
   @Input() openValue: any = null;
+  @Input() pendingValue: any = null;
 
   @ContentChildren(TemplateRef) templates!: QueryList<TemplateRef<any>>;
   templateMap: { [key: string]: TemplateRef<any> } = {};

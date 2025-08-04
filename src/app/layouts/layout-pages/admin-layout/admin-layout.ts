@@ -8,7 +8,7 @@ import {
   menuItems,
   navStudentItems,
 } from '../../../core/constants/menu-router.data';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf } from '@angular/common';
 import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { sidebarData } from '../../../features/admin/menu-router.data';
 import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
@@ -23,6 +23,7 @@ import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadc
     MenuLayoutComponent,
     MainSidebarComponent,
     BreadcrumbComponent,
+    NgIf,
   ],
   templateUrl: './admin-layout.html',
   styleUrls: ['./admin-layout.scss'],
@@ -44,5 +45,8 @@ export class AdminLayoutComponent implements OnInit {
       .subscribe((event: NavigationEnd) => {
         this.visible = event.urlAfterRedirects !== '/';
       });
+  }
+  shouldHideBreadcrumb(): boolean {
+    return this.router.url.includes('/excercise-management/exercise/list');
   }
 }

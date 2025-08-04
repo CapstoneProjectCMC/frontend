@@ -9,7 +9,7 @@
     ></app-main-sidebar>
 
     <div class="main-container">
-      <app-breadcrumb></app-breadcrumb>
+      <app-breadcrumb *ngIf="!shouldHideBreadcrumb()"></app-breadcrumb>
       <div class="content-container">
         <router-outlet />
       </div>

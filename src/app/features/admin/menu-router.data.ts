@@ -2,72 +2,76 @@ import { SidebarItem } from '../../core/models/data-handle';
 
 const adminLayout = '';
 const usermanagement = '/user-management';
+const postmanagement = '/post-management';
+const excercisemanagement = '/excercise-management';
+const exammanagement = '/exam-management';
+const orgmanagement = '/org-management';
 export const sidebarData: SidebarItem[] = [
   {
     id: 'user-management',
-    path: adminLayout + '/user-management',
+    path: usermanagement,
     label: 'Quản lý người dùng',
     icon: 'fas fa-users', // 👥 nhóm người
     children: [
       {
         id: 'user-list',
-        path: adminLayout + usermanagement + '/user-list',
+        path: usermanagement + '/user-list',
         label: 'Danh sách người dùng',
       },
       {
         id: 'user-statistic',
-        path: adminLayout + usermanagement + '/user-statistic',
+        path: usermanagement + '/user-statistic',
         label: 'Thống kê người dùng',
       },
     ],
   },
   {
     id: 'post-management',
-    path: adminLayout + '/post-management',
+    path: postmanagement,
     label: 'Quản lý bài đăng',
     icon: 'fas fa-file-alt', // 📄 bài viết
     children: [
       {
         id: 'post-list',
-        path: adminLayout + '/post-list',
+        path: postmanagement + '/post-list',
         label: 'Tất cả bài đăng',
       },
       {
         id: 'my-post',
-        path: adminLayout + '/my-post',
+        path: postmanagement + '/my-post',
         label: 'Bài đăng của tôi',
       },
       {
         id: 'post-report-list',
-        path: adminLayout + '/post-report-list',
+        path: postmanagement + '/post-report-list',
         label: 'Danh sách báo cáo',
       },
       {
         id: 'post-statistic',
-        path: adminLayout + '/post-statistic',
+        path: postmanagement + '/post-statistic',
         label: 'Thống kê bài đăng',
       },
     ],
   },
   {
     id: 'excercise-management',
-    path: adminLayout + '/excercise-management',
+    path: excercisemanagement,
     label: 'Quản lý bài tập',
     icon: 'fas fa-tasks', // ✅ bài tập, checklist
     children: [
       {
         id: 'excercise-list',
-        path: adminLayout + '/excercise-list',
+        path: excercisemanagement + '/exercise/list',
         label: 'Tất cả bài tập',
       },
       {
         id: 'created-excercise',
-        path: adminLayout + '/created-excercise',
+        path: '/created-excercise',
         label: 'Bài tập của tôi',
       },
       {
         id: 'excercise-statistic',
-        path: adminLayout + '/excercise-statistic',
+        path: '/excercise-statistic',
         label: 'Thống kê bài tập',
       },
     ],

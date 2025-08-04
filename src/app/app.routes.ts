@@ -126,6 +126,22 @@ export const routes: Routes = [
         data: { breadcrumb: 'Quản lý bài đăng' },
       },
       {
+        path: 'excercise-management',
+        loadChildren: () =>
+          import(
+            './features/admin/exercise-management/exercise-management-routing.module'
+          ).then((m) => m.ExerciseAdminRoutingModule),
+        data: { breadcrumb: 'Quản lý bài tập' },
+      },
+      {
+        path: 'org-management',
+        loadChildren: () =>
+          import(
+            './features/admin/org-management/org-management-routing.module'
+          ).then((m) => m.OrgManagementRoutingModule),
+        data: { breadcrumb: 'Quản lý tổ chức' },
+      },
+      {
         path: '**',
         loadComponent: () =>
           import('./features/auth/pages/error-404/error-404.component').then(
