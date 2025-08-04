@@ -32,6 +32,23 @@ export const API_CONFIG = {
         asc: boolean
       ) => `/profile/users?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
       LOADQUIZ: (quizId: string) => `/quiz/${quizId}/load`,
+      SEARCHING_EXERCISE: (
+        tags: string,
+        difficulty: number,
+        createdBy: string,
+        exerciseType: string,
+        orgId: string,
+        freeForOrg: boolean,
+        minCost: number,
+        maxCost: number,
+        startAfter: string,
+        endBefore: string,
+        allowAiQuestion: boolean,
+        page: number,
+        size: number,
+        q: string
+      ) =>
+        `/search?tags=${tags}&difficulty=${difficulty}&createdBy=${createdBy}&exerciseType=${exerciseType}&orgId=${orgId}&freeForOrg=${freeForOrg}&minCost=${minCost}&maxCost=${maxCost}&startAfter=${startAfter}&endBefore=${endBefore}&allowAiQuestion=${allowAiQuestion}&page=${page}&size=${size}&q=${q}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',

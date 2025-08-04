@@ -54,6 +54,41 @@ export class ExerciseService {
     );
   }
 
+  searchExercise(
+    tags: string,
+    difficulty: number,
+    createdBy: string,
+    exerciseType: string,
+    orgId: string,
+    freeForOrg: boolean,
+    minCost: number,
+    maxCost: number,
+    startAfter: string,
+    endBefore: string,
+    allowAiQuestion: boolean,
+    page: number,
+    size: number,
+    q: string
+  ) {
+    return this.api.get<ApiResponse<IPaginationResponse<ExerciseItem[]>>>(
+      API_CONFIG.ENDPOINTS.GET.SEARCHING_EXERCISE(
+        tags,
+        difficulty,
+        createdBy,
+        exerciseType,
+        orgId,
+        freeForOrg,
+        minCost,
+        maxCost,
+        startAfter,
+        endBefore,
+        allowAiQuestion,
+        page,
+        size,
+        q
+      )
+    );
+  }
   createExercise(dataCreateExercise: CreateExerciseRequest) {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.CREATE_EXERCISE,
