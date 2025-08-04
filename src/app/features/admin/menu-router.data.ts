@@ -55,23 +55,23 @@ export const sidebarData: SidebarItem[] = [
   },
   {
     id: 'excercise-management',
-    path: adminLayout + '/excercise-management',
+    path: excercisemanagement,
     label: 'Quản lý bài tập',
     icon: 'fas fa-tasks', // ✅ bài tập, checklist
     children: [
       {
         id: 'excercise-list',
-        path: adminLayout + '/excercise-list',
+        path: excercisemanagement + '/exercise/list',
         label: 'Tất cả bài tập',
       },
       {
         id: 'created-excercise',
-        path: adminLayout + '/created-excercise',
+        path: '/created-excercise',
         label: 'Bài tập của tôi',
       },
       {
         id: 'excercise-statistic',
-        path: adminLayout + '/excercise-statistic',
+        path: '/excercise-statistic',
         label: 'Thống kê bài tập',
       },
     ],
