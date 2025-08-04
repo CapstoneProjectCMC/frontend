@@ -15,7 +15,7 @@ import {
   ChatContext,
   ChatMessage,
 } from '../../../../shared/components/fxdonad-shared/box-chat-ai/box-chat-ai.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { CommonModule } from '@angular/common';
@@ -37,6 +37,10 @@ export class QuizSubmissionComponent
   quizStarted = true;
   allowChatbot = false;
 
+  // Trạng thái quiz từ child component
+  isQuizSubmitted = false;
+  hasQuizDataChanges = false;
+
   // Chat data
   chatContexts: ChatContext[] = [];
   currentContextId: string = '';
@@ -51,6 +55,7 @@ export class QuizSubmissionComponent
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private exerciseService: ExerciseService,
     private renderer: Renderer2,
     private el: ElementRef
@@ -61,16 +66,20 @@ export class QuizSubmissionComponent
 
   canDeactivate(): Observable<boolean> {
     if (!this.quizStarted) return of(true);
-
-    const confirmResult = window.confirm(
-      'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.'
-    );
-    return of(confirmResult);
+    if (this.hasQuizDataChanges) {
+      const confirmResult = window.confirm(
+        'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.'
+      );
+      return of(confirmResult);
+    } else {
+      return of(true);
+    }
   }
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload(event: BeforeUnloadEvent): void {
-    if (this.quizStarted) {
+    // Chỉ hiện cảnh báo khi: có dữ liệu thay đổi VÀ chưa nộp bài
+    if (this.quizStarted && this.hasQuizDataChanges && !this.isQuizSubmitted) {
       event.preventDefault();
       event.returnValue = 'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.';
     }
@@ -78,6 +87,13 @@ export class QuizSubmissionComponent
 
   ngOnInit() {
     this.exerciseId = this.route.snapshot.paramMap.get('id');
+
+    // Kiểm tra xem có phải truy cập trực tiếp không
+    if (!this.exerciseId || !this.isValidAccess()) {
+      this.router.navigate(['/exercise/exercise-layout/list']);
+      return;
+    }
+
     if (this.exerciseId) {
       this.exerciseService
         .getExerciseDetails(1, 99999, 'CREATED_AT', false, this.exerciseId)
@@ -87,6 +103,10 @@ export class QuizSubmissionComponent
             this.quizId = res.result.quizDetail?.id || '';
             this.times = res.result.duration;
             this.allowChatbot = res.result.allowAiQuestion;
+          },
+          error: (err) => {
+            console.error('Error loading exercise:', err);
+            this.router.navigate(['/exercise/exercise-layout/list']);
           },
         });
 
@@ -101,6 +121,24 @@ export class QuizSubmissionComponent
     window.addEventListener('resize', this.handleResize.bind(this));
   }
 
+  /**
+   * Kiểm tra xem có phải truy cập hợp lệ không
+   */
+  private isValidAccess(): boolean {
+    // Kiểm tra referrer hoặc session storage để đảm bảo user đến từ trang exercise details
+    const referrer = document.referrer;
+    const hasValidReferrer =
+      referrer.includes('/exercise-details') ||
+      referrer.includes('/exercise-layout');
+
+    // Hoặc kiểm tra session storage nếu có lưu thông tin truy cập
+    const hasValidSession = sessionStorage.getItem(
+      'quiz-access-' + this.exerciseId
+    );
+
+    return hasValidReferrer || !!hasValidSession;
+  }
+
   ngAfterViewInit() {
     // Initialize container dimensions
     setTimeout(() => {
@@ -112,7 +150,30 @@ export class QuizSubmissionComponent
   ngOnDestroy() {
     // Remove resize event listener
     window.removeEventListener('resize', this.handleResize.bind(this));
+
+    // Xóa session storage khi rời khỏi quiz
+    if (this.exerciseId) {
+      sessionStorage.removeItem('quiz-access-' + this.exerciseId);
+    }
   }
+
+  /**
+   * Nhận trạng thái từ QuizComponent
+   */
+  onQuizStateChanged(state: {
+    isSubmitted: boolean;
+    hasDataChanges: boolean;
+  }): void {
+    this.isQuizSubmitted = state.isSubmitted;
+    this.hasQuizDataChanges = state.hasDataChanges;
+
+    console.log('Quiz state changed:', {
+      isSubmitted: this.isQuizSubmitted,
+      hasDataChanges: this.hasQuizDataChanges,
+    });
+  }
+
+  /////////////////////////////////////////////Phần này code cho chatboxAi chỉ để test/////////////////////////////
 
   handleResize() {
     this.updateContainerDimensions();

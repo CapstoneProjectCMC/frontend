@@ -204,7 +204,7 @@ export interface IAnswer {
 
 export interface IExerciseResultResponse {
   score: number;
-  totalPoints: number;
+  totalpoints: number;
   passed: boolean;
   timeTakenSeconds: number;
 }

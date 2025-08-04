@@ -4,6 +4,7 @@
     [totalTime]="times * 60"
     [quizId]="quizId"
     [exerciseId]="exerciseId ?? ''"
+    (quizStateChanged)="onQuizStateChanged($event)"
   ></app-quiz>
 
   <app-box-chat-ai
