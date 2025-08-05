@@ -47,6 +47,8 @@ export class UpdateQuestionOptionComponent implements OnInit, OnChanges {
   originalOptions: any[] = [];
   isSubmitting = false;
   errorMessage = '';
+  noCorrectOptionError: boolean = false;
+  emptyOptionError: boolean = false;
 
   questionTypes = [
     { value: 'SINGLE_CHOICE', label: 'Một đáp án' },
@@ -135,8 +137,42 @@ export class UpdateQuestionOptionComponent implements OnInit, OnChanges {
     this.step = 1;
   }
 
+  timeout() {
+    setTimeout(() => {
+      this.noCorrectOptionError = false;
+      this.emptyOptionError = false;
+    }, 3000);
+  }
+
   onSubmit(): void {
     if (this.questionForm.invalid) return;
+
+    // Kiểm tra có đáp án nào rỗng nội dung không (không tính đáp án bị xóa)
+    const hasEmptyOption = this.options.controls.some((ctrl) => {
+      if (ctrl.get('delete')?.value) return false;
+      const text = ctrl.get('optionText')?.value;
+      return !text || text.trim() === '';
+    });
+    if (hasEmptyOption) {
+      this.emptyOptionError = true;
+      this.timeout();
+      return;
+    } else {
+      this.emptyOptionError = false;
+    }
+
+    // Kiểm tra có ít nhất 1 đáp án đúng (không tính đáp án bị xóa)
+    const hasCorrect = this.options.controls.some((ctrl) => {
+      if (ctrl.get('delete')?.value) return false;
+      return ctrl.get('correct')?.value;
+    });
+    if (!hasCorrect) {
+      this.noCorrectOptionError = true;
+      this.timeout();
+      return;
+    } else {
+      this.noCorrectOptionError = false;
+    }
 
     this.isSubmitting = true;
     const formValue = this.questionForm.value;
@@ -184,6 +220,14 @@ export class UpdateQuestionOptionComponent implements OnInit, OnChanges {
       option.get('optionText')?.disable();
       option.get('correct')?.disable();
       option.get('order')?.disable();
+    }
+  }
+
+  onCorrectChange(index: number) {
+    if (this.questionForm.get('questionType')?.value === 'SINGLE_CHOICE') {
+      this.options.controls.forEach((ctrl, i) => {
+        ctrl.get('correct')?.setValue(i === index);
+      });
     }
   }
 

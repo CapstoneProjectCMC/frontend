@@ -27,6 +27,10 @@
           <span class="badge">{{ exercise.exerciseType }}</span>
           <span class="badge" *ngIf="!exercise.orgId">Công khai</span>
           <span class="badge" *ngIf="exercise.orgId">Nội bộ</span>
+          <span class="badge" *ngIf="exercise.visibility">Dành cho tất cả</span>
+          <span class="badge" *ngIf="!exercise.visibility"
+            >Bài tập chỉ định</span
+          >
         </div>
         <div
           class="difficulty"

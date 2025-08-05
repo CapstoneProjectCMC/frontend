@@ -63,5 +63,6 @@ export class ProfileMenuComponent {
       },
     });
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
   }
 }
