@@ -82,7 +82,13 @@
         <button class="btn other" *ngIf="true" (click)="openAddNewQuestion()">
           Thêm câu hỏi
         </button>
-        <button class="btn main" (click)="doingQuiz()">Bắt đầu</button>
+        <button
+          *ngIf="exercise.quizDetail !== null"
+          class="btn main"
+          (click)="doingQuiz()"
+        >
+          Bắt đầu
+        </button>
         <button class="btn other" (click)="goBack()">Quay lại</button>
       </div>
     </div>
