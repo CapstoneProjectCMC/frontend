@@ -84,6 +84,7 @@ export const routes: Routes = [
     ],
   },
 
+  //Layout cho các thức năng chính
   {
     path: '',
     component: AppLayoutComponent,
@@ -100,6 +101,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/excercise/exercise.module').then(
             (m) => m.ExerciseModule
+          ),
+      },
+      {
+        path: 'service-and-payment',
+        loadChildren: () =>
+          import('./features/service-payment/service-and-payment.module').then(
+            (m) => m.ServiceAndPaymentModule
           ),
       },
     ],

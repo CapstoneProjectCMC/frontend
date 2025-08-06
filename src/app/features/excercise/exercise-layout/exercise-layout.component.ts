@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './exercise-layout.component.scss',
 })
 export class ExerciseLayoutComponent implements OnInit, OnDestroy {
-  isSidebarCollapsed = false;
+  isSidebarCollapsed = true;
   sidebarData = sidebarExercises;
 
   showSidebar = true;

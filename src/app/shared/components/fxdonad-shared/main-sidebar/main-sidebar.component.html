@@ -5,11 +5,13 @@
         *ngFor="let item of sidebarItems"
         class="sidebar-item"
         [class.active]="item.isActive"
+        [title]="isCollapsed ? item.label : ''"
       >
         <div
           class="sidebar-link"
-          (click)="setActiveItem(item)"
-          [routerLink]="item.path"
+          (click)="item.children ? toggleItem(item) : setActiveItem(item)"
+          [class.has-children]="item.children"
+          [routerLink]="!item.children ? item.path : null"
           routerLinkActive="active"
         >
           <i *ngIf="item.icon" [class]="item.icon" class="sidebar-icon"></i>
@@ -25,7 +27,6 @@
           >
           </i>
         </div>
-
         <!-- Submenu -->
         <ul
           *ngIf="

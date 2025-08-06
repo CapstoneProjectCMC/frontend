@@ -250,6 +250,12 @@ export const navStudentItems: SidebarItem[] = [
     label: 'Admin quản lý',
     icon: 'fas fa-user-shield',
   },
+  {
+    id: 'payment',
+    path: '/service-and-payment/payment',
+    label: 'Nạp điểm',
+    icon: 'fas fa-credit-card',
+  },
 ];
 
 export const sidebarExercises: SidebarItem[] = [

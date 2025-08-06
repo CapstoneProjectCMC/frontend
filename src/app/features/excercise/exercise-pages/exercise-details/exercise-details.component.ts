@@ -98,6 +98,7 @@ export class ExerciseDetailsComponent implements OnInit {
     active: false,
     cost: 0,
     freeForOrg: false,
+    visibility: false,
     startTime: '',
     endTime: '',
     duration: 0,

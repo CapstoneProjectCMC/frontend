@@ -73,6 +73,7 @@ export interface ExerciseQuiz {
   active: boolean;
   cost: number;
   freeForOrg: boolean;
+  visibility: boolean;
   startTime: string;
   endTime: string;
   duration: number;

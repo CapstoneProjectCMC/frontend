@@ -95,6 +95,7 @@ export class UpdateExerciseComponent implements OnInit {
       difficulty: this.exercise.difficulty,
       cost: this.exercise.cost,
       freeForOrg: this.exercise.freeForOrg,
+      visibility: this.exercise.visibility,
       startTime: startTime,
       endTime: endTime,
       duration: this.exercise.duration,
