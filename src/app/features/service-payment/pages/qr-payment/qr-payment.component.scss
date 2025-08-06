@@ -1,0 +1,233 @@
+// Sử dụng biến theme và màu oklch hiện đại, cấu trúc lồng, responsive
+.payment-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  background: var(--background-color, oklch(98% 0 0));
+  color: var(--text-color, oklch(20% 0 0));
+  margin: 16px auto;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px oklch(90% 0.02 240 / 0.08);
+  max-width: 1100px;
+  height: calc(100vh - 160px);
+  overflow: auto;
+
+  .payment-left {
+    flex: 1 1 320px;
+    background: var(--surface-color, oklch(95% 0.01 240));
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 1px 8px oklch(90% 0.02 240 / 0.06);
+
+    h2 {
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color, oklch(60% 0.18 250));
+      letter-spacing: 0.01em;
+    }
+
+    .payment-amount {
+      margin-bottom: 1.5rem;
+      label {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 0.4rem;
+        color: var(--text-color, oklch(20% 0 0));
+        small {
+          color: var(--text-muted-color, oklch(60% 0 0));
+        }
+      }
+      .input-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        input {
+          width: 100%;
+          max-width: 180px;
+          padding: 0.5rem 0.8rem;
+          border: 1.5px solid var(--border-color, oklch(85% 0.01 240));
+          border-radius: 6px;
+          background: var(--input-primary-color, oklch(99% 0 0));
+          color: var(--text-color, oklch(20% 0 0));
+          font-size: 1.1rem;
+          outline: none;
+          transition: border 0.2s;
+          &:focus {
+            border-color: var(--primary-color, oklch(60% 0.18 250));
+            box-shadow: 0 0 0 2px oklch(80% 0.18 250 / 0.15);
+          }
+          &:disabled {
+            cursor: not-allowed;
+          }
+        }
+        div {
+          color: var(--text-muted-color, oklch(60% 0 0));
+          font-size: 1.1rem;
+        }
+        .convert-result {
+          color: var(--accent-color, oklch(70% 0.18 110));
+          font-weight: 600;
+          margin-left: 0.5rem;
+        }
+      }
+    }
+
+    .amount-in-words {
+      margin-top: 0.5rem;
+      color: var(--primary-color, oklch(60% 0.18 250));
+      font-size: 1.05rem;
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      min-height: 1.2em;
+      transition: color 0.2s;
+    }
+
+    .confirm-button {
+      background: var(--button-color, oklch(80% 0.18 250));
+      color: var(--reverse-color-text, oklch(20% 0 0));
+      border: none;
+      border-radius: 6px;
+      padding: 0.7rem 1.5rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      margin-bottom: 1rem;
+      position: relative;
+      &:hover:not(:disabled) {
+        background: var(--button-color-hover, oklch(60% 0.18 250));
+      }
+      &:disabled {
+        background: var(--disabled-color, oklch(80% 0 0));
+        color: oklch(60% 0 0);
+        cursor: not-allowed;
+      }
+      &.loading {
+        pointer-events: none;
+        &::after {
+          content: "";
+          position: absolute;
+          right: 18px;
+          transform: translateY(-50%);
+          width: 18px;
+          height: 18px;
+          border: 2px solid oklch(80% 0 0 / 0.2);
+          border-top-color: oklch(20% 0 0);
+          border-radius: 50%;
+          animation: spin 1s ease infinite;
+        }
+      }
+    }
+
+    .payment-instructions {
+      padding-top: 10px;
+      color: var(--text-muted-color, oklch(60% 0 0));
+      font-style: italic;
+      font-size: 0.98rem;
+    }
+  }
+
+  .payment-right {
+    flex: 2 1 480px;
+    background: var(--surface-color, oklch(97% 0.01 240));
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    gap: 1.5rem;
+    box-shadow: 0 1px 8px oklch(90% 0.02 240 / 0.06);
+    .qr-code-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+      img {
+        max-width: 220px;
+        border: 1.5px solid var(--border-color, oklch(85% 0.01 240));
+        border-radius: 8px;
+        margin-bottom: 0.7rem;
+        background: oklch(98% 0 0);
+      }
+      .expire-countdown {
+        color: var(--primary-color, oklch(60% 0.18 250));
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        min-width: 250px;
+        text-align: center;
+      }
+    }
+    .payment-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      h3 {
+        margin: 0 0 1.2rem 0;
+        font-weight: 700;
+        color: var(--primary-color, oklch(60% 0.18 250));
+      }
+
+      small {
+        padding-bottom: 0.5rem;
+      }
+      .payment-form-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        div {
+          display: flex;
+          gap: 0.7rem;
+          align-items: center;
+          label {
+            font-weight: 600;
+            min-width: 120px;
+            color: var(--text-muted-color, oklch(60% 0 0));
+          }
+          span {
+            font-weight: 500;
+            color: var(--text-color, oklch(20% 0 0));
+          }
+        }
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 900px) {
+    height: auto;
+    flex-direction: column;
+    padding: 1rem;
+    .payment-left,
+    .payment-right {
+      padding: 1.2rem 0.7rem;
+      border-radius: 10px;
+      margin-bottom: 1.2rem;
+      min-width: 0;
+    }
+  }
+  @media (max-width: 600px) {
+    padding: 0.5rem;
+    .payment-left,
+    .payment-right {
+      padding: 0.7rem 0.3rem;
+      border-radius: 8px;
+    }
+    .payment-right .qr-code-container img {
+      max-width: 140px;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

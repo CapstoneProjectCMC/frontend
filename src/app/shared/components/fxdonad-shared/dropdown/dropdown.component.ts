@@ -51,6 +51,7 @@ export class DropdownButtonComponent
   @Input() minHeight: boolean = false;
   @Input() disabled: boolean = false;
   @Input() multiSelect: boolean = false;
+  @Input() removeSingleSelected: boolean = false;
   @Input() isDisplayCheckbox: boolean = false;
   @Input() isDisplaySelectedOpptionLabels: boolean = false;
   @Input() isButtonControl: boolean = false;
@@ -179,18 +180,16 @@ export class DropdownButtonComponent
 
       this.onSelect.emit(this.selectedOptions);
       this.onChange(this.selectedOptions.map((opt) => opt.value));
+    } else if (
+      this.selectedOptions[0] === option &&
+      this.removeSingleSelected
+    ) {
+      this.selectedOptions = [];
+      this.selectedIndex = -1;
+      this.onSelect.emit([]);
+      this.onChange(null);
+      this.closeDropdown();
     } else {
-      // Nếu option hiện tại đã được chọn, thì bỏ chọn nó
-      // this.onToggle(); //tránh phải click 2 lần mới mở lại được
-      // if (
-      //   this.selectedOptions.length &&
-      //   this.selectedOptions[0].value === option.value
-      // ) {
-      //   this.selectedOptions = [];
-      //   this.selectedIndex = -1;
-      //   this.onSelect.emit([]);
-      //   this.onChange(null);
-      // } else {
       this.selectedOptions = [option];
       this.selectedIndex = index;
       this.onSelect.emit(option);
