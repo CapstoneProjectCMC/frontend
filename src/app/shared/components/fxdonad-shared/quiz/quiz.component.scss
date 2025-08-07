@@ -190,4 +190,15 @@
       }
     }
   }
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    width: 100%;
+    .quiz-sidebar {
+      width: 100%;
+    }
+    .quiz-main {
+      width: 100%;
+    }
+  }
 }

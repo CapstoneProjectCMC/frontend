@@ -478,7 +478,7 @@
 @media (max-width: 768px) {
   .chat-box {
     width: 100%;
-    max-width: 100%;
+    max-width: none;
     border-radius: 0;
 
     .resize-handle {

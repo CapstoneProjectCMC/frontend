@@ -6,13 +6,24 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.4);
   z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+.notice-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.notice-modal-backdrop.close {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .notice-modal {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -45%) scale(0.98);
   background: #fff;
   border-radius: 8px;
   min-width: 320px;
@@ -21,6 +32,19 @@
   z-index: 1001;
   padding: 0;
   overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+.notice-modal.open {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  pointer-events: auto;
+}
+.notice-modal.close {
+  opacity: 0;
+  transform: translate(-50%, -45%) scale(0.98);
+  pointer-events: none;
 }
 .notice-modal-header {
   display: flex;

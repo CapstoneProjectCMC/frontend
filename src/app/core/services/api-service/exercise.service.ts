@@ -54,6 +54,12 @@ export class ExerciseService {
     );
   }
 
+  softDeleteExercise(exerciseId: string) {
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.SOFT_DELETE_EXERCISE(exerciseId)
+    );
+  }
+
   searchExercise(
     tags: string,
     difficulty: number,

@@ -1,22 +1,29 @@
-<ng-container *ngIf="isOpen$ | async">
+<div
+  class="notice-modal-backdrop"
+  [class.open]="isOpen$ | async"
+  [class.close]="!(isOpen$ | async)"
+  (click)="onClose()"
+></div>
+<div
+  class="notice-modal"
+  [class.open]="isOpen$ | async"
+  [class.close]="!(isOpen$ | async)"
+>
   <ng-container *ngIf="payload$ | async as payload">
-    <div class="notice-modal-backdrop" (click)="onClose()"></div>
-    <div class="notice-modal">
-      <div class="notice-modal-header">
-        <h2>{{ payload.title }}</h2>
-        <button class="close-btn" (click)="onClose()">&times;</button>
-      </div>
-      <div class="notice-modal-body">
-        <p>{{ payload.message }}</p>
-      </div>
-      <div class="notice-modal-footer">
-        <button *ngIf="payload.cancelText" (click)="onCancel(payload)">
-          {{ payload.cancelText }}
-        </button>
-        <button *ngIf="payload.confirmText" (click)="onConfirm(payload)">
-          {{ payload.confirmText }}
-        </button>
-      </div>
+    <div class="notice-modal-header">
+      <h2>{{ payload.title }}</h2>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+    <div class="notice-modal-body">
+      <p>{{ payload.message }}</p>
+    </div>
+    <div class="notice-modal-footer">
+      <button *ngIf="payload.cancelText" (click)="onCancel(payload)">
+        {{ payload.cancelText }}
+      </button>
+      <button *ngIf="payload.confirmText" (click)="onConfirm(payload)">
+        {{ payload.confirmText }}
+      </button>
     </div>
   </ng-container>
-</ng-container>
+</div>
