@@ -87,6 +87,8 @@ export const API_CONFIG = {
     DELETE: {
       DELETE_QUESTION: (exerciseId: string, questionId: string) =>
         `/submission/quiz/${exerciseId}/question/${questionId}`,
+      SOFT_DELETE_EXERCISE: (exerciseId: string) =>
+        `/submission/exercise/${exerciseId}`,
     },
   },
   HEADERS: {

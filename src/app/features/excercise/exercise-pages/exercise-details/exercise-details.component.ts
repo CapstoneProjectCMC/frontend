@@ -10,7 +10,10 @@ import { BreadcrumbComponent } from '../../../../shared/components/my-shared/bre
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { AddNewQuestionComponent } from '../../exercise-modal/add-new-question/add-new-question.component';
-import { sendNotification } from '../../../../shared/utils/notification';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
 import {
   trigger,
@@ -23,6 +26,10 @@ import { HostListener } from '@angular/core';
 import { AddNewOptionComponent } from '../../exercise-modal/add-new-option/add-new-option.component';
 import { UpdateExerciseComponent } from '../../exercise-modal/update-exercise/update-exercise.component';
 import { UpdateQuestionOptionComponent } from '../../exercise-modal/update-question-option/update-question-option.component';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../shared/store/loading-state/loading.action';
 
 @Component({
   selector: 'app-exercise-details',
@@ -187,6 +194,48 @@ export class ExerciseDetailsComponent implements OnInit {
 
   openUpdateExercise() {
     this.isOpenUpdateExercise = true;
+  }
+
+  openConfirmDelete() {
+    openModalNotification(
+      this.store,
+      'Xóa bài tập',
+      `Bạn chắc chắn muốn xóa bài tập "${this.exercise.title}" này`,
+      'Xác nhận',
+      'Hủy',
+      () => this.confirmDeleteExercise()
+    );
+  }
+
+  confirmDeleteExercise() {
+    if (this.exerciseId) {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Xóa bài tập...' })
+      );
+      this.exerciseService.softDeleteExercise(this.exerciseId).subscribe({
+        next: () => {
+          this.router.navigate(['/exercise/exercise-layout/list']);
+          sendNotification(
+            this.store,
+            'Đã xóa',
+            'Đã xóa bài tập thành công',
+            'success'
+          );
+          this.store.dispatch(clearLoading());
+        },
+        error: () => {
+          console.log('Có lỗi khi xóa');
+          this.store.dispatch(clearLoading());
+        },
+      });
+    } else {
+      sendNotification(
+        this.store,
+        'Lỗi xóa!',
+        'Không tìm thấy dữ liệu bài tập cần xóa.',
+        'error'
+      );
+    }
   }
 
   onEditQuestion(index: number, QuizQuestion: QuizQuestion | undefined) {
