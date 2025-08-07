@@ -109,6 +109,7 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./features/profile/profile.module').then(
             (m) => m.ProfileModule
+          ),
       },
       {
         path: 'service-and-payment',

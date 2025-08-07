@@ -17,7 +17,7 @@ export const API_CONFIG = {
         asc: boolean,
         exerciseId: string
       ) =>
-        `/submission/exercise/${exerciseId}?qPage=${page}&qSize=${size}&qSortBy=${sort}&qAsc=${asc}`,
+        `/submission/exercise/quiz/${exerciseId}?qPage=${page}&qSize=${size}&qSortBy=${sort}&qAsc=${asc}`,
       GET_ALL_EXERCISE: (
         page: number,
         size: number,
