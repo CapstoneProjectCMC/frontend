@@ -2,7 +2,6 @@
   width: auto;
   height: auto;
   max-height: 90vh;
-
   display: flex;
   flex-direction: column;
   background: var(--background-color);
@@ -11,6 +10,13 @@
   overflow: auto;
   padding: 20px;
   font-size: 20px;
+  &.personal {
+    max-height: none;
+  }
+
+  &.other {
+    max-height: 60vh;
+  }
   .avt-bg {
     display: flex;
     flex-direction: column;
@@ -138,6 +144,11 @@
         margin-right: 4px;
       }
     }
+  }
+  .edit-profile-btn {
+    width: 40%;
+    align-self: center;
+    margin-top: 10px;
   }
 }
 

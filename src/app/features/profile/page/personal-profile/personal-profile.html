@@ -1,0 +1,77 @@
+<div class="personal-profile">
+  <div class="profile-info">
+    <app-profile-popup
+      [user]="user"
+      [variant]="'personal'"
+      [onClickEdit]="onDisplayNameClick.bind(this, user)"
+    ></app-profile-popup>
+  </div>
+  <div class="learning-process">
+    <div class="academic-results">
+      <div class="title-nav">
+        <span class="title"> Thống kê kết quả học tập </span>
+        <span class="nav">
+          <a href="/profile/academic-results">Chi tiết</a>
+        </span>
+      </div>
+      <div class="academic-results">
+        <div class="academic-results-item">
+          <div class="academic-results-value">{{fakenumber}}</div>
+          <span class="academic-results-label">Bài giảng đã học</span>
+        </div>
+        <div class="academic-results-item">
+          <div class="academic-results-value">{{fakenumber}}</div>
+          <span class="academic-results-label">Bài tập đã làm</span>
+        </div>
+        <div class="academic-results-item">
+          <div class="academic-results-value">{{fakenumber}}</div>
+          <span class="academic-results-label">Bài viết đã đăng</span>
+        </div>
+      </div>
+    </div>
+    <div class="competition">
+      <div class="title-nav">
+        <span class="title"> Thống kê kết quả học tập </span>
+        <span class="nav">
+          <a href="/profile/academic-results">Chi tiết</a>
+        </span>
+      </div>
+      <div
+        class="competition-item"
+        *ngFor="let competition of fakeCompetition.slice(0, 2)"
+      >
+        <div class="competition-name">{{competition.name}}</div>
+        <div
+          class="competition-status"
+          [ngClass]="{'ongoing': competition.status === 'ongoing', 'upcoming': competition.status === 'upcoming', 'completed': competition.status === 'completed'}"
+        >
+          {{competition.status}}
+        </div>
+      </div>
+    </div>
+    <div class="experience"></div>
+    <div class="post"></div>
+  </div>
+  <div class="short-cut">
+    <div class="recent-notice">Thông báo gần đây</div>
+    <div class="recent-post">Bài viết gần đây</div>
+  </div>
+
+  <div
+    *ngIf="openedUser"
+    [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}"
+  >
+    <div
+      class="profile-popup-backdrop"
+      [ngClass]="{'hide': isClosing}"
+      (click)="closeProfilePopup()"
+    ></div>
+    <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
+      <button class="close-btn" (click)="closeProfilePopup()">×</button>
+      <app-profile-popup
+        [user]="openedUser"
+        [variant]="'popup'"
+      ></app-profile-popup>
+    </div>
+  </div>
+</div>
