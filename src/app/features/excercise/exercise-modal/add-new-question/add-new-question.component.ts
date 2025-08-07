@@ -39,6 +39,8 @@ export class AddNewQuestionComponent {
     { value: 'MULTI_CHOICE', label: 'Nhiều đáp án' },
     { value: 'FILL_BLANK', label: 'Điền chỗ trống' },
   ];
+  noCorrectOptionError: boolean = false;
+  emptyOptionError: boolean = false;
 
   constructor(private fb: FormBuilder) {
     this.questionForm = this.fb.group({
@@ -51,6 +53,13 @@ export class AddNewQuestionComponent {
     // Khởi tạo 2 option mặc định
     this.addOption();
     this.addOption();
+
+    // Lắng nghe thay đổi của questionType để reset đáp án đúng
+    this.questionForm.get('questionType')?.valueChanges.subscribe(() => {
+      this.options.controls.forEach((ctrl) => {
+        ctrl.get('correct')?.setValue(false);
+      });
+    });
   }
 
   get options(): FormArray {
@@ -97,8 +106,39 @@ export class AddNewQuestionComponent {
     this.step = 1;
   }
 
+  timeout() {
+    setTimeout(() => {
+      this.noCorrectOptionError = false;
+      this.emptyOptionError = false;
+    }, 3000);
+  }
+
   onSubmit() {
     if (this.questionForm.valid && this.options.length >= 2) {
+      // Kiểm tra có đáp án nào rỗng nội dung không
+      const hasEmptyOption = this.options.controls.some((ctrl) => {
+        const text = ctrl.get('optionText')?.value;
+        return !text || text.trim() === '';
+      });
+      if (hasEmptyOption) {
+        this.emptyOptionError = true;
+        this.timeout();
+        return;
+      } else {
+        this.emptyOptionError = false;
+      }
+      // Kiểm tra có ít nhất 1 đáp án đúng
+      const hasCorrect = this.options.controls.some(
+        (ctrl) => ctrl.get('correct')?.value
+      );
+      if (!hasCorrect) {
+        this.noCorrectOptionError = true;
+
+        this.timeout();
+        return;
+      } else {
+        this.noCorrectOptionError = false;
+      }
       this.isLoading = true;
       const value = this.questionForm.value;
       // Lọc bỏ option không có nội dung
@@ -130,6 +170,14 @@ export class AddNewQuestionComponent {
   onOverlayClick(event: MouseEvent) {
     if (event.target === event.currentTarget) {
       this.onCancel();
+    }
+  }
+
+  onCorrectChange(index: number) {
+    if (this.questionForm.get('questionType')?.value === 'SINGLE_CHOICE') {
+      this.options.controls.forEach((ctrl, i) => {
+        ctrl.get('correct')?.setValue(i === index);
+      });
     }
   }
 }

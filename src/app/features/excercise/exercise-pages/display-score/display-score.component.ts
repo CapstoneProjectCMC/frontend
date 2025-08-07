@@ -40,16 +40,6 @@ export class DisplayScoreComponent implements OnInit {
   }
 
   /**
-   * Tính điểm phần trăm
-   */
-  get scorePercentage(): number {
-    if (!this.quizData) return 0;
-    return Math.round(
-      (this.quizData.correctAnswers / this.quizData.totalQuestions) * 100
-    );
-  }
-
-  /**
    * Tính thời gian làm bài dạng phút:giây
    */
   get timeFormatted(): string {
@@ -65,13 +55,5 @@ export class DisplayScoreComponent implements OnInit {
    */
   goBackToList() {
     this.router.navigate(['/exercise/exercise-layout/list']);
-  }
-
-  /**
-   * Xem lại bài làm
-   */
-  reviewQuiz() {
-    // Có thể implement để xem lại từng câu hỏi và đáp án
-    console.log('Review quiz functionality');
   }
 }

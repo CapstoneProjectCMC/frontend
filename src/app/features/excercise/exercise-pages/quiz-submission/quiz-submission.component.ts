@@ -30,9 +30,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './quiz-submission.component.html',
   styleUrl: './quiz-submission.component.scss',
 })
-export class QuizSubmissionComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class QuizSubmissionComponent implements OnInit, OnDestroy {
   exerciseId: string | null = '';
   quizId: string = '';
   times = 0;
@@ -120,9 +118,6 @@ export class QuizSubmissionComponent
         this.currentChatWidth = savedWidth;
       }
     }
-
-    // Add resize event listener
-    window.addEventListener('resize', this.handleResize.bind(this));
   }
 
   fetchQuiz() {
@@ -155,18 +150,7 @@ export class QuizSubmissionComponent
     return hasValidReferrer || !!hasValidSession;
   }
 
-  ngAfterViewInit() {
-    // Initialize container dimensions
-    setTimeout(() => {
-      this.updateContainerDimensions();
-      this.adjustComponentSizes();
-    }, 0);
-  }
-
   ngOnDestroy() {
-    // Remove resize event listener
-    window.removeEventListener('resize', this.handleResize.bind(this));
-
     // Xóa session storage khi rời khỏi quiz
     if (this.exerciseId) {
       sessionStorage.removeItem('quiz-access-' + this.exerciseId);
@@ -185,74 +169,6 @@ export class QuizSubmissionComponent
   }
 
   /////////////////////////////////////////////Phần này code cho chatboxAi chỉ để test/////////////////////////////
-
-  handleResize() {
-    this.updateContainerDimensions();
-    this.adjustComponentSizes();
-  }
-
-  updateContainerDimensions() {
-    const container = this.el.nativeElement.querySelector(
-      '.quiz-submission-container'
-    );
-    if (container) {
-      this.containerWidth = container.offsetWidth;
-      this.containerHeight = container.offsetHeight;
-    }
-  }
-
-  adjustComponentSizes() {
-    // Get the quiz and chat elements
-    const quizElement = this.el.nativeElement.querySelector('app-quiz');
-    const chatElement = this.el.nativeElement.querySelector('app-box-chat-ai');
-
-    if (!quizElement || !chatElement) return;
-
-    // Calculate chat width in pixels
-    let chatWidthPx: number;
-    if (this.currentChatWidth.includes('%')) {
-      const percentage = parseFloat(this.currentChatWidth) / 100;
-      chatWidthPx = Math.round(this.containerWidth * percentage);
-    } else {
-      chatWidthPx = parseInt(this.currentChatWidth.replace('px', ''), 10);
-    }
-
-    // Apply constraints to chat width
-    const minWidth = 300;
-    const maxWidth = Math.min(500, this.containerWidth * 0.6); // Max 60% of container or 500px
-
-    if (chatWidthPx < minWidth) chatWidthPx = minWidth;
-    if (chatWidthPx > maxWidth) chatWidthPx = maxWidth;
-
-    // Update current chat width
-    this.currentChatWidth = `${chatWidthPx}px`;
-
-    // Calculate quiz width (container width - chat width - gap)
-    const gap = 20;
-    const quizWidth = this.containerWidth - chatWidthPx - gap;
-
-    // Apply widths to components
-    this.renderer.setStyle(chatElement, 'width', `${chatWidthPx}px`);
-    this.renderer.setStyle(quizElement, 'width', `${quizWidth}px`);
-
-    // Apply compact view if needed
-    if (chatWidthPx > this.containerWidth / 2) {
-      this.renderer.addClass(quizElement, 'compact-view');
-    } else {
-      this.renderer.removeClass(quizElement, 'compact-view');
-    }
-  }
-
-  onWidthChanged(newWidth: string) {
-    // Store the new width
-    this.currentChatWidth = newWidth;
-
-    // Save to localStorage for persistence across page refreshes
-    localStorage.setItem('chatBoxWidth', newWidth);
-
-    // Adjust component sizes
-    this.adjustComponentSizes();
-  }
 
   private initializeFakeChatData(): void {
     // Create a few sample chat contexts with messages

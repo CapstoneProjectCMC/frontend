@@ -11,11 +11,19 @@ import { SidebarItem } from '../../../../core/models/data-handle';
 })
 export class MainSidebarComponent {
   @Input() sidebarItems: SidebarItem[] = [];
-  @Input() isCollapsed: boolean = false;
+  @Input() isCollapsed: boolean = true;
 
   toggleItem(item: SidebarItem): void {
+    if (this.isCollapsed && !item.isExpanded) {
+      this.isCollapsed = !this.isCollapsed;
+    }
+
     if (item.children && item.children.length > 0) {
-      item.isExpanded = !item.isExpanded;
+      if (this.isCollapsed && item.isExpanded) {
+        this.isCollapsed = !this.isCollapsed;
+      } else {
+        item.isExpanded = !item.isExpanded;
+      }
 
       if (item.isExpanded && item.children) {
         // Add animation for submenu items when opening

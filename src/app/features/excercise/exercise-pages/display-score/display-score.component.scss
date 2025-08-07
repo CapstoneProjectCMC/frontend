@@ -1,89 +1,132 @@
-.score-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: "Poppins", sans-serif;
-}
-
-.score-header {
-  text-align: center;
-  margin-bottom: 3rem;
-
-  h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-  }
-
-  .subtitle {
-    font-size: 1.1rem;
-    color: #7f8c8d;
-  }
-}
-
-.score-summary {
+.display-score-container {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  margin-bottom: 3rem;
-}
+  justify-content: center;
+  gap: 24px;
+  min-height: 60vh;
 
-.score-card {
-  .score-circle {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    display: flex;
+  .score-container {
+    font-family: "Poppins", sans-serif;
+
+    .score-header {
+      text-align: center;
+      margin-bottom: 3rem;
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+        color: #7f8c8d;
+      }
+    }
+
+    .score-summary {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 3rem;
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 500px;
+
+        .stat-item {
+          text-align: center;
+          padding: 1.5rem;
+          background: #f8f9fa;
+          border-radius: 12px;
+          border: 1px solid #e9ecef;
+
+          .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+          }
+
+          .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+        }
+      }
+    }
+  }
+
+  .score-card {
+    .score-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+      .score-number {
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1;
+      }
+
+      .score-label {
+        font-size: 1rem;
+        opacity: 0.9;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding-bottom: 24px;
 
-    .score-number {
-      font-size: 3rem;
-      font-weight: 700;
-      line-height: 1;
+    .score-container {
+      .score-header {
+        h1 {
+          font-size: 2rem;
+        }
+      }
     }
 
-    .score-label {
-      font-size: 1rem;
-      opacity: 0.9;
-      margin-top: 0.5rem;
+    .score-card {
+      .score-circle {
+        width: 150px;
+        height: 150px;
+
+        .score-number {
+          font-size: 2.5rem;
+        }
+      }
     }
-  }
-}
 
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 500px;
-}
+    .score-container {
+      .score-summary {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    }
 
-.stat-item {
-  text-align: center;
-  padding: 1.5rem;
-  background: #f8f9fa;
-  border-radius: 12px;
-  border: 1px solid #e9ecef;
-
-  .stat-number {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 0.5rem;
-  }
-
-  .stat-label {
-    font-size: 0.9rem;
-    color: #6c757d;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    .action-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
   }
 }
 
@@ -121,34 +164,5 @@
         transform: translateY(-2px);
       }
     }
-  }
-}
-
-// Responsive
-@media (max-width: 768px) {
-  .score-container {
-    padding: 1rem;
-  }
-
-  .score-header h1 {
-    font-size: 2rem;
-  }
-
-  .score-card .score-circle {
-    width: 150px;
-    height: 150px;
-
-    .score-number {
-      font-size: 2.5rem;
-    }
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .action-buttons {
-    flex-direction: column;
-    align-items: center;
   }
 }

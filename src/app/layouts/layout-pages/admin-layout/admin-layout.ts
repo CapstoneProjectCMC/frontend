@@ -32,7 +32,7 @@ export class AdminLayoutComponent implements OnInit {
   visible = true;
   menuItems = navStudentItems;
   sidebarData = sidebarData;
-  isCollapsed = false;
+  isCollapsed = true;
   constructor(private router: Router) {}
 
   ngOnInit() {

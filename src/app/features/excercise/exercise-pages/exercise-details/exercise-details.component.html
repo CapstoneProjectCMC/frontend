@@ -6,80 +6,142 @@
 
     <div class="exercise-info">
       <div class="header">
+        <img
+          class="avatar"
+          [src]="
+            'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50'
+          "
+          alt="Avatar"
+        />
         <div class="info-main">
           <h2>{{ exercise.title }}</h2>
-          <div class="author-time">
-            <div class="avatar">
-              <img
-                [src]="
-                  'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50'
-                "
-                alt="Avatar"
-                class="avatar"
-              />
-            </div>
-            <span>ID tác giả: {{ exercise.userId }}</span>
+          <div class="author">
+            <i class="fa fa-user"></i>
+            <span>{{ exercise.userId }}</span>
           </div>
         </div>
+        <div class="actions">
+          <button class="icon-btn" title="Sửa" (click)="openUpdateExercise()">
+            <i class="fa fa-edit"></i>
+          </button>
+          <button class="icon-btn" title="Xóa" (click)="openConfirmDelete()">
+            <i class="fa fa-trash"></i>
+          </button>
+          <button
+            class="icon-btn"
+            title="Thêm câu hỏi"
+            (click)="openAddNewQuestion()"
+          >
+            <i class="fa fa-plus"></i>
+          </button>
+        </div>
       </div>
+
       <div class="meta">
-        <div class="badge-container">
-          <span class="badge">{{ exercise.exerciseType }}</span>
-          <span class="badge" *ngIf="!exercise.orgId">Công khai</span>
-          <span class="badge" *ngIf="exercise.orgId">Nội bộ</span>
-        </div>
-        <div
-          class="difficulty"
-          [attr.aria-label]="'Difficulty: ' + exercise.difficulty"
+        <span class="badge" title="Loại bài tập">
+          <i
+            class="fa"
+            [ngClass]="
+              exercise.exerciseType === 'QUIZ'
+                ? 'fa-book'
+                : 'fa-solid fa-file-code'
+            "
+          ></i>
+          {{ exercise.exerciseType }}
+        </span>
+        <span
+          class="badge difficulty-badge"
+          [ngClass]="exercise.difficulty"
+          title="Độ khó"
         >
-          <div class="part-difficulty">
-            <div class="difficulty-badge" [ngClass]="exercise.difficulty">
-              {{ exercise.difficulty | titlecase }}
-            </div>
-            <div class="difficulty-stars">
-              <span
-                class="star"
-                *ngFor="let star of difficultyStars"
-                [class.filled]="star <= difficultyLevel"
-              >
-                ★
-              </span>
-            </div>
-          </div>
-        </div>
+          <span *ngFor="let star of difficultyStars">
+            <i
+              class="fa"
+              [ngClass]="
+                star <= difficultyLevel ? 'fa-star' : 'fa-regular fa-star'
+              "
+            ></i>
+          </span>
+          <span class="difficulty-label">
+            {{
+              exercise.difficulty === "EASY"
+                ? "Dễ"
+                : exercise.difficulty === "MEDIUM"
+                ? "Trung bình"
+                : exercise.difficulty === "HARD"
+                ? "Khó"
+                : exercise.difficulty
+            }}
+          </span>
+        </span>
+        <span
+          class="badge"
+          *ngIf="exercise.orgId; else publicBadge"
+          title="Nội bộ"
+        >
+          <i class="fa fa-building"></i> Nội bộ
+        </span>
+        <ng-template #publicBadge>
+          <span class="badge" title="Công khai">
+            <i class="fa fa-globe"></i> Công khai
+          </span>
+        </ng-template>
+        <span class="badge" title="Trạng thái">
+          <i
+            class="fa"
+            [ngClass]="exercise.visibility ? 'fa-users' : 'fa-user-lock'"
+          ></i>
+          {{ exercise.visibility ? "Tất cả" : "Chỉ định" }}
+        </span>
       </div>
+
       <div class="details">
         <p>{{ exercise.description }}</p>
       </div>
+
       <div class="tags">
-        <div class="tag-list">
-          <span *ngFor="let tag of exercise.tags" class="tag">#{{ tag }}</span>
-        </div>
-      </div>
-      <div class="time-info">
-        <span
-          >Thời gian khả dụng:
-          <p *ngIf="exercise.startTime">
-            - Từ {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} đến ngày
-            {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}
-          </p></span
+        <i class="fa fa-tags"></i>
+        <span *ngFor="let tag of exercise.tags.slice(0, 3)" class="tag"
+          >#{{ tag }}</span
+        >
+        <span *ngIf="exercise.tags.length > 3" class="tag"
+          >+{{ exercise.tags.length - 3 }}</span
         >
       </div>
+
+      <div class="time-info">
+        <i class="fa fa-clock-o"></i>
+        <span *ngIf="exercise.startTime">
+          {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} -
+          {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}
+        </span>
+      </div>
+
       <div class="stats">
-        <span>Số lượng câu hỏi: {{ exercise.quizDetail?.totalElements }}</span>
-        <span>Thời gian làm bài: {{ exercise.duration }} phút</span>
-        <span>Giá: ${{ exercise.cost }}</span>
+        <span title="Số câu hỏi"
+          ><i class="fa fa-question-circle"></i>
+          {{ exercise.quizDetail?.totalElements ?? 0 }}</span
+        >
+        <span title="Thời lượng"
+          ><i class="fa fa-hourglass-half"></i>
+          {{ exercise.duration }} phút</span
+        >
+        <span title="Giá"
+          ><i class="fa fa-money"></i> ${{ exercise.cost }}</span
+        >
       </div>
 
       <div class="btn-container">
-        <button class="btn other" *ngIf="true" (click)="openUpdateExercise()">
-          Sửa
+        <button
+          class="btn main"
+          *ngIf="exercise.quizDetail !== null"
+          (click)="doingQuiz()"
+        >
+          <i class="fa fa-play"></i> Bắt đầu
         </button>
-        <button class="btn other" *ngIf="true" (click)="openAddNewQuestion()">
-          Thêm câu hỏi
+        <button class="btn other" (click)="goBack()">
+          <i class="fa fa-arrow-left"></i> Quay lại
         </button>
-        <button class="btn main" (click)="doingQuiz()">Bắt đầu</button>
-        <button class="btn other" (click)="goBack()">Quay lại</button>
       </div>
     </div>
 

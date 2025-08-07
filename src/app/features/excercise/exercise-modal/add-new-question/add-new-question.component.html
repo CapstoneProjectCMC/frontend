@@ -109,7 +109,12 @@
                       class="option-text"
                     />
                     <label class="option-correct">
-                      <input type="checkbox" formControlName="correct" /> Đúng
+                      <input
+                        type="checkbox"
+                        formControlName="correct"
+                        (change)="onCorrectChange(i)"
+                      />
+                      Đúng
                     </label>
                     <button
                       type="button"
@@ -120,6 +125,20 @@
                       Xóa
                     </button>
                   </div>
+                </div>
+                <div
+                  *ngIf="noCorrectOptionError"
+                  class="error"
+                  style="margin-top: 8px"
+                >
+                  Vui lòng chọn ít nhất 1 đáp án đúng.
+                </div>
+                <div
+                  *ngIf="emptyOptionError"
+                  class="error"
+                  style="margin-top: 8px"
+                >
+                  Vui lòng nhập nội dung cho tất cả các đáp án.
                 </div>
                 <app-tooltip
                   [distance]="0"
