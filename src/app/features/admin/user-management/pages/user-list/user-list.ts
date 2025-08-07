@@ -6,7 +6,6 @@ import { NgClass, NgIf } from '@angular/common';
 import { sidebarData } from '../../../menu-router.data';
 import { PaginationComponent } from '../../../../../shared/components/fxdonad-shared/pagination/pagination.component';
 import { ProfilePopupComponent } from '../../../../../shared/components/my-shared/profile-popup/profile-popup';
-import { UserInfor } from '../../../../../shared/components/my-shared/profile-popup/profile-popup';
 import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
@@ -37,7 +36,7 @@ export class UserListComponent {
   headers = userHeaders;
   sidebarData = sidebarData;
   isCollapsed = false;
-  openedUser: UserInfor | null = null;
+  openedUser: User | null = null;
   isClosing = false;
   username = '';
   listId = 'user-list-2024-06-09'; // hoặc số, hoặc uuid, hoặc lấy từ backend
@@ -146,7 +145,7 @@ export class UserListComponent {
   formatDate(time: Date) {
     return formatDate(time);
   }
-  onDisplayNameClick(row: UserInfor) {
+  onDisplayNameClick(row: User) {
     this.openedUser = row;
     this.isClosing = false;
   }

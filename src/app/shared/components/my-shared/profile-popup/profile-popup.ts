@@ -3,34 +3,21 @@ import { NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { formatDate } from '../../../utils/stringProcess';
-
-export interface UserInfor {
-  avatarUrl: string;
-  backgroundUrl: string;
-  displayName: string;
-  dob: Date;
-  role: number;
-  status: number;
-  org: string;
-  links: string[];
-  followers: number;
-  following: number;
-  bio: string;
-  firstName: string;
-  lastName: string;
-  education: string;
-  gender: boolean;
-}
+import { ButtonComponent } from '../button/button.component';
+import { User } from '../../../../core/models/user.models';
 
 @Component({
   selector: 'app-profile-popup',
   templateUrl: './profile-popup.html',
   styleUrls: ['./profile-popup.scss'],
   standalone: true,
-  imports: [NgFor],
+  imports: [NgFor, ButtonComponent, NgClass, NgIf],
 })
 export class ProfilePopupComponent {
-  @Input() user!: UserInfor;
+  @Input() user!: User;
+  @Input() variant: 'personal' | 'other' | 'popup' = 'popup';
+  @Input() onClickEdit?: () => void;
+
   formatDate(time: Date) {
     return formatDate(time);
   }

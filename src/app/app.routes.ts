@@ -103,6 +103,13 @@ export const routes: Routes = [
             (m) => m.ExerciseModule
           ),
       },
+
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('./features/profile/profile.module').then(
+            (m) => m.ProfileModule
+      },
       {
         path: 'service-and-payment',
         loadChildren: () =>
