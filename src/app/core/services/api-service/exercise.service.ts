@@ -149,8 +149,8 @@ export class ExerciseService {
     questionId: string,
     dataRequest: QuizQuestionWithOptionRequest
   ) {
-    return this.api.put<ApiResponse<null>>(
-      API_CONFIG.ENDPOINTS.PUT.UPDATE_QUESTION_WITH_OPTION(
+    return this.api.patch<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PATCH.UPDATE_QUESTION_WITH_OPTION(
         exerciseId,
         questionId
       ),

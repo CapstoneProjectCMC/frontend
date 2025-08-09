@@ -73,10 +73,7 @@ export const API_CONFIG = {
         `/submission/quiz/question/${questionId}/option`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
     },
-    PUT: {
-      UPDATE_QUESTION_WITH_OPTION: (exerciseId: string, questionId: string) =>
-        `/submission/quiz/${exerciseId}/question/${questionId}`,
-    },
+    PUT: {},
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
         `/submission/exercise/${exerciseId}`,
@@ -84,6 +81,8 @@ export const API_CONFIG = {
         `/submission/quiz/${exerciseId}/question/${questionId}`,
       UPDATE_OPTION: (optionId: string) =>
         `/submission/quiz/question/option/${optionId}`,
+      UPDATE_QUESTION_WITH_OPTION: (exerciseId: string, questionId: string) =>
+        `/submission/quiz/${exerciseId}/question/${questionId}`,
     },
     DELETE: {
       DELETE_QUESTION: (exerciseId: string, questionId: string) =>
