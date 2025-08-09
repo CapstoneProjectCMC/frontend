@@ -1,24 +1,36 @@
 import { of, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { openNoticeModal } from '../../shared/store/modal-notice-state/modal-notice.actions';
-import { sendNotification } from '../../shared/utils/notification';
+import { openNoticeModal } from '../../../shared/store/modal-notice-state/modal-notice.actions';
+import { sendNotification } from '../../../shared/utils/notification';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/api-service/auth.service';
+import { AuthService } from '../../services/api-service/auth.service';
+import {
+  IGNORE_ERROR_NOTIFICATION_URLS,
+  IGNORE_ERROR_REGEX_PATTERNS,
+} from '../config/ignoreApiHandleError';
+import { ERROR_MESSAGES } from '../config/codeResponse';
 
-// Bản đồ lỗi từ mã lỗi API sang thông báo tiếng Việt
-const ERROR_MESSAGES: Record<number, string> = {
-  50006: 'Lỗi đánh dấu đã đọc!',
-  50007: 'Lỗi đếm thông báo đã đọc!',
+// Hàm kiểm tra URL có nằm trong danh sách bỏ qua không
+const shouldIgnoreErrorNotification = (url: string): boolean => {
+  // Kiểm tra string patterns
+  const stringMatch = IGNORE_ERROR_NOTIFICATION_URLS.some((pattern) => {
+    // Bỏ qua comment pattern
+    if (pattern.includes('dành cho endpoint')) return false;
+
+    // Kiểm tra URL có chứa pattern không
+    return url.includes(pattern);
+  });
+
+  // Kiểm tra regex patterns
+  const regexMatch = IGNORE_ERROR_REGEX_PATTERNS.some((pattern) => {
+    return pattern.test(url);
+  });
+
+  return stringMatch || regexMatch;
 };
-
-// Danh sách endpoint cần bỏ qua gửi thông báo lỗi
-const IGNORE_ERROR_NOTIFICATION_URLS = [
-  'dành cho endpoint API nào k cần gửi thông báo lỗi',
-  // Thêm các endpoint khác nếu cần
-];
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const store = inject(Store);
@@ -38,9 +50,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           ERROR_MESSAGES[errorCode] || error.error.message || errorMessage;
       }
 
-      const shouldSkip = IGNORE_ERROR_NOTIFICATION_URLS.some((url) =>
-        req.url.includes(url)
-      );
+      const shouldSkip = shouldIgnoreErrorNotification(req.url);
 
       // Trường hợp đặc biệt: Token hết hạn & có refreshToken
       if (errorCode === 4018801 && refreshToken) {

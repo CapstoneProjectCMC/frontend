@@ -30,6 +30,7 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
+import { ProfileService } from '../../../../core/services/api-service/profile.service';
 
 @Component({
   selector: 'app-exercise-details',
@@ -90,6 +91,8 @@ export class ExerciseDetailsComponent implements OnInit {
   quizDetailsId: string = '';
   selectedQuestion: QuizQuestion = this.initialSelectedQuestion;
 
+  authorName: string = '';
+
   // Dropdown state: index of question with open dropdown, or null
   openDropdownIndex: number | null = null;
   opentDeleteConfirm: number | null = null;
@@ -143,6 +146,7 @@ export class ExerciseDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private exerciseService: ExerciseService,
+    private profileService: ProfileService,
     private store: Store,
     private router: Router,
     private location: Location
@@ -163,15 +167,44 @@ export class ExerciseDetailsComponent implements OnInit {
         next: (res) => {
           if (res && res.result) {
             this.exercise = res.result;
+            this.getUserInfo(res.result.userId);
             this.setDifficultyLevel();
-            console.log(this.exercise.tags);
           }
         },
         error: (err) => {
           // Xử lý lỗi nếu cần
+          if (err.code === 4048312) {
+            this.initialQuizDetails();
+          }
           console.error('Lỗi lấy chi tiết bài tập:', err);
         },
       });
+  }
+
+  initialQuizDetails() {
+    this.exerciseService
+      .inititalAddQuestionStupid(this.exerciseId ?? '')
+      .subscribe({
+        next: () => {
+          if (this.exerciseId) {
+            this.fetchingData(this.exerciseId);
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
+
+  getUserInfo(userId: string) {
+    this.profileService.getProfilebyId(userId).subscribe({
+      next: (res) => {
+        this.authorName = res.result.displayName;
+      },
+      error: () => {
+        console.log('Lỗi lấy thông tin tác giả.');
+      },
+    });
   }
 
   setDifficultyLevel() {

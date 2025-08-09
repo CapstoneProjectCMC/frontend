@@ -166,13 +166,19 @@ export class ExerciseService {
 
   inititalAddQuestionStupid(
     exerciseId: string,
-    dataQuestion: QuizQuestionCreate
+    dataQuestion?: QuizQuestionCreate
   ) {
-    const quizDetailCreateStupid: QuizDetailCreateStupid = {
-      questions: [dataQuestion],
-    };
-    console.log(quizDetailCreateStupid);
+    let quizDetailCreateStupid: QuizDetailCreateStupid;
 
+    if (dataQuestion) {
+      quizDetailCreateStupid = {
+        questions: [dataQuestion],
+      };
+    } else {
+      quizDetailCreateStupid = {
+        questions: [],
+      };
+    }
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ADD_QUESTION_STUPID(exerciseId),
       quizDetailCreateStupid
