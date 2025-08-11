@@ -10,11 +10,12 @@
   height: 100vh;
 
   .profile-info {
-    width: 30vw;
+    flex: 1 1 30%; // co giãn và gợi ý 30%
   }
 
   .learning-process {
-    width: 50vw;
+    flex: 2 1 50%; // co giãn và gợi ý 50%
+    min-width: 0; // rất quan trọng để text-overflow hoạt động
     height: 100%;
     display: flex;
     justify-content: center;
@@ -27,9 +28,9 @@
     .academic-results {
       width: 100%;
       height: 20%;
-      background-color: oklch(
-        from var(--reverse-color-text) calc(l + 0.15) c h
-      );
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px; // tạo khoảng cách giữa nội dung và gạch
+      margin-bottom: 10px; // tạo khoảng cách với phần sau
       .title-nav {
         display: flex;
         padding: 10px;
@@ -46,7 +47,7 @@
           }
         }
       }
-      .academic-results {
+      .results {
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -73,9 +74,9 @@
     .competition {
       width: 100%;
       height: 20%;
-      background-color: oklch(
-        from var(--reverse-color-text) calc(l + 0.15) c h
-      );
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px; // tạo khoảng cách giữa nội dung và gạch
+      margin-bottom: 10px; // tạo khoảng cách với phần sau
       .title-nav {
         display: flex;
         padding: 10px;
@@ -136,10 +137,32 @@
     }
     .experience {
       width: 100%;
-      height: 25%;
-      background-color: oklch(
-        from var(--reverse-color-text) calc(l + 0.15) c h
-      );
+      height: auto;
+
+      .title-nav {
+        display: flex;
+        padding: 10px;
+        justify-content: space-between;
+
+        font-size: 20px;
+        color: var(--primary-color);
+        .title {
+          font-weight: bold;
+        }
+        .nav {
+          a {
+            color: var(--primary-color);
+          }
+        }
+      }
+      .list-exercise {
+        display: grid;
+        overflow: auto;
+
+        flex: 1;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 16px;
+      }
     }
     .post {
       width: 100%;
@@ -152,17 +175,40 @@
 
   .short-cut {
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 10vw;
     height: 100%;
-    background-color: bisque;
+    margin-left: 10px;
+    width: 15%;
+
     .recent-notice {
       width: 100%;
-    }
-    .recent-post {
-      width: 100%;
+      margin-top: 50px;
+      .title-nav {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 20px;
+        color: oklch(from var(--primary-color) calc(l) c h);
+        .title {
+          font-weight: bold;
+          margin-bottom: 20px;
+        }
+        .notice {
+          color: oklch(from var(--primary-color) calc(l) c h);
+          .notice-item {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-decoration: underline;
+            max-width: 200px;
+          }
+        }
+        .noti-button {
+          margin-left: 20px;
+        }
+      }
     }
   }
 }
@@ -229,4 +275,16 @@
 }
 .close-btn:hover {
   background: #eee;
+}
+@media (max-width: 900px) {
+  .personal-profile {
+    .learning-process,
+    .short-cut {
+      display: none;
+    }
+
+    .profile-info {
+      width: 100% !important; // cho chiếm hết chiều rộng
+    }
+  }
 }

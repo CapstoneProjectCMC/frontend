@@ -1,7 +1,10 @@
 import { NgIf, NgClass, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { ProfilePopupComponent } from '../../../../shared/components/my-shared/profile-popup/profile-popup';
-import { DecodedJwtPayload } from '../../../../core/models/data-handle';
+import {
+  DecodedJwtPayload,
+  EnumType,
+} from '../../../../core/models/data-handle';
 import { getUserInfoFromLocalStorage } from '../../../../shared/utils/userInfo';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
@@ -13,6 +16,17 @@ import {
 import { Store } from '@ngrx/store';
 import { clearLoading } from '../../../../shared/store/loading-state/loading.action';
 import { UpdateProfileComponent } from '../../component/updateform/profile-popup/update-profile';
+import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
+import {
+  CardExcercise,
+  CardExcerciseComponent,
+} from '../../../../shared/components/fxdonad-shared/card-excercise/card-excercise.component';
+import { ExerciseItem } from '../../../../core/models/exercise.model';
+import { mapExerciseResToCardUI } from '../../../../shared/utils/mapData';
+import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
+import { ExerciseModalComponent } from '../../../excercise/exercise-modal/create-new-exercise/exercise-modal.component';
+import { Title } from '@angular/platform-browser';
+import { ButtonComponent } from '../../../../shared/components/my-shared/button/button.component';
 
 @Component({
   selector: 'app-personal-profile',
@@ -24,6 +38,9 @@ import { UpdateProfileComponent } from '../../component/updateform/profile-popup
     NgClass,
     NgFor,
     UpdateProfileComponent,
+    SkeletonLoadingComponent,
+    CardExcerciseComponent,
+    ButtonComponent,
   ],
   standalone: true,
 })
@@ -52,6 +69,12 @@ export class PersonalProfileComponent {
   isClosing = false;
   fakenumber = 50;
   userId: string | undefined = undefined;
+  listExercise: CardExcercise[] = [];
+
+  pageIndex: number = 1;
+  itemsPerPage: number = 2;
+  sortBy: EnumType['sort'] = 'CREATED_AT';
+  asc: boolean = false;
   fakeCompetition = [
     {
       name: 'Competition 1',
@@ -66,27 +89,29 @@ export class PersonalProfileComponent {
       status: 'completed',
     },
   ];
+  fakeNotification = [
+    {
+      id: '001',
+      link: 'http://localhost:4200/',
+      title: 'Kết quả cuộc thi 01092',
+    },
+    {
+      id: '002',
+      link: 'http://localhost:4200/',
+      title: 'Bài tập được chấm điểm2',
+    },
+    {
+      id: '003',
+      link: 'http://localhost:4200/',
+      title: 'Bài tập sắp hết hạn',
+    },
+  ];
 
-  constructor(private profileService: ProfileService, private store: Store) {
-    // Mock user data for demonstration purposes
-    // this.user = {
-    //   id: '12345',
-    //   userId: 'user123',
-
-    //   avatarUrl:
-    //     'https://i.pinimg.com/736x/3e/a6/79/3ea679dfac387c922dcecdd4f212c79d.jpg',
-    //   backgroundUrl:
-    //     'https://i.pinimg.com/736x/98/88/fa/9888fa08e94d226a1f11cb1f174a6a98.jpg',
-    //   displayName: 'Oikawa Tooru',
-    //   dob: '1990-01-01',
-    //   gender: true,
-    //   links: ['https://example.com'],
-    //   bio: 'This is a sample bio.',
-    //   firstName: 'John',
-    //   lastName: 'Doe',
-    //   education: 9,
-    // };
-    // this.user = { ...this.user };
+  constructor(
+    private profileService: ProfileService,
+    private store: Store,
+    private exerciseService: ExerciseService
+  ) {
     const token = localStorage.getItem('token');
 
     if (token) {
@@ -94,6 +119,9 @@ export class PersonalProfileComponent {
     }
   }
 
+  private mapExerciseResToCardDataUI(data: ExerciseItem[]): CardExcercise[] {
+    return data.map((info) => mapExerciseResToCardUI(info));
+  }
   ngOnInit(): void {
     this.isLoading = true;
     this.profileService.getMyProfile().subscribe({
@@ -115,7 +143,26 @@ export class PersonalProfileComponent {
         this.store.dispatch(clearLoading());
       },
     });
+    this.fetchData();
   }
+
+  fetchData() {
+    this.isLoading = true;
+    this.exerciseService
+      .getAllExercise(this.pageIndex, this.itemsPerPage, this.sortBy, this.asc)
+      .subscribe({
+        next: (res) => {
+          const data = this.mapExerciseResToCardDataUI(res.result.data);
+          this.listExercise = data;
+        },
+        error: (err) => {
+          console.log(err);
+          this.isLoading = false;
+          // this.store.dispatch(clearLoading());
+        },
+      });
+  }
+
   // chửa dùng
   openModalConfirm() {
     openModalNotification(

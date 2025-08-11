@@ -14,7 +14,7 @@
           <a href="/profile/academic-results">Chi tiết</a>
         </span>
       </div>
-      <div class="academic-results">
+      <div class="results">
         <div class="academic-results-item">
           <div class="academic-results-value">{{fakenumber}}</div>
           <span class="academic-results-label">Bài giảng đã học</span>
@@ -49,12 +49,55 @@
         </div>
       </div>
     </div>
-    <div class="experience"></div>
-    <div class="post"></div>
+    <div class="experience">
+      <div class="title-nav">
+        <span class="title"> Thống kê kết quả học tập </span>
+        <span class="nav">
+          <a href="/profile/academic-results">Chi tiết</a>
+        </span>
+      </div>
+      <div class="list-exercise" *ngIf="listExercise && !isLoading">
+        <app-card-excercise
+          *ngFor="let item of listExercise"
+          [data]="item"
+          [exerciseId]="item.id"
+        >
+        </app-card-excercise>
+      </div>
+
+      <app-skeleton-loading
+        *ngIf="isLoading"
+        type="card"
+        [count]="8"
+      ></app-skeleton-loading>
+
+      <div class="no-content" *ngIf="listExercise.length === 0 && !isLoading">
+        Không có dữ liệu
+      </div>
+
+      <div *ngIf="isLoadingMore" class="loading-more">
+        Đang tải thêm, xin chờ...
+      </div>
+    </div>
+    <!-- <div class="post"></div> -->
   </div>
   <div class="short-cut">
-    <div class="recent-notice">Thông báo gần đây</div>
-    <div class="recent-post">Bài viết gần đây</div>
+    <div class="recent-notice">
+      <div class="title-nav">
+        <span class="title"> Thông báo gần đây </span>
+        <div class="notice" *ngFor="let noti of fakeNotification">
+          <a class="notice-item">{{noti.title}}</a>
+        </div>
+        <app-button
+          class="noti-button"
+          [width]="'140px'"
+          [height]="'40px'"
+          [variant]="'outline'"
+        >
+          Xem tất cả</app-button
+        >
+      </div>
+    </div>
   </div>
 
   <div
