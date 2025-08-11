@@ -6,19 +6,46 @@ import { getUserInfoFromLocalStorage } from '../../../../shared/utils/userInfo';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
 import { User } from '../../../../core/models/user.models';
-import { sendNotification } from '../../../../shared/utils/notification';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
 import { clearLoading } from '../../../../shared/store/loading-state/loading.action';
+import { UpdateProfileComponent } from '../../component/updateform/profile-popup/update-profile';
 
 @Component({
   selector: 'app-personal-profile',
   templateUrl: './personal-profile.html',
   styleUrls: ['./personal-profile.scss'],
-  imports: [ProfilePopupComponent, NgIf, NgClass, NgFor],
+  imports: [
+    ProfilePopupComponent,
+    NgIf,
+    NgClass,
+    NgFor,
+    UpdateProfileComponent,
+  ],
   standalone: true,
 })
 export class PersonalProfileComponent {
-  user!: User;
+  user: User = {
+    id: '',
+    userId: '',
+    firstName: 'Không',
+    lastName: 'rõ',
+    dob: '00-00-0000',
+    bio: 'Chưa có tiểu sử',
+    gender: true,
+    displayName: 'Chưa có tên',
+    education: 0,
+    links: [],
+    city: '',
+    avatarUrl:
+      'https://i.pinimg.com/736x/29/d1/21/29d12118407b97927c8d3b07400c365a.jpg',
+    backgroundUrl:
+      'https://i.pinimg.com/736x/98/88/fa/9888fa08e94d226a1f11cb1f174a6a98.jpg',
+    createdAt: '',
+  };
   isLoading = false;
   isLoadingMore = false;
   openedUser: User | null = null;
@@ -69,7 +96,7 @@ export class PersonalProfileComponent {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.profileService.getProfilebyId(this.userId || '').subscribe({
+    this.profileService.getMyProfile().subscribe({
       next: (res) => {
         this.user = res.result;
 
@@ -88,6 +115,16 @@ export class PersonalProfileComponent {
         this.store.dispatch(clearLoading());
       },
     });
+  }
+  // chửa dùng
+  openModalConfirm() {
+    openModalNotification(
+      this.store,
+      'Xác nhận nộp bài',
+      'Bạn có chắc chắn hoàn thành bài thi?',
+      'Đồng ý',
+      'Soát lại'
+    );
   }
   onDisplayNameClick(row: User) {
     this.openedUser = row;
