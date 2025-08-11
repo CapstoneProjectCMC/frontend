@@ -68,10 +68,10 @@
     ></div>
     <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
       <button class="close-btn" (click)="closeProfilePopup()">×</button>
-      <app-profile-popup
+      <app-update-profile
         [user]="openedUser"
         [variant]="'popup'"
-      ></app-profile-popup>
+      ></app-update-profile>
     </div>
   </div>
 </div>

@@ -31,7 +31,7 @@ export const API_CONFIG = {
         sort: EnumType['sort'],
         asc: boolean
       ) => `/profile/users?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
-      GET_PROFILE_USER_BY_ID: (userId: string) => `/profile/user/${userId}`,
+      GET_MY_PROFILE: `/profile/user/my-profile`,
       LOADQUIZ: (quizId: string) => `/quiz/${quizId}/load`,
       SEARCHING_EXERCISE: (
         tags: string,
@@ -72,11 +72,16 @@ export const API_CONFIG = {
       ADD_OPTION_INTO_QUESTION: (questionId: string) =>
         `/submission/quiz/question/${questionId}/option`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
+      UPLOAD_AVATAR: `/profile/user/my-profile/avatar`,
+      UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
     },
     PUT: {},
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
         `/submission/exercise/${exerciseId}`,
+      UPDATE_AVATAR: `/profile/user/my-profile/avatar`,
+      UPDATE_BACKGROUND: `/profile/user/my-profile/background`,
+      UPDATE_PROFILE_USER: `/profile/user/my-profile`,
       UPDATE_QUESTION: (exerciseId: string, questionId: string) =>
         `/submission/quiz/${exerciseId}/question/${questionId}`,
       UPDATE_OPTION: (optionId: string) =>
