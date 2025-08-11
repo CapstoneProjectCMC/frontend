@@ -43,6 +43,18 @@ export class ProfileService {
     );
   }
 
+  uploadBackground(background: File) {
+    return this.api.uploadFile<ApiResponse<User>>(
+      API_CONFIG.ENDPOINTS.POST.UPLOAD_BACKGROUND,
+      background
+    );
+  }
+  uploadAvatar(avatar: File) {
+    return this.api.uploadFile<ApiResponse<User>>(
+      API_CONFIG.ENDPOINTS.POST.UPLOAD_AVATAR,
+      avatar
+    );
+  }
   updateBackground(background: File) {
     return this.api.uploadFile<ApiResponse<User>>(
       API_CONFIG.ENDPOINTS.PATCH.UPDATE_BACKGROUND,

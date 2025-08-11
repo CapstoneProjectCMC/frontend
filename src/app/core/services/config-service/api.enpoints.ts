@@ -72,6 +72,8 @@ export const API_CONFIG = {
       ADD_OPTION_INTO_QUESTION: (questionId: string) =>
         `/submission/quiz/question/${questionId}/option`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
+      UPLOAD_AVATAR: `/profile/user/my-profile/avatar`,
+      UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
     },
     PUT: {
       UPDATE_QUESTION_WITH_OPTION: (exerciseId: string, questionId: string) =>
