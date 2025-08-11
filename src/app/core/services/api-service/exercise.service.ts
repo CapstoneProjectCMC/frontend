@@ -149,8 +149,8 @@ export class ExerciseService {
     questionId: string,
     dataRequest: QuizQuestionWithOptionRequest
   ) {
-    return this.api.put<ApiResponse<null>>(
-      API_CONFIG.ENDPOINTS.PUT.UPDATE_QUESTION_WITH_OPTION(
+    return this.api.patch<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PATCH.UPDATE_QUESTION_WITH_OPTION(
         exerciseId,
         questionId
       ),
@@ -166,13 +166,19 @@ export class ExerciseService {
 
   inititalAddQuestionStupid(
     exerciseId: string,
-    dataQuestion: QuizQuestionCreate
+    dataQuestion?: QuizQuestionCreate
   ) {
-    const quizDetailCreateStupid: QuizDetailCreateStupid = {
-      questions: [dataQuestion],
-    };
-    console.log(quizDetailCreateStupid);
+    let quizDetailCreateStupid: QuizDetailCreateStupid;
 
+    if (dataQuestion) {
+      quizDetailCreateStupid = {
+        questions: [dataQuestion],
+      };
+    } else {
+      quizDetailCreateStupid = {
+        questions: [],
+      };
+    }
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ADD_QUESTION_STUPID(exerciseId),
       quizDetailCreateStupid
