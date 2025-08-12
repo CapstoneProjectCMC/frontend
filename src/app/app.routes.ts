@@ -164,6 +164,15 @@ export const routes: Routes = [
         data: { breadcrumb: 'Quản lý tổ chức' },
       },
       {
+        path: 'resource-management',
+        loadChildren: () =>
+          import(
+            './features/admin/resources-management/resource-management-routing.module'
+          ).then((m) => m.ResourceManagementRoutingModule),
+        data: { breadcrumb: 'Quản lý tài nguyên' },
+      },
+
+      {
         path: '**',
         loadComponent: () =>
           import('./features/auth/pages/error-404/error-404.component').then(

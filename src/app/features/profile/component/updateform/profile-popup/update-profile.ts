@@ -167,63 +167,29 @@ export class UpdateProfileComponent {
     input.click();
   }
 
-  // private handleImageUpload(
-  //   event: any,
-  //   uploadApi: (file: File) => Observable<any>,
-  //   successCallback: () => void
-  // ) {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     uploadApi(file).subscribe({
-  //       next: () => {
-  //         sendNotification(
-  //           this.store,
-  //           'Thành công',
-  //           'Tải ảnh lên thành công',
-  //           'success'
-  //         );
-  //         successCallback();
-  //       },
-  //       error: (err) => {
-  //         console.error('Lỗi upload:', err);
-  //       },
-  //     });
-  //   }
-  // }
-
-  // // Upload ảnh đại diện
-  // uploadAvatar(event: any) {
-  //   this.handleImageUpload(
-  //     event,
-  //     (file) => this.authService.uploadAvatar(file),
-  //     // () => this.loadAvatar()
-  //     () => window.location.reload()
-  //   );
-  // }
-
   /** Cập nhật profile */
   updateProfile() {
-    // // Update thông tin cơ bản
-    // this.profileService
-    //   .updateProfile(
-    //     this.firstName,
-    //     this.lastName,
-    //     new Date(this.dob), // dob phải dạng Date
-    //     this.bio || '',
-    //     this.selectedGender === 'true',
-    //     this.displayName,
-    //     Number(this.selectedEducation.value),
-    //     this.links,
-    //     this.selectedCity || ''
-    //   )
-    //   .subscribe({
-    //     next: (res) => {
-    //       console.log('Cập nhật thông tin thành công:', res);
-    //     },
-    //     error: (err) => {
-    //       console.error('Lỗi cập nhật thông tin:', err);
-    //     },
-    //   });
+    // Update thông tin cơ bản
+    this.profileService
+      .updateProfile(
+        this.firstName,
+        this.lastName,
+        new Date(this.dob), // dob phải dạng Date
+        this.bio || '',
+        this.selectedGender === 'true',
+        this.displayName,
+        Number(this.selectedEducation.value),
+        this.links,
+        this.selectedCity || ''
+      )
+      .subscribe({
+        next: (res) => {
+          console.log('Cập nhật thông tin thành công:', res);
+        },
+        error: (err) => {
+          console.error('Lỗi cập nhật thông tin:', err);
+        },
+      });
 
     // Update avatar nếu có file
     if (this.avatarFile) {

@@ -197,7 +197,7 @@ export class ExerciseDetailsComponent implements OnInit {
   }
 
   getUserInfo(userId: string) {
-    this.profileService.getProfilebyId(userId).subscribe({
+    this.profileService.getMyProfile().subscribe({
       next: (res) => {
         this.authorName = res.result.displayName;
       },
