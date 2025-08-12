@@ -31,6 +31,7 @@ export const API_CONFIG = {
         sort: EnumType['sort'],
         asc: boolean
       ) => `/profile/users?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
+      GET_PROFILE_USER_BY_ID: (userId: string) => `/profile/user/${userId}`,
       GET_MY_PROFILE: `/profile/user/my-profile`,
       LOADQUIZ: (quizId: string) => `/quiz/${quizId}/load`,
       SEARCHING_EXERCISE: (

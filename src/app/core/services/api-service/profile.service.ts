@@ -16,6 +16,13 @@ export class ProfileService {
       API_CONFIG.ENDPOINTS.GET.GET_MY_PROFILE
     );
   }
+
+  getProfilebyId(userId: string) {
+    return this.api.get<ApiResponse<User>>(
+      API_CONFIG.ENDPOINTS.GET.GET_PROFILE_USER_BY_ID(userId)
+    );
+  }
+
   updateProfile(
     firstName: string,
     lastName: string,
@@ -49,18 +56,21 @@ export class ProfileService {
       background
     );
   }
+
   uploadAvatar(avatar: File) {
     return this.api.uploadFile<ApiResponse<User>>(
       API_CONFIG.ENDPOINTS.POST.UPLOAD_AVATAR,
       avatar
     );
   }
+
   updateBackground(background: File) {
     return this.api.uploadFile<ApiResponse<User>>(
       API_CONFIG.ENDPOINTS.PATCH.UPDATE_BACKGROUND,
       background
     );
   }
+
   updateAvatar(avatar: File) {
     return this.api.uploadFile<ApiResponse<User>>(
       API_CONFIG.ENDPOINTS.PATCH.UPDATE_AVATAR,
