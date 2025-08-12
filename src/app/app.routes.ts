@@ -84,7 +84,6 @@ export const routes: Routes = [
     ],
   },
 
-  //Layout cho các thức năng chính
   {
     path: '',
     component: AppLayoutComponent,
