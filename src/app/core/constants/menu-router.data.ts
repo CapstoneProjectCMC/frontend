@@ -298,3 +298,38 @@ export const sidebarExercises: SidebarItem[] = [
     ],
   },
 ];
+
+export const sidebarOrganizations: SidebarItem[] = [
+  {
+    id: 'grade',
+    path: '/organization/grade/list',
+    label: 'Danh sách lớp',
+    icon: 'fa-solid fa-rectangle-list',
+    children: [
+      {
+        id: 'org',
+        path: '/message/org',
+        label: 'Cộng đồng',
+        icon: 'fas fa-users',
+      },
+      {
+        id: 'private',
+        path: '/message/private',
+        label: 'Nội bộ',
+        icon: 'fas fa-user-friends',
+      },
+    ],
+  },
+  {
+    id: 'org-exercise ',
+    path: '/organization/exercise',
+    label: 'Bài tập nội bộ',
+    icon: 'fa-solid fa-book-open',
+  },
+  {
+    id: 'org-post ',
+    path: '/organization/post',
+    label: 'Bài viết nội bộ',
+    icon: 'fas fa-newspaper',
+  },
+];

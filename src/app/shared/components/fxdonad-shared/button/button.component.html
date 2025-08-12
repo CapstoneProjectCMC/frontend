@@ -22,7 +22,7 @@
     [title]="tooltipText"
   >
     <div class="button-content">
-      <div *ngIf="iconName" class="material-icons icon">{{ iconName }}</div>
+      <i *ngIf="iconName" [class]="iconName" class="material-icons icon"></i>
       <div class="button-text">{{ buttonText }}</div>
       <ng-content *ngIf="!isLoading"></ng-content>
       <div *ngIf="isLoading" class="loader"></div>

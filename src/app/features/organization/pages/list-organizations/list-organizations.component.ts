@@ -2,15 +2,18 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OrganizationInfo } from '../../../../core/models/organization.model';
 import { Router } from '@angular/router';
+import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
+import { InteractiveButtonComponent } from '../../../../shared/components/fxdonad-shared/button/button.component';
 
 @Component({
   selector: 'app-list-organizations',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, InputComponent, InteractiveButtonComponent],
   templateUrl: './list-organizations.component.html',
   styleUrls: ['./list-organizations.component.scss'],
 })
 export class ListOrganizationsComponent {
+  searchTerm: string | number = '';
   organizations: Array<OrganizationInfo> = [
     {
       id: '1',
@@ -150,6 +153,16 @@ export class ListOrganizationsComponent {
 
   onClick(id: string) {
     this.router.navigate(['/organization/details', id]);
+  }
+
+  onSearch(value: string | number) {
+    this.searchTerm = value;
+    // TODO: Implement search logic
+  }
+
+  onAddNew() {
+    // TODO: Navigate to add new organization page
+    console.log('Add new organization clicked');
   }
 
   mapStatusToLabel(status: number): string {

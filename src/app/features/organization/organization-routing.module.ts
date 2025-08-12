@@ -2,7 +2,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ListOrganizationsComponent } from './pages/list-organizations/list-organizations.component';
-import { DetailsOrganizationComponent } from './pages/details-organization/details-organization.component';
+import { DetailsOrganizationComponent } from './organization-component/details-organization/details-organization.component';
+import { LayoutOrganizationComponent } from './layout-organization/layout-organization.component';
 
 const routes: Routes = [
   {
@@ -13,7 +14,7 @@ const routes: Routes = [
   },
   {
     path: 'details/:id',
-    component: DetailsOrganizationComponent,
+    component: LayoutOrganizationComponent,
     children: [],
     title: 'Chi tiết tổ chức',
     data: { breadcrumb: 'Tổ chức của tôi' },

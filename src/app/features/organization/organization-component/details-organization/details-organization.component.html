@@ -1,0 +1,70 @@
+<div class="org-header">
+  <div class="org-header__container">
+    <!-- Loading state -->
+    <div *ngIf="isLoading" class="org-header__loading">
+      <div class="loading-skeleton">
+        <div class="skeleton-logo"></div>
+        <div class="skeleton-content">
+          <div class="skeleton-title"></div>
+          <div class="skeleton-subtitle"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Organization info -->
+    <div *ngIf="!isLoading && organization" class="org-header__content">
+      <div class="org-header__logo">
+        <img
+          *ngIf="organization.logoUrl; else defaultLogo"
+          [src]="organization.logoUrl"
+          [alt]="organization.name"
+          class="org-logo"
+        />
+        <ng-template #defaultLogo>
+          <div class="org-logo-fallback">
+            {{ organization.name.charAt(0) }}
+          </div>
+        </ng-template>
+      </div>
+
+      <div class="org-header__info">
+        <div class="org-header__main">
+          <h1 class="org-name">{{ organization.name }}</h1>
+          <span
+            class="org-status"
+            [class]="getStatusClass(organization.status)"
+          >
+            {{ getStatusLabel(organization.status) }}
+          </span>
+        </div>
+
+        <div class="org-header__details">
+          <p *ngIf="organization.description" class="org-description">
+            {{ organization.description }}
+          </p>
+
+          <div class="org-meta">
+            <div class="org-meta__item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>{{ organization.address }}</span>
+            </div>
+            <div class="org-meta__item">
+              <i class="fas fa-envelope"></i>
+              <span>{{ organization.email }}</span>
+            </div>
+            <div class="org-meta__item">
+              <i class="fas fa-phone"></i>
+              <span>{{ organization.phone }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div *ngIf="!isLoading && !organization" class="org-header__error">
+      <i class="fas fa-exclamation-triangle"></i>
+      <span>Không tìm thấy thông tin tổ chức</span>
+    </div>
+  </div>
+</div>

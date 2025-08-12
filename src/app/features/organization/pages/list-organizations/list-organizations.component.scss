@@ -6,9 +6,30 @@
   color: var(--text-color);
 }
 
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .page-title {
-  margin: 0 0 16px;
+  margin: 0;
   color: var(--title-text);
+  flex-shrink: 0;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  app-input {
+    min-width: 250px;
+  }
 }
 
 .org-list {

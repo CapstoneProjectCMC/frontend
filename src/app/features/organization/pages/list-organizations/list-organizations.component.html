@@ -1,5 +1,24 @@
 <div class="org-page">
-  <h2 class="page-title">Danh sách tất cả các tổ chức</h2>
+  <div class="page-header">
+    <h2 class="page-title">Danh sách tất cả các tổ chức</h2>
+    <div class="page-actions">
+      <app-input
+        type="text"
+        placeholder="Tìm kiếm tổ chức..."
+        [value]="searchTerm"
+        (valueChange)="onSearch($event)"
+        icon="fas fa-search"
+        [isSvg]="false"
+      ></app-input>
+      <app-interactive-button
+        buttonText="Thêm mới"
+        buttonType="primary"
+        buttonSize="medium"
+        iconName="fas fa-plus"
+        (buttonClick)="onAddNew()"
+      ></app-interactive-button>
+    </div>
+  </div>
 
   <div class="org-list">
     <div
