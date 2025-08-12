@@ -45,6 +45,7 @@
     "ng-apexcharts": "^1.11.0",
     "ngx-cookie-service": "^19.1.2",
     "ngx-markdown": "^19.1.1",
+    "pdfjs-dist": "^5.4.54",
     "rxjs": "~7.8.0",
     "sub-vn": "^0.0.2",
     "tslib": "^2.3.0",

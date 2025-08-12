@@ -1,9 +1,9 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
-import { NgStyle } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { formatDate } from '../../../utils/stringProcess';
 import { resourceCardInfo } from '../../../../core/models/resource.model';
+import * as pdfjsLib from 'pdfjs-dist';
 
 @Component({
   selector: 'app-resource-card',
@@ -12,52 +12,83 @@ import { resourceCardInfo } from '../../../../core/models/resource.model';
   standalone: true,
   imports: [NgIf, NgFor, NgClass, NgStyle],
 })
-export class ResourceCardComponent {
+export class ResourceCardComponent implements OnInit {
   @Input() resource!: resourceCardInfo;
   @Input() showControls: boolean = true;
   @Input() onEdit?: () => void;
   @Input() onDelete?: () => void;
   @Input() onApprove?: () => void;
   @Input() onRejected?: () => void;
-  @Input() onSummary?: () => void;
-  @Input() onUpvote?: () => void;
-  @Input() onDownvote?: () => void;
-  @Input() onComment?: () => void;
   @Input() onReport?: () => void;
   @Input() onSave?: () => void;
   @Input() onMain?: (resourceId: string) => void;
-
   @Input() popular?: number = 0;
+
+  // Biến tạm để hiển thị duration/pages
+  fileInfoLabel: string = '';
+
+  ngOnInit() {
+    this.extractFileInfo();
+  }
+
+  // ==== Xử lý file ====
+  async extractFileInfo() {
+    const file = this.resource?.fileResource;
+    if (!file) return;
+
+    if (file.type.startsWith('video/') || file.type.startsWith('audio/')) {
+      const seconds = await this.extractVideoDuration(file);
+      this.fileInfoLabel = this.formatDuration(seconds); // ví dụ: "03:25"
+    } else if (file.type === 'application/pdf') {
+      const pages = await this.extractPdfPageCount(file);
+      this.fileInfoLabel = `${pages} trang`;
+    } else {
+      this.fileInfoLabel = '';
+    }
+  }
+
+  extractVideoDuration(file: File): Promise<number> {
+    return new Promise((resolve) => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = () => {
+        resolve(video.duration);
+        URL.revokeObjectURL(video.src);
+      };
+      video.src = URL.createObjectURL(file);
+    });
+  }
+
+  async extractPdfPageCount(file: File): Promise<number> {
+    const pdfData = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
+    return pdf.numPages;
+  }
+
+  formatDuration(seconds: number) {
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  }
+
+  // ==== Các handler có sẵn ====
   handleMain() {
     this.onMain && this.onMain(this.resource?.['id']);
   }
   handleEdit() {
     this.onEdit && this.onEdit();
   }
-
   handleDelete() {
     this.onDelete && this.onDelete();
   }
-
   handleApprove() {
     this.onApprove && this.onApprove();
   }
 
-  handleSummary() {
-    this.onSummary && this.onSummary();
-  }
   handleRejected() {
     this.onRejected && this.onRejected();
   }
-  handleUpvote() {
-    this.onUpvote && this.onUpvote();
-  }
-  handleDownvote() {
-    this.onDownvote && this.onDownvote();
-  }
-  handleComment() {
-    this.onComment && this.onComment();
-  }
+
   handleReport() {
     this.onReport && this.onReport();
   }
@@ -66,16 +97,5 @@ export class ResourceCardComponent {
   }
   formatDate(time: Date) {
     return formatDate(time);
-  }
-
-  formatTime(time: string | Date): string {
-    const date = new Date(time);
-    const pad = (n: number) => (n < 10 ? '0' + n : n);
-    const hours = pad(date.getHours());
-    const minutes = pad(date.getMinutes());
-    const day = pad(date.getDate());
-    const month = pad(date.getMonth() + 1);
-    const year = date.getFullYear();
-    return `${hours}:${minutes} ${day}/${month}/${year}`;
   }
 }
