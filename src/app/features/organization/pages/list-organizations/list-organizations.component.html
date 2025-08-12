@@ -1,0 +1,61 @@
+<div class="org-page">
+  <div class="page-header">
+    <h2 class="page-title">Danh sách tất cả các tổ chức</h2>
+    <div class="page-actions">
+      <app-input
+        type="text"
+        placeholder="Tìm kiếm tổ chức..."
+        [value]="searchTerm"
+        (valueChange)="onSearch($event)"
+        icon="fas fa-search"
+        [isSvg]="false"
+      ></app-input>
+      <app-interactive-button
+        buttonText="Thêm mới"
+        buttonType="primary"
+        buttonSize="medium"
+        iconName="fas fa-plus"
+        (buttonClick)="onAddNew()"
+      ></app-interactive-button>
+    </div>
+  </div>
+
+  <div class="org-list">
+    <div
+      class="org-card"
+      *ngFor="let org of organizations"
+      (click)="onClick(org.id)"
+    >
+      <div class="org-card__logo">
+        <img
+          *ngIf="org.logoUrl; else defaultLogo"
+          [src]="org.logoUrl"
+          [alt]="org.name"
+        />
+        <ng-template #defaultLogo>
+          <div class="logo-fallback">{{ org.name.charAt(0) }}</div>
+        </ng-template>
+      </div>
+      <div class="org-card__content">
+        <div class="org-card__header">
+          <h3 class="org-name">{{ org.name }}</h3>
+          <span
+            class="org-status"
+            [class]="'status-' + mapStatusToLabel(org.status).toLowerCase()"
+          >
+            {{ mapStatusToLabel(org.status) }}
+          </span>
+        </div>
+        <p class="org-desc" *ngIf="org.description; else noDesc">
+          {{ org.description }}
+        </p>
+        <ng-template #noDesc
+          ><p class="org-desc muted">Không có mô tả</p></ng-template
+        >
+        <div class="org-meta">
+          <span class="org-email">{{ org.email }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

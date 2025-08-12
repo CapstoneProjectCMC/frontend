@@ -1,0 +1,14 @@
+<div class="org-layout-container">
+  <app-details-organization></app-details-organization>
+  <div class="main-org-container">
+    <app-main-sidebar
+      *ngIf="showSidebar"
+      [sidebarItems]="sidebarData"
+      [isCollapsed]="isSidebarCollapsed"
+    >
+    </app-main-sidebar>
+    <div class="org-content-container">
+      <router-outlet />
+    </div>
+  </div>
+</div>

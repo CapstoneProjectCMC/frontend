@@ -110,6 +110,20 @@ export const routes: Routes = [
             (m) => m.ProfileModule
           ),
       },
+      {
+        path: 'service-and-payment',
+        loadChildren: () =>
+          import('./features/service-payment/service-and-payment.module').then(
+            (m) => m.ServiceAndPaymentModule
+          ),
+      },
+      {
+        path: 'organization',
+        loadChildren: () =>
+          import('./features/organization/organization.module').then(
+            (m) => m.OrganizationModule
+          ),
+      },
     ],
   },
 
