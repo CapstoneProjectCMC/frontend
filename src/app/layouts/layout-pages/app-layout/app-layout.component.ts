@@ -26,6 +26,7 @@ import { CommonModule } from '@angular/common';
 export class AppLayoutComponent implements OnInit {
   visible = true;
   menuItems = navStudentItems;
+  showFooter = false;
 
   constructor(private router: Router) {}
 
@@ -33,11 +34,13 @@ export class AppLayoutComponent implements OnInit {
     // Cập nhật visible ngay khi khởi tạo dựa trên url hiện tại
     const currentUrl = this.router.url;
     this.visible = currentUrl !== '/';
+    this.showFooter = currentUrl === '/' || currentUrl === '';
 
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.visible = event.urlAfterRedirects !== '/';
+        this.showFooter = event.urlAfterRedirects === '/';
       });
   }
 }

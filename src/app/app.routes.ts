@@ -118,6 +118,13 @@ export const routes: Routes = [
             (m) => m.ServiceAndPaymentModule
           ),
       },
+      {
+        path: 'organization',
+        loadChildren: () =>
+          import('./features/organization/organization.module').then(
+            (m) => m.OrganizationModule
+          ),
+      },
     ],
   },
 

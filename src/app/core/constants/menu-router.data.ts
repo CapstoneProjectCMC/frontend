@@ -256,6 +256,12 @@ export const navStudentItems: SidebarItem[] = [
     label: 'Nạp điểm',
     icon: 'fas fa-credit-card',
   },
+  {
+    id: 'organization ',
+    path: '/organization/list',
+    label: 'Tổ chức',
+    icon: 'fa-solid fa-building-user',
+  },
 ];
 
 export const sidebarExercises: SidebarItem[] = [

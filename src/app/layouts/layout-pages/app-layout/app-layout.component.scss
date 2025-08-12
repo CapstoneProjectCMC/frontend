@@ -4,6 +4,13 @@
   min-height: 100vh; // Ngăn tràn ngang
   box-sizing: border-box; // Đảm bảo padding/border được tính vào width
   overflow: hidden;
+  max-width: 100vw;
+  width: 100%;
+
+  app-menu-layout {
+    display: flex;
+    width: 100vw;
+  }
 
   .main-content-app-container {
     max-width: 100%;
