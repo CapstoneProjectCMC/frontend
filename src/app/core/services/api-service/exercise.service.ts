@@ -95,10 +95,26 @@ export class ExerciseService {
       )
     );
   }
+
   createExercise(dataCreateExercise: CreateExerciseRequest) {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.CREATE_EXERCISE,
       dataCreateExercise
+    );
+  }
+
+  assignExerciseToStudent(
+    exerciseId: string,
+    studentId: string,
+    dueAt: string
+  ) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.ASSIGN_EXERCISE_TO_STUDENT(
+        exerciseId,
+        studentId,
+        dueAt
+      ),
+      null
     );
   }
 

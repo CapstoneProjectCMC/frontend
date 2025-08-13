@@ -1,0 +1,394 @@
+.coding-details-container {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  // CỘT TRÁI
+  .problem-description {
+    flex: 3;
+    min-width: 0;
+
+    .title {
+      color: var(--title-text);
+      font-size: 1.625rem; // Tăng ~30%
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+      color: white;
+
+      .difficulty-badge {
+        padding: 0.25rem 0.7rem; // Tăng nhẹ padding
+        border-radius: 1rem;
+        font-weight: bold;
+        font-size: 0.52rem;
+
+        &.difficulty-easy {
+          background-color: var(--success-color);
+        }
+        &.difficulty-medium {
+          background-color: var(--warning-color);
+        }
+        &.difficulty-hard {
+          background-color: var(--error-color);
+        }
+      }
+
+      .status-tag {
+        color: var(--success-color);
+        font-size: 0.585rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+    }
+
+    .section {
+      margin-bottom: 1.5rem;
+
+      .section-title {
+        font-size: 0.975rem; // Tăng ~30%
+        color: var(--accent-color);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.8rem;
+      }
+    }
+
+    pre {
+      background-color: var(--background-color-secondary);
+      border: 1px solid var(--border-color);
+      padding: 0.8rem;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.62rem; // Tăng ~30%
+        color: var(--text-color);
+      }
+    }
+
+    .test-case {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      background-color: var(--surface-color);
+
+      .test-case-title {
+        color: var(--title-text);
+        margin-top: 0;
+        font-size: 0.78rem; // Tăng ~30%
+      }
+
+      .io-block {
+        margin-bottom: 0.8rem;
+        label {
+          font-weight: bold;
+          display: block;
+          margin-bottom: 0.4rem;
+          font-size: 0.65rem; // Tăng ~30%
+        }
+      }
+
+      .note {
+        font-style: italic;
+        color: var(--text-muted-color);
+        background-color: var(--background-color-secondary);
+        padding: 0.6rem;
+        border-radius: 4px;
+        font-size: 0.585rem; // Tăng ~30%
+      }
+    }
+  }
+
+  // CỘT PHẢI
+  .problem-info {
+    flex: 1;
+    min-width: 0;
+
+    .info-card {
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+      .card-title {
+        margin-top: 0;
+        color: var(--accent-color);
+        font-size: 0.715rem; // Tăng ~30%
+        margin-bottom: 0.8rem;
+      }
+
+      .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.6rem 0;
+          font-size: 0.62rem; // Tăng ~30%
+          border-bottom: 1px solid var(--border-color);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          span {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--text-muted-color);
+          }
+
+          strong {
+            color: var(--text-color);
+          }
+        }
+      }
+
+      .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        .language-tag,
+        .tag {
+          background-color: var(--tags-color);
+          color: var(--accent-color);
+          padding: 0.3rem 0.7rem; // Tăng nhẹ padding
+          border-radius: 4px;
+          font-size: 0.55rem; // Tăng ~30%
+        }
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+
+      .btn {
+        padding: 0.7rem 0.9rem; // Tăng padding
+        border: none;
+        border-radius: 6px;
+        font-size: 0.65rem; // Tăng ~30%
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &.btn-primary {
+          background-color: var(--button-color);
+          color: var(--reverse-color-text);
+          &:hover {
+            background-color: var(--button-color-hover);
+          }
+        }
+
+        &.btn-secondary {
+          background-color: var(--surface-color);
+          color: var(--text-color);
+          border: 1px solid var(--border-color);
+          &:hover {
+            background-color: var(--background-color-secondary);
+          }
+        }
+      }
+    }
+  }
+}
+
+// CREATE EXERCISE FORM STYLES
+.create-exercise-container {
+  padding: 1rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  .create-form {
+    max-width: 700px;
+    margin: 0 auto;
+
+    .title {
+      color: var(--title-text);
+      font-size: 1.625rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .exercise-form {
+      .form-section {
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+        .section-title {
+          color: var(--accent-color);
+          font-size: 0.975rem;
+          margin-bottom: 1rem;
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+          margin-bottom: 1rem;
+
+          label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--text-color);
+            font-size: 0.75rem;
+          }
+
+          .form-control {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--background-color-secondary);
+            color: var(--text-color);
+            font-size: 0.62rem;
+            box-sizing: border-box;
+
+            &:focus {
+              outline: none;
+              border-color: var(--accent-color);
+              box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.2);
+            }
+
+            &.code-input {
+              font-family: "Courier New", Courier, monospace;
+              font-size: 0.6rem;
+            }
+          }
+
+          select.form-control {
+            cursor: pointer;
+          }
+
+          &.checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            input[type="checkbox"] {
+              margin: 0;
+            }
+
+            label {
+              margin: 0;
+              font-weight: normal;
+            }
+          }
+        }
+
+        .languages-container {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 0.8rem;
+
+          .language-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+
+            input[type="checkbox"] {
+              margin: 0;
+            }
+
+            label {
+              margin: 0;
+              font-weight: normal;
+              font-size: 0.62rem;
+              cursor: pointer;
+            }
+          }
+        }
+
+        .test-cases-container {
+          .test-case-item {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: var(--background-color-secondary);
+
+            h3 {
+              color: var(--accent-color);
+              font-size: 0.78rem;
+              margin-bottom: 0.8rem;
+            }
+
+            .test-case-form {
+              .form-group {
+                margin-bottom: 0.8rem;
+              }
+
+              .btn-sm {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.55rem;
+              }
+            }
+          }
+        }
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+
+        .btn {
+          padding: 0.7rem 1.5rem;
+          border: none;
+          border-radius: 6px;
+          font-size: 0.65rem;
+          font-weight: bold;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+
+          &.btn-primary {
+            background-color: var(--button-color);
+            color: var(--reverse-color-text);
+            &:hover {
+              background-color: var(--button-color-hover);
+            }
+          }
+
+          &.btn-secondary {
+            background-color: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            &:hover {
+              background-color: var(--background-color-secondary);
+            }
+          }
+
+          &.btn-danger {
+            background-color: var(--error-color);
+            color: white;
+            &:hover {
+              background-color: #d32f2f;
+            }
+          }
+        }
+      }
+    }
+  }
+}

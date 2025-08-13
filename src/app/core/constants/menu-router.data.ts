@@ -301,24 +301,10 @@ export const sidebarExercises: SidebarItem[] = [
 
 export const sidebarOrganizations: SidebarItem[] = [
   {
-    id: 'grade',
-    path: '/organization/grade/list',
-    label: 'Danh sách lớp',
-    icon: 'fa-solid fa-rectangle-list',
-    children: [
-      {
-        id: 'org',
-        path: '/message/org',
-        label: 'Cộng đồng',
-        icon: 'fas fa-users',
-      },
-      {
-        id: 'private',
-        path: '/message/private',
-        label: 'Nội bộ',
-        icon: 'fas fa-user-friends',
-      },
-    ],
+    id: 'org-post ',
+    path: '/organization/details/',
+    label: 'Bài viết nội bộ',
+    icon: 'fas fa-newspaper',
   },
   {
     id: 'org-exercise ',
@@ -327,9 +313,23 @@ export const sidebarOrganizations: SidebarItem[] = [
     icon: 'fa-solid fa-book-open',
   },
   {
-    id: 'org-post ',
-    path: '/organization/post',
-    label: 'Bài viết nội bộ',
-    icon: 'fas fa-newspaper',
+    id: 'grade',
+    path: '/organization/grade/list',
+    label: 'Danh sách lớp',
+    icon: 'fa-solid fa-rectangle-list',
+    children: [
+      {
+        id: 'org',
+        path: '/message/org',
+        label: 'Khối 1',
+        icon: 'fas fa-users',
+      },
+      {
+        id: 'private',
+        path: '/message/private',
+        label: 'Khối 2',
+        icon: 'fas fa-users',
+      },
+    ],
   },
 ];
