@@ -23,6 +23,7 @@ $input-primary-color: #f3f3f3;
 $input-secondary-color: #5d5757;
 $border-color: #ced4da;
 $error-color: #e45967;
+$warning-color: #f0ad4e;
 $success-color: #4caf50;
 
 // Theme classes
@@ -61,6 +62,8 @@ $success-color: #4caf50;
   --input-secondary-color: #{$input-secondary-color};
   --border-color: #{$border-color};
   --error-color: #{$error-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
   --error-color-rgb: 255, 59, 48;
 
   --dropdown-primary-color: #{$input-primary-color};
@@ -107,6 +110,8 @@ $success-color: #4caf50;
   --input-secondary-color: #{$input-secondary-color};
   --border-color: #{$border-color};
   --error-color: #{$error-color};
+  --success-color: #{$success-color};
+  --warning-color: #{$warning-color};
 
   --dropdown-primary-color: #{$blue-main};
   --dropdown-secondary-color: #{$blue-dark};

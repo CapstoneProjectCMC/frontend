@@ -132,15 +132,18 @@
       </div>
 
       <div class="btn-container">
-        <button
-          class="btn main"
-          *ngIf="exercise.quizDetail !== null"
-          (click)="doingQuiz()"
-        >
+        <button class="btn main" *ngIf="hasQuestions" (click)="doingQuiz()">
           <i class="fa fa-play"></i> Bắt đầu
         </button>
         <button class="btn other" (click)="goBack()">
           <i class="fa fa-arrow-left"></i> Quay lại
+        </button>
+        <button
+          class="btn other"
+          *ngIf="hasQuestions"
+          (click)="openAssignExercise()"
+        >
+          <i class="fa-solid fa-business-time"></i> Giao bài tập
         </button>
       </div>
     </div>

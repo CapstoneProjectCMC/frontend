@@ -1,0 +1,392 @@
+<div class="coding-details-container" *ngIf="exercise">
+  <div class="problem-description">
+    <h1 class="title">{{ exercise.title }}</h1>
+
+    <div class="meta-header">
+      <span
+        class="difficulty-badge"
+        [ngClass]="'difficulty-' + exercise.difficulty.toLowerCase()"
+      >
+        {{ exercise.difficulty }}
+      </span>
+      <span class="status-tag" *ngIf="exercise.active">
+        <i class="fa fa-circle"></i> Hoạt động
+      </span>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Mô tả bài toán</h2>
+      <p [innerHTML]="exercise.description"></p>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Định dạng đầu vào (Input)</h2>
+      <pre><code>{{ exercise.codingDetail.input }}</code></pre>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Định dạng đầu ra (Output)</h2>
+      <pre><code>{{ exercise.codingDetail.output }}</code></pre>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Các ràng buộc (Constraints)</h2>
+      <pre><code>{{ exercise.codingDetail.constraintText }}</code></pre>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Ví dụ (Sample Test Cases)</h2>
+      <div
+        *ngFor="let testCase of getSampleTestCases(); let i = index"
+        class="test-case"
+      >
+        <h3 class="test-case-title">Ví dụ {{ i + 1 }}</h3>
+        <div class="io-block">
+          <label>Input:</label>
+          <pre><code>{{ testCase.input }}</code></pre>
+        </div>
+        <div class="io-block">
+          <label>Output:</label>
+          <pre><code>{{ testCase.expectedOutput }}</code></pre>
+        </div>
+        <p class="note" *ngIf="testCase.note">
+          <strong>Giải thích:</strong> {{ testCase.note }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <aside class="problem-info">
+    <div class="info-card">
+      <ul class="info-list">
+        <li>
+          <span><i class="fa fa-clock"></i> Giới hạn thời gian</span>
+          <strong>{{ exercise.codingDetail.timeLimit }}s</strong>
+        </li>
+        <li>
+          <span><i class="fa fa-memory"></i> Giới hạn bộ nhớ</span>
+          <strong>{{ exercise.codingDetail.memoryLimit }} MB</strong>
+        </li>
+        <li>
+          <span><i class="fa fa-upload"></i> Lượt nộp tối đa</span>
+          <strong>{{ exercise.codingDetail.maxSubmissions }}</strong>
+        </li>
+        <li>
+          <span><i class="fa fa-hourglass-half"></i> Thời gian làm bài</span>
+          <strong>{{ exercise.duration }} phút</strong>
+        </li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h3 class="card-title">Ngôn ngữ được phép</h3>
+      <div class="tags-container">
+        <span
+          *ngFor="let lang of exercise.codingDetail.allowedLanguages"
+          class="language-tag"
+        >
+          {{ lang }}
+        </span>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3 class="card-title">Tags</h3>
+      <div class="tags-container">
+        <span *ngFor="let tag of exercise.tags" class="tag">{{ tag }}</span>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn btn-secondary">Quay lại</button>
+      <button class="btn btn-primary">Bắt đầu làm</button>
+    </div>
+  </aside>
+</div>
+
+<!-- Form tạo mới exercise khi exercise = null -->
+<div class="create-exercise-container" *ngIf="!exercise">
+  <div class="create-form">
+    <h1 class="title">Tạo bài tập lập trình mới</h1>
+
+    <form class="exercise-form">
+      <!-- Thông tin cơ bản -->
+      <div class="form-section">
+        <h2 class="section-title">Thông tin cơ bản</h2>
+
+        <div class="form-group">
+          <label for="title">Tiêu đề bài tập *</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            class="form-control"
+            [(ngModel)]="formData.title"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="topic">Chủ đề *</label>
+          <input
+            type="text"
+            id="topic"
+            name="topic"
+            class="form-control"
+            [(ngModel)]="formData.topic"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Mô tả bài toán *</label>
+          <textarea
+            id="description"
+            name="description"
+            class="form-control"
+            rows="4"
+            [(ngModel)]="formData.description"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="difficulty">Độ khó *</label>
+          <select
+            id="difficulty"
+            name="difficulty"
+            class="form-control"
+            [(ngModel)]="formData.difficulty"
+            required
+          >
+            <option value="">Chọn độ khó</option>
+            <option value="EASY">Dễ</option>
+            <option value="MEDIUM">Trung bình</option>
+            <option value="HARD">Khó</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="duration">Thời gian làm bài (phút) *</label>
+          <input
+            type="number"
+            id="duration"
+            name="duration"
+            class="form-control"
+            min="1"
+            [(ngModel)]="formData.duration"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Chi tiết lập trình -->
+      <div class="form-section">
+        <h2 class="section-title">Chi tiết lập trình</h2>
+
+        <div class="form-group">
+          <label for="input">Định dạng đầu vào *</label>
+          <textarea
+            id="input"
+            name="input"
+            class="form-control code-input"
+            rows="3"
+            [(ngModel)]="formData.input"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="output">Định dạng đầu ra *</label>
+          <textarea
+            id="output"
+            name="output"
+            class="form-control code-input"
+            rows="3"
+            [(ngModel)]="formData.output"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="constraintText">Các ràng buộc *</label>
+          <textarea
+            id="constraintText"
+            name="constraintText"
+            class="form-control code-input"
+            rows="3"
+            [(ngModel)]="formData.constraintText"
+            required
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="timeLimit">Giới hạn thời gian (giây) *</label>
+          <input
+            type="number"
+            id="timeLimit"
+            name="timeLimit"
+            class="form-control"
+            min="1"
+            [(ngModel)]="formData.timeLimit"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="memoryLimit">Giới hạn bộ nhớ (MB) *</label>
+          <input
+            type="number"
+            id="memoryLimit"
+            name="memoryLimit"
+            class="form-control"
+            min="1"
+            [(ngModel)]="formData.memoryLimit"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="maxSubmissions">Lượt nộp tối đa *</label>
+          <input
+            type="number"
+            id="maxSubmissions"
+            name="maxSubmissions"
+            class="form-control"
+            min="1"
+            [(ngModel)]="formData.maxSubmissions"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Ngôn ngữ lập trình -->
+      <div class="form-section">
+        <h2 class="section-title">Ngôn ngữ lập trình được phép</h2>
+        <div class="languages-container">
+          <div
+            class="language-checkbox"
+            *ngFor="let lang of availableLanguages"
+          >
+            <input
+              type="checkbox"
+              [id]="'lang-' + lang"
+              [checked]="isLanguageSelected(lang)"
+              (change)="toggleLanguage(lang)"
+            />
+            <label [for]="'lang-' + lang">{{ lang }}</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code template và solution -->
+      <div class="form-section">
+        <h2 class="section-title">Code template và giải pháp</h2>
+
+        <div class="form-group">
+          <label for="codeTemplate">Code template</label>
+          <textarea
+            id="codeTemplate"
+            name="codeTemplate"
+            class="form-control code-input"
+            rows="6"
+            [(ngModel)]="formData.codeTemplate"
+            placeholder="// Code template cho học viên"
+          ></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="solution">Giải pháp *</label>
+          <textarea
+            id="solution"
+            name="solution"
+            class="form-control code-input"
+            rows="8"
+            [(ngModel)]="formData.solution"
+            required
+            placeholder="// Giải pháp mẫu"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Test cases -->
+      <div class="form-section">
+        <h2 class="section-title">Test cases</h2>
+        <div class="test-cases-container">
+          <div
+            class="test-case-item"
+            *ngFor="let testCase of testCases; let i = index"
+          >
+            <h3>Test case {{ i + 1 }}</h3>
+            <div class="test-case-form">
+              <div class="form-group">
+                <label>Input:</label>
+                <textarea
+                  [name]="'testCaseInput' + i"
+                  class="form-control code-input"
+                  rows="2"
+                  [(ngModel)]="testCase.input"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label>Expected Output:</label>
+                <textarea
+                  [name]="'testCaseOutput' + i"
+                  class="form-control code-input"
+                  rows="2"
+                  [(ngModel)]="testCase.expectedOutput"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label>Note (giải thích):</label>
+                <textarea
+                  [name]="'testCaseNote' + i"
+                  class="form-control"
+                  rows="2"
+                  [(ngModel)]="testCase.note"
+                ></textarea>
+              </div>
+              <div class="form-group checkbox-group">
+                <input
+                  [name]="'testCaseSample' + i"
+                  type="checkbox"
+                  [id]="'sample' + i"
+                  [(ngModel)]="testCase.sample"
+                />
+                <label [for]="'sample' + i">Là test case mẫu</label>
+              </div>
+              <button
+                type="button"
+                class="btn btn-danger btn-sm"
+                (click)="removeTestCase(i)"
+              >
+                Xóa test case
+              </button>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="addTestCase()"
+          >
+            + Thêm test case
+          </button>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="goBack()">
+          Hủy
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          (click)="createExercise()"
+        >
+          Tạo bài tập
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

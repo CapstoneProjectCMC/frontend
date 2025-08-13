@@ -84,10 +84,17 @@ export class CardExcerciseComponent {
   }
 
   onTitleClick() {
-    this.router.navigate([
-      '/exercise/exercise-layout/exercise-details',
-      this.exerciseId,
-    ]);
+    if (this.data.type === 'QUIZ') {
+      this.router.navigate([
+        '/exercise/exercise-layout/exercise-details',
+        this.exerciseId,
+      ]);
+    } else {
+      this.router.navigate([
+        '/exercise/exercise-layout/exercise-code-details',
+        this.exerciseId,
+      ]);
+    }
   }
 
   handleImageError(event: Event) {

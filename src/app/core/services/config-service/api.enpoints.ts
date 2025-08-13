@@ -10,6 +10,14 @@ export const API_CONFIG = {
   },
   ENDPOINTS: {
     GET: {
+      GET_CODING_EXERCISE_DETAILS: (
+        exerciseId: string,
+        page: number,
+        size: number,
+        sort: EnumType['sort'],
+        asc: boolean
+      ) =>
+        `/submission/exercise/coding/${exerciseId}?tcPage=${page}&tcSize=${size}&tcSortBy=${sort}&tcAsc=${asc}`,
       GET_EXERCISE_DETAILS: (
         page: number,
         size: number,
@@ -72,7 +80,15 @@ export const API_CONFIG = {
         `/submission/quiz/exercise/${exerciseId}/quiz-detail`,
       ADD_OPTION_INTO_QUESTION: (questionId: string) =>
         `/submission/quiz/question/${questionId}/option`,
+      ADD_CODING_DETAILS: (exerciseId: string) =>
+        `/submission/coding/exercise/${exerciseId}/coding-detail`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
+      ASSIGN_EXERCISE_TO_STUDENT: (
+        exerciseId: string,
+        studentId: string,
+        dueAt: string
+      ) =>
+        `/submission/assignment?exerciseId=${exerciseId}&studentId=${studentId}&dueAt=${dueAt}`,
       UPLOAD_AVATAR: `/profile/user/my-profile/avatar`,
       UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
     },
