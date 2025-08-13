@@ -98,7 +98,7 @@
     </div>
 
     <div class="action-buttons">
-      <button class="btn btn-secondary">Quay lại</button>
+      <button class="btn btn-secondary" (click)="goBack()">Quay lại</button>
       <button class="btn btn-primary">Bắt đầu làm</button>
     </div>
   </aside>
@@ -107,24 +107,12 @@
 <!-- Form tạo mới exercise khi exercise = null -->
 <div class="create-exercise-container" *ngIf="!exercise">
   <div class="create-form">
-    <h1 class="title">Tạo bài tập lập trình mới</h1>
+    <h1 class="title">Chi tiết bài tập lập trình mới</h1>
 
     <form class="exercise-form">
       <!-- Thông tin cơ bản -->
       <div class="form-section">
         <h2 class="section-title">Thông tin cơ bản</h2>
-
-        <div class="form-group">
-          <label for="title">Tiêu đề bài tập *</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            class="form-control"
-            [(ngModel)]="formData.title"
-            required
-          />
-        </div>
 
         <div class="form-group">
           <label for="topic">Chủ đề *</label>
@@ -134,47 +122,6 @@
             name="topic"
             class="form-control"
             [(ngModel)]="formData.topic"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="description">Mô tả bài toán *</label>
-          <textarea
-            id="description"
-            name="description"
-            class="form-control"
-            rows="4"
-            [(ngModel)]="formData.description"
-            required
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="difficulty">Độ khó *</label>
-          <select
-            id="difficulty"
-            name="difficulty"
-            class="form-control"
-            [(ngModel)]="formData.difficulty"
-            required
-          >
-            <option value="">Chọn độ khó</option>
-            <option value="EASY">Dễ</option>
-            <option value="MEDIUM">Trung bình</option>
-            <option value="HARD">Khó</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="duration">Thời gian làm bài (phút) *</label>
-          <input
-            type="number"
-            id="duration"
-            name="duration"
-            class="form-control"
-            min="1"
-            [(ngModel)]="formData.duration"
             required
           />
         </div>
@@ -221,7 +168,7 @@
         </div>
 
         <div class="form-group">
-          <label for="timeLimit">Giới hạn thời gian (giây) *</label>
+          <label for="timeLimit">Giới hạn thời gian thực thi mã (giây) *</label>
           <input
             type="number"
             id="timeLimit"

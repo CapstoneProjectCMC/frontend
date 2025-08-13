@@ -11,6 +11,10 @@ import { CodingService } from '../../../../core/services/api-service/coding.serv
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { sendNotification } from '../../../../shared/utils/notification';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../shared/store/loading-state/loading.action';
 
 @Component({
   selector: 'app-exercise-code-details',
@@ -79,9 +83,6 @@ export class ExerciseCodeDetailsComponent {
           this.exercise = res.result;
         },
         error: (err) => {
-          if (err.code === 4048310) {
-            //thực hiện tạo mới exercise details tại đây
-          }
           console.log(err);
         },
       });
@@ -123,7 +124,7 @@ export class ExerciseCodeDetailsComponent {
   }
 
   goBack() {
-    this.router.navigate(['/exercises']);
+    this.router.navigate(['/exercise/exercise-layout/list']);
   }
 
   createExercise() {
@@ -140,29 +141,35 @@ export class ExerciseCodeDetailsComponent {
       return;
     }
 
+    this.store.dispatch(
+      setLoading({ isLoading: true, content: 'Đang tạo, xin chờ...' })
+    );
+
     // Get form data and create AddCodeDetailsRequest
     const formData = this.getFormData();
 
-    // TODO: Implement API call to create exercise
-    console.log('Creating exercise with data:', formData);
-
-    // Show success notification
-    sendNotification(
-      this.store,
-      'Thành công',
-      'Bài tập đã được tạo thành công!',
-      'success'
-    );
+    this.codingService.addCodingDetails(this.exerciseId, formData).subscribe({
+      next: (res) => {
+        sendNotification(
+          this.store,
+          'Đã thêm chi tiết bài code',
+          res.message,
+          'success'
+        );
+        this.fetchCodingDetails();
+        this.store.dispatch(clearLoading());
+      },
+      error: (err) => {
+        console.log(err);
+        this.store.dispatch(clearLoading());
+      },
+    });
   }
 
   private validateForm(): { isValid: boolean; message: string } {
     // Check required fields
     const requiredFields = [
-      { field: 'title', name: 'Tiêu đề bài tập' },
       { field: 'topic', name: 'Chủ đề' },
-      { field: 'description', name: 'Mô tả bài toán' },
-      { field: 'difficulty', name: 'Độ khó' },
-      { field: 'duration', name: 'Thời gian làm bài' },
       { field: 'input', name: 'Định dạng đầu vào' },
       { field: 'output', name: 'Định dạng đầu ra' },
       { field: 'constraintText', name: 'Các ràng buộc' },
