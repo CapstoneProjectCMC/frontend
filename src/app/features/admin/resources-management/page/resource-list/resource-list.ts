@@ -1,14 +1,10 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { PostCardInfo } from '../../../../../core/models/post.models';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
 import { SkeletonLoadingComponent } from '../../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
-import {
-  TrendingComponent,
-  TrendingItem,
-} from '../../../../../shared/components/fxdonad-shared/trending/trending.component';
+import { TrendingItem } from '../../../../../shared/components/fxdonad-shared/trending/trending.component';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { resourceCardInfo } from '../../../../../core/models/resource.model';
 import { ResourceCardComponent } from '../../../../../shared/components/my-shared/resource-card/resource-card';
@@ -25,7 +21,6 @@ import { ResourceCardComponent } from '../../../../../shared/components/my-share
     NgFor,
     NgIf,
     SkeletonLoadingComponent,
-    TrendingComponent,
     ResourceCardComponent,
   ],
 })
@@ -163,5 +158,4 @@ export class ResourceListComponent {
     console.log('Navigating to resource detail with ID:', resourceId);
     this.router.navigate(['/resource-management/resource', resourceId]);
   };
-  // ...existing code...
 }

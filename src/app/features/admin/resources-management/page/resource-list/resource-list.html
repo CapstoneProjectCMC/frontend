@@ -67,7 +67,7 @@
           <app-resource-card
             [resource]="resource"
             [onMain]="goToDetail"
-            [showControls]="false"
+            [showControls]="true"
           ></app-resource-card>
         </div>
       </div>
@@ -79,31 +79,6 @@
           [count]="8"
         ></app-skeleton-loading>
       </div>
-      <!-- <div class="list-resource-pagination">
-        <app-pagination
-          [totalData]="resources.length"
-          [amountDataPerPage]="10"
-          [currentPageIndex]=" 1"
-          (onPageChange)="handlePageChange($event)"
-        ></app-pagination>
-      </div> -->
-    </div>
-  </div>
-  <div class="popular">
-    <div class="popular-content">
-      <!-- <app-popular-content
-        [numTags]="fakeTags.length"
-        [tags]="fakeTags"
-      ></app-popular-content> -->
-      <app-trending
-        [items]="trendingData"
-        title="Popular Technologies"
-        [maxItems]="15"
-      >
-      </app-trending>
-    </div>
-    <div class="popular-resource">
-      <!-- <app-popular-resource [Listresource]="resources"></app-popular-resource> -->
     </div>
   </div>
 </div>
