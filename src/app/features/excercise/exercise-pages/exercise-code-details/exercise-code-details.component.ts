@@ -1,24 +1,24 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ExerciseCodeResponse,
   TestCaseResponse,
-  AddCodeDetailsRequest,
-  TestCase,
+  CodingDetailResponse,
+  UpdateCodingDetailRequest,
 } from '../../../../core/models/code.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CodingService } from '../../../../core/services/api-service/coding.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { sendNotification } from '../../../../shared/utils/notification';
 import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
+import { UpdateCodeDetailsComponent } from '../../exercise-modal/update-code-details/update-code-details.component';
 
 @Component({
   selector: 'app-exercise-code-details',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UpdateCodeDetailsComponent],
   templateUrl: './exercise-code-details.component.html',
   styleUrls: ['./exercise-code-details.component.scss'],
 })
@@ -26,36 +26,8 @@ export class ExerciseCodeDetailsComponent {
   exercise: ExerciseCodeResponse | null = null;
   exerciseId: string = '';
 
-  // Properties for create form
-  availableLanguages: string[] = [
-    'Java',
-    'Python',
-    'C++',
-    'JavaScript',
-    'C#',
-    'Go',
-    'Rust',
-  ];
-  testCases: TestCase[] = [];
-
-  // Form data object
-  formData: any = {
-    title: '',
-    topic: '',
-    description: '',
-    difficulty: '',
-    duration: 0,
-    input: '',
-    output: '',
-    constraintText: '',
-    timeLimit: 0,
-    memoryLimit: 0,
-    maxSubmissions: 0,
-    codeTemplate: '',
-    solution: '',
-    tags: '',
-    allowedLanguages: [],
-  };
+  // Modal state
+  isUpdateModalVisible: boolean = false;
 
   constructor(
     private codingService: CodingService,
@@ -67,25 +39,50 @@ export class ExerciseCodeDetailsComponent {
   ngOnInit(): void {
     this.exerciseId = this.route.snapshot.paramMap.get('id') ?? '';
     // Để component hoạt động ngay cả khi chưa có @Input, ta có thể dùng mock data
-    this.fetchCodingDetails();
+    if (this.exerciseId) {
+      this.fetchCodingDetails();
+    }
 
     // Initialize with one test case if creating new exercise
     if (!this.exerciseId) {
-      this.addTestCase();
+      this.router.navigate(['/exercise/exercise-layout/list']);
     }
   }
 
   fetchCodingDetails() {
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Đang lấy dữ liệu chi tiết...' })
+      );
+    });
+
     this.codingService
       .getCodingExercise(this.exerciseId, 1, 99999, 'CREATED_AT', false)
       .subscribe({
         next: (res) => {
           this.exercise = res.result;
+          this.hasNoDetails();
+          this.store.dispatch(clearLoading());
         },
         error: (err) => {
           console.log(err);
+          if (err.code === 4048310) {
+            this.hasNoDetails();
+          } else {
+            this.router.navigate(['/exercise/exercise-layout/list']);
+          }
+          this.store.dispatch(clearLoading());
         },
       });
+  }
+
+  hasNoDetails() {
+    if (!this.exercise) {
+      this.router.navigate([
+        '/exercise/exercise-layout/exercise-code-details/add-new',
+        this.exerciseId,
+      ]);
+    }
   }
 
   // Lọc và trả về chỉ các test case là mẫu (sample = true)
@@ -96,164 +93,44 @@ export class ExerciseCodeDetailsComponent {
     return [];
   }
 
-  // Methods for create form
-  addTestCase() {
-    this.testCases.push({
-      input: '',
-      expectedOutput: '',
-      sample: false,
-      note: '',
-    });
-  }
-
-  removeTestCase(index: number) {
-    this.testCases.splice(index, 1);
-  }
-
-  toggleLanguage(language: string) {
-    const index = this.formData.allowedLanguages.indexOf(language);
-    if (index > -1) {
-      this.formData.allowedLanguages.splice(index, 1);
-    } else {
-      this.formData.allowedLanguages.push(language);
-    }
-  }
-
-  isLanguageSelected(language: string): boolean {
-    return this.formData.allowedLanguages.includes(language);
-  }
-
   goBack() {
     this.router.navigate(['/exercise/exercise-layout/list']);
   }
 
-  createExercise() {
-    // Validate form data before creating
-    const validationResult = this.validateForm();
+  // Modal methods
+  openUpdateModal(): void {
+    this.isUpdateModalVisible = true;
+  }
 
-    if (!validationResult.isValid) {
-      sendNotification(
-        this.store,
-        'Lỗi validation',
-        validationResult.message,
-        'error'
-      );
-      return;
-    }
+  closeUpdateModal(): void {
+    this.isUpdateModalVisible = false;
+  }
 
+  onSaveCodingDetails(updatedCodingDetail: UpdateCodingDetailRequest): void {
     this.store.dispatch(
-      setLoading({ isLoading: true, content: 'Đang tạo, xin chờ...' })
+      setLoading({ isLoading: true, content: 'Đang cập nhật chi tiết...' })
     );
 
-    // Get form data and create AddCodeDetailsRequest
-    const formData = this.getFormData();
+    // Gọi API để cập nhật coding details
+    this.codingService
+      .updateCodingDetails(this.exerciseId, updatedCodingDetail)
+      .subscribe({
+        next: (res: any) => {
+          // Cập nhật lại dữ liệu local bằng cách fetch lại data
+          this.fetchCodingDetails();
 
-    this.codingService.addCodingDetails(this.exerciseId, formData).subscribe({
-      next: (res) => {
-        sendNotification(
-          this.store,
-          'Đã thêm chi tiết bài code',
-          res.message,
-          'success'
-        );
-        this.fetchCodingDetails();
-        this.store.dispatch(clearLoading());
-      },
-      error: (err) => {
-        console.log(err);
-        this.store.dispatch(clearLoading());
-      },
-    });
-  }
+          this.closeUpdateModal();
+          this.store.dispatch(clearLoading());
 
-  private validateForm(): { isValid: boolean; message: string } {
-    // Check required fields
-    const requiredFields = [
-      { field: 'topic', name: 'Chủ đề' },
-      { field: 'input', name: 'Định dạng đầu vào' },
-      { field: 'output', name: 'Định dạng đầu ra' },
-      { field: 'constraintText', name: 'Các ràng buộc' },
-      { field: 'timeLimit', name: 'Giới hạn thời gian' },
-      { field: 'memoryLimit', name: 'Giới hạn bộ nhớ' },
-      { field: 'maxSubmissions', name: 'Lượt nộp tối đa' },
-      { field: 'solution', name: 'Giải pháp' },
-    ];
-
-    for (const fieldInfo of requiredFields) {
-      const value = this.formData[fieldInfo.field];
-      if (
-        !value ||
-        (typeof value === 'string' && !value.trim()) ||
-        (typeof value === 'number' && value <= 0)
-      ) {
-        return {
-          isValid: false,
-          message: `Vui lòng điền đầy đủ thông tin cho trường: ${fieldInfo.name}`,
-        };
-      }
-    }
-
-    // Check if at least one language is selected
-    if (
-      !this.formData.allowedLanguages ||
-      this.formData.allowedLanguages.length === 0
-    ) {
-      return {
-        isValid: false,
-        message: 'Vui lòng chọn ít nhất một ngôn ngữ lập trình',
-      };
-    }
-
-    // Check test cases
-    if (this.testCases.length === 0) {
-      return {
-        isValid: false,
-        message: 'Vui lòng thêm ít nhất một test case',
-      };
-    }
-
-    // Check each test case has required fields
-    for (let i = 0; i < this.testCases.length; i++) {
-      const testCase = this.testCases[i];
-      if (!testCase.input.trim()) {
-        return {
-          isValid: false,
-          message: `Test case ${i + 1}: Vui lòng điền input`,
-        };
-      }
-      if (!testCase.expectedOutput.trim()) {
-        return {
-          isValid: false,
-          message: `Test case ${i + 1}: Vui lòng điền expected output`,
-        };
-      }
-    }
-
-    // Check if at least one sample test case exists
-    const sampleTestCases = this.testCases.filter((tc) => tc.sample);
-    if (sampleTestCases.length === 0) {
-      return {
-        isValid: false,
-        message: 'Vui lòng đánh dấu ít nhất một test case là mẫu (sample)',
-      };
-    }
-
-    return { isValid: true, message: '' };
-  }
-
-  private getFormData(): AddCodeDetailsRequest {
-    return {
-      topic: this.formData.topic,
-      allowedLanguages: this.formData.allowedLanguages,
-      input: this.formData.input,
-      output: this.formData.output,
-      constraintText: this.formData.constraintText,
-      timeLimit: this.formData.timeLimit,
-      memoryLimit: this.formData.memoryLimit,
-      maxSubmissions: this.formData.maxSubmissions,
-      codeTemplate: this.formData.codeTemplate,
-      solution: this.formData.solution,
-      testCases: this.testCases,
-    };
+          // Hiển thị thông báo thành công
+          // sendNotification(this.store, 'Thành công', 'Đã cập nhật chi tiết bài tập', 'success');
+        },
+        error: (err: any) => {
+          console.error('Error updating coding details:', err);
+          this.store.dispatch(clearLoading());
+          // Hiển thị thông báo lỗi
+          // sendNotification(this.store, 'Lỗi', 'Không thể cập nhật chi tiết bài tập', 'error');
+        },
+      });
   }
 }
