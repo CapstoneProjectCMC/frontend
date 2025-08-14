@@ -105,6 +105,8 @@ export const API_CONFIG = {
         `/submission/quiz/question/option/${optionId}`,
       UPDATE_QUESTION_WITH_OPTION: (exerciseId: string, questionId: string) =>
         `/submission/quiz/${exerciseId}/question/${questionId}`,
+      UPDATE_CODING_DETAILS: (exerciseId: string) =>
+        `/submission/coding/exercise/${exerciseId}/coding-detail`,
     },
     DELETE: {
       DELETE_QUESTION: (exerciseId: string, questionId: string) =>

@@ -66,6 +66,7 @@ export type TestCaseResponse = {
   expectedOutput: string;
   sample: boolean;
   note: string;
+  delete?: boolean | undefined;
 };
 
 export type AddCodeDetailsRequest = {
@@ -80,4 +81,27 @@ export type AddCodeDetailsRequest = {
   codeTemplate: string;
   solution: string;
   testCases: TestCase[];
+};
+
+export type UpdateCodingDetailRequest = {
+  topic: string;
+  allowedLanguages: string[];
+  input: string;
+  output: string;
+  constraintText: string;
+  timeLimit: number; // seconds
+  memoryLimit: number; // MB
+  maxSubmissions: number;
+  codeTemplate: string;
+  solution: string;
+  testCases: UpdateTestCaseRequest[];
+};
+
+export type UpdateTestCaseRequest = {
+  id: string;
+  input: string;
+  expectedOutput: string;
+  sample: boolean;
+  note: string;
+  delete?: boolean;
 };
