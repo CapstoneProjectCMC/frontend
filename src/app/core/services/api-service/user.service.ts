@@ -16,4 +16,22 @@ export class UserService {
       API_CONFIG.ENDPOINTS.GET.GET_ALL_USER(page, size, sort, asc)
     );
   }
+  followUser(targetUserId: string) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.FOLLOWUSER(targetUserId),
+      {}
+    );
+  }
+  unFollowUser(targetUserId: string) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.UNFOLLOWUSER(targetUserId),
+      {}
+    );
+  }
+  getFollowers(page: number, size: number) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.GET.GET_FOLLOWINGS(page, size),
+      {}
+    );
+  }
 }

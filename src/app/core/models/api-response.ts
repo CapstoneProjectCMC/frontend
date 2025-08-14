@@ -29,3 +29,17 @@ export interface IPaginationResponse<T> {
   totalElements: number;
   data: T;
 }
+export interface XuanIPaginationResponse<T> {
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalElements: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+  data: T;
+}
+export interface XuanPresignedUrlResponse {
+  datas: {
+    presignedUrl: string;
+  };
+}
