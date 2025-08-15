@@ -101,6 +101,8 @@ export const API_CONFIG = {
         `/profile/social/follow/${targetUserId}`,
       GET_RESOURCE: `/file/api/FileDocument/public`,
       ADD_RESOURCE: `/file/api/FileDocument/add`,
+      ADD_POST: `/post/posts/createPost`,
+      GET_POST: `/post/posts/getAllAccessiblePosts`,
     },
     PUT: { EDIT_RESOURCE: (id: string) => `/file/api/FileDocument/${id}` },
     PATCH: {

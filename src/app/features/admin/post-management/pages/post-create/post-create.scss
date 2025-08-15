@@ -1,27 +1,209 @@
 .post-create-container {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: flex-end;
-  gap: 16px;
-  padding: 16px;
-  width: 70%;
-  .input-title {
-    width: 100%;
-    font-size: 1.5rem;
-  }
-  .input-info {
+  flex-direction: row;
+  .general-infor {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 16px;
+    flex: 2;
+    .input-title {
+      width: 100%;
+      font-size: 1.5rem;
+    }
+    .input-info {
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+      width: 100%;
+    }
+    .input-content {
+      width: 100%;
+    }
+    .post-create-button {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+  }
+  .metric {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 8px;
-    width: 100%;
-  }
-  .input-content {
-    width: 100%;
-  }
-  .post-create-button {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+    min-width: 0;
+    margin-top: 40px;
+    .file-upload {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+
+      .upload-label {
+        align-self: center;
+        width: 95%;
+        cursor: pointer;
+        align-self: flex-start;
+      }
+
+      .preview-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .preview-item {
+        position: relative;
+        flex: 0 0 auto;
+
+        .preview-image {
+          width: 120px;
+          height: 120px;
+          object-fit: cover;
+          border-radius: 6px;
+          border: 1px solid #ddd;
+        }
+
+        .remove-btn {
+          position: absolute;
+          top: 4px;
+          right: 4px;
+          background: rgba(0, 0, 0, 0.5);
+          color: white;
+          border: none;
+          border-radius: 50%;
+          width: 20px;
+          height: 20px;
+          font-size: 14px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+
+          &:hover {
+            background: rgba(255, 0, 0, 0.7);
+          }
+        }
+      }
+    }
+
+    .link-section {
+      margin-top: 16px;
+      width: 100%;
+      & :hover {
+        background-color: var(--primary-color-lighter);
+      }
+      .link-header {
+        width: 50%;
+        display: flex;
+        align-items: center;
+        border-radius: 8px;
+        border: 1px solid var(--primary-color);
+        justify-content: center;
+        padding: 5px;
+        justify-self: start;
+      }
+
+      .add-link-btn {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 16px;
+        border: none;
+        background: none;
+        cursor: pointer;
+        color: #334eac;
+
+        svg {
+          width: 18px;
+          height: 18px;
+        }
+
+        &:hover {
+          color: #081f5c;
+        }
+      }
+
+      .link-input {
+        margin-top: 8px;
+        display: flex;
+        gap: 8px;
+
+        input {
+          flex: 1;
+          padding: 6px 8px;
+          border: 1px solid var(--border-color);
+          border-radius: 4px;
+        }
+
+        button {
+          padding: 6px 12px;
+          background: #334eac;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+
+          &:hover {
+            background: #081f5c;
+          }
+        }
+      }
+
+      .link-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 8px;
+        max-width: 400px;
+        li {
+          svg {
+            flex-shrink: 0;
+            color: var(--primary-color);
+          }
+
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: var(--input-primary-color);
+
+          padding: 6px 8px;
+          border-radius: 4px;
+          margin-bottom: 4px;
+
+          a {
+            padding-left: 5px;
+            color: var(--primary-color);
+            text-decoration: none;
+            white-space: nowrap; // không xuống dòng
+            overflow: hidden; // ẩn phần dư
+            text-overflow: ellipsis; // thêm dấu …
+            max-width: calc(100% - 40px); // chừa khoảng cho nút x
+            display: inline-block;
+          }
+
+          .remove-link {
+            background: var(--surface-color);
+            border: none;
+            border-radius: 20px;
+            color: rgb(202, 35, 35);
+            font-size: 16px;
+            cursor: pointer;
+            line-height: 1;
+            flex-shrink: 0;
+            margin-left: 8px;
+            &:hover {
+              background: var(--hover-color);
+              color: rgb(255, 83, 83);
+            }
+          }
+        }
+      }
+    }
   }
 }
