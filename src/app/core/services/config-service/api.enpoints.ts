@@ -59,6 +59,12 @@ export const API_CONFIG = {
         q: string
       ) =>
         `/search?tags=${tags}&difficulty=${difficulty}&createdBy=${createdBy}&exerciseType=${exerciseType}&orgId=${orgId}&freeForOrg=${freeForOrg}&minCost=${minCost}&maxCost=${maxCost}&startAfter=${startAfter}&endBefore=${endBefore}&allowAiQuestion=${allowAiQuestion}&page=${page}&size=${size}&q=${q}`,
+
+      GET_FOLLOWERS: (page: number, size: number) =>
+        `/profile/social/followers?page=${page}&size=${size}`,
+      GET_FOLLOWINGS: (page: number, size: number) =>
+        `/profile/social/followings?page=${page}&size=${size}`,
+      GET_RESOURCE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -91,8 +97,12 @@ export const API_CONFIG = {
         `/submission/assignment?exerciseId=${exerciseId}&studentId=${studentId}&dueAt=${dueAt}`,
       UPLOAD_AVATAR: `/profile/user/my-profile/avatar`,
       UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
+      FOLLOWUSER: (targetUserId: string) =>
+        `/profile/social/follow/${targetUserId}`,
+      GET_RESOURCE: `/file/api/FileDocument/public`,
+      ADD_RESOURCE: `/file/api/FileDocument/add`,
     },
-    PUT: {},
+    PUT: { EDIT_RESOURCE: (id: string) => `/file/api/FileDocument/${id}` },
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
         `/submission/exercise/${exerciseId}`,
@@ -113,6 +123,9 @@ export const API_CONFIG = {
         `/submission/quiz/${exerciseId}/question/${questionId}`,
       SOFT_DELETE_EXERCISE: (exerciseId: string) =>
         `/submission/exercise/${exerciseId}`,
+      UNFOLLOWUSER: (targetUserId: string) =>
+        `/profile/social/follow/${targetUserId}`,
+      DELETE_RESOURCE: (id: string) => `/file/api/FileDocument/${id}`,
     },
   },
   HEADERS: {

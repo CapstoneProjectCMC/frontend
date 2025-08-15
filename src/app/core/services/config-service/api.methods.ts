@@ -91,6 +91,18 @@ export class ApiMethod {
       noHeader ? undefined : { headers: this.getHeaders() }
     );
   }
+  deletehasbody<T>(
+    endpoint: string,
+    body?: any,
+    noHeader?: boolean,
+    apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
+  ): Observable<T> {
+    const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
+    return this.http.delete<T>(url, {
+      body,
+      headers: noHeader ? undefined : this.getHeaders(),
+    });
+  }
 
   getBlob(
     endpoint: string,

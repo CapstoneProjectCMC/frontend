@@ -1,0 +1,148 @@
+<div class="post-create-container">
+  <div class="general-infor">
+    <div class="input-title">
+      <app-input
+        label="Tên bài đăng"
+        placeholder="Nhập tên..."
+        [value]="postTitle"
+        (valueChange)="handleInputChange($event)"
+        [required]="true"
+        [minLength]="3"
+        [variant]="'primary'"
+        [errorMessage]="postTitleError"
+        [isSvg]="false"
+      ></app-input>
+    </div>
+
+    <div class="input-info">
+      <app-dropdown-button
+        [label]="'Nơi đăng'"
+        [options]="wherepost"
+        [variant]="'secondary'"
+        [size]="'small'"
+        [customDropField]="'main-type'"
+        [disabled]="false"
+        [multiSelect]="true"
+        [isDisplayCheckbox]="false"
+        (onSelect)="handleSelect('wherepost', $event)"
+        [isOpen]="activeDropdown === 'wherepost'"
+        (toggle)="toggleDropdown('wherepost')"
+        [isDisplaySelectedOpptionLabels]="true"
+        [isButtonControl]="true"
+        [isSearchable]="true"
+        [minHeight]="true"
+        [needIndexColor]="true"
+      ></app-dropdown-button>
+      <app-dropdown-button
+        [label]="'Chọn tag'"
+        [options]="tag"
+        [variant]="'secondary'"
+        [size]="'small'"
+        [customDropField]="'main-type'"
+        [disabled]="false"
+        [multiSelect]="true"
+        [isDisplayCheckbox]="false"
+        (onSelect)="handleSelect('tag', $event)"
+        [isOpen]="activeDropdown === 'tag'"
+        (toggle)="toggleDropdown('tag')"
+        [isDisplaySelectedOpptionLabels]="true"
+        [isButtonControl]="true"
+        [isSearchable]="true"
+        [minHeight]="true"
+        [needIndexColor]="true"
+      ></app-dropdown-button>
+    </div>
+
+    <div class="input-content">
+      <div class="title">
+        Nhập mô tả cho tài nguyên của bạn
+        <span class="require">*</span>
+      </div>
+
+      <app-text-editor
+        [(value)]="editorContent"
+        [config]="editorConfig"
+        (onChange)="onContentChange($event)"
+        (onFocus)="onEditorFocus()"
+        (onBlur)="onEditorBlur()"
+      ></app-text-editor>
+    </div>
+    <div class="post-create-button">
+      <app-button
+        [variant]="'cancel'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="cancelPost()"
+        >Hủy</app-button
+      >
+      <app-button
+        [variant]="'outline'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="saveDraftPost()"
+        >Lưu Nháp</app-button
+      >
+      <app-button
+        [variant]="'solid'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="createPost()"
+        >Đăng Bài</app-button
+      >
+    </div>
+  </div>
+
+  <div class="file-upload">
+    <label class="upload-label">
+      <input
+        type="file"
+        (change)="onFileSelected($event)"
+        [multiple]="false"
+        accept="image/*,.pdf,.doc,.docx,video/*"
+        hidden
+      />
+      <app-button [width]="'100%'" [variant]="'outline'">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m18 9-6-6-6 6" />
+          <path d="M12 3v14" />
+          <path d="M5 21h14" />
+        </svg>
+        <span>Chọn file</span>
+      </app-button>
+    </label>
+
+    <div class="preview-container" *ngIf="selectedFile">
+      <ng-container *ngIf="isImageFile; else nonImagePreview">
+        <img [src]="filePreview" alt="Xem trước" class="preview-image" />
+      </ng-container>
+      <ng-template #nonImagePreview>
+        <div class="file-info">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="M14 2H6a2 2 0 0 0-2 2v16l4-4h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"
+            />
+          </svg>
+          <span>{{ selectedFile.name }}</span>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

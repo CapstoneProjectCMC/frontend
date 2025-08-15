@@ -34,7 +34,7 @@ export class ProfileService {
     links: string[],
     city: string
   ) {
-    return this.api.patch<ApiResponse<User>>(
+    return this.api.patch<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.PATCH.UPDATE_PROFILE_USER,
       {
         firstName,
@@ -51,28 +51,28 @@ export class ProfileService {
   }
 
   uploadBackground(background: File) {
-    return this.api.uploadFile<ApiResponse<User>>(
+    return this.api.uploadFile<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.UPLOAD_BACKGROUND,
       background
     );
   }
 
   uploadAvatar(avatar: File) {
-    return this.api.uploadFile<ApiResponse<User>>(
+    return this.api.uploadFile<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.UPLOAD_AVATAR,
       avatar
     );
   }
 
   updateBackground(background: File) {
-    return this.api.uploadFile<ApiResponse<User>>(
+    return this.api.uploadFile<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.PATCH.UPDATE_BACKGROUND,
       background
     );
   }
 
   updateAvatar(avatar: File) {
-    return this.api.uploadFile<ApiResponse<User>>(
+    return this.api.uploadFile<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.PATCH.UPDATE_AVATAR,
       avatar
     );

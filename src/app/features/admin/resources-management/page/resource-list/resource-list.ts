@@ -1,14 +1,10 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { PostCardInfo } from '../../../../../core/models/post.models';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
 import { SkeletonLoadingComponent } from '../../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
-import {
-  TrendingComponent,
-  TrendingItem,
-} from '../../../../../shared/components/fxdonad-shared/trending/trending.component';
+import { TrendingItem } from '../../../../../shared/components/fxdonad-shared/trending/trending.component';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { resourceCardInfo } from '../../../../../core/models/resource.model';
 import { ResourceCardComponent } from '../../../../../shared/components/my-shared/resource-card/resource-card';
@@ -25,7 +21,6 @@ import { ResourceCardComponent } from '../../../../../shared/components/my-share
     NgFor,
     NgIf,
     SkeletonLoadingComponent,
-    TrendingComponent,
     ResourceCardComponent,
   ],
 })
@@ -37,12 +32,12 @@ export class ResourceListComponent {
       authorId: 'u001',
       authorName: 'Fxdonad',
       fileResource: new File([''], 'intro-video.mp4', { type: 'video/mp4' }),
-      progress: 0,
+      progress: 1,
       title: 'Video giới thiệu CodeCampus',
       time: new Date('2025-06-24'),
       description: 'Video mở đầu giới thiệu nền tảng CodeCampus.',
       tags: ['document', 'tutorial', 'video'],
-      status: 'active',
+      status: 'accepted',
       public: true,
     },
     {
@@ -51,13 +46,13 @@ export class ResourceListComponent {
       authorId: 'u002',
       authorName: 'Nguyễn Văn A',
       fileResource: new File([''], 'hdsd-pdf.pdf', { type: 'application/pdf' }),
-      progress: 0,
+      progress: 3,
       title: 'Tài liệu hướng dẫn bật PDF thumbnail',
       time: new Date('2025-06-25'),
       description:
         'Hướng dẫn bật chế độ hiển thị thumbnail cho file PDF trên Windows.',
       tags: ['PDF', 'document', 'guide'],
-      status: 'active',
+      status: 'accepted',
       public: true,
     },
     {
@@ -68,12 +63,12 @@ export class ResourceListComponent {
       fileResource: new File([''], 'bao-cao.docx', {
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       }),
-      progress: 0,
+      progress: 4,
       title: 'Báo cáo kết quả học tập',
       time: new Date('2025-07-01'),
       description: 'Báo cáo Word tổng kết điểm và tiến độ học tập.',
       tags: ['Word', 'document', 'report'],
-      status: 'active',
+      status: 'accepted',
       public: true,
     },
     {
@@ -82,12 +77,12 @@ export class ResourceListComponent {
       authorId: 'u004',
       authorName: 'Trần Văn C',
       fileResource: new File([''], 'poster.png', { type: 'image/png' }),
-      progress: 0,
+      progress: 3,
       title: 'Poster quảng bá sự kiện',
       time: new Date('2025-07-05'),
       description: 'Poster PNG dùng để giới thiệu sự kiện Code Hackathon.',
       tags: ['image', 'event', 'poster'],
-      status: 'active',
+      status: 'accepted',
       public: true,
     },
   ];
@@ -163,5 +158,4 @@ export class ResourceListComponent {
     console.log('Navigating to resource detail with ID:', resourceId);
     this.router.navigate(['/resource-management/resource', resourceId]);
   };
-  // ...existing code...
 }
