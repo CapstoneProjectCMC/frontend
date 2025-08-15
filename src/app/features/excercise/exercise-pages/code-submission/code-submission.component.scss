@@ -1,0 +1,238 @@
+.submission-container {
+  display: grid;
+  grid-template-columns: 1fr 5px 1.5fr; // Cột cho resizer
+  height: calc(100vh - 130px); // Trừ đi chiều cao header
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* --- Panel chung --- */
+.left-panel,
+.right-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0.5rem 1rem;
+}
+
+.resizer {
+  background: var(--border-color);
+  cursor: col-resize;
+  width: 5px;
+  height: 100%;
+}
+
+/* --- Khu vực bên trái --- */
+.left-panel {
+  background-color: var(--background-color-secondary);
+  border-radius: 8px;
+  margin: 0.5rem;
+}
+
+.panel-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 1rem;
+
+  .tab-item {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    position: relative;
+
+    &.active {
+      color: var(--text-primary);
+      font-weight: 600;
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: var(--accent-color);
+      }
+    }
+  }
+}
+
+.panel-content {
+  overflow-y: auto;
+  padding-right: 1rem; // Thêm padding cho thanh cuộn
+}
+
+.problem-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+
+  .difficulty {
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    &.easy {
+      background-color: rgba(76, 175, 80, 0.2);
+      color: #69f0ae;
+    }
+    &.medium {
+      background-color: rgba(255, 152, 0, 0.2);
+      color: #ffd180;
+    }
+    &.hard {
+      background-color: rgba(244, 67, 54, 0.2);
+      color: #ff8a80;
+    }
+  }
+}
+
+.examples pre {
+  background-color: var(--surface-color);
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* --- Test Case Styling --- */
+.test-case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.test-case-item {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition: all 0.2s ease;
+
+  &.pass {
+    border-left: 4px solid var(--accent-success);
+  }
+  &.fail {
+    border-left: 4px solid var(--accent-fail);
+  }
+
+  .status-icon {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  &.pass .status-icon {
+    color: var(--accent-success);
+  }
+  &.fail .status-icon {
+    color: var(--accent-fail);
+  }
+
+  .case-details code {
+    background-color: var(--background-primary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+  }
+}
+
+/* --- Khu vực bên phải --- */
+.right-panel {
+  display: grid;
+  grid-template-rows: 60% 40%; // Editor và Console
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.editor-wrapper {
+  border-radius: 8px;
+  height: 100%;
+}
+
+.console-wrapper {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+
+  .console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+  }
+
+  .editor-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .control-btn {
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+
+    &:not(:disabled):hover {
+      transform: translateY(-1px);
+      background-color: var(--background-color-secondary);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &.submit {
+      background-color: var(--success-color);
+      border-color: var(--border-color);
+      color: white;
+      &:not(:disabled):hover {
+        background-color: #5cb85c;
+        transform: translateY(-1px);
+      }
+    }
+  }
+
+  .console-content {
+    padding: 0.5rem;
+    overflow-y: auto;
+    flex-grow: 1;
+    background-color: var(--background-color-secondary);
+    border-radius: 8px;
+    // border: 1px solid var(--border-color);
+
+    .metrics {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      span + span {
+        margin-left: 1rem;
+      }
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 0.9rem;
+      height: 105px;
+      overflow: auto;
+      margin: 0;
+      border-radius: 0 0 5px 5px;
+      background-color: var(--background-color);
+      &.error {
+        color: var(--accent-fail);
+      }
+    }
+  }
+}

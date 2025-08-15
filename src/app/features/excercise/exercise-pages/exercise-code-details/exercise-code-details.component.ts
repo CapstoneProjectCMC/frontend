@@ -15,7 +15,10 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 import { UpdateCodeDetailsComponent } from '../../exercise-modal/update-code-details/update-code-details.component';
-import { sendNotification } from '../../../../shared/utils/notification';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../../shared/utils/notification';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 
 @Component({
@@ -41,7 +44,7 @@ export class ExerciseCodeDetailsComponent {
 
   ngOnInit(): void {
     this.exerciseId = this.route.snapshot.paramMap.get('id') ?? '';
-    // Để component hoạt động ngay cả khi chưa có @Input, ta có thể dùng mock data
+
     if (this.exerciseId) {
       this.fetchCodingDetails();
     }
@@ -145,5 +148,12 @@ export class ExerciseCodeDetailsComponent {
           this.store.dispatch(clearLoading());
         },
       });
+  }
+
+  confirmCoding() {
+    this.router.navigate([
+      '/exercise/exercise-layout/code-submission',
+      this.exerciseId,
+    ]);
   }
 }

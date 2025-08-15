@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../../../styles/theme-service/theme.service';
 import { Subscription } from 'rxjs';
+import { placeholder } from '@codemirror/view';
 
 @Component({
   selector: 'app-code-editor',
@@ -26,7 +27,6 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   languages = [
     { id: 'python', name: 'Python', extension: python },
     { id: 'cpp', name: 'C++', extension: cpp },
-    { id: 'csharp', name: 'C#', extension: cpp }, // Tạm thời dùng chung C++ cho C#
     { id: 'java', name: 'Java', extension: java },
     { id: 'javascript', name: 'JavaScript', extension: javascript },
   ];
@@ -70,6 +70,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
       basicSetup,
       language ? language() : python(),
       EditorView.lineWrapping,
+      placeholder('// Bắt đầu code tại đây...'),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
           const code = update.state.doc.toString();
@@ -105,7 +106,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     }
 
     this.editor = new EditorView({
-      doc: '// Start coding here...',
+      doc: '',
       extensions,
       parent: editorElement,
     });

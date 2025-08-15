@@ -1,0 +1,108 @@
+<div class="submission-container" #submissionContainer>
+  <div class="left-panel" #leftPanel>
+    <div class="panel-tabs">
+      <button
+        class="tab-item"
+        [class.active]="activeLeftTab === 'description'"
+        (click)="selectLeftTab('description')"
+      >
+        Description
+      </button>
+      <button
+        class="tab-item"
+        [class.active]="activeLeftTab === 'testcases'"
+        (click)="selectLeftTab('testcases')"
+      >
+        Test Cases
+      </button>
+    </div>
+
+    <div class="panel-content" *ngIf="activeLeftTab === 'description'">
+      <div class="problem-header">
+        <h2>{{ exercise?.title }}</h2>
+        <span
+          class="difficulty"
+          [ngClass]="exercise?.difficulty?.toLowerCase()"
+        >
+          {{ exercise?.difficulty }}
+        </span>
+      </div>
+      <div
+        class="problem-description"
+        [innerHTML]="exercise?.description"
+      ></div>
+      <div class="examples" *ngFor="let example of examples; let i = index">
+        <h4>Example {{ i + 1 }}</h4>
+        <pre><strong>Input:</strong> {{ example.input }}</pre>
+        <pre><strong>Output:</strong> {{ example.output }}</pre>
+      </div>
+    </div>
+
+    <div class="panel-content" *ngIf="activeLeftTab === 'testcases'">
+      <h4>Test Results</h4>
+      <div class="test-case-grid">
+        <div
+          *ngFor="let tc of testCases"
+          class="test-case-item"
+          [ngClass]="tc.status"
+        >
+          <div class="status-icon">
+            <span *ngIf="tc.status === 'pass'">✓</span>
+            <span *ngIf="tc.status === 'fail'">✗</span>
+            <span *ngIf="tc.status === 'pending'">...</span>
+          </div>
+          <div class="case-details">
+            <div class="case-input">
+              Input: <code>{{ tc.input }}</code>
+            </div>
+            <div *ngIf="tc.status !== 'pending'">
+              <div>
+                Expected: <code>{{ tc.expected }}</code>
+              </div>
+              <div *ngIf="tc.status === 'fail'">
+                Actual: <code>{{ tc.actual }}</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="resizer" #resizer (mousedown)="onMouseDown($event)"></div>
+
+  <div class="right-panel">
+    <div class="editor-wrapper">
+      <app-code-editor class="code-editor"></app-code-editor>
+    </div>
+
+    <div class="console-wrapper">
+      <div class="console-header">
+        <span>Console</span>
+        <div class="editor-controls">
+          <button
+            class="control-btn"
+            (click)="runCode()"
+            [disabled]="isRunning || isSubmitting"
+          >
+            <i class="fa fa-play"></i> Chạy thử
+          </button>
+          <button
+            class="control-btn submit"
+            (click)="submitCode()"
+            [disabled]="isRunning || isSubmitting"
+          >
+            <i class="fa-solid fa-paper-plane"></i> Submit
+          </button>
+        </div>
+      </div>
+      <div class="console-content">
+        <div class="metrics" *ngIf="!isRunning">
+          <span>Time: {{ executionTime }}ms</span>
+          <span>Memory: {{ memoryUsage }}MB</span>
+        </div>
+        <pre [ngClass]="{ error: hasError }">{{ output }}</pre>
+      </div>
+    </div>
+  </div>
+</div>
