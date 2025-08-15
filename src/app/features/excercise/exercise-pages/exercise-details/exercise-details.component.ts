@@ -43,7 +43,7 @@ import { ProfileService } from '../../../../core/services/api-service/profile.se
     UpdateQuestionOptionComponent,
   ],
   templateUrl: './exercise-details.component.html',
-  styleUrl: './exercise-details.component.scss',
+  styleUrls: ['./exercise-details.component.scss'],
   animations: [
     trigger('dropdownAnimation', [
       state('void', style({ opacity: 0, transform: 'scaleY(0.95)' })),
@@ -57,6 +57,7 @@ export class ExerciseDetailsComponent implements OnInit {
   isOpenAddNewOption: boolean = false;
   isOpenUpdateExercise: boolean = false;
   isUpdateQuestion: boolean = false;
+  isOpenAssignExercise: boolean = false;
   resetLoadingFlag = false;
 
   initialSelectedQuestion: QuizQuestion = {
@@ -197,7 +198,7 @@ export class ExerciseDetailsComponent implements OnInit {
   }
 
   getUserInfo(userId: string) {
-    this.profileService.getMyProfile().subscribe({
+    this.profileService.getProfilebyId(userId).subscribe({
       next: (res) => {
         this.authorName = res.result.displayName;
       },
@@ -412,6 +413,10 @@ export class ExerciseDetailsComponent implements OnInit {
     );
   }
 
+  openAssignExercise() {
+    this.isOpenAssignExercise = true;
+  }
+
   goBack() {
     this.location.back();
   }
@@ -438,6 +443,10 @@ export class ExerciseDetailsComponent implements OnInit {
   closeDropdown() {
     this.openDropdownIndex = null;
     this.opentDeleteConfirm = null;
+  }
+
+  get hasQuestions(): boolean {
+    return (this.exercise.quizDetail?.questions?.length ?? 0) > 0;
   }
 
   getOptionLabel(index: number): string {

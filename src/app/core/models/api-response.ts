@@ -10,6 +10,11 @@ export type XuanApiResponse<T> = {
   status: string;
   result: T;
 };
+export type NhatApiResponeNoData = {
+  code: number;
+  message: string;
+  status: string;
+};
 
 export type loginResponse = {
   tokenAccessType: string;

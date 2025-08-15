@@ -1,4 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
@@ -8,6 +9,7 @@ import {
   TextEditorConfig,
 } from '../../../../../shared/components/fxdonad-shared/text-editor/text-editor';
 import { HtmlToMdService } from '../../../../../shared/utils/HTMLtoMarkDown';
+import { FormsModule, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-post-create',
@@ -18,17 +20,41 @@ import { HtmlToMdService } from '../../../../../shared/utils/HTMLtoMarkDown';
     TextEditor,
     DropdownButtonComponent,
     ButtonComponent,
+    FormsModule,
+    NgIf,
+    NgFor,
   ],
 })
 export class PostCreatePageComponent {
+  post = {
+    title: '',
+    orgId: '',
+    content: '',
+    isPublic: false,
+    allowComment: false,
+    postType: '',
+    oldImagesUrls: [] as string[],
+    hashtag: [] as string[],
+    status: 'PENDING',
+    fileDocument: {
+      file: File,
+      category: [] as string[],
+      description: '',
+      tags: [] as string[],
+      isLectureVideo: false,
+      isTextBook: false,
+      orgId: '',
+    },
+  };
   tag: { value: string; label: string }[] = [];
   wherepost: { value: string; label: string }[] = [];
   topics: { value: string; label: string }[] = [];
-  //   wherepostOptions: { [key: string]: any } = {};
-  //   topicsOptions: { [key: string]: any } = {};
-  //   tagOptions: { [key: string]: any } = {};
+
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
+  selectedFiles: File[] = [];
+  filePreviews: string[] = [];
+  isImageFile: boolean = false;
   constructor(private htmlToMd: HtmlToMdService) {
     this.tag = [
       { value: 'tag1', label: 'Tag 1' },
@@ -46,22 +72,59 @@ export class PostCreatePageComponent {
       { value: 'topic3', label: 'Topic 3' },
     ];
   }
-  postTitle: string = '';
+  //xli file
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFiles = Array.from(input.files).filter((file) =>
+        file.type.startsWith('image/')
+      );
+
+      this.filePreviews = [];
+      this.selectedFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            this.filePreviews.push(e.target.result as string);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+  removeImage(index: number) {
+    this.selectedFiles.splice(index, 1);
+    this.filePreviews.splice(index, 1);
+  }
+  //xli link
+  newLink: string = '';
+  isAddingLink: boolean = false;
+
+  startAddLink() {
+    this.isAddingLink = true;
+    setTimeout(() => {
+      const input = document.getElementById('linkInput');
+      if (input) (input as HTMLInputElement).focus();
+    });
+  }
+
+  addLink() {
+    const trimmed = this.newLink.trim();
+    if (trimmed) {
+      this.post.oldImagesUrls.push(trimmed);
+      this.newLink = '';
+      this.isAddingLink = false;
+    }
+  }
+
+  removeLink(index: number) {
+    this.post.oldImagesUrls.splice(index, 1);
+  }
+  ///khác
+
   postTitleError: string | null = null;
   handleInputChange(value: string | number): void {
-    this.postTitle = value.toString();
-
-    // // Validate input
-    // if (!this.postTitle) {
-    //   this.postTitleError = 'Không được để trống';
-    // } else if (this.postTitle.length < 3) {
-    //   this.postTitleError = 'Tối thiểu 3 ký tự';
-    // } else {
-    //   this.postTitleError = null;
-    // }
-
-    // Emit changes if needed
-    console.log('Input changed:', this.postTitle);
+    this.post.title = value.toString();
   }
   handleSelect(dropdownKey: string, selected: any): void {
     // Reset toàn bộ các lựa chọn trước đó
@@ -69,28 +132,25 @@ export class PostCreatePageComponent {
 
     // Lưu lại option vừa chọn
     this.selectedOptions[dropdownKey] = selected;
-
-    // this.router.navigate(['/', dropdownKey, selected.label]);
-
-    console.log(this.selectedOptions);
+    // Nếu dropdownKey là 'wherepost' thì gán orgId
+    if (dropdownKey === 'wherepost') {
+      this.post.orgId = selected?.value || '';
+    }
+    if (dropdownKey === 'tag') {
+      // Multi select → map label
+      if (Array.isArray(selected)) {
+        this.post.hashtag = selected.map((s) => s.label);
+      } else {
+        this.post.hashtag = selected?.label ? [selected.label] : [];
+      }
+    }
   }
 
   toggleDropdown(id: string): void {
     // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
     this.activeDropdown = this.activeDropdown === id ? null : id;
   }
-  saveDraftPost(): void {
-    // Logic to save the draft post
-    console.log('Draft post saved:', this.postTitle);
-  }
-  createPost(): void {
-    // Logic to create the post
-    console.log('Post created:', this.htmlToMd.convert(this.editorContent));
-  }
-  cancelPost(): void {
-    // Logic to cancel the post creation
-    console.log('Post creation cancelled');
-  }
+
   editorContent: string = '';
   readonlyContent: string =
     '<h2>This is a readonly text editor</h2><p>You cannot edit this content.</p><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>';
@@ -157,5 +217,19 @@ export class PostCreatePageComponent {
   toggleReadonly() {
     this.editorConfig.readonly = !this.editorConfig.readonly;
     this.editorConfig = { ...this.editorConfig };
+  }
+  saveDraftPost(): void {
+    // Logic to save the draft post
+    console.log('Draft post saved:', this.post.title);
+  }
+  createPost(): void {
+    (this.post.content = this.htmlToMd.convert(this.editorContent)),
+      (this.post.isPublic = this.post.postType != 'Private'),
+      // Logic to create the post
+      console.log('Post created:', this.post);
+  }
+  cancelPost(): void {
+    // Logic to cancel the post creation
+    console.log('Post creation cancelled');
   }
 }

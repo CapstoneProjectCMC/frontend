@@ -35,3 +35,35 @@ export interface Post {
   metrics: Metrics;
   status: string;
 }
+export interface postData {
+  createdBy: string;
+  createdAt: string;
+  updatedBy: string;
+  updatedAt: string;
+  deletedBy: string;
+  deletedAt: string;
+  //đống bên trên có lẽ sẽ bỏ đi
+  // thiếu lượng vote
+  postId: string;
+  userId: string;
+  orgId: string;
+  postType: 'Global' | 'Private' | 'Org';
+  title: string;
+  content: string;
+  isPublic: boolean;
+  allowComment: boolean;
+  hashtag: string[];
+  status: 'REJECTED' | 'APPROVED' | 'PENDING';
+  imagesUrls: string[];
+  //mai nhật gửi
+  comments: {
+    userId: string;
+    userAvatar: string;
+    comment: string;
+  }[];
+  //nhật chưa làm
+  reactions: string[];
+  //ds id những đứa được truy cập bài post
+  accesses: string[];
+  deleted: boolean;
+}

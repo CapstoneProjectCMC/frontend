@@ -1,0 +1,219 @@
+.coding-details-container {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+
+  // CỘT TRÁI
+  .problem-description {
+    flex: 3;
+    min-width: 0;
+
+    .title {
+      color: var(--title-text);
+      font-size: 1.625rem; // Tăng ~30%
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-header {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+      color: white;
+
+      .difficulty-badge {
+        padding: 0.25rem 0.7rem; // Tăng nhẹ padding
+        border-radius: 1rem;
+        font-weight: bold;
+        font-size: 0.52rem;
+
+        &.difficulty-easy {
+          background-color: var(--success-color);
+        }
+        &.difficulty-medium {
+          background-color: var(--warning-color);
+        }
+        &.difficulty-hard {
+          background-color: var(--error-color);
+        }
+      }
+
+      .status-tag {
+        color: var(--success-color);
+        font-size: 0.585rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+    }
+
+    .section {
+      margin-bottom: 1.5rem;
+
+      .section-title {
+        font-size: 0.975rem; // Tăng ~30%
+        color: var(--accent-color);
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.8rem;
+      }
+    }
+
+    pre {
+      background-color: var(--background-color-secondary);
+      border: 1px solid var(--border-color);
+      padding: 0.8rem;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+
+      code {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.62rem; // Tăng ~30%
+        color: var(--text-color);
+      }
+    }
+
+    .test-case {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      background-color: var(--surface-color);
+
+      .test-case-title {
+        color: var(--title-text);
+        margin-top: 0;
+        font-size: 0.78rem; // Tăng ~30%
+      }
+
+      .io-block {
+        margin-bottom: 0.8rem;
+        label {
+          font-weight: bold;
+          display: block;
+          margin-bottom: 0.4rem;
+          font-size: 0.65rem; // Tăng ~30%
+        }
+      }
+
+      .note {
+        font-style: italic;
+        color: var(--text-muted-color);
+        background-color: var(--background-color-secondary);
+        padding: 0.6rem;
+        border-radius: 4px;
+        font-size: 0.585rem; // Tăng ~30%
+      }
+    }
+  }
+
+  // CỘT PHẢI
+  .problem-info {
+    flex: 1;
+    min-width: 0;
+
+    .info-card {
+      background-color: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+      .card-title {
+        margin-top: 0;
+        color: var(--accent-color);
+        font-size: 0.715rem; // Tăng ~30%
+        margin-bottom: 0.8rem;
+      }
+
+      .info-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0.6rem 0;
+          font-size: 0.62rem; // Tăng ~30%
+          border-bottom: 1px solid var(--border-color);
+
+          &:last-child {
+            border-bottom: none;
+          }
+
+          span {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--text-muted-color);
+          }
+
+          strong {
+            color: var(--text-color);
+          }
+        }
+      }
+
+      .tags-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        .language-tag,
+        .tag {
+          background-color: var(--tags-color);
+          color: var(--accent-color);
+          padding: 0.3rem 0.7rem; // Tăng nhẹ padding
+          border-radius: 4px;
+          font-size: 0.55rem; // Tăng ~30%
+        }
+      }
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+
+      .btn {
+        padding: 0.7rem 0.9rem; // Tăng padding
+        border: none;
+        border-radius: 6px;
+        font-size: 0.65rem; // Tăng ~30%
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &.btn-primary {
+          background-color: var(--button-color);
+          color: var(--reverse-color-text);
+          &:hover {
+            background-color: var(--button-color-hover);
+          }
+        }
+
+        &.btn-secondary {
+          background-color: var(--surface-color);
+          color: var(--text-color);
+          border: 1px solid var(--border-color);
+          &:hover {
+            background-color: var(--background-color-secondary);
+          }
+        }
+
+        &.btn-warning {
+          background-color: var(--warning-color);
+          color: white;
+          &:hover {
+            background-color: #e67e22;
+          }
+        }
+      }
+    }
+  }
+}

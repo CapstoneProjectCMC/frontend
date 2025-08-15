@@ -7,6 +7,8 @@ import { ExerciseLayoutComponent } from './exercise-layout/exercise-layout.compo
 import { QuizSubmissionComponent } from './exercise-pages/quiz-submission/quiz-submission.component';
 import { ConfirmExitGuard } from '../../core/guards/confirm-exit/confirm-exit.guard';
 import { DisplayScoreComponent } from './exercise-pages/display-score/display-score.component';
+import { ExerciseCodeDetailsComponent } from './exercise-pages/exercise-code-details/exercise-code-details.component';
+import { AddCodeDetailsComponent } from './exercise-pages/add-code-details/add-code-details.component';
 
 const routes: Routes = [
   {
@@ -18,6 +20,16 @@ const routes: Routes = [
         path: 'exercise-details/:id',
         component: ExerciseDetailsComponent,
         data: { breadcrumb: 'Chi tiết bài tập' },
+      },
+      {
+        path: 'exercise-code-details/:id',
+        component: ExerciseCodeDetailsComponent,
+        data: { breadcrumb: 'Chi tiết bài tập lập trình' },
+      },
+      {
+        path: 'exercise-code-details/add-new/:id',
+        component: AddCodeDetailsComponent,
+        data: { breadcrumb: 'Thêm mới chi tiết bài tập lập trình' },
       },
       {
         path: 'list',

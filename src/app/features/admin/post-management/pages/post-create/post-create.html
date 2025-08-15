@@ -1,103 +1,245 @@
 <div class="post-create-container">
-  <div class="input-title">
-    <app-input
-      label="Tên bài viết"
-      placeholder="Nhập tên..."
-      [value]="postTitle"
-      (valueChange)="handleInputChange($event)"
-      [required]="false"
-      [minLength]="3"
-      [variant]="'primary'"
-      [errorMessage]="postTitleError"
-      [isSvg]="false"
-    ></app-input>
+  <div class="general-infor">
+    <div class="input-title">
+      <app-input
+        label="Tên bài viết"
+        placeholder="Nhập tên..."
+        [value]="post.title"
+        (valueChange)="handleInputChange($event)"
+        [required]="false"
+        [minLength]="3"
+        [variant]="'primary'"
+        [errorMessage]="postTitleError"
+        [isSvg]="false"
+      ></app-input>
+    </div>
+    <div class="input-info">
+      <app-dropdown-button
+        [label]="'Chủ đề'"
+        [options]="topics"
+        [variant]="'secondary'"
+        [size]="'small'"
+        [customDropField]="'main-type'"
+        [disabled]="false"
+        [multiSelect]="true"
+        [isDisplayCheckbox]="false"
+        (onSelect)="handleSelect('topics', $event)"
+        [isOpen]="activeDropdown === 'topics'"
+        (toggle)="toggleDropdown('topics')"
+        [isDisplaySelectedOpptionLabels]="true"
+        [isButtonControl]="true"
+        [isSearchable]="true"
+        [minHeight]="true"
+        [needIndexColor]="true"
+      ></app-dropdown-button>
+      <app-dropdown-button
+        [label]="'Nơi đăng'"
+        [options]="wherepost"
+        [variant]="'secondary'"
+        [size]="'small'"
+        [customDropField]="'main-type'"
+        [disabled]="false"
+        [multiSelect]="false"
+        [isDisplayCheckbox]="false"
+        (onSelect)="handleSelect('wherepost', $event)"
+        [isOpen]="activeDropdown === 'wherepost'"
+        (toggle)="toggleDropdown('wherepost')"
+        [isDisplaySelectedOpptionLabels]="true"
+        [isButtonControl]="true"
+        [isSearchable]="true"
+        [minHeight]="true"
+        [needIndexColor]="true"
+      ></app-dropdown-button>
+      <app-dropdown-button
+        [label]="'hashtag'"
+        [options]="tag"
+        [variant]="'secondary'"
+        [size]="'small'"
+        [customDropField]="'main-type'"
+        [disabled]="false"
+        [multiSelect]="true"
+        [isDisplayCheckbox]="false"
+        (onSelect)="handleSelect('tag', $event)"
+        [isOpen]="activeDropdown === 'tag'"
+        (toggle)="toggleDropdown('tag')"
+        [isDisplaySelectedOpptionLabels]="true"
+        [isButtonControl]="true"
+        [isSearchable]="true"
+        [minHeight]="true"
+        [needIndexColor]="true"
+      ></app-dropdown-button>
+    </div>
+    <div>
+      <label>Chế độ đăng</label>
+      <label>
+        <input
+          type="radio"
+          name="visibility"
+          [(ngModel)]="post.postType"
+          value="organization"
+        />
+        Org
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="visibility"
+          [(ngModel)]="post.postType"
+          value="private"
+        />
+        Private
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="visibility"
+          [(ngModel)]="post.postType"
+          value="public"
+        />
+        Global
+      </label>
+    </div>
+    <div>
+      <label>Cho phép bình luận</label>
+      <label>
+        <input
+          type="radio"
+          name="allowComment"
+          [(ngModel)]="post.allowComment"
+          [value]="true"
+        />
+        Có
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="allowComment"
+          [(ngModel)]="post.allowComment"
+          [value]="false"
+        />
+        Không
+      </label>
+    </div>
+
+    <div class="input-content">
+      <app-text-editor
+        [(value)]="editorContent"
+        [config]="editorConfig"
+        (onChange)="onContentChange($event)"
+        (onFocus)="onEditorFocus()"
+        (onBlur)="onEditorBlur()"
+      ></app-text-editor>
+    </div>
+    <div class="post-create-button">
+      <app-button
+        [variant]="'cancel'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="cancelPost()"
+        >Hủy</app-button
+      >
+      <app-button
+        [variant]="'outline'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="saveDraftPost()"
+        >Lưu Nháp</app-button
+      >
+      <app-button
+        [variant]="'solid'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="createPost()"
+        >Đăng Bài</app-button
+      >
+    </div>
   </div>
-  <div class="input-info">
-    <app-dropdown-button
-      [label]="'Chủ đề'"
-      [options]="topics"
-      [variant]="'secondary'"
-      [size]="'small'"
-      [customDropField]="'main-type'"
-      [disabled]="false"
-      [multiSelect]="true"
-      [isDisplayCheckbox]="false"
-      (onSelect)="handleSelect('topics', $event)"
-      [isOpen]="activeDropdown === 'topics'"
-      (toggle)="toggleDropdown('topics')"
-      [isDisplaySelectedOpptionLabels]="true"
-      [isButtonControl]="true"
-      [isSearchable]="true"
-      [minHeight]="true"
-      [needIndexColor]="true"
-    ></app-dropdown-button>
-    <app-dropdown-button
-      [label]="'Nơi đăng'"
-      [options]="wherepost"
-      [variant]="'secondary'"
-      [size]="'small'"
-      [customDropField]="'main-type'"
-      [disabled]="false"
-      [multiSelect]="true"
-      [isDisplayCheckbox]="false"
-      (onSelect)="handleSelect('wherepost', $event)"
-      [isOpen]="activeDropdown === 'wherepost'"
-      (toggle)="toggleDropdown('wherepost')"
-      [isDisplaySelectedOpptionLabels]="true"
-      [isButtonControl]="true"
-      [isSearchable]="true"
-      [minHeight]="true"
-      [needIndexColor]="true"
-    ></app-dropdown-button>
-    <app-dropdown-button
-      [label]="'Chọn tag'"
-      [options]="tag"
-      [variant]="'secondary'"
-      [size]="'small'"
-      [customDropField]="'main-type'"
-      [disabled]="false"
-      [multiSelect]="true"
-      [isDisplayCheckbox]="false"
-      (onSelect)="handleSelect('tag', $event)"
-      [isOpen]="activeDropdown === 'tag'"
-      (toggle)="toggleDropdown('tag')"
-      [isDisplaySelectedOpptionLabels]="true"
-      [isButtonControl]="true"
-      [isSearchable]="true"
-      [minHeight]="true"
-      [needIndexColor]="true"
-    ></app-dropdown-button>
-  </div>
-  <div class="input-content">
-    <app-text-editor
-      [(value)]="editorContent"
-      [config]="editorConfig"
-      (onChange)="onContentChange($event)"
-      (onFocus)="onEditorFocus()"
-      (onBlur)="onEditorBlur()"
-    ></app-text-editor>
-  </div>
-  <div class="post-create-button">
-    <app-button
-      [variant]="'cancel'"
-      [width]="'116px'"
-      [height]="'50px'"
-      (onClick)="cancelPost()"
-      >Hủy</app-button
-    >
-    <app-button
-      [variant]="'outline'"
-      [width]="'116px'"
-      [height]="'50px'"
-      (onClick)="saveDraftPost()"
-      >Lưu Nháp</app-button
-    >
-    <app-button
-      [variant]="'solid'"
-      [width]="'116px'"
-      [height]="'50px'"
-      (onClick)="createPost()"
-      >Đăng Bài</app-button
-    >
+  <div class="metric">
+    <div class="link-section">
+      <div class="link-header" (click)="startAddLink()">
+        <span>Thêm link</span>
+        <button type="button" class="add-link-btn">
+          <span>+</span>
+        </button>
+      </div>
+
+      <!-- Ô nhập link khi bấm + -->
+      <div class="link-input" *ngIf="isAddingLink">
+        <input
+          id="linkInput"
+          type="text"
+          [(ngModel)]="newLink"
+          placeholder="Nhập link..."
+          (keyup.enter)="addLink()"
+        />
+        <button type="button" (click)="addLink()">OK</button>
+      </div>
+
+      <!-- Danh sách link -->
+      <ul class="link-list">
+        <li *ngFor="let link of post.oldImagesUrls; let i = index">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-link-2"
+          >
+            <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+            <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+            <line x1="8" x2="16" y1="12" y2="12" />
+          </svg>
+          <a [href]="link" target="_blank">{{ link }}</a>
+          <button type="button" class="remove-link" (click)="removeLink(i)">
+            ×
+          </button>
+        </li>
+      </ul>
+    </div>
+    <div class="file-upload">
+      <label class="upload-label">
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          [multiple]="true"
+          accept="image/*"
+          hidden
+        />
+        <app-button [width]="'100%'" [variant]="'outline'">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m18 9-6-6-6 6" />
+            <path d="M12 3v14" />
+            <path d="M5 21h14" />
+          </svg>
+          <span>Chọn file</span>
+        </app-button>
+      </label>
+
+      <div class="preview-container" *ngIf="filePreviews.length > 0">
+        <div
+          class="preview-item"
+          *ngFor="let preview of filePreviews; let i = index"
+        >
+          <img [src]="preview" alt="Xem trước" class="preview-image" />
+          <button type="button" class="remove-btn" (click)="removeImage(i)">
+            ×
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

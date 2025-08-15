@@ -10,6 +10,14 @@ export const API_CONFIG = {
   },
   ENDPOINTS: {
     GET: {
+      GET_CODING_EXERCISE_DETAILS: (
+        exerciseId: string,
+        page: number,
+        size: number,
+        sort: EnumType['sort'],
+        asc: boolean
+      ) =>
+        `/submission/exercise/coding/${exerciseId}?tcPage=${page}&tcSize=${size}&tcSortBy=${sort}&tcAsc=${asc}`,
       GET_EXERCISE_DETAILS: (
         page: number,
         size: number,
@@ -78,15 +86,28 @@ export const API_CONFIG = {
         `/submission/quiz/exercise/${exerciseId}/quiz-detail`,
       ADD_OPTION_INTO_QUESTION: (questionId: string) =>
         `/submission/quiz/question/${questionId}/option`,
+      ADD_CODING_DETAILS: (exerciseId: string) =>
+        `/submission/coding/exercise/${exerciseId}/coding-detail`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
+      ASSIGN_EXERCISE_TO_STUDENT: (
+        exerciseId: string,
+        studentId: string,
+        dueAt: string
+      ) =>
+        `/submission/assignment?exerciseId=${exerciseId}&studentId=${studentId}&dueAt=${dueAt}`,
       UPLOAD_AVATAR: `/profile/user/my-profile/avatar`,
       UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
       FOLLOWUSER: (targetUserId: string) =>
         `/profile/social/follow/${targetUserId}`,
       GET_RESOURCE: `/file/api/FileDocument/public`,
       ADD_RESOURCE: `/file/api/FileDocument/add`,
+      ADD_POST: `/post/posts/createPost`,
+      GET_POST: `/post/posts/getAllAccessiblePosts`,
     },
-    PUT: { EDIT_RESOURCE: (id: string) => `/file/api/FileDocument/${id}` },
+    PUT: {
+      EDIT_RESOURCE: (id: string) => `/file/api/FileDocument/${id}`,
+      DELETE_POST: (id: string) => `/post/posts/deletePost/${id}`,
+    },
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
         `/submission/exercise/${exerciseId}`,
@@ -99,6 +120,8 @@ export const API_CONFIG = {
         `/submission/quiz/question/option/${optionId}`,
       UPDATE_QUESTION_WITH_OPTION: (exerciseId: string, questionId: string) =>
         `/submission/quiz/${exerciseId}/question/${questionId}`,
+      UPDATE_CODING_DETAILS: (exerciseId: string) =>
+        `/submission/coding/exercise/${exerciseId}/coding-detail`,
     },
     DELETE: {
       DELETE_QUESTION: (exerciseId: string, questionId: string) =>
