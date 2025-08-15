@@ -88,6 +88,8 @@ export const API_CONFIG = {
         `/submission/quiz/question/${questionId}/option`,
       ADD_CODING_DETAILS: (exerciseId: string) =>
         `/submission/coding/exercise/${exerciseId}/coding-detail`,
+      ADD_TEST_CASE: (exerciseId: string) =>
+        `/submission/coding/${exerciseId}/test-case`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
       ASSIGN_EXERCISE_TO_STUDENT: (
         exerciseId: string,

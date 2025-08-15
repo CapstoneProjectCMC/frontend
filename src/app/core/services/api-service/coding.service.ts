@@ -6,6 +6,7 @@ import { CodeSubmission, CodingResponse } from '../../models/coding.model';
 import {
   CodingDetails,
   ExerciseCodeResponse,
+  TestCase,
   UpdateCodingDetailRequest,
 } from '../../models/code.model';
 import { EnumType } from '../../models/data-handle';
@@ -27,6 +28,13 @@ export class CodingService {
     return this.api.post<ApiResponse<CodingResponse>>(
       API_CONFIG.ENDPOINTS.POST.ADD_CODING_DETAILS(exerciseId),
       data
+    );
+  }
+
+  addTestCase(exerciseId: string, dataRequest: TestCase) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.ADD_TEST_CASE(exerciseId),
+      dataRequest
     );
   }
 
