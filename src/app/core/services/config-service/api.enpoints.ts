@@ -104,10 +104,7 @@ export const API_CONFIG = {
       ADD_POST: `/post/posts/createPost`,
       GET_POST: `/post/posts/getAllAccessiblePosts`,
     },
-    PUT: {
-      EDIT_RESOURCE: (id: string) => `/file/api/FileDocument/${id}`,
-      DELETE_POST: (id: string) => `/post/posts/deletePost/${id}`,
-    },
+    PUT: { EDIT_RESOURCE: (id: string) => `/file/api/FileDocument/${id}` },
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
         `/submission/exercise/${exerciseId}`,
