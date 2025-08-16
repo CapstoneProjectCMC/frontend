@@ -8,7 +8,7 @@ import {
 import { getUserInfoFromLocalStorage } from '../../../../shared/utils/userInfo';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
-import { User } from '../../../../core/models/user.models';
+import { follow, User } from '../../../../core/models/user.models';
 import {
   openModalNotification,
   sendNotification,
@@ -106,7 +106,46 @@ export class PersonalProfileComponent {
       title: 'Bài tập sắp hết hạn',
     },
   ];
+  followerList: follow[] = [
+    {
+      userId: '1',
+      displayName: 'Trần Thị B',
+      avatarUrl: 'https://i.pravatar.cc/150?img=2',
+      firstName: 'Nam',
+      lastName: 'Mạnh',
+    },
+    {
+      userId: '2',
+      displayName: 'Lê Văn C',
+      avatarUrl: 'https://i.pravatar.cc/150?img=3',
+      firstName: 'Bà',
+      lastName: 'Nữ',
+    },
+  ];
 
+  followingList: follow[] = [
+    {
+      userId: '3',
+      displayName: 'Phạm Thị D',
+      avatarUrl: 'https://i.pravatar.cc/150?img=4',
+      firstName: 'Không',
+      lastName: 'Ngộ',
+    },
+    {
+      userId: '4',
+      displayName: 'Hoàng Văn E',
+      avatarUrl: 'https://i.pravatar.cc/150?img=5',
+      firstName: 'Phan',
+      lastName: 'Quân',
+    },
+    {
+      userId: '5',
+      displayName: 'Ngô Thị F',
+      avatarUrl: 'https://i.pravatar.cc/150?img=6',
+      firstName: 'Phan',
+      lastName: 'Hải',
+    },
+  ];
   constructor(
     private profileService: ProfileService,
     private store: Store,

@@ -20,7 +20,7 @@ export class PopularPostComponent {
   @Input() ListPost: PostCardInfo[] = [];
 
   get topPosts(): PostCardInfo[] {
-    return this.ListPost.slice(0, 3);
+    return this.ListPost.slice(0, 2);
   }
   handleAdd = () => {
     console.log('Add button clicked');
