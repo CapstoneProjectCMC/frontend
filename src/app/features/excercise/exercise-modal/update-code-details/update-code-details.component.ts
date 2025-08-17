@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {
   CodingDetailResponse,
-  TestCaseResponse,
+  TestCase,
   UpdateCodingDetailRequest,
   UpdateTestCaseRequest,
 } from '../../../../core/models/code.model';
@@ -13,6 +13,13 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
+import { CodingService } from '../../../../core/services/api-service/coding.service';
+
+// Extend test case type with UI flags for local state
+type LocalTestCase = UpdateTestCaseRequest & {
+  isNew?: boolean;
+  confirmed?: boolean;
+};
 
 @Component({
   selector: 'app-update-code-details',
@@ -23,6 +30,7 @@ import {
 export class UpdateCodeDetailsComponent implements OnInit {
   @Input() codingDetail: CodingDetailResponse | null = null;
   @Input() isVisible: boolean = false;
+  @Input() exerciseId: string = '';
   @Output() closeModal = new EventEmitter<void>();
   @Output() saveChanges = new EventEmitter<UpdateCodingDetailRequest>();
 
@@ -52,9 +60,9 @@ export class UpdateCodeDetailsComponent implements OnInit {
   ];
 
   // Test cases management
-  testCases: UpdateTestCaseRequest[] = [];
+  testCases: LocalTestCase[] = [];
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private codingService: CodingService) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -81,7 +89,7 @@ export class UpdateCodeDetailsComponent implements OnInit {
         allowedLanguages: [...(this.codingDetail.allowedLanguages || [])],
       };
 
-      // Initialize test cases
+      // Initialize test cases (existing ones are considered confirmed)
       this.testCases =
         this.codingDetail.testCases?.map((tc) => ({
           id: tc.id,
@@ -89,6 +97,8 @@ export class UpdateCodeDetailsComponent implements OnInit {
           expectedOutput: tc.expectedOutput,
           sample: tc.sample,
           note: tc.note,
+          isNew: false,
+          confirmed: true,
         })) || [];
     }
   }
@@ -110,11 +120,13 @@ export class UpdateCodeDetailsComponent implements OnInit {
   // Test case management
   addTestCase(): void {
     this.testCases.push({
-      id: this.generateId(),
+      id: '',
       input: '',
       expectedOutput: '',
       sample: false,
       note: '',
+      isNew: true,
+      confirmed: false,
     });
   }
 
@@ -123,6 +135,8 @@ export class UpdateCodeDetailsComponent implements OnInit {
     if (testCase.id) {
       // Mark for deletion if it has an ID (existing test case)
       testCase.delete = true;
+    } else if (testCase.isNew && !testCase.confirmed) {
+      this.testCases.splice(index, 1);
     } else {
       // Remove immediately if it's a new test case
       this.testCases.splice(index, 1);
@@ -131,6 +145,55 @@ export class UpdateCodeDetailsComponent implements OnInit {
 
   toggleSampleTestCase(index: number): void {
     this.testCases[index].sample = !this.testCases[index].sample;
+  }
+
+  confirmNewTestCase(index: number): void {
+    const tc = this.testCases[index];
+    if (!tc.isNew || tc.confirmed) {
+      return;
+    }
+    if (!tc.input.trim() || !tc.expectedOutput.trim()) {
+      sendNotification(
+        this.store,
+        'Lỗi validation',
+        'Test case mới cần có Input và Expected Output',
+        'error'
+      );
+      return;
+    }
+    const payload: TestCase = {
+      input: tc.input,
+      expectedOutput: tc.expectedOutput,
+      sample: tc.sample,
+      note: tc.note,
+    };
+
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Đang thêm test case...' })
+      );
+    });
+
+    this.codingService.addTestCase(this.exerciseId, payload).subscribe({
+      next: (res) => {
+        // API does not return body; mark as confirmed locally
+        this.testCases[index] = {
+          ...tc,
+          confirmed: true,
+        };
+        this.store.dispatch(clearLoading());
+        sendNotification(
+          this.store,
+          'Thành công',
+          'Đã thêm test case',
+          'success'
+        );
+      },
+      error: (err) => {
+        console.error(err);
+        this.store.dispatch(clearLoading());
+      },
+    });
   }
 
   // Modal actions
@@ -151,7 +214,8 @@ export class UpdateCodeDetailsComponent implements OnInit {
         codeTemplate: this.formData.codeTemplate,
         solution: this.formData.solution,
         allowedLanguages: this.formData.allowedLanguages,
-        testCases: this.testCases.filter((tc) => !tc.delete),
+        // Only include existing test cases (with id) for update/delete
+        testCases: this.testCases.filter((tc) => !tc.delete && !!tc.id),
       };
 
       this.saveChanges.emit(updatedCodingDetail);

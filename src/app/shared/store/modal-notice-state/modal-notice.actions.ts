@@ -17,7 +17,7 @@ export const openNoticeModal = createAction(
 
 export const closeNoticeModal = createAction('[Modal Notice] Close');
 
-//cách dùng:
+//cách 1 dùng:
 
 /*
 openModal() {
@@ -35,5 +35,20 @@ openModal() {
         }
       }
     }));
+  }
+*/
+
+//cách 2 dùng utils
+/*
+  openModal() {
+    openModalNotification(
+      this.store,
+      'Xác nhận nộp bài',
+      'Bạn có chắc chắn hoàn thành bài thi?',
+      'Đồng ý',
+      'Soát lại',
+      () => this.submitQuiz(),
+      () => this.cancelSubmit()
+    );
   }
 */

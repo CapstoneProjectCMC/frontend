@@ -9,6 +9,7 @@ import { ConfirmExitGuard } from '../../core/guards/confirm-exit/confirm-exit.gu
 import { DisplayScoreComponent } from './exercise-pages/display-score/display-score.component';
 import { ExerciseCodeDetailsComponent } from './exercise-pages/exercise-code-details/exercise-code-details.component';
 import { AddCodeDetailsComponent } from './exercise-pages/add-code-details/add-code-details.component';
+import { CodeSubmissionComponent } from './exercise-pages/code-submission/code-submission.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,11 @@ const routes: Routes = [
         path: 'exercise-code-details/:id',
         component: ExerciseCodeDetailsComponent,
         data: { breadcrumb: 'Chi tiết bài tập lập trình' },
+      },
+      {
+        path: 'code-submission/:id',
+        component: CodeSubmissionComponent,
+        data: { breadcrumb: 'Làm bài code' },
       },
       {
         path: 'exercise-code-details/add-new/:id',

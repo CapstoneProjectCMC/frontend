@@ -20,7 +20,10 @@ export class ExerciseLayoutComponent implements OnInit, OnDestroy {
   showSidebar = true;
 
   // Danh sách các route cần ẩn sidebar
-  private routesToHideSidebar: string[] = ['/quiz-submission'];
+  private routesToHideSidebar: string[] = [
+    '/quiz-submission',
+    '/code-submission',
+  ];
 
   private routerSubscription!: Subscription;
 

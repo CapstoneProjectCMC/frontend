@@ -243,7 +243,7 @@
                   }
 
                   &:hover {
-                    background-color: var(--background-color-secondary);
+                    transform: translateY(-1px);
                   }
                 }
 
@@ -254,6 +254,26 @@
 
                   &:hover {
                     background: linear-gradient(135deg, #ff3742, #ff2f3a);
+                    box-shadow: 0 4px 8px rgba(255, 71, 87, 0.4);
+                    transform: translateY(-1px);
+                  }
+                }
+
+                &.btn-confirm {
+                  background: linear-gradient(
+                    135deg,
+                    var(--success-color),
+                    #5ecc43
+                  );
+                  color: white;
+                  box-shadow: 0 2px 4px rgba(255, 71, 87, 0.3);
+
+                  &:hover {
+                    background: linear-gradient(
+                      135deg,
+                      var(--success-color),
+                      #5ecc43
+                    );
                     box-shadow: 0 4px 8px rgba(255, 71, 87, 0.4);
                     transform: translateY(-1px);
                   }
