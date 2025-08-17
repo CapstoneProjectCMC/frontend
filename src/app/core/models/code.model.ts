@@ -105,3 +105,29 @@ export type UpdateTestCaseRequest = {
   note: string;
   delete?: boolean;
 };
+
+export type submitCodeRequest = {
+  exerciseId: String;
+  studentId: String;
+  language: String;
+  sourceCode: String;
+  timeTakenSeconds: String;
+};
+
+export type SubmitCodeResponse = {
+  submissionid: string;
+  score: number;
+  totalpoints: number;
+  passed: boolean;
+  results: {
+    testcaseid: string;
+    passed: boolean;
+    runtimems: number;
+    memorykb: number;
+    output: string;
+    errormessage: string;
+  }[];
+  memorymb: number;
+  cpus: number;
+  peakmemorykb: number; // bộ nhớ cao nhất đo được
+};

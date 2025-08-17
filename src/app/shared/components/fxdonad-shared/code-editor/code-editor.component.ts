@@ -130,4 +130,8 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
   getCode(): string {
     return this.editor?.state.doc.toString() || '';
   }
+
+  getLanguage(): string {
+    return this.selectedLanguage;
+  }
 }

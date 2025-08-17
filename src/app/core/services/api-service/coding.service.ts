@@ -6,6 +6,8 @@ import { CodeSubmission, CodingResponse } from '../../models/coding.model';
 import {
   CodingDetails,
   ExerciseCodeResponse,
+  submitCodeRequest,
+  SubmitCodeResponse,
   TestCase,
   UpdateCodingDetailRequest,
 } from '../../models/code.model';
@@ -63,6 +65,13 @@ export class CodingService {
         sort,
         asc
       )
+    );
+  }
+
+  submitCode(excerciseId: string, dataRequest: submitCodeRequest) {
+    return this.api.post<ApiResponse<SubmitCodeResponse>>(
+      API_CONFIG.ENDPOINTS.POST.SUBMIT_CODE(excerciseId),
+      dataRequest
     );
   }
 }

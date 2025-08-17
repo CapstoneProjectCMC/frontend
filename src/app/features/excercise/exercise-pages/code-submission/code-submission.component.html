@@ -39,28 +39,95 @@
     </div>
 
     <div class="panel-content" *ngIf="activeLeftTab === 'testcases'">
-      <h4>Test Results</h4>
+      <div
+        class="submission-summary"
+        *ngIf="submissionResult"
+        [ngClass]="submissionResult.passedAll ? 'success' : 'failure'"
+      >
+        <div
+          class="summary-status"
+          [ngClass]="submissionResult.passedAll ? 'success' : 'failure'"
+        >
+          <i
+            class="fa"
+            [ngClass]="
+              submissionResult.passedAll ? 'fa-check-circle' : 'fa-times-circle'
+            "
+          ></i>
+          <span>{{
+            submissionResult.passedAll ? "Accepted" : "Wrong Answer"
+          }}</span>
+        </div>
+        <div class="summary-details">
+          <div class="detail-item">
+            <span class="label">Score</span>
+            <span class="value"
+              >{{ submissionResult.score }} /
+              {{ submissionResult.totalPoints }}</span
+            >
+          </div>
+          <div class="detail-item">
+            <span class="label">Peak Memory</span>
+            <span class="value"
+              >{{ (submissionResult.peakMemoryKb / 1024).toFixed(2) }} MB</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <h4 *ngIf="!submissionResult">Test Cases</h4>
       <div class="test-case-grid">
         <div
-          *ngFor="let tc of testCases"
+          *ngFor="let tc of testCases; let i = index"
           class="test-case-item"
           [ngClass]="tc.status"
         >
-          <div class="status-icon">
-            <span *ngIf="tc.status === 'pass'">✓</span>
-            <span *ngIf="tc.status === 'fail'">✗</span>
-            <span *ngIf="tc.status === 'pending'">...</span>
-          </div>
-          <div class="case-details">
-            <div class="case-input">
-              Input: <code>{{ tc.input }}</code>
+          <div class="case-header">
+            <div class="status-icon">
+              <i
+                *ngIf="tc.status === 'pass' && !isSubmitting"
+                class="fa fa-check"
+              ></i>
+              <i
+                *ngIf="
+                  (tc.status === 'fail' && !isSubmitting) ||
+                  (tc.status === 'error' && !isSubmitting)
+                "
+                class="fa fa-times"
+              ></i>
+              <i
+                *ngIf="tc.status === 'pending' && isSubmitting"
+                class="fa fa-spinner fa-spin"
+              ></i>
             </div>
-            <div *ngIf="tc.status !== 'pending'">
+            <span class="case-title">Test Case #{{ i + 1 }}</span>
+            <span class="status-text">{{ tc.status | uppercase }}</span>
+          </div>
+
+          <div class="case-body" *ngIf="tc.status !== 'pending'">
+            <div class="case-metrics">
+              <span><i class="fa fa-clock"></i> {{ tc.runtimeMs }} ms</span>
+              <span *ngIf="tc.memoryKb"
+                ><i class="fa fa-memory"></i>
+                {{ (tc.memoryKb / 1024).toFixed(2) }} MB</span
+              >
+            </div>
+
+            <div *ngIf="tc.status === 'error'" class="error-message">
+              <strong>Error:</strong>
+              <pre>{{ tc.errorMessage }}</pre>
+            </div>
+
+            <div *ngIf="tc.status === 'fail'" class="io-details">
+              <div>
+                Input: <code>{{ tc.input }}</code>
+              </div>
               <div>
                 Expected: <code>{{ tc.expected }}</code>
               </div>
-              <div *ngIf="tc.status === 'fail'">
-                Actual: <code>{{ tc.actual }}</code>
+              <div>
+                Your Output:
+                <code>{{ tc.actualOutput ? tc.actualOutput : "ERROR" }}</code>
               </div>
             </div>
           </div>

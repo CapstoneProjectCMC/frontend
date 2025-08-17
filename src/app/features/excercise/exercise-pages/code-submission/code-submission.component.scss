@@ -63,6 +63,146 @@
 .panel-content {
   overflow-y: auto;
   padding-right: 1rem; // Thêm padding cho thanh cuộn
+  /* ... Thêm vào cuối file .scss ... */
+
+  /* --- Styling cho khu vực tổng quan --- */
+  .submission-summary {
+    background-color: var(--surface-color);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 5px solid;
+
+    &.success {
+      border-color: var(--success-color);
+    }
+    &.failure {
+      border-color: var(--error-color);
+    }
+
+    .summary-status {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+
+      &.success {
+        color: var(--success-color);
+      }
+      &.failure {
+        color: var(--error-color);
+      }
+    }
+
+    .summary-details {
+      display: flex;
+      gap: 2rem;
+      .detail-item {
+        display: flex;
+        flex-direction: column;
+        .label {
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+          margin-bottom: 0.25rem;
+        }
+        .value {
+          font-weight: 500;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+
+  /* --- Cập nhật Test Case Item --- */
+  .test-case-item {
+    // Thay đổi từ flex thành block để dễ sắp xếp
+    display: block;
+    padding: 0; // Reset padding cũ
+    border: 1px solid var(--border-color);
+
+    &.error {
+      border-left-color: var(--accent-warn);
+    } // Thêm màu cho trạng thái error
+
+    .case-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid var(--border-color);
+
+      .fa-check {
+        color: var(--success-color);
+      }
+
+      .fa-times {
+        color: var(--error-color);
+      }
+
+      .case-title {
+        font-weight: 600;
+        flex-grow: 1;
+      }
+
+      .status-text {
+        font-size: 0.8rem;
+        font-weight: bold;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+      }
+    }
+
+    &.pass .status-text {
+      background-color: rgba(76, 175, 80, 0.2);
+      color: var(--accent-success);
+    }
+    &.fail .status-text {
+      background-color: rgba(244, 67, 54, 0.2);
+      color: var(--accent-fail);
+    }
+    &.error .status-text {
+      background-color: rgba(255, 152, 0, 0.2);
+      color: var(--accent-warn);
+    }
+    &.pending .status-text {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--text-secondary);
+    }
+
+    .case-body {
+      padding: 1rem;
+      font-size: 0.9rem;
+
+      .case-metrics {
+        display: flex;
+        gap: 1.5rem;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        i {
+          margin-right: 0.4rem;
+        }
+      }
+
+      .error-message,
+      .io-details {
+        & > div {
+          margin-bottom: 0.5rem;
+        }
+        pre,
+        code {
+          background-color: var(--background-primary);
+          padding: 0.5rem;
+          border-radius: 4px;
+          display: block;
+          white-space: pre-wrap;
+          word-break: break-all;
+        }
+      }
+    }
+  }
 }
 
 .problem-header {
@@ -77,16 +217,16 @@
     font-size: 0.8rem;
     font-weight: 600;
     &.easy {
-      background-color: rgba(76, 175, 80, 0.2);
-      color: #69f0ae;
+      background-color: oklch(from var(--success-color) calc(l * 1.4) c h);
+      color: var(--success-color);
     }
     &.medium {
-      background-color: rgba(255, 152, 0, 0.2);
-      color: #ffd180;
+      background-color: oklch(from var(--warning-color) calc(l * 1.4) c h);
+      color: var(--waring-color);
     }
     &.hard {
-      background-color: rgba(244, 67, 54, 0.2);
-      color: #ff8a80;
+      background-color: oklch(from var(--error-color) calc(l * 1.4) c h);
+      color: var(--error-color);
     }
   }
 }

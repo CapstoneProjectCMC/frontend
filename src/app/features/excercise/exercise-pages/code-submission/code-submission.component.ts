@@ -5,13 +5,16 @@ import { CodeEditorComponent } from '../../../../shared/components/fxdonad-share
 import { CodingService } from '../../../../core/services/api-service/coding.service';
 import { Store } from '@ngrx/store';
 import { CodeSubmission } from '../../../../core/models/coding.model';
-import { sendNotification } from '../../../../shared/utils/notification';
-import { ExerciseCodeResponse } from '../../../../core/models/code.model';
+import {
+  ExerciseCodeResponse,
+  submitCodeRequest,
+} from '../../../../core/models/code.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
 
 @Component({
   selector: 'app-code-submission',
@@ -41,6 +44,7 @@ export class CodeSubmissionComponent {
 
   // --- Trạng thái thực thi code ---
   output = 'Click "Run Code" to see the output.';
+  languageSelected = 'python';
   executionTime = '0';
   memoryUsage = '0';
   isRunning = false;
@@ -49,12 +53,23 @@ export class CodeSubmissionComponent {
 
   // --- Test cases ---
   testCases: {
-    id: string;
+    id: string; // Giữ lại ID ban đầu để map
     input: string;
     expected: string;
-    actual?: string; // Thêm output thực tế để so sánh
-    status: 'pending' | 'pass' | 'fail'; // Dùng 'pending' thay cho null
+    // --- Các thông tin từ API response ---
+    status: 'pending' | 'pass' | 'fail' | 'error'; // Thêm trạng thái 'error'
+    actualOutput?: string;
+    runtimeMs?: number;
+    memoryKb?: number;
+    errorMessage?: string;
   }[] = [];
+
+  submissionResult: {
+    score: number;
+    totalPoints: number;
+    passedAll: boolean;
+    peakMemoryKb: number;
+  } | null = null;
 
   private unlistenMouseMove!: () => void;
   private unlistenMouseUp!: () => void;
@@ -92,6 +107,7 @@ export class CodeSubmissionComponent {
             expected: tc.expectedOutput,
             status: 'pending',
           }));
+
           this.examples = this.exercise.codingDetail.testCases
             .filter((tc) => tc.sample)
             .map((tc, i) => ({
@@ -229,39 +245,61 @@ export class CodeSubmissionComponent {
   }
 
   submitCode() {
-    const codePayload = this.buildCodePayload();
-    console.log('Submitting code with:', codePayload);
-
     this.isSubmitting = true;
-    this.activeLeftTab = 'testcases'; // Tự động chuyển qua tab test case
-    this.testCases.forEach((tc) => (tc.status = 'pending')); // Reset trạng thái
+    this.activeLeftTab = 'testcases'; // Tự động chuyển qua tab
+    this.submissionResult = null; // Reset kết quả cũ
 
-    // *** LOGIC GỌI API THỰC TẾ ***
-    // this.codingService.submit(codePayload).subscribe({ ... });
+    // Reset trạng thái từng test case về 'pending'
+    this.testCases.forEach((tc) => {
+      tc.status = 'pending';
+      tc.actualOutput = undefined;
+      tc.runtimeMs = undefined;
+      tc.memoryKb = undefined;
+      tc.errorMessage = undefined;
+    });
 
-    // --- Giả lập quá trình chấm bài ---
-    setTimeout(() => {
-      this.testCases = this.testCases.map((tc) => {
-        // Giả lập logic pass/fail
-        const isPass = Math.random() > 0.3; // 70% chance to pass
-        return {
-          ...tc,
-          status: isPass ? 'pass' : 'fail',
-          actual: isPass ? tc.expected : '[1, 2]', // Giả lập output sai
-        };
-      });
-      this.isSubmitting = false;
-    }, 1500);
-  }
-
-  private buildCodePayload(): CodeSubmission {
-    return {
-      submissionId: 4, // Nên là giá trị động
-      submittedCode: this.codeEditorComponent.getCode(),
-      userId: 'hdawhdjhawdbasj', // Lấy từ state/auth service
+    const dataSubmit: submitCodeRequest = {
       exerciseId: this.exerciseId,
-      memory: 256,
-      cpus: 1,
+      studentId: decodeJWT(localStorage.getItem('token') ?? '')?.payload.userId,
+      language: this.codeEditorComponent.getLanguage(),
+      sourceCode: this.codeEditorComponent.getCode(),
+      timeTakenSeconds: '50', // Có thể tính toán thời gian thực
     };
+
+    this.codingService.submitCode(this.exerciseId, dataSubmit).subscribe({
+      next: (res) => {
+        const responseData = res.result;
+
+        // Lưu kết quả tổng quan
+        this.submissionResult = {
+          score: responseData.score,
+          totalPoints: responseData.totalpoints,
+          passedAll: responseData.passed,
+          peakMemoryKb: responseData.peakmemorykb,
+        };
+
+        // Cập nhật chi tiết cho từng test case
+        responseData.results.forEach((result) => {
+          const testCase = this.testCases.find(
+            (tc) => tc.id === result.testcaseid // đổi đúng key
+          );
+          console.log(this.testCases);
+          if (testCase) {
+            testCase.status = result.passed ? 'pass' : 'fail';
+            testCase.actualOutput = result.output;
+            testCase.runtimeMs = result.runtimems;
+            testCase.memoryKb = result.memorykb;
+            testCase.errorMessage = result.errormessage;
+          }
+        });
+
+        this.isSubmitting = false;
+      },
+      error: (err) => {
+        console.log(err);
+        // Có thể hiển thị thông báo lỗi chung ở đây
+        this.isSubmitting = false;
+      },
+    });
   }
 }
