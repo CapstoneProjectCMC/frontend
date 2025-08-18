@@ -10,12 +10,14 @@ const routes: Routes = [
     component: ResourceListComponent,
     data: { breadcrumb: 'Danh sách tài nguyên' },
     children: [],
+    title: 'Tài nguyên học tập',
   },
   {
     path: 'resource-create',
     component: ResourceCreatePageComponent,
     data: { breadcrumb: 'Tạo tài nguyên' },
     children: [],
+    title: 'Tải lên tài liệu',
   },
 ];
 

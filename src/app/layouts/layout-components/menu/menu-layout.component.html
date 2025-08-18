@@ -48,6 +48,7 @@
         (mouseleave)="onMouseLeave(item)"
       >
         <div
+          *ngIf="!item.isVisible"
           class="ant-menu-item"
           [class.ant-menu-item-active]="isActive(item)"
           [class.ant-menu-item-selected]="isActive(item)"

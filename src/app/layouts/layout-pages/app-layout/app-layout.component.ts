@@ -9,6 +9,9 @@ import {
   navStudentItems,
 } from '../../../core/constants/menu-router.data';
 import { CommonModule } from '@angular/common';
+import { getNavHorizontalItems } from '../../../core/router-manager/horizontal-menu';
+import { decodeJWT } from '../../../shared/utils/stringProcess';
+import { SidebarItem } from '../../../core/models/data-handle';
 
 @Component({
   selector: 'app-app-layout',
@@ -25,13 +28,15 @@ import { CommonModule } from '@angular/common';
 })
 export class AppLayoutComponent implements OnInit {
   visible = true;
-  menuItems = navStudentItems;
+  menuItems: SidebarItem[] | [] = [];
   showFooter = false;
 
   constructor(private router: Router) {}
 
   ngOnInit() {
+    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
     // Cập nhật visible ngay khi khởi tạo dựa trên url hiện tại
+    this.menuItems = getNavHorizontalItems(role);
     const currentUrl = this.router.url;
     this.visible = currentUrl !== '/';
     this.showFooter = currentUrl === '/' || currentUrl === '';

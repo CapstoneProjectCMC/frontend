@@ -10,6 +10,8 @@ import { DisplayScoreComponent } from './exercise-pages/display-score/display-sc
 import { ExerciseCodeDetailsComponent } from './exercise-pages/exercise-code-details/exercise-code-details.component';
 import { AddCodeDetailsComponent } from './exercise-pages/add-code-details/add-code-details.component';
 import { CodeSubmissionComponent } from './exercise-pages/code-submission/code-submission.component';
+import { QuizHistoryComponent } from './exercise-pages/quiz-history/quiz-history.component';
+import { RoleGuard } from '../../core/guards/router-protected/role.guard';
 
 const routes: Routes = [
   {
@@ -21,6 +23,7 @@ const routes: Routes = [
         path: 'exercise-details/:id',
         component: ExerciseDetailsComponent,
         data: { breadcrumb: 'Chi tiết bài tập' },
+        title: 'Chi tiết bài tập',
       },
       {
         path: 'exercise-code-details/:id',
@@ -41,6 +44,7 @@ const routes: Routes = [
         path: 'list',
         component: ListExerciseComponent,
         data: { breadcrumb: 'Danh sách bài tập' },
+        title: 'Danh sách bài tập',
       },
       {
         path: 'quiz-submission/:id',
@@ -53,6 +57,11 @@ const routes: Routes = [
         path: 'quiz-submission/scored/:id',
         component: DisplayScoreComponent,
         data: { breadcrumb: 'Kết quả' },
+      },
+      {
+        path: 'quiz-history/submited',
+        component: QuizHistoryComponent,
+        data: { breadcrumb: 'Danh sách bài Quiz đã làm' },
       },
     ],
   },

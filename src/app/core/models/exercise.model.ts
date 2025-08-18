@@ -96,7 +96,7 @@ export type CreateExerciseRequest = {
   difficulty: DifficultyLevel; // required enum
   exerciseType: ExerciseType; // required enum
   orgId?: string;
-  cost: number; // required, BigDecimal → number
+  cost: number; // required; BigDecimal → number
   freeForOrg: boolean; // required
   startTime?: string; // Instant → string (ISO format)
   endTime?: string; // Instant → string
@@ -235,4 +235,14 @@ export type QuestionOption = {
   id: string;
   optiontext: string;
   order: string; // ví dụ: "A", "B", "C"
+};
+
+export type MyQuizHistoryResponse = {
+  submissionId: string;
+  exerciseId: string;
+  exerciseTitle: string;
+  score: number;
+  totalPoints: number;
+  timeTakenSeconds: number;
+  submittedAt: string;
 };

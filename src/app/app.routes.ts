@@ -4,6 +4,7 @@ import { SecondLayout } from './layouts/layout-pages/second-layout/second-layout
 import { AuthLayoutComponent } from './layouts/layout-pages/auth-layout/auth-layout.component';
 import { AppLayoutComponent } from './layouts/layout-pages/app-layout/app-layout.component';
 import { AdminLayoutComponent } from './layouts/layout-pages/admin-layout/admin-layout';
+import { RoleGuard } from './core/guards/router-protected/role.guard';
 
 export const routes: Routes = [
   //Để test
@@ -94,6 +95,7 @@ export const routes: Routes = [
           import('./features/landing/landing.module').then(
             (m) => m.LandingModule
           ),
+        title: 'CodeCampus',
       },
       {
         path: 'exercise',
@@ -116,6 +118,8 @@ export const routes: Routes = [
           import('./features/service-payment/service-and-payment.module').then(
             (m) => m.ServiceAndPaymentModule
           ),
+        data: { roles: ['ROLE_ADMIN'] },
+        canActivate: [RoleGuard],
       },
       {
         path: 'organization',
