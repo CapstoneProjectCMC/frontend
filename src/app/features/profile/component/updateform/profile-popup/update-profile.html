@@ -87,7 +87,7 @@
       <div class="dropdown">
         <span class="dropdown-title">Trình độ học vấn</span>
         <app-dropdown-button
-          [label]="'Trình độ'"
+          [label]="selectedEducation.label"
           [options]="education"
           [variant]="'secondary'"
           [size]="'small'"
@@ -111,7 +111,7 @@
         <div class="dropdown">
           <span class="dropdown-title">Giới tính</span>
           <app-dropdown-button
-            [label]="'Giới tính'"
+            [label]="selectedGender.label"
             [options]="gender"
             [variant]="'secondary'"
             [size]="'small'"

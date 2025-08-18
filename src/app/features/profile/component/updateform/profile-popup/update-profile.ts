@@ -10,6 +10,12 @@ import { ProfileService } from '../../../../../core/services/api-service/profile
 import { ProvinceService } from '../../../../../core/services/api-service/province.service';
 import { Observable } from 'rxjs';
 import { sendNotification } from '../../../../../shared/utils/notification';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../../shared/store/loading-state/loading.action';
+import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-update-profile',
@@ -58,8 +64,11 @@ export class UpdateProfileComponent {
 
   constructor(
     private profileService: ProfileService,
-    private provinceService: ProvinceService
+    private provinceService: ProvinceService,
+    private store: Store,
+    private router: Router
   ) {
+    console.log('data ở đây', this.user);
     // dữ liệu dropdown mẫu
     this.education = [
       { value: '1', label: 'lớp 1' },
@@ -88,6 +97,34 @@ export class UpdateProfileComponent {
   ngOnInit() {
     if (this.user) {
       this.displayName = this.user.displayName || '';
+      this.firstName = this.user.firstName;
+      this.lastName = this.user.lastName;
+      this.bio = this.user.bio;
+      // ép user.gender về string
+      const genderStr = this.user.gender.toString();
+
+      // tìm object tương ứng
+      const selected = this.gender.find((g) => g.value === genderStr);
+
+      // gán lại
+      if (selected) {
+        this.selectedGender = selected;
+      }
+
+      this.links = [...(this.user.links || [])];
+      this.selectedCity = this.user.city || '';
+      // ép user.education về string
+      const eduStr = this.user.education.toString();
+
+      // tìm object tương ứng
+      const selectededu = this.education.find((g) => g.value === eduStr);
+
+      // gán lại
+      if (selectededu) {
+        this.selectedEducation = selectededu;
+        console.log('dùy', this.selectedEducation);
+      }
+
       this.links = [...(this.user.links || [])];
       this.selectedCity = this.user.city || '';
     }
@@ -115,7 +152,7 @@ export class UpdateProfileComponent {
   handleSelect(dropdownKey: 'education' | 'gender' | 'city', selected: any) {
     if (dropdownKey === 'education') this.selectedEducation = selected;
     if (dropdownKey === 'gender') this.selectedGender = selected;
-    if (dropdownKey === 'city') this.selectedCity = selected;
+    if (dropdownKey === 'city') this.selectedCity = selected.label;
   }
 
   toggleDropdown(id: string): void {
@@ -169,6 +206,10 @@ export class UpdateProfileComponent {
 
   /** Cập nhật profile */
   updateProfile() {
+    this.store.dispatch(
+      setLoading({ isLoading: true, content: 'Đang tạo, xin chờ...' })
+    );
+
     // Update thông tin cơ bản
     this.profileService
       .updateProfile(
@@ -184,10 +225,20 @@ export class UpdateProfileComponent {
       )
       .subscribe({
         next: (res) => {
-          console.log('Cập nhật thông tin thành công:', res);
+          sendNotification(
+            this.store,
+            'Đã cập nhật thành công',
+            res.message,
+            'success'
+          );
+          setTimeout(() => {
+            this.router.navigate(['/profile/personal-profile']);
+            this.store.dispatch(clearLoading());
+          }, 300);
         },
         error: (err) => {
           console.error('Lỗi cập nhật thông tin:', err);
+          this.store.dispatch(clearLoading());
         },
       });
 

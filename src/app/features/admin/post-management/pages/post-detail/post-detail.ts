@@ -60,12 +60,7 @@ const BigList = ({ items }) => {
 
 Rất mong nhận được sự hỗ trợ từ các bạn!
 `,
-    tags: [
-      { id: 'html', label: 'HTML' },
-      { id: 'css', label: 'CSS' },
-      { id: 'js', label: 'JavaScript' },
-      { id: 'web', label: 'Web Development' },
-    ],
+    tags: ['html', 'c#', 'java'],
     field: [
       'https://example.com/images/html-structure.png',
       'https://example.com/documents/css-guide.pdf',

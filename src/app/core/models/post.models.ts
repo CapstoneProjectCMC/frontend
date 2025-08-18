@@ -30,7 +30,7 @@ export interface Post {
   orgId: string;
   title: string;
   content: string; // markdown format
-  tags: Tag[];
+  tags: string[];
   field: string[]; // list of URLs to images, documents, videos, etc.
   metrics: Metrics;
   status: string;
@@ -69,10 +69,10 @@ export interface postData {
 }
 // Định nghĩa kiểu dữ liệu cho fileDocument
 interface FileDocument {
-  file: File | null;
+  file?: File;
   category: string[];
   description: string;
-  tags: Tag[];
+  tags: string[];
   isLectureVideo: boolean;
   isTextBook: boolean;
   orgId: string;
@@ -85,9 +85,9 @@ export interface PostADD {
   content: string;
   isPublic: boolean;
   allowComment: boolean;
-  postType: string;
+  postType: 'Global' | 'Private' | 'Org';
   oldImagesUrls: string[];
-  hashtag: Tag[];
+  hashtag: string[];
   status: 'PENDING' | 'APPROVED' | 'REJECTED'; // có thể thêm enum thay vì string
-  fileDocument: FileDocument;
+  fileDocument?: FileDocument;
 }
