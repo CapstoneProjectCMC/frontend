@@ -6,7 +6,7 @@
   <div class="general-infor">
     <span class="display-name">{{user.displayName}}</span>
     <span class="bio">{{user.bio}}</span>
-    <div class="follow">
+    <div class="follow" (click)="toggleFollowPopup()">
       <div class="follow-item">
         <span class="follow-item-label">Người theo dõi</span>
         <span class="follow-item-value">{{0}}</span>
@@ -16,6 +16,25 @@
         <span class="follow-item-value">{{0}}</span>
       </div>
     </div>
+    <!-- Overlay -->
+    <div
+      class="follow-popup-overlay"
+      *ngIf="showFollowPopup"
+      (click)="showFollowPopup = false"
+    >
+      <!-- Popup -->
+      <div class="follow-popup" (click)="$event.stopPropagation()">
+        <!-- Nút đóng -->
+        <button class="close-btn" (click)="showFollowPopup = false">×</button>
+
+        <!-- Nội dung popup -->
+        <app-follow-popup
+          [follower]="follower"
+          [following]="following"
+        ></app-follow-popup>
+      </div>
+    </div>
+
     <div class="line"></div>
     <div class="detail-infor">
       <div class="detail-infor-item">

@@ -22,3 +22,11 @@ export enum GenderEnum {
   Female = 'female',
   Other = 'other',
 }
+
+export type follow = {
+  userId: string;
+  displayName: string;
+  avatarUrl: string;
+  firstName: string;
+  lastName: string;
+};

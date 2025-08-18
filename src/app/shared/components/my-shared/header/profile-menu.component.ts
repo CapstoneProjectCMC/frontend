@@ -43,7 +43,9 @@ export class ProfileMenuComponent {
       this.closeMenu.emit();
     }
   }
-
+  goToProfile = () => {
+    this.router.navigate(['/profile/personal-profile']);
+  };
   onLogout() {
     this.store.dispatch(
       setLoading({ isLoading: true, content: 'Đang đăng xuất, xin chờ...' })

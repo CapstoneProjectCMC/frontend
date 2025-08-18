@@ -168,59 +168,106 @@
 //   }
 // }
 import { Injectable } from '@angular/core';
-
 @Injectable({ providedIn: 'root' })
 export class HtmlToMdService {
   convert(html: string): string {
-    // Bước 1: decode các entity HTML cơ bản
+    if (!html) return '';
+
+    // --- Step 1: decode entity ---
     html = html
       .replace(/&lt;/g, '<')
       .replace(/&gt;/g, '>')
-      .replace(/&amp;/g, '&');
+      .replace(/&amp;/g, '&')
+      .replace(/&nbsp;/g, ' ');
 
-    // Bước 2: tách các dòng từ thẻ <div>
+    // --- Step 2: tách dòng ---
     const lines = html
-      .replace(/<br\s*\/?>/gi, '\n') // <br> thành xuống dòng
+      .replace(/<br\s*\/?>/gi, '\n')
       .split(/<\/div>/i)
-      .map((line) =>
-        line
-          .replace(/<div[^>]*>/gi, '') // bỏ thẻ <div>
-          .trim()
-      )
-      .filter((line) => line.length > 0);
+      .map((line: string) => line.replace(/<div[^>]*>/gi, '').trim())
+      .filter((line: string) => line.length > 0);
 
     let inCodeBlock = false;
-    let result: string[] = [];
+    const result: string[] = [];
 
     for (let line of lines) {
-      // Bước 3: tiêu đề từ <b>
-      if (/^<b>.*<\/b>$/.test(line)) {
-        const text = line.replace(/^<b>(.*)<\/b>$/, '$1').trim();
-        result.push(`# ${text}`);
+      // --- Inline formatting ---
+      line = line
+        .replace(/<b>(.*?)<\/b>/gi, '**$1**')
+        .replace(/<strong>(.*?)<\/strong>/gi, '**$1**')
+        .replace(/<i>(.*?)<\/i>/gi, '*$1*')
+        .replace(/<em>(.*?)<\/em>/gi, '*$1*')
+        .replace(/<u>(.*?)<\/u>/gi, '__$1__')
+        .replace(/<del>(.*?)<\/del>/gi, '~~$1~~')
+        .replace(/<code>(.*?)<\/code>/gi, '`$1`');
+
+      // --- Blockquote ---
+      if (/^<blockquote>([\s\S]*)<\/blockquote>$/.test(line)) {
+        const text = line
+          .replace(/^<blockquote>([\s\S]*)<\/blockquote>$/, '$1')
+          .trim();
+        result.push(`> ${text}`);
         continue;
       }
 
-      // Bước 4: xử lý inline code `...` trong văn bản
-      line = line.replace(/`([^`]+?)`/g, (_, code) => `\\\`${code.trim()}\\\``);
+      // --- Nếu đã có # heading thì giữ nguyên ---
+      if (/^#+\s/.test(line)) {
+        result.push(line);
+        continue;
+      }
 
-      // Bước 5: xác định block code
-      const isCodeLine = /^(const|let|function|<[/a-z]|{|}|;|\)).*/i.test(line);
+      // --- Nếu nguyên dòng là bold thì convert thành heading ---
+      if (/^\*\*(.*)\*\*$/.test(line)) {
+        result.push(`# ${line.replace(/^\*\*(.*)\*\*$/, '$1').trim()}`);
+        continue;
+      }
+
+      // --- List ---
+      line = line.replace(/<ul[^>]*>([\s\S]*?)<\/ul>/gi, (_, inner: string) =>
+        inner.replace(
+          /<li[^>]*>(.*?)<\/li>/gi,
+          (_: string, item: string) => `- ${item}\n`
+        )
+      );
+
+      line = line.replace(/<ol[^>]*>([\s\S]*?)<\/ol>/gi, (_, inner: string) => {
+        let i = 1;
+        return inner.replace(
+          /<li[^>]*>(.*?)<\/li>/gi,
+          (_: string, item: string) => `${i++}. ${item}\n`
+        );
+      });
+
+      // --- Inline code ---
+      line = line.replace(
+        /`([^`]+?)`/g,
+        (_: string, code: string) => `\`${code.trim()}\``
+      );
+
+      // --- Detect code block ---
+      const isCodeLine = /^(const|let|function|import|\s*<pre|\s*<code)/i.test(
+        line
+      );
 
       if (isCodeLine && !inCodeBlock) {
         inCodeBlock = true;
-        result.push('\\`\\`\\`js');
+        result.push('```js'); // ✅ chuẩn markdown
       }
-
       if (!isCodeLine && inCodeBlock) {
         inCodeBlock = false;
-        result.push('\\`\\`\\`');
+        result.push('```'); // ✅ chuẩn markdown
       }
 
       result.push(line);
     }
 
-    if (inCodeBlock) result.push('\\`\\`\\`');
+    if (inCodeBlock) result.push('```');
 
-    return result.join('\n').trim();
+    // --- Step cuối: normalize xuống dòng và ký tự ---
+    return result
+      .join('\n')
+      .replace(/\r\n/g, '\n') // chuẩn hóa newline
+      .replace(/ˋ/g, '`') // thay ký tự na ná backtick
+      .trim();
   }
 }

@@ -3,7 +3,7 @@
   [class.visible]="isVisible"
   [class.fadeout]="!isVisible"
 >
-  <button class="profile-menu-btn">
+  <!-- <button class="profile-menu-btn">
     <div class="icon">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -47,8 +47,8 @@
       </svg>
     </div>
     Đổi mật khẩu
-  </button>
-  <button class="profile-menu-btn">
+  </button> -->
+  <button class="profile-menu-btn" (click)="goToProfile()">
     <div class="icon">
       <svg
         xmlns="http://www.w3.org/2000/svg"

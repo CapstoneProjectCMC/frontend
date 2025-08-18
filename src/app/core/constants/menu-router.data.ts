@@ -202,7 +202,7 @@ export const menuItems: SidebarItem[] = [
 export const navStudentItems: SidebarItem[] = [
   {
     id: 'post',
-    path: '/post',
+    path: '/post-management/post-list',
     label: 'Bài viết',
     icon: 'fas fa-newspaper',
   },
@@ -214,7 +214,7 @@ export const navStudentItems: SidebarItem[] = [
   },
   {
     id: 'resource',
-    path: '/resource',
+    path: '/resource-management/resource-list',
     label: 'Kho tài liệu',
     icon: 'fas fa-book',
   },
