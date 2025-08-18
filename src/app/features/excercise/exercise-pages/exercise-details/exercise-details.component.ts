@@ -93,6 +93,9 @@ export class ExerciseDetailsComponent implements OnInit {
   selectedQuestion: QuizQuestion = this.initialSelectedQuestion;
 
   authorName: string = '';
+  avatarUrl: string = '';
+  avatarUrlDefault: string =
+    'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50';
 
   // Dropdown state: index of question with open dropdown, or null
   openDropdownIndex: number | null = null;
@@ -201,6 +204,7 @@ export class ExerciseDetailsComponent implements OnInit {
     this.profileService.getProfilebyId(userId).subscribe({
       next: (res) => {
         this.authorName = res.result.displayName;
+        this.avatarUrl = res.result.avatarUrl;
       },
       error: () => {
         console.log('Lỗi lấy thông tin tác giả.');

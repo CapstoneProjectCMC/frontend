@@ -20,6 +20,8 @@ import {
   sendNotification,
 } from '../../../../shared/utils/notification';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { ProfileService } from '../../../../core/services/api-service/profile.service';
+import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 
 @Component({
   selector: 'app-exercise-code-details',
@@ -34,11 +36,17 @@ export class ExerciseCodeDetailsComponent {
 
   // Modal state
   isUpdateModalVisible: boolean = false;
+  authorName: string = '';
+  avatarUrl: string = '';
+  avatarUrlDefault: string =
+    'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50';
 
   constructor(
     private codingService: CodingService,
     private route: ActivatedRoute,
     private router: Router,
+    private profileService: ProfileService,
+    private exerciseService: ExerciseService,
     private store: Store
   ) {}
 
@@ -69,6 +77,7 @@ export class ExerciseCodeDetailsComponent {
           this.exercise = res.result;
           this.hasNoDetails();
           this.store.dispatch(clearLoading());
+          this.getUserInfo(res.result.userId);
         },
         error: (err) => {
           console.log(err);
@@ -80,6 +89,18 @@ export class ExerciseCodeDetailsComponent {
           this.store.dispatch(clearLoading());
         },
       });
+  }
+
+  getUserInfo(userId: string) {
+    this.profileService.getProfilebyId(userId).subscribe({
+      next: (res) => {
+        this.authorName = res.result.displayName;
+        this.avatarUrl = res.result.avatarUrl;
+      },
+      error: () => {
+        console.log('Lỗi lấy thông tin tác giả.');
+      },
+    });
   }
 
   hasNoDetails() {
@@ -108,6 +129,48 @@ export class ExerciseCodeDetailsComponent {
   // Modal methods
   openUpdateModal(): void {
     this.isUpdateModalVisible = true;
+  }
+
+  openWarningModal() {
+    openModalNotification(
+      this.store,
+      'Xác nhận xóa bài',
+      `Bạn có chắc chắn Xóa bài tập "${this.exercise?.title}" này?`,
+      'Xác nhận',
+      'Hủy',
+      () => this.confirmDeleteExercise()
+    );
+  }
+
+  confirmDeleteExercise() {
+    if (this.exerciseId) {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Xóa bài tập...' })
+      );
+      this.exerciseService.softDeleteExercise(this.exerciseId).subscribe({
+        next: () => {
+          this.router.navigate(['/exercise/exercise-layout/list']);
+          sendNotification(
+            this.store,
+            'Đã xóa',
+            'Đã xóa bài tập thành công',
+            'success'
+          );
+          this.store.dispatch(clearLoading());
+        },
+        error: () => {
+          console.log('Có lỗi khi xóa');
+          this.store.dispatch(clearLoading());
+        },
+      });
+    } else {
+      sendNotification(
+        this.store,
+        'Lỗi xóa!',
+        'Không tìm thấy dữ liệu bài tập cần xóa.',
+        'error'
+      );
+    }
   }
 
   closeUpdateModal(): void {

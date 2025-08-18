@@ -120,13 +120,13 @@
 
             <div *ngIf="tc.status === 'fail'" class="io-details">
               <div>
-                Input: <code>{{ tc.input }}</code>
+                <b>Input:</b> <code>{{ tc.input }}</code>
               </div>
               <div>
-                Expected: <code>{{ tc.expected }}</code>
+                <b>Expected:</b> <code>{{ tc.expected }}</code>
               </div>
               <div>
-                Your Output:
+                <b>Your Output:</b>
                 <code>{{ tc.actualOutput ? tc.actualOutput : "ERROR" }}</code>
               </div>
             </div>
