@@ -163,7 +163,7 @@ export class PersonalProfileComponent {
   }
   ngOnInit(): void {
     this.isLoading = true;
-    this.profileService.getMyProfile().subscribe({
+    this.profileService.getProfilebyId(this.userId ?? '').subscribe({
       next: (res) => {
         this.user = res.result;
 

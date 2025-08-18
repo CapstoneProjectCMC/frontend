@@ -19,6 +19,14 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { PostDetailComponent } from '../post-detail/post-detail';
 import { Post, PostADD } from '../../../../../core/models/post.models';
 import { mapPostInfortoPost } from '../../../../../shared/utils/mapData';
+import { PostService } from '../../../../../core/services/api-service/post.service';
+import { sendNotification } from '../../../../../shared/utils/notification';
+import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../../shared/store/loading-state/loading.action';
 
 @Component({
   selector: 'app-post-create',
@@ -32,7 +40,7 @@ import { mapPostInfortoPost } from '../../../../../shared/utils/mapData';
     FormsModule,
     NgIf,
     NgFor,
-    PostDetailComponent,
+    // PostDetailComponent,
   ],
 })
 export class PostCreatePageComponent {
@@ -43,19 +51,11 @@ export class PostCreatePageComponent {
     content: '',
     isPublic: false,
     allowComment: false,
-    postType: '',
+    postType: 'Global',
     oldImagesUrls: [],
     hashtag: [],
     status: 'PENDING',
-    fileDocument: {
-      file: null,
-      category: [],
-      description: '',
-      tags: [],
-      isLectureVideo: false,
-      isTextBook: false,
-      orgId: '',
-    },
+    fileDocument: undefined,
   };
   tag: { value: string; label: string }[] = [];
   wherepost: { value: string; label: string }[] = [];
@@ -67,9 +67,24 @@ export class PostCreatePageComponent {
   constructor(
     private htmlToMd: HtmlToMdService,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private postService: PostService,
+    private store: Store,
+    private router: Router
   ) {
+    if (!this.post.fileDocument) {
+      this.post.fileDocument = {
+        category: [],
+        description: '',
+        tags: [],
+        orgId: '',
+        isLectureVideo: false,
+        isTextBook: false,
+      };
+    }
     this.post.fileDocument.category = ['image'];
+
+    (this.post.postType = 'Global'), (this.post.status = 'PENDING');
     this.tag = [
       { value: 'tag1', label: 'Tag 1' },
       { value: 'tag2', label: 'Tag 2' },
@@ -183,15 +198,35 @@ export class PostCreatePageComponent {
 
   postTitleError: string | null = null;
   handleInputDesChange(value: string | number): void {
+    if (!this.post.fileDocument) {
+      this.post.fileDocument = {
+        category: [],
+        description: '',
+        tags: [],
+        orgId: '',
+        isLectureVideo: false,
+        isTextBook: false,
+      };
+    }
     this.post.fileDocument.description = value.toString();
   }
+
   handleInputTitleChange(value: string | number): void {
     this.post.title = value.toString();
   }
   handleSelect(dropdownKey: string, selected: any): void {
     // Reset toàn bộ các lựa chọn trước đó
     this.selectedOptions = {};
-
+    if (!this.post.fileDocument) {
+      this.post.fileDocument = {
+        category: [],
+        description: '',
+        tags: [],
+        orgId: '',
+        isLectureVideo: false,
+        isTextBook: false,
+      };
+    }
     // Lưu lại option vừa chọn
     this.selectedOptions[dropdownKey] = selected;
     // Nếu dropdownKey là 'wherepost' thì gán orgId
@@ -299,11 +334,42 @@ export class PostCreatePageComponent {
   createPost(): void {
     this.post.content = this.htmlToMd.convert(this.editorContent);
     this.post.isPublic = this.post.postType != 'Private';
+    if (!this.post.fileDocument) {
+      this.post.fileDocument = {
+        category: [],
+        description: '',
+        tags: [],
+        orgId: '',
+        isLectureVideo: false,
+        isTextBook: false,
+      };
+    }
     if (this.selectedFile) {
       this.post.fileDocument.file = this.selectedFile;
     }
+    this.store.dispatch(
+      setLoading({ isLoading: true, content: 'Đang tạo, xin chờ...' })
+    );
     // Logic to create the post
     console.log('Post created:', this.post);
+    this.postService.addPost(this.post).subscribe({
+      next: (res) => {
+        sendNotification(
+          this.store,
+          'Đã thêm chi tiết bài code',
+          res.message,
+          'success'
+        );
+        setTimeout(() => {
+          this.router.navigate(['/post-management/post-list']);
+          this.store.dispatch(clearLoading());
+        }, 300);
+      },
+      error: (err) => {
+        console.log(err);
+        this.store.dispatch(clearLoading());
+      },
+    });
   }
   cancelPost(): void {
     // Logic to cancel the post creation

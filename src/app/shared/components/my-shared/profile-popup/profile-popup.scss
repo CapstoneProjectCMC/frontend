@@ -10,8 +10,12 @@
   overflow: auto;
   padding: 20px;
   font-size: 20px;
+  &.popup {
+    max-height: 80vh;
+  }
   &.personal {
     max-height: none;
+    max-width: 30vw;
   }
 
   &.other {
@@ -149,6 +153,26 @@
     width: 40%;
     align-self: center;
     margin-top: 10px;
+  }
+  // thanh scrollbar
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  // track (nền scrollbar)
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 12px; // bo tròn cho track
+  }
+
+  // thumb (nút cuộn)
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 12px; // bo tròn cho thumb
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
 }
 

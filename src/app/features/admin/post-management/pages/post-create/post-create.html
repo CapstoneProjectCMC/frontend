@@ -239,7 +239,7 @@
           <app-input
             label="Mô tả cho ảnh"
             placeholder="Nhập mô tả..."
-            [value]="post.fileDocument.description"
+            [value]="post.fileDocument?.description || ''"
             (valueChange)="handleInputDesChange($event)"
             [required]="false"
             [minLength]="3"

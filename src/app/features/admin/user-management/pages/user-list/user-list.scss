@@ -118,12 +118,14 @@
 .profile-popup-container {
   position: relative;
   z-index: 2;
-  background: transparent;
+  width: auto;
+  padding: 10px;
+  background: var(--background-color);
   border-radius: 12px;
   box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   animation: popupScaleFadeIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
