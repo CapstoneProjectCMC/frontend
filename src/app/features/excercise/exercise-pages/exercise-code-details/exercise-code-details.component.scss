@@ -10,10 +10,51 @@
     flex: 3;
     min-width: 0;
 
-    .title {
-      color: var(--title-text);
-      font-size: 1.625rem; // Tăng ~30%
-      margin-bottom: 0.25rem;
+    .header-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      .title {
+        color: var(--title-text);
+        font-size: 1.625rem;
+        margin-bottom: 0.25rem;
+        margin-top: 0.25rem;
+        flex: 1;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+
+        .avatar {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          border: 1.5px solid #eee;
+          object-fit: cover;
+        }
+        .info-main {
+          flex: 1;
+          h2 {
+            margin: 0 0 2px 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.2;
+          }
+          .author {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted-color);
+            font-size: 13px;
+            i {
+              font-size: 14px;
+            }
+          }
+        }
+      }
     }
 
     .meta-header {
@@ -177,23 +218,38 @@
 
     .action-buttons {
       display: flex;
-      flex-direction: column;
+      align-items: center;
       gap: 0.6rem;
+      flex-wrap: wrap; // Cho phép xuống dòng trên màn hình nhỏ
+
+      .admin-actions {
+        display: flex;
+        gap: 0.6rem;
+      }
 
       .btn {
-        padding: 0.7rem 0.9rem; // Tăng padding
+        padding: 0.6rem 1rem; // Điều chỉnh padding
         border: none;
         border-radius: 6px;
-        font-size: 0.65rem; // Tăng ~30%
+        font-size: 0.65rem;
         font-weight: bold;
         cursor: pointer;
-        transition: background-color 0.2s ease;
+        transition: all 0.2s ease;
+        display: flex; // Căn icon và chữ
+        align-items: center;
+        gap: 0.5rem; // Khoảng cách giữa icon và chữ
+
+        i {
+          font-size: 0.7rem;
+        }
 
         &.btn-primary {
           background-color: var(--button-color);
           color: var(--reverse-color-text);
           &:hover {
             background-color: var(--button-color-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
           }
         }
 
@@ -211,6 +267,17 @@
           color: white;
           &:hover {
             background-color: #e67e22;
+          }
+        }
+
+        // Nút xóa được thiết kế lại để an toàn hơn
+        &.btn-outline-delete {
+          background-color: transparent;
+          color: var(--error-color);
+          border: 1px solid var(--error-color);
+          &:hover {
+            background-color: var(--error-color);
+            color: white;
           }
         }
       }

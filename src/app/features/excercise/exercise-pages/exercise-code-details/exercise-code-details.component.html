@@ -1,6 +1,21 @@
 <div class="coding-details-container" *ngIf="exercise">
   <div class="problem-description">
-    <h1 class="title">{{ exercise.title }}</h1>
+    <div class="header-info">
+      <h1 class="title">{{ exercise.title }}</h1>
+      <div class="header">
+        <img
+          class="avatar"
+          [src]="avatarUrl ? avatarUrl : avatarUrlDefault"
+          alt="Avatar"
+        />
+        <div class="info-main">
+          <div class="author">
+            <i class="fa fa-user"></i>
+            <span>{{ authorName }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="meta-header">
       <span
@@ -95,17 +110,39 @@
     <div class="info-card">
       <h3 class="card-title">Tags</h3>
       <div class="tags-container">
-        <span *ngFor="let tag of exercise.tags" class="tag">{{ tag }}</span>
+        <span *ngFor="let tag of exercise.tags" class="tag">#{{ tag }}</span>
       </div>
     </div>
 
     <div class="action-buttons">
-      <button class="btn btn-secondary" (click)="goBack()">Quay lại</button>
-      <button class="btn btn-warning" (click)="openUpdateModal()">
-        Chỉnh sửa
+      <button class="btn btn-secondary" (click)="goBack()" title="Quay lại">
+        <i class="fa-solid fa-arrow-left"></i>
       </button>
-      <button class="btn btn-primary" (click)="confirmCoding()">
-        Bắt đầu làm
+
+      <div class="admin-actions">
+        <button
+          class="btn btn-warning"
+          (click)="openUpdateModal()"
+          title="Chỉnh sửa"
+        >
+          <i class="fa-solid fa-pencil"></i>
+        </button>
+        <button
+          class="btn btn-outline-delete"
+          (click)="openWarningModal()"
+          title="Xóa bài tập này"
+        >
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </div>
+
+      <button
+        class="btn btn-primary"
+        (click)="confirmCoding()"
+        title="Bắt đầu làm bài"
+      >
+        <i class="fa-solid fa-play"></i>
+        <span>Bắt đầu làm</span>
       </button>
     </div>
   </aside>
