@@ -80,22 +80,21 @@ Rất mong nhận được sự hỗ trợ từ các bạn!
     status: 'APPROVED',
   };
   authorInfo: User = {
-    id: 'user_123',
-    userId: 'user_123',
-    city: 'Hanoi',
-    createdAt: '2023-01-01T00:00:00Z',
-    displayName: 'nguyenvana',
-    avatarUrl:
-      'https://i.pinimg.com/736x/06/b7/2c/06b72cd4cbbfb9996d27334d48e50b70.jpg',
-    backgroundUrl:
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-    dob: '2020-01-01T00:00:00.000Z',
-    links: ['https://facebook.com/nguyenvana', 'https://github.com/nguyenvana'],
-    bio: 'Yêu thích lập trình, thích chia sẻ kiến thức.',
-    firstName: 'Nguyen',
-    lastName: 'Van A',
-    education: 8,
-    gender: true,
+    userId: 'u123456',
+    username: 'johndoe',
+    email: 'johndoe@example.com',
+    firstName: 'John',
+    lastName: 'Doe',
+    dob: '28/03/2004', // dạng string, không phải Date object
+    bio: 'Sinh viên CNTT, yêu thích coding và AI.',
+    gender: true, // true = nam, false = nữ (tuỳ bạn quy ước)
+    displayName: 'John D.',
+    education: 3, // ví dụ: 1 = THPT, 2 = Cao đẳng, 3 = Đại học
+    links: ['https://github.com/johndoe', 'https://linkedin.com/in/johndoe'],
+    city: 'Hà Nội',
+    avatarUrl: 'https://example.com/avatar/johndoe.png',
+    backgroundUrl: 'https://example.com/bg/johndoe-cover.jpg',
+    createdAt: '2025-08-18T09:30:00Z', // Instant -> Date
   };
   tocItems: { text: string; level: number; anchor: string }[] = [];
   time = new Date();

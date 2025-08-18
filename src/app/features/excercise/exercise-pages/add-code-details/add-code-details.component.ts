@@ -46,10 +46,10 @@ export class AddCodeDetailsComponent {
     'Java',
     'Python',
     'C++',
-    'JavaScript',
-    'C#',
-    'Go',
-    'Rust',
+    // 'JavaScript',
+    // 'C#',
+    // 'Go',
+    // 'Rust',
   ];
 
   testCases: TestCase[] = [];
