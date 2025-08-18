@@ -169,11 +169,8 @@ export class CodeEditorPage implements OnInit, AfterViewChecked {
       cpus: 1,
     };
 
-    console.log('Code gửi đi:', code);
-
     this.codingService.sendCode(code).subscribe({
       next: (res) => {
-        console.log('đã gửi request');
         sendNotification(
           this.store,
           'Thành công',
@@ -182,7 +179,7 @@ export class CodeEditorPage implements OnInit, AfterViewChecked {
         );
       },
       error: (err) => {
-        console.log('Lỗi gửi');
+        console.log(err);
       },
     });
 

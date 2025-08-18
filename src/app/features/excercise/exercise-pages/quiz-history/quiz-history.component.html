@@ -1,0 +1,41 @@
+<div class="history-container">
+  <h2 class="page-title">📘 Lịch sử nộp bài Quiz</h2>
+
+  <div class="history-list" *ngIf="submissions">
+    <div
+      class="history-card"
+      *ngFor="let item of submissions"
+      (click)="goToQuizDetails(item.exerciseId)"
+    >
+      <div class="card-header">
+        <h3 class="exercise-title">{{ item.exerciseTitle }}</h3>
+        <span
+          class="score"
+          [class.passed]="item.score === item.totalPoints"
+          [class.failed]="item.score < item.totalPoints"
+        >
+          {{ item.score }}/{{ item.totalPoints }}
+        </span>
+      </div>
+
+      <div class="card-body">
+        <div class="info">
+          <span
+            ><i class="fa fa-clock"></i> {{ item.timeTakenSeconds }} giây</span
+          >
+          <span
+            ><i class="fa fa-calendar"></i>
+            {{ item.submittedAt | date : "dd/MM/yyyy HH:mm" }}</span
+          >
+        </div>
+
+        <div class="progress-bar">
+          <div
+            class="progress-fill"
+            [style.width.%]="(item.score / item.totalPoints) * 100"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

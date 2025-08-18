@@ -280,7 +280,7 @@ export const sidebarExercises: SidebarItem[] = [
   {
     id: 'saved-exercises',
     path: 'exercise/exercise-list/code',
-    label: 'Bài tập đã lưu',
+    label: 'Bài tập đã làm',
     icon: 'fas fa-bookmark',
     children: [
       {
@@ -291,7 +291,7 @@ export const sidebarExercises: SidebarItem[] = [
       },
       {
         id: 'post',
-        path: 'exercise/exercise-list/quiz',
+        path: '/exercise/exercise-layout/quiz-history/submited',
         label: 'Bài tập Quiz',
         icon: 'fas fa-question-circle',
       },

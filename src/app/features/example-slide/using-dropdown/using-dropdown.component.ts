@@ -60,8 +60,6 @@ export class UsingDropdownComponent {
     this.selectedOptions[dropdownKey] = selected;
 
     // this.router.navigate(['/', dropdownKey, selected.label]);
-
-    console.log(this.selectedOptions);
   }
 
   toggleDropdown(id: string): void {

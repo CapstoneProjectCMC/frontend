@@ -33,6 +33,7 @@ export const API_CONFIG = {
         asc: boolean
       ) =>
         `/submission/exercises?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
+      GET_HISTORY_QUIZ: '/submission/quiz/self/history',
       GET_ALL_USER: (
         page: number,
         size: number,

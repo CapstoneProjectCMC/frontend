@@ -24,7 +24,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -45%) scale(0.98);
-  background: #fff;
+  background: var(--background-color);
   border-radius: 8px;
   min-width: 320px;
   max-width: 90vw;
@@ -61,6 +61,12 @@
   background: none;
   border: none;
   font-size: 1.5rem;
+  color: var(--text-color);
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+  border-radius: 50%;
   cursor: pointer;
 }
 .notice-modal-body {
@@ -80,6 +86,10 @@
   border: none;
   cursor: pointer;
   font-weight: 500;
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
 }
 .notice-modal-footer button:last-child {
   background: #1976d2;

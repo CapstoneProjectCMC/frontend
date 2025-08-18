@@ -57,7 +57,6 @@ export class OauthCallbackComponent {
           this.isLoading = false;
           this.router.navigate(['/auth/identity/login']);
         }
-        console.log(code);
       } else {
         this.isLoading = false;
         sendNotification(this.store, 'Thất bại', 'Lỗi không xác định', 'error');

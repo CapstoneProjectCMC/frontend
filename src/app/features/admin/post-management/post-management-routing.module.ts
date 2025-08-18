@@ -11,16 +11,19 @@ const routes: Routes = [
     component: PostListComponent,
     data: { breadcrumb: 'Danh sách bài đăng' },
     children: [],
+    title: 'Danh sách bài đăng',
   },
   {
     path: 'post/:id',
     component: PostDetailComponent,
     data: { breadcrumb: 'Chi tiết bài đăng' },
+    title: 'Chi tiết bài đăng',
   },
   {
     path: 'post-create',
     component: PostCreatePageComponent,
     data: { breadcrumb: 'Tạo bài đăng' },
+    title: 'Đăng bài',
   },
 ];
 
