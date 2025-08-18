@@ -161,8 +161,6 @@ export class ListExerciseComponent implements OnInit {
     this.selectedOptions[dropdownKey] = selected;
 
     // this.router.navigate(['/', dropdownKey, selected.label]);
-
-    console.log(this.selectedOptions);
   }
 
   toggleDropdown(id: string): void {
@@ -186,7 +184,6 @@ export class ListExerciseComponent implements OnInit {
       );
     });
 
-    console.log('CreateExerciseRequest:', data);
     this.exerciseService.createExercise(data).subscribe({
       next: (res) => {
         // Assuming res contains the created exercise with all required fields

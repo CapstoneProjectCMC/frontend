@@ -28,7 +28,7 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     { id: 'python', name: 'Python', extension: python },
     { id: 'cpp', name: 'C++', extension: cpp },
     { id: 'java', name: 'Java', extension: java },
-    { id: 'javascript', name: 'JavaScript', extension: javascript },
+    // { id: 'javascript', name: 'JavaScript', extension: javascript },
   ];
 
   constructor(private themeService: ThemeService) {

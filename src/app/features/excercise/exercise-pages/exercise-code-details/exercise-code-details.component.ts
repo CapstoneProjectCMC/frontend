@@ -1,8 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {
   ExerciseCodeResponse,
   TestCaseResponse,
-  CodingDetailResponse,
   UpdateCodingDetailRequest,
 } from '../../../../core/models/code.model';
 import { CommonModule } from '@angular/common';
@@ -22,20 +21,74 @@ import {
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
+import { UpdateExerciseComponent } from '../../exercise-modal/update-exercise/update-exercise.component';
+import { ExerciseQuiz } from '../../../../core/models/exercise.model';
+import { mapToExerciseQuiz } from '../../../../shared/utils/mapData';
 
 @Component({
   selector: 'app-exercise-code-details',
-  imports: [CommonModule, FormsModule, UpdateCodeDetailsComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    UpdateCodeDetailsComponent,
+    UpdateExerciseComponent,
+  ],
   templateUrl: './exercise-code-details.component.html',
   styleUrls: ['./exercise-code-details.component.scss'],
 })
 export class ExerciseCodeDetailsComponent {
   exercise: ExerciseCodeResponse | null = null;
+
+  exerciseBasic: ExerciseQuiz = {
+    id: '',
+    userId: '',
+    title: '',
+    description: '',
+    exerciseType: 'QUIZ',
+    difficulty: 'EASY',
+    orgId: '',
+    active: false,
+    cost: 0,
+    freeForOrg: false,
+    visibility: false,
+    startTime: '',
+    endTime: '',
+    duration: 0,
+    allowDiscussionId: 'chưa có',
+    resourceIds: ['chưa có', 'chưa có'],
+    tags: [],
+    allowAiQuestion: false,
+    quizDetail: {
+      id: 'Mẫu 1',
+      numQuestions: 0,
+      totalPoints: 20,
+      currentPage: 1,
+      totalPages: 1,
+      pageSize: 10,
+      totalElements: 0,
+      questions: [],
+      createdBy: '',
+      createdAt: '',
+      updatedBy: '',
+      updatedAt: '',
+      deletedBy: '',
+      deletedAt: '',
+    },
+    createdBy: '',
+    createdAt: '',
+    updatedBy: '',
+    updatedAt: '',
+    deletedBy: '',
+    deletedAt: '',
+  };
+
   exerciseId: string = '';
   role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
 
   // Modal state
   isUpdateModalVisible: boolean = false;
+  isOpenUpdateExercise: boolean = false;
+  isDropdownOpen: boolean = false;
   authorName: string = '';
   avatarUrl: string = '';
   avatarUrlDefault: string =
@@ -78,6 +131,8 @@ export class ExerciseCodeDetailsComponent {
           this.hasNoDetails();
           this.store.dispatch(clearLoading());
           this.getUserInfo(res.result.userId);
+
+          this.exerciseBasic = mapToExerciseQuiz(res.result);
         },
         error: (err) => {
           console.log(err);
@@ -126,9 +181,23 @@ export class ExerciseCodeDetailsComponent {
     this.router.navigate(['/exercise/exercise-layout/list']);
   }
 
-  // Modal methods
-  openUpdateModal(): void {
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  openBasicEdit() {
+    this.isOpenUpdateExercise = true;
+    this.isDropdownOpen = false;
+  }
+
+  openDetailEdit() {
     this.isUpdateModalVisible = true;
+    this.isDropdownOpen = false;
+  }
+
+  onUpdateExercise() {
+    this.fetchCodingDetails();
+    this.isOpenUpdateExercise = false;
   }
 
   openWarningModal() {
@@ -218,5 +287,14 @@ export class ExerciseCodeDetailsComponent {
       '/exercise/exercise-layout/code-submission',
       this.exerciseId,
     ]);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const clickedInside = target.closest('.dropdown');
+    if (!clickedInside) {
+      this.isDropdownOpen = false;
+    }
   }
 }

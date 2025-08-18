@@ -120,13 +120,24 @@
       </button>
 
       <div class="admin-actions">
-        <button
-          class="btn btn-warning"
-          (click)="openUpdateModal()"
-          title="Chỉnh sửa"
-        >
-          <i class="fa-solid fa-pencil"></i>
-        </button>
+        <div class="dropdown">
+          <button
+            class="btn btn-warning dropdown-toggle"
+            (click)="toggleDropdown()"
+            title="Chỉnh sửa"
+          >
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+
+          <ul class="dropdown-menu" [class.show]="isDropdownOpen">
+            <li (click)="openBasicEdit()">
+              <i class="fa fa-pen-to-square"></i> Chỉnh sửa cơ bản
+            </li>
+            <li (click)="openDetailEdit()">
+              <i class="fa fa-code"></i> Chỉnh sửa chi tiết
+            </li>
+          </ul>
+        </div>
         <button
           class="btn btn-outline-delete"
           (click)="openWarningModal()"
@@ -158,3 +169,11 @@
   (closeModal)="closeUpdateModal()"
   (saveChanges)="onSaveCodingDetails($event)"
 ></app-update-code-details>
+
+<app-update-exercise
+  [isOpen]="isOpenUpdateExercise"
+  (cancel)="this.isOpenUpdateExercise = false"
+  [exercise]="exerciseBasic"
+  (updateSuccess)="onUpdateExercise()"
+>
+</app-update-exercise>

@@ -15,6 +15,7 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { openModalNotification } from '../../../../shared/utils/notification';
 
 @Component({
   selector: 'app-code-submission',
@@ -209,8 +210,6 @@ export class CodeSubmissionComponent {
       cpus: 1,
     };
 
-    console.log('Code gửi đi:', code);
-
     // this.codingService.sendCode(code).subscribe({
     //   next: (res) => {
     //     console.log('đã gửi request');
@@ -283,7 +282,6 @@ export class CodeSubmissionComponent {
           const testCase = this.testCases.find(
             (tc) => tc.id === result.testcaseid // đổi đúng key
           );
-          console.log(this.testCases);
           if (testCase) {
             testCase.status = result.passed ? 'pass' : 'fail';
             testCase.actualOutput = result.output;
@@ -301,5 +299,16 @@ export class CodeSubmissionComponent {
         this.isSubmitting = false;
       },
     });
+  }
+
+  confirmSubmit() {
+    openModalNotification(
+      this.store,
+      'Xác nhận nộp bài',
+      'Bạn có chắc chắn hoàn thành bài tập?',
+      'Đồng ý',
+      'Soát lại',
+      () => this.submitCode()
+    );
   }
 }

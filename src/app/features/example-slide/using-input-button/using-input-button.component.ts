@@ -28,7 +28,6 @@ export class UsingInputButtonComponent {
     // }
 
     // Emit changes if needed
-    console.log('Input changed:', this.username);
   }
 
   onClick() {
