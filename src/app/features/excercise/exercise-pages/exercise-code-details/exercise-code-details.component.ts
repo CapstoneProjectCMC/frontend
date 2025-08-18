@@ -15,6 +15,11 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 import { UpdateCodeDetailsComponent } from '../../exercise-modal/update-code-details/update-code-details.component';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../../shared/utils/notification';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
 
 @Component({
   selector: 'app-exercise-code-details',
@@ -25,6 +30,7 @@ import { UpdateCodeDetailsComponent } from '../../exercise-modal/update-code-det
 export class ExerciseCodeDetailsComponent {
   exercise: ExerciseCodeResponse | null = null;
   exerciseId: string = '';
+  role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
 
   // Modal state
   isUpdateModalVisible: boolean = false;
@@ -38,7 +44,7 @@ export class ExerciseCodeDetailsComponent {
 
   ngOnInit(): void {
     this.exerciseId = this.route.snapshot.paramMap.get('id') ?? '';
-    // Để component hoạt động ngay cả khi chưa có @Input, ta có thể dùng mock data
+
     if (this.exerciseId) {
       this.fetchCodingDetails();
     }
@@ -87,8 +93,10 @@ export class ExerciseCodeDetailsComponent {
 
   // Lọc và trả về chỉ các test case là mẫu (sample = true)
   getSampleTestCases(): TestCaseResponse[] {
-    if (this.exercise?.codingDetail?.testCases) {
+    if (this.exercise?.codingDetail?.testCases && this.role === 'ROLE_USER') {
       return this.exercise.codingDetail.testCases.filter((tc) => tc.sample);
+    } else if (this.exercise?.codingDetail?.testCases) {
+      return this.exercise.codingDetail.testCases;
     }
     return [];
   }
@@ -107,9 +115,14 @@ export class ExerciseCodeDetailsComponent {
   }
 
   onSaveCodingDetails(updatedCodingDetail: UpdateCodingDetailRequest): void {
-    this.store.dispatch(
-      setLoading({ isLoading: true, content: 'Đang cập nhật chi tiết...' })
-    );
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({
+          isLoading: true,
+          content: 'Đang cập nhật dữ liệu chi tiết...',
+        })
+      );
+    });
 
     // Gọi API để cập nhật coding details
     this.codingService
@@ -123,14 +136,24 @@ export class ExerciseCodeDetailsComponent {
           this.store.dispatch(clearLoading());
 
           // Hiển thị thông báo thành công
-          // sendNotification(this.store, 'Thành công', 'Đã cập nhật chi tiết bài tập', 'success');
+          sendNotification(
+            this.store,
+            'Thành công',
+            'Đã cập nhật chi tiết bài tập',
+            'success'
+          );
         },
         error: (err: any) => {
           console.error('Error updating coding details:', err);
           this.store.dispatch(clearLoading());
-          // Hiển thị thông báo lỗi
-          // sendNotification(this.store, 'Lỗi', 'Không thể cập nhật chi tiết bài tập', 'error');
         },
       });
+  }
+
+  confirmCoding() {
+    this.router.navigate([
+      '/exercise/exercise-layout/code-submission',
+      this.exerciseId,
+    ]);
   }
 }

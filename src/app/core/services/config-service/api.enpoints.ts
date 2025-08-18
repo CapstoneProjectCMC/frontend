@@ -79,6 +79,7 @@ export const API_CONFIG = {
         `/identity/auth/login-facebook?code=${code}`,
 
       SENDCODE: '/coding/code/compile',
+      SUBMIT_CODE: (exerciseId: string) => `/coding/${exerciseId}/submit`,
       CREATE_EXERCISE: '/submission/exercise',
       ADD_QUESTION: (exerciseId: string) =>
         `/submission/quiz/${exerciseId}/question`,
@@ -88,6 +89,8 @@ export const API_CONFIG = {
         `/submission/quiz/question/${questionId}/option`,
       ADD_CODING_DETAILS: (exerciseId: string) =>
         `/submission/coding/exercise/${exerciseId}/coding-detail`,
+      ADD_TEST_CASE: (exerciseId: string) =>
+        `/submission/coding/${exerciseId}/test-case`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
       ASSIGN_EXERCISE_TO_STUDENT: (
         exerciseId: string,

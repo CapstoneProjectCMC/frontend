@@ -40,7 +40,9 @@
         *ngFor="let testCase of getSampleTestCases(); let i = index"
         class="test-case"
       >
-        <h3 class="test-case-title">Ví dụ {{ i + 1 }}</h3>
+        <h3 class="test-case-title">
+          {{ testCase.sample ? "Ví dụ" : "Mẫu ẩn" }} {{ i + 1 }}
+        </h3>
         <div class="io-block">
           <label>Input:</label>
           <pre><code>{{ testCase.input }}</code></pre>
@@ -102,7 +104,9 @@
       <button class="btn btn-warning" (click)="openUpdateModal()">
         Chỉnh sửa
       </button>
-      <button class="btn btn-primary">Bắt đầu làm</button>
+      <button class="btn btn-primary" (click)="confirmCoding()">
+        Bắt đầu làm
+      </button>
     </div>
   </aside>
 </div>
@@ -113,6 +117,7 @@
 <app-update-code-details
   [codingDetail]="exercise?.codingDetail || null"
   [isVisible]="isUpdateModalVisible"
+  [exerciseId]="exerciseId"
   (closeModal)="closeUpdateModal()"
   (saveChanges)="onSaveCodingDetails($event)"
 ></app-update-code-details>

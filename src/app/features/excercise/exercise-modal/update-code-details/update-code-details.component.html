@@ -179,9 +179,22 @@
                     [class.active]="testCase.sample"
                     (click)="toggleSampleTestCase(i)"
                   >
-                    <i class="fa fa-star"></i>
-                    {{ testCase.sample ? "Mẫu" : "Không mẫu" }}
+                    <i
+                      class="fa-star"
+                      [ngClass]="testCase.sample ? 'fa' : 'fa-regular'"
+                    ></i>
+                    Mẫu
                   </button>
+                  <button
+                    *ngIf="!testCase.id"
+                    type="button"
+                    class="btn btn-confirm"
+                    (click)="confirmNewTestCase(i)"
+                  >
+                    <i class="fa fa-check"></i>
+                    Xác nhận thêm
+                  </button>
+
                   <button
                     type="button"
                     class="btn btn-remove-testcase"

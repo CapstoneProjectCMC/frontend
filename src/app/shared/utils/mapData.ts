@@ -2,6 +2,7 @@ import {
   CreateExerciseRequest,
   ExerciseItem,
 } from '../../core/models/exercise.model';
+import { PostADD, Post } from '../../core/models/post.models';
 import { CardExcercise } from '../components/fxdonad-shared/card-excercise/card-excercise.component';
 
 const newDate = new Date();
@@ -41,5 +42,24 @@ export function mapCreateExerciseToCardUI(
     status: 'pending',
     approval: 'accepted',
     type: exercise.exerciseType,
+  };
+}
+
+export function mapPostInfortoPost(post: PostADD): Post {
+  return {
+    id: '',
+    userId: post.orgId,
+    orgId: post.orgId,
+    title: post.title,
+    content: post.content, // markdown format
+    tags: post.hashtag,
+    field: post.oldImagesUrls, // list of URLs to images, documents, videos, etc.
+    metrics: {
+      view: 0,
+      up: 0,
+      down: 0,
+      commentCount: 0,
+    },
+    status: post.status,
   };
 }

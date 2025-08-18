@@ -1,6 +1,12 @@
 import { NgFor, NgIf } from '@angular/common';
 
-import { Component } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  NgZone,
+  ViewChild,
+} from '@angular/core';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
@@ -10,6 +16,9 @@ import {
 } from '../../../../../shared/components/fxdonad-shared/text-editor/text-editor';
 import { HtmlToMdService } from '../../../../../shared/utils/HTMLtoMarkDown';
 import { FormsModule, NgModel } from '@angular/forms';
+import { PostDetailComponent } from '../post-detail/post-detail';
+import { Post, PostADD } from '../../../../../core/models/post.models';
+import { mapPostInfortoPost } from '../../../../../shared/utils/mapData';
 
 @Component({
   selector: 'app-post-create',
@@ -23,24 +32,26 @@ import { FormsModule, NgModel } from '@angular/forms';
     FormsModule,
     NgIf,
     NgFor,
+    PostDetailComponent,
   ],
 })
 export class PostCreatePageComponent {
-  post = {
+  @ViewChild('linkInput') linkInput!: ElementRef<HTMLInputElement>;
+  post: PostADD = {
     title: '',
     orgId: '',
     content: '',
     isPublic: false,
     allowComment: false,
     postType: '',
-    oldImagesUrls: [] as string[],
-    hashtag: [] as string[],
+    oldImagesUrls: [],
+    hashtag: [],
     status: 'PENDING',
     fileDocument: {
-      file: File,
-      category: [] as string[],
+      file: null,
+      category: [],
       description: '',
-      tags: [] as string[],
+      tags: [],
       isLectureVideo: false,
       isTextBook: false,
       orgId: '',
@@ -52,10 +63,13 @@ export class PostCreatePageComponent {
 
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
-  selectedFiles: File[] = [];
-  filePreviews: string[] = [];
-  isImageFile: boolean = false;
-  constructor(private htmlToMd: HtmlToMdService) {
+
+  constructor(
+    private htmlToMd: HtmlToMdService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {
+    this.post.fileDocument.category = ['image'];
     this.tag = [
       { value: 'tag1', label: 'Tag 1' },
       { value: 'tag2', label: 'Tag 2' },
@@ -71,40 +85,83 @@ export class PostCreatePageComponent {
       { value: 'topic2', label: 'Topic 2' },
       { value: 'topic3', label: 'Topic 3' },
     ];
+    this.post.content = '';
   }
-  //xli file
+  //xli nhiều file
+  // selectedFiles: File[] = [];
+  // filePreviews: string[] = [];
+  // isImageFile: boolean = false;
+  // onFileSelected(event: Event) {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     this.selectedFiles = Array.from(input.files).filter((file) =>
+  //       file.type.startsWith('image/')
+  //     );
+
+  //     this.filePreviews = [];
+  //     this.selectedFiles.forEach((file) => {
+  //       const reader = new FileReader();
+  //       reader.onload = (e) => {
+  //         if (e.target?.result) {
+  //           this.filePreviews.push(e.target.result as string);
+  //         }
+  //       };
+  //       reader.readAsDataURL(file);
+  //     });
+  //   }
+  // }
+  //   removeImage(index: number) {
+  //   this.selectedFiles.splice(index, 1);
+  //   this.filePreviews.splice(index, 1);
+  // }
+  //xli 1 file
+  selectedFile: File | null = null;
+  filePreview: string | null = null;
+  isImageFile: boolean = false;
+
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFiles = Array.from(input.files).filter((file) =>
-        file.type.startsWith('image/')
-      );
 
-      this.filePreviews = [];
-      this.selectedFiles.forEach((file) => {
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0]; // chỉ lấy 1 file đầu tiên
+
+      if (file.type.startsWith('image/')) {
+        this.selectedFile = file;
+        this.isImageFile = true;
+
         const reader = new FileReader();
         reader.onload = (e) => {
           if (e.target?.result) {
-            this.filePreviews.push(e.target.result as string);
+            this.filePreview = e.target.result as string;
           }
         };
         reader.readAsDataURL(file);
-      });
+      } else {
+        this.selectedFile = null;
+        this.filePreview = null;
+        this.isImageFile = false;
+      }
     }
   }
-  removeImage(index: number) {
-    this.selectedFiles.splice(index, 1);
-    this.filePreviews.splice(index, 1);
+
+  removeImage() {
+    this.selectedFile = null;
+    this.filePreview = null;
   }
+
   //xli link
-  newLink: string = '';
-  isAddingLink: boolean = false;
+  newLink = '';
+  isAddingLink = false;
 
   startAddLink() {
-    this.isAddingLink = true;
-    setTimeout(() => {
-      const input = document.getElementById('linkInput');
-      if (input) (input as HTMLInputElement).focus();
+    this.ngZone.run(() => {
+      this.isAddingLink = true;
+      this.cdr.detectChanges(); // Kích hoạt phát hiện thay đổi thủ công
+      setTimeout(() => {
+        if (this.linkInput) {
+          this.linkInput.nativeElement.focus();
+        }
+      });
     });
   }
 
@@ -114,16 +171,21 @@ export class PostCreatePageComponent {
       this.post.oldImagesUrls.push(trimmed);
       this.newLink = '';
       this.isAddingLink = false;
+      this.cdr.detectChanges(); // thông báo Angular check lại
     }
   }
 
   removeLink(index: number) {
     this.post.oldImagesUrls.splice(index, 1);
   }
+
   ///khác
 
   postTitleError: string | null = null;
-  handleInputChange(value: string | number): void {
+  handleInputDesChange(value: string | number): void {
+    this.post.fileDocument.description = value.toString();
+  }
+  handleInputTitleChange(value: string | number): void {
     this.post.title = value.toString();
   }
   handleSelect(dropdownKey: string, selected: any): void {
@@ -135,8 +197,17 @@ export class PostCreatePageComponent {
     // Nếu dropdownKey là 'wherepost' thì gán orgId
     if (dropdownKey === 'wherepost') {
       this.post.orgId = selected?.value || '';
+      this.post.fileDocument.orgId = selected?.value;
     }
     if (dropdownKey === 'tag') {
+      // Multi select → map label
+      if (Array.isArray(selected)) {
+        this.post.fileDocument.tags = selected.map((s) => s.label);
+      } else {
+        this.post.fileDocument.tags = selected?.label ? [selected.label] : [];
+      }
+    }
+    if (dropdownKey === 'hashtag') {
       // Multi select → map label
       if (Array.isArray(selected)) {
         this.post.hashtag = selected.map((s) => s.label);
@@ -215,21 +286,32 @@ export class PostCreatePageComponent {
   }
 
   toggleReadonly() {
-    this.editorConfig.readonly = !this.editorConfig.readonly;
-    this.editorConfig = { ...this.editorConfig };
+    setTimeout(() => {
+      this.editorConfig.readonly = !this.editorConfig.readonly;
+      this.editorConfig = { ...this.editorConfig };
+    });
   }
+
   saveDraftPost(): void {
     // Logic to save the draft post
     console.log('Draft post saved:', this.post.title);
   }
   createPost(): void {
-    (this.post.content = this.htmlToMd.convert(this.editorContent)),
-      (this.post.isPublic = this.post.postType != 'Private'),
-      // Logic to create the post
-      console.log('Post created:', this.post);
+    this.post.content = this.htmlToMd.convert(this.editorContent);
+    this.post.isPublic = this.post.postType != 'Private';
+    if (this.selectedFile) {
+      this.post.fileDocument.file = this.selectedFile;
+    }
+    // Logic to create the post
+    console.log('Post created:', this.post);
   }
   cancelPost(): void {
     // Logic to cancel the post creation
     console.log('Post creation cancelled');
+  }
+
+  //nhap
+  mapCreateExerciseToCardDataUI(data: PostADD): Post {
+    return mapPostInfortoPost(data);
   }
 }

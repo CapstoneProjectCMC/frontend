@@ -67,3 +67,27 @@ export interface postData {
   accesses: string[];
   deleted: boolean;
 }
+// Định nghĩa kiểu dữ liệu cho fileDocument
+interface FileDocument {
+  file: File | null;
+  category: string[];
+  description: string;
+  tags: Tag[];
+  isLectureVideo: boolean;
+  isTextBook: boolean;
+  orgId: string;
+}
+
+// Định nghĩa kiểu dữ liệu cho post
+export interface PostADD {
+  title: string;
+  orgId: string;
+  content: string;
+  isPublic: boolean;
+  allowComment: boolean;
+  postType: string;
+  oldImagesUrls: string[];
+  hashtag: Tag[];
+  status: 'PENDING' | 'APPROVED' | 'REJECTED'; // có thể thêm enum thay vì string
+  fileDocument: FileDocument;
+}

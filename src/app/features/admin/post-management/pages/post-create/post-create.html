@@ -5,7 +5,7 @@
         label="Tên bài viết"
         placeholder="Nhập tên..."
         [value]="post.title"
-        (valueChange)="handleInputChange($event)"
+        (valueChange)="handleInputTitleChange($event)"
         [required]="false"
         [minLength]="3"
         [variant]="'primary'"
@@ -23,9 +23,9 @@
         [disabled]="false"
         [multiSelect]="true"
         [isDisplayCheckbox]="false"
-        (onSelect)="handleSelect('topics', $event)"
-        [isOpen]="activeDropdown === 'topics'"
-        (toggle)="toggleDropdown('topics')"
+        (onSelect)="handleSelect('hashtag', $event)"
+        [isOpen]="activeDropdown === 'hashtag'"
+        (toggle)="toggleDropdown('hashtag')"
         [isDisplaySelectedOpptionLabels]="true"
         [isButtonControl]="true"
         [isSearchable]="true"
@@ -51,7 +51,7 @@
         [needIndexColor]="true"
       ></app-dropdown-button>
       <app-dropdown-button
-        [label]="'hashtag'"
+        [label]="'tag'"
         [options]="tag"
         [variant]="'secondary'"
         [size]="'small'"
@@ -166,7 +166,7 @@
       <!-- Ô nhập link khi bấm + -->
       <div class="link-input" *ngIf="isAddingLink">
         <input
-          id="linkInput"
+          #linkInput
           type="text"
           [(ngModel)]="newLink"
           placeholder="Nhập link..."
@@ -206,7 +206,7 @@
         <input
           type="file"
           (change)="onFileSelected($event)"
-          [multiple]="true"
+          [multiple]="false"
           accept="image/*"
           hidden
         />
@@ -228,8 +228,29 @@
           <span>Chọn file</span>
         </app-button>
       </label>
+      <div class="preview-container" *ngIf="filePreview">
+        <div class="preview-item">
+          <img [src]="filePreview" alt="Xem trước" class="preview-image" />
+          <button type="button" class="remove-btn" (click)="removeImage()">
+            ×
+          </button>
+        </div>
+        <div class="input-title">
+          <app-input
+            label="Mô tả cho ảnh"
+            placeholder="Nhập mô tả..."
+            [value]="post.fileDocument.description"
+            (valueChange)="handleInputDesChange($event)"
+            [required]="false"
+            [minLength]="3"
+            [variant]="'primary'"
+            [errorMessage]="postTitleError"
+            [isSvg]="false"
+          ></app-input>
+        </div>
+      </div>
 
-      <div class="preview-container" *ngIf="filePreviews.length > 0">
+      <!-- <div class="preview-container" *ngIf="filePreviews.length > 0">
         <div
           class="preview-item"
           *ngFor="let preview of filePreviews; let i = index"
@@ -239,7 +260,10 @@
             ×
           </button>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
+<!-- <app-post-detail
+  [postInfo]="mapCreateExerciseToCardDataUI(post)"
+></app-post-detail> -->
