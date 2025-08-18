@@ -33,6 +33,14 @@ export const API_CONFIG = {
         asc: boolean
       ) =>
         `/submission/exercises?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
+      SEARCH_EXERCISE: (
+        page: number,
+        size: number,
+        tags: string,
+        difficulty: number,
+        search: string
+      ) =>
+        `/search/?tags=${tags}&difficulty=${difficulty}&page=${page}&size=${size}&q=${search}`,
       GET_HISTORY_QUIZ: '/submission/quiz/self/history',
       GET_ALL_USER: (
         page: number,
@@ -43,24 +51,6 @@ export const API_CONFIG = {
       GET_PROFILE_USER_BY_ID: (userId: string) => `/profile/user/${userId}`,
       GET_MY_PROFILE: `/profile/user/my-profile`,
       LOADQUIZ: (quizId: string) => `/quiz/${quizId}/load`,
-      SEARCHING_EXERCISE: (
-        tags: string,
-        difficulty: number,
-        createdBy: string,
-        exerciseType: string,
-        orgId: string,
-        freeForOrg: boolean,
-        minCost: number,
-        maxCost: number,
-        startAfter: string,
-        endBefore: string,
-        allowAiQuestion: boolean,
-        page: number,
-        size: number,
-        q: string
-      ) =>
-        `/search?tags=${tags}&difficulty=${difficulty}&createdBy=${createdBy}&exerciseType=${exerciseType}&orgId=${orgId}&freeForOrg=${freeForOrg}&minCost=${minCost}&maxCost=${maxCost}&startAfter=${startAfter}&endBefore=${endBefore}&allowAiQuestion=${allowAiQuestion}&page=${page}&size=${size}&q=${q}`,
-
       GET_FOLLOWERS: (page: number, size: number) =>
         `/profile/social/followers?page=${page}&size=${size}`,
       GET_FOLLOWINGS: (page: number, size: number) =>

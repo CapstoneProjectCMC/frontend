@@ -48,7 +48,7 @@ export class ListExerciseComponent implements OnInit {
   listExercise: CardExcercise[] = [];
 
   pageIndex: number = 1;
-  itemsPerPage: number = 6;
+  itemsPerPage: number = 16;
   sortBy: EnumType['sort'] = 'CREATED_AT';
   asc: boolean = false;
 

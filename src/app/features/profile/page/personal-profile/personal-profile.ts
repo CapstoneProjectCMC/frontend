@@ -46,8 +46,9 @@ import { ButtonComponent } from '../../../../shared/components/my-shared/button/
 })
 export class PersonalProfileComponent {
   user: User = {
-    id: '',
     userId: '',
+    username: '',
+    email: '',
     firstName: 'Không',
     lastName: 'rõ',
     dob: '00-00-0000',
