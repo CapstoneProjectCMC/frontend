@@ -94,16 +94,16 @@ export class ExerciseService {
 
   assignExerciseToStudent(
     exerciseId: string,
-    studentId: string,
+    studentIds: string[],
     dueAt: string
   ) {
+    const data = {
+      studentIds,
+      dueAt,
+    };
     return this.api.post<ApiResponse<null>>(
-      API_CONFIG.ENDPOINTS.POST.ASSIGN_EXERCISE_TO_STUDENT(
-        exerciseId,
-        studentId,
-        dueAt
-      ),
-      null
+      API_CONFIG.ENDPOINTS.POST.ASSIGN_EXERCISE(exerciseId),
+      data
     );
   }
 

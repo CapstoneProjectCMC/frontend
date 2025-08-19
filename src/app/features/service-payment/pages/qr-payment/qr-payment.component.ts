@@ -118,7 +118,7 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
       sendNotification(
         this.store,
         'Giá trị không hợp lệ!',
-        `Số tiền không được vượt quá ${maxAmount.toLocaleString()} VNĐ.`,
+        `Hạn mức chuyển khoản ${maxAmount.toLocaleString()} VNĐ.`,
         'warning'
       );
       this.amount = maxAmount;

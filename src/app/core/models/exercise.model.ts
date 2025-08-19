@@ -67,7 +67,7 @@ export interface ExerciseQuiz {
   userId: string;
   title: string;
   description: string;
-  exerciseType: string;
+  exerciseType: 'CODING' | 'QUIZ';
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   orgId: string;
   active: boolean;

@@ -56,7 +56,8 @@ export class ListExerciseComponent implements OnInit {
   isLoadingMore = false;
   hasMore = true;
 
-  genres: { value: string; label: string }[] = [];
+  tags: { value: string; label: string }[] = [];
+  difficultyLevel: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
 
@@ -70,7 +71,7 @@ export class ListExerciseComponent implements OnInit {
     private exerciseService: ExerciseService,
     private router: Router
   ) {
-    this.genres = [
+    this.tags = [
       { value: 'action', label: 'Hành động' },
       { value: 'comedy', label: 'Hài hước' },
       { value: 'drama', label: 'Tâm lý' },
@@ -79,6 +80,11 @@ export class ListExerciseComponent implements OnInit {
       { value: 'sci-fi', label: 'Khoa học viễn tưởng' },
       { value: 'fantasy', label: 'Fantasy' },
       { value: 'slice-of-life', label: 'Đời thường' },
+    ];
+    this.difficultyLevel = [
+      { value: '0', label: 'Dễ' },
+      { value: '1', label: 'Trung bình' },
+      { value: '2', label: 'Khó' },
     ];
   }
 
@@ -153,12 +159,35 @@ export class ListExerciseComponent implements OnInit {
     }
   }
 
+  filterData(keyMap: string) {
+    const values: string[] = [];
+
+    Object.keys(this.selectedOptions)
+      .filter((key) => key === keyMap)
+      .forEach((key) => {
+        const selected = this.selectedOptions[key];
+
+        if (Array.isArray(selected)) {
+          // multiSelect => mảng
+          values.push(...selected.map((opt) => opt.value));
+        } else if (selected) {
+          // singleSelect => 1 object
+          values.push(selected.value);
+        }
+      });
+
+    return values.join(', ');
+    // "tag1, tag2, ..."
+  }
+
   handleSelect(dropdownKey: string, selected: any): void {
     // Reset toàn bộ các lựa chọn trước đó
     this.selectedOptions = {};
 
     // Lưu lại option vừa chọn
     this.selectedOptions[dropdownKey] = selected;
+
+    console.log(dropdownKey, this.filterData(dropdownKey));
 
     // this.router.navigate(['/', dropdownKey, selected.label]);
   }

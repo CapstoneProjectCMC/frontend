@@ -12,6 +12,7 @@ import { AddCodeDetailsComponent } from './exercise-pages/add-code-details/add-c
 import { CodeSubmissionComponent } from './exercise-pages/code-submission/code-submission.component';
 import { QuizHistoryComponent } from './exercise-pages/quiz-history/quiz-history.component';
 import { RoleGuard } from '../../core/guards/router-protected/role.guard';
+import { AssignExerciseComponent } from './exercise-pages/assign-exercise/assign-exercise.component';
 
 const routes: Routes = [
   {
@@ -62,6 +63,15 @@ const routes: Routes = [
         path: 'quiz-history/submited',
         component: QuizHistoryComponent,
         data: { breadcrumb: 'Danh sách bài Quiz đã làm' },
+      },
+      {
+        path: 'assign-exercise/:id',
+        component: AssignExerciseComponent,
+        data: {
+          breadcrumb: 'Giao bài tập',
+          roles: ['ROLE_TEACHER', 'ROLE_ADMIN'],
+        },
+        canActivate: [RoleGuard],
       },
     ],
   },

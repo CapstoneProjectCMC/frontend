@@ -33,14 +33,21 @@ export const API_CONFIG = {
         asc: boolean
       ) =>
         `/submission/exercises?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
+
       SEARCH_EXERCISE: (
         page: number,
         size: number,
-        tags: string,
-        difficulty: number,
-        search: string
-      ) =>
-        `/search/?tags=${tags}&difficulty=${difficulty}&page=${page}&size=${size}&q=${search}`,
+        tags: string | null,
+        difficulty: number | null,
+        search: string | null
+      ) => {
+        let query = `/search/?page=${page}&size=${size}`;
+        if (tags) query += `&tags=${tags}`;
+        if (difficulty !== null) query += `&difficulty=${difficulty}`;
+        if (search) query += `&q=${search}`;
+        return query;
+      },
+
       GET_HISTORY_QUIZ: '/submission/quiz/self/history',
       GET_ALL_USER: (
         page: number,
@@ -68,7 +75,8 @@ export const API_CONFIG = {
         `/identity/auth/login-google?code=${code}`,
       OUTBOUND_FACEBOOK_LOGIN: (code: string) =>
         `/identity/auth/login-facebook?code=${code}`,
-
+      ASSIGN_EXERCISE: (exerciseId: string) =>
+        `/submission/assignment-bulk?exerciseId=${exerciseId}`,
       SENDCODE: '/coding/code/compile',
       SUBMIT_CODE: (exerciseId: string) => `/coding/${exerciseId}/submit`,
       CREATE_EXERCISE: '/submission/exercise',
@@ -83,12 +91,6 @@ export const API_CONFIG = {
       ADD_TEST_CASE: (exerciseId: string) =>
         `/submission/coding/${exerciseId}/test-case`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
-      ASSIGN_EXERCISE_TO_STUDENT: (
-        exerciseId: string,
-        studentId: string,
-        dueAt: string
-      ) =>
-        `/submission/assignment?exerciseId=${exerciseId}&studentId=${studentId}&dueAt=${dueAt}`,
       UPLOAD_AVATAR: `/profile/user/my-profile/avatar`,
       UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
       FOLLOWUSER: (targetUserId: string) =>
