@@ -212,3 +212,83 @@
     height: fit-content;
   }
 }
+
+//loader
+/* =============================================== */
+/* SKELETON LOADER STYLES             */
+/* =============================================== */
+
+// Animation cho hiệu ứng shimmer
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+// Lớp cơ sở cho tất cả các thành phần skeleton
+.skeleton {
+  animation: shimmer 1.5s linear infinite forwards;
+  background: linear-gradient(
+    to right,
+    var(--background-color-secondary) 8%,
+    var(--border-color) 18%,
+    var(--background-color-secondary) 33%
+  );
+  background-size: 800px 104px;
+  position: relative;
+  border-radius: 6px;
+}
+
+// Các class cụ thể cho từng thành phần UI
+.skeleton-loader {
+  // Container này không cần style gì đặc biệt
+  // vì nó chỉ dùng để bọc các thành phần skeleton bên trong.
+
+  .skeleton-title {
+    height: 30px;
+    width: 40%;
+    margin-bottom: 24px;
+  }
+
+  .skeleton-text {
+    height: 16px;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .skeleton-input {
+    height: 40px;
+    width: 100%;
+  }
+
+  .skeleton-button {
+    height: 48px;
+    width: 130px;
+  }
+
+  .skeleton-avatar {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%; // Hình tròn cho avatar
+    flex-shrink: 0;
+  }
+
+  // Style cho layout của card skeleton
+  .skeleton-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+
+  .skeleton-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 8px;
+  }
+}

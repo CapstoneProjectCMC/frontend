@@ -19,6 +19,8 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'app-assign-exercise',
@@ -66,19 +68,22 @@ export class AssignExerciseComponent implements OnInit {
     this.isLoading = true;
 
     forkJoin({
-      exercise: this.exerciseService.getExerciseDetails(
-        1,
-        99999,
-        'CREATED_AT',
-        false,
-        id
-      ),
-      students: this.userService.getAllUser(
-        this.page,
-        this.size,
-        'CREATED_AT',
-        false
-      ),
+      exercise: this.exerciseService
+        .getExerciseDetails(1, 99999, 'CREATED_AT', false, id)
+        .pipe(
+          catchError((err) => {
+            console.error('Lỗi lấy bài tập:', err);
+            return of(null); // Trả về null thay vì fail toàn bộ
+          })
+        ),
+      students: this.userService
+        .getAllUser(this.page, this.size, 'CREATED_AT', false)
+        .pipe(
+          catchError((err) => {
+            console.error('Lỗi lấy học sinh:', err);
+            return of(null);
+          })
+        ),
     }).subscribe({
       next: (res) => {
         // Xử lý dữ liệu bài tập

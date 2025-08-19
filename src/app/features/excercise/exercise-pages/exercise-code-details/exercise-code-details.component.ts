@@ -211,6 +211,13 @@ export class ExerciseCodeDetailsComponent {
     );
   }
 
+  openAssignExercise() {
+    this.router.navigate([
+      '/exercise/exercise-layout/assign-exercise',
+      this.exerciseId,
+    ]);
+  }
+
   confirmDeleteExercise() {
     if (this.exerciseId) {
       this.store.dispatch(
