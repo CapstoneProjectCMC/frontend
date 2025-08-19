@@ -31,6 +31,7 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
+import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/tooltip';
 
 @Component({
   selector: 'app-exercise-details',
@@ -41,6 +42,7 @@ import { ProfileService } from '../../../../core/services/api-service/profile.se
     AddNewOptionComponent,
     UpdateExerciseComponent,
     UpdateQuestionOptionComponent,
+    Tooltip,
   ],
   templateUrl: './exercise-details.component.html',
   styleUrls: ['./exercise-details.component.scss'],

@@ -33,14 +33,21 @@ export const API_CONFIG = {
         asc: boolean
       ) =>
         `/submission/exercises?page=${page}&size=${size}&sortBy=${sort}&asc=${asc}`,
+
       SEARCH_EXERCISE: (
         page: number,
         size: number,
-        tags: string,
-        difficulty: number,
-        search: string
-      ) =>
-        `/search/?tags=${tags}&difficulty=${difficulty}&page=${page}&size=${size}&q=${search}`,
+        tags: string | null,
+        difficulty: number | null,
+        search: string | null
+      ) => {
+        let query = `/search/?page=${page}&size=${size}`;
+        if (tags) query += `&tags=${tags}`;
+        if (difficulty !== null) query += `&difficulty=${difficulty}`;
+        if (search) query += `&q=${search}`;
+        return query;
+      },
+
       GET_HISTORY_QUIZ: '/submission/quiz/self/history',
       GET_ALL_USER: (
         page: number,

@@ -112,6 +112,9 @@
           padding: 2px 7px;
           font-size: 13px;
           font-weight: 500;
+          &.other {
+            cursor: pointer;
+          }
         }
       }
       .time-info {

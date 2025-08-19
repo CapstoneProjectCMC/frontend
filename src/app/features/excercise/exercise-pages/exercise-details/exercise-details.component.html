@@ -99,12 +99,22 @@
 
       <div class="tags">
         <i class="fa fa-tags"></i>
-        <span *ngFor="let tag of exercise.tags.slice(0, 3)" class="tag"
-          >#{{ tag }}</span
-        >
-        <span *ngIf="exercise.tags.length > 3" class="tag"
-          >+{{ exercise.tags.length - 3 }}</span
-        >
+        <span *ngFor="let tag of exercise.tags?.slice(0, 3) || []" class="tag">
+          #{{ tag }}
+        </span>
+
+        <div style="position: relative">
+          <app-tooltip
+            [content]="exercise.tags.slice(3).join(', ')"
+            [position]="'right'"
+            [delay]="0.5"
+            [distance]="10"
+          >
+            <span *ngIf="(exercise.tags?.length || 0) > 3" class="tag other">
+              +{{ (exercise.tags.length || 0) - 3 }}
+            </span>
+          </app-tooltip>
+        </div>
       </div>
 
       <div class="time-info">
