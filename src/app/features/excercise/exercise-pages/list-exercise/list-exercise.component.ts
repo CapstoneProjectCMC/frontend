@@ -177,7 +177,7 @@ export class ListExerciseComponent implements OnInit {
       });
 
     return values.join(', ');
-    // 👉 "action, comedy, ..." thay vì "tags"
+    // "tag1, tag2, ..."
   }
 
   handleSelect(dropdownKey: string, selected: any): void {

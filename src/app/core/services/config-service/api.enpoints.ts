@@ -75,7 +75,8 @@ export const API_CONFIG = {
         `/identity/auth/login-google?code=${code}`,
       OUTBOUND_FACEBOOK_LOGIN: (code: string) =>
         `/identity/auth/login-facebook?code=${code}`,
-
+      ASSIGN_EXERCISE: (exerciseId: string) =>
+        `/submission/assignment-bulk?exerciseId=${exerciseId}`,
       SENDCODE: '/coding/code/compile',
       SUBMIT_CODE: (exerciseId: string) => `/coding/${exerciseId}/submit`,
       CREATE_EXERCISE: '/submission/exercise',
@@ -90,12 +91,6 @@ export const API_CONFIG = {
       ADD_TEST_CASE: (exerciseId: string) =>
         `/submission/coding/${exerciseId}/test-case`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
-      ASSIGN_EXERCISE_TO_STUDENT: (
-        exerciseId: string,
-        studentId: string,
-        dueAt: string
-      ) =>
-        `/submission/assignment?exerciseId=${exerciseId}&studentId=${studentId}&dueAt=${dueAt}`,
       UPLOAD_AVATAR: `/profile/user/my-profile/avatar`,
       UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
       FOLLOWUSER: (targetUserId: string) =>

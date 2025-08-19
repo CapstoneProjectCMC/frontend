@@ -31,8 +31,12 @@
         class="problem-description"
         [innerHTML]="exercise?.description"
       ></div>
+      <div class="time-limit" *ngIf="exercise?.duration">
+        <h4>Giới hạn thời gian</h4>
+        <span> {{ exercise?.duration }} Phút </span>
+      </div>
       <div class="examples" *ngFor="let example of examples; let i = index">
-        <h4>Example {{ i + 1 }}</h4>
+        <h4>Mẫu Testcase {{ i + 1 }}</h4>
         <pre><strong>Input:</strong> {{ example.input }}</pre>
         <pre><strong>Output:</strong> {{ example.output }}</pre>
       </div>

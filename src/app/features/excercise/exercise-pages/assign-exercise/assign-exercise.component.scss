@@ -1,0 +1,214 @@
+.assign-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  height: calc(100vh - 130px);
+  box-sizing: border-box;
+
+  .title {
+    color: var(--accent-color);
+    font-size: 1.5rem;
+    margin: 0;
+    .exercise-name {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+  }
+
+  .main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    flex-grow: 1;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .student-panel {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+
+    .panel-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--border-color);
+      background-color: var(--background-color-secondary);
+
+      h2 {
+        margin: 0 0 16px 0;
+        font-size: 1.2rem;
+        color: var(--title-text);
+      }
+
+      .count {
+        color: var(--primary-color);
+        font-weight: bold;
+      }
+    }
+
+    .search-bar {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      .fa-search {
+        position: absolute;
+        left: 12px;
+        color: var(--text-muted-color);
+      }
+
+      input {
+        width: 100%;
+        padding: 10px 10px 10px 36px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-size: 0.9rem;
+        &:focus {
+          outline: none;
+          border-color: var(--primary-color);
+          box-shadow: 0 0 0 2px var(--primary-color-lighter);
+        }
+      }
+    }
+  }
+
+  .student-list {
+    overflow-y: auto;
+    padding: 8px;
+    height: 100%;
+
+    .student-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+      transition: background-color 0.2s ease, box-shadow 0.2s ease;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .student-info {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        .name {
+          font-weight: 600;
+        }
+        .email {
+          font-size: 0.85rem;
+          color: var(--text-muted-color);
+        }
+      }
+
+      .action-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted-color);
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: color 0.2s ease;
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      // UX: chỉ hiện nút add/remove khi hover
+      &:hover {
+        background-color: var(--background-color-secondary);
+        cursor: pointer;
+        .action-btn {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  .selected-panel .student-card:hover .remove-btn:hover {
+    color: var(--error-color);
+  }
+
+  .assign-container .student-card:hover .add-btn:hover {
+    color: var(--success-color);
+  }
+
+  .actions-section {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+
+    .due-date-picker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      label {
+        font-weight: 500;
+      }
+
+      input[type="datetime-local"] {
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid var(--border-color);
+        background-color: var(--surface-color);
+        color: var(--text-color);
+      }
+    }
+
+    .assign-button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 600;
+      background-color: var(--button-color);
+      color: var(--reverse-color-text);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      &:hover:not(:disabled) {
+        background-color: var(--button-color-hover);
+      }
+
+      &:disabled {
+        background-color: var(--disabled-color);
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .state-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--text-muted-color);
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    height: fit-content;
+  }
+}

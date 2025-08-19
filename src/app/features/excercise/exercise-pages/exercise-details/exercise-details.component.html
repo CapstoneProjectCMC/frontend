@@ -15,7 +15,7 @@
           <h2>{{ exercise.title }}</h2>
           <div class="author">
             <i class="fa fa-user"></i>
-            <span>{{ authorName }}</span>
+            <span>{{ authorName ? authorName : "Ẩn danh" }}</span>
           </div>
         </div>
         <div class="actions">
@@ -105,7 +105,7 @@
 
         <div style="position: relative">
           <app-tooltip
-            [content]="exercise.tags.slice(3).join(', ')"
+            [content]="(exercise.tags || []).slice(3).join(', ')"
             [position]="'right'"
             [delay]="0.5"
             [distance]="10"

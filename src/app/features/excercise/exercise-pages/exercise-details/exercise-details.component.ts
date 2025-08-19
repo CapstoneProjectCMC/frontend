@@ -32,6 +32,7 @@ import {
 } from '../../../../shared/store/loading-state/loading.action';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
 import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/tooltip';
+import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-exercise-details',
@@ -59,7 +60,6 @@ export class ExerciseDetailsComponent implements OnInit {
   isOpenAddNewOption: boolean = false;
   isOpenUpdateExercise: boolean = false;
   isUpdateQuestion: boolean = false;
-  isOpenAssignExercise: boolean = false;
   resetLoadingFlag = false;
 
   initialSelectedQuestion: QuizQuestion = {
@@ -96,8 +96,7 @@ export class ExerciseDetailsComponent implements OnInit {
 
   authorName: string = '';
   avatarUrl: string = '';
-  avatarUrlDefault: string =
-    'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50';
+  avatarUrlDefault: string = avatarUrlDefault;
 
   // Dropdown state: index of question with open dropdown, or null
   openDropdownIndex: number | null = null;
@@ -420,7 +419,10 @@ export class ExerciseDetailsComponent implements OnInit {
   }
 
   openAssignExercise() {
-    this.isOpenAssignExercise = true;
+    this.router.navigate([
+      '/exercise/exercise-layout/assign-exercise',
+      this.exerciseId,
+    ]);
   }
 
   goBack() {

@@ -24,6 +24,7 @@ import { ExerciseService } from '../../../../core/services/api-service/exercise.
 import { UpdateExerciseComponent } from '../../exercise-modal/update-exercise/update-exercise.component';
 import { ExerciseQuiz } from '../../../../core/models/exercise.model';
 import { mapToExerciseQuiz } from '../../../../shared/utils/mapData';
+import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-exercise-code-details',
@@ -91,8 +92,7 @@ export class ExerciseCodeDetailsComponent {
   isDropdownOpen: boolean = false;
   authorName: string = '';
   avatarUrl: string = '';
-  avatarUrlDefault: string =
-    'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50';
+  avatarUrlDefault: string = avatarUrlDefault;
 
   constructor(
     private codingService: CodingService,
