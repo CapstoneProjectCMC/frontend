@@ -1,0 +1,33 @@
+.interactive-container {
+  // Tạo không gian để cuộn, chiều cao gấp 3 lần màn hình
+  height: 200vh;
+  position: relative;
+  background-color: #0a0a1a; // Nền tối để nổi bật animation
+
+  .sticky-wrapper {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    canvas {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+    }
+
+    .overlay-text {
+      position: absolute;
+      color: white;
+      text-align: center;
+      max-width: 600px;
+      // Hiệu ứng chữ mờ dần khi cuộn
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+  }
+}

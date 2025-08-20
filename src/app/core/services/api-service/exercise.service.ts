@@ -12,6 +12,7 @@ import {
   IExerciseResultResponse,
   MyAssignExerciseResponse,
   MyQuizHistoryResponse,
+  MySubmissionsHistoryResponse,
   OptionCreate,
   PatchUpdateExerciseRequest,
   QuizDetailCreateStupid,
@@ -71,6 +72,12 @@ export class ExerciseService {
   getMyQuizHistory() {
     return this.api.get<ApiResponse<MyQuizHistoryResponse[]>>(
       API_CONFIG.ENDPOINTS.GET.GET_HISTORY_QUIZ
+    );
+  }
+
+  getMySubmissionsHistory() {
+    return this.api.get<ApiResponse<MySubmissionsHistoryResponse[]>>(
+      API_CONFIG.ENDPOINTS.GET.GET_MY_SUBMISSION_HISTORY
     );
   }
 

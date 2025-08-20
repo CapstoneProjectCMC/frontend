@@ -1,0 +1,2 @@
+ Tìm animation về "coding" hoặc "data flow". Giả sử có 120 frames được đặt tên là frame_000.png đến frame_119.png trong thư mục assets/animation-frames/ này để làm animation trong landing pages
+ 
