@@ -1,10 +1,12 @@
 <div class="resource-card" [class.no-controls]="!showControls">
   <div class="resource-card-info" (click)="handleMain()">
-    <div class="resource-thumbnail">
+    <div
+      class="resource-thumbnail"
+      [style.backgroundImage]="'url(' + resource.thumnailurl + ')'"
+    >
       <!-- Hiển thị duration/pages -->
-      <div class="file-info" *ngIf="fileInfoLabel">{{ fileInfoLabel }}</div>
+      <div class="file-info">{{ resource.duration }}</div>
     </div>
-
     <div class="resource-card-header">
       <div class="author">
         <div class="resource-card-avatar">

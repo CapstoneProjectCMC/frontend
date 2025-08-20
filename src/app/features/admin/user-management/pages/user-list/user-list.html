@@ -118,8 +118,8 @@
       [data]="ListUser"
       [amountDataPerPage]="10"
       [needNo]="true"
-      [needDelete]="false"
-      [needEdit]="false"
+      [needDelete]="true"
+      [needEdit]="true"
       [needViewResult]="false"
       [needswitch]="true"
       [onSwitchClick]="handleSwitch"
@@ -160,11 +160,18 @@
 
       <!-- Trạng thái -->
       <ng-template #cell_status let-row>
-        <span [style.color]="row.status === 1 ? 'green' : 'red'">
-          {{ row.status === 1 ? 'Active' : 'Blocked' }}
+        <span [style.color]="row.active === true ? 'green' : 'red'">
+          {{ row.active === true?'Active' : 'Blocked' }}
         </span>
       </ng-template>
     </app-table>
+    <div *ngIf="isLoading " class="list-post-card">
+      <app-skeleton-loading
+        *ngIf="isLoading"
+        type="list"
+        [count]="8"
+      ></app-skeleton-loading>
+    </div>
   </div>
 
   <!-- Overlay Profile Popup -->

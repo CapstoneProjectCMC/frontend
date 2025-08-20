@@ -12,9 +12,9 @@ import { DropdownButtonComponent } from '../../../../../shared/components/fxdona
 import { User } from '../../../../../core/models/user.models';
 import { UserService } from '../../../../../core/services/api-service/user.service';
 import { EnumType } from '../../../../../core/models/data-handle';
-import { sendNotification } from '../../../../../shared/utils/notification';
 import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
 import { Store } from '@ngrx/store';
+import { SkeletonLoadingComponent } from '../../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 
 @Component({
   selector: 'app-user-list',
@@ -29,6 +29,7 @@ import { Store } from '@ngrx/store';
     InputComponent,
     ButtonComponent,
     DropdownButtonComponent,
+    SkeletonLoadingComponent,
   ],
   standalone: true,
 })
@@ -123,12 +124,6 @@ export class UserListComponent {
           if (this.ListUser.length < this.itemsPerPage) {
             this.hasMore = false;
           }
-          sendNotification(
-            this.store,
-            'Thành công',
-            'Lấy danh sách người dùng thành công',
-            'success'
-          );
           this.isLoading = false;
           this.store.dispatch(clearLoading());
         },

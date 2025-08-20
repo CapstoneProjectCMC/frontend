@@ -48,6 +48,7 @@ export class PersonalProfileComponent {
   user: User = {
     userId: '',
     username: '',
+    active: true,
     email: '',
     firstName: 'Không',
     lastName: 'rõ',

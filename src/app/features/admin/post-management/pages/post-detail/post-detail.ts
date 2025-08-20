@@ -77,6 +77,7 @@ Rất mong nhận được sự hỗ trợ từ các bạn!
   authorInfo: User = {
     userId: 'u123456',
     username: 'johndoe',
+    active: true,
     email: 'johndoe@example.com',
     firstName: 'John',
     lastName: 'Doe',

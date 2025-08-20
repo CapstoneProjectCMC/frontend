@@ -12,7 +12,7 @@ import * as pdfjsLib from 'pdfjs-dist';
   standalone: true,
   imports: [NgIf, NgFor, NgClass, NgStyle],
 })
-export class ResourceCardComponent implements OnInit {
+export class ResourceCardComponent {
   @Input() resource!: resourceCardInfo;
   @Input() showControls: boolean = true;
   @Input() onEdit?: () => void;
@@ -25,27 +25,26 @@ export class ResourceCardComponent implements OnInit {
   @Input() popular?: number = 0;
 
   // Biến tạm để hiển thị duration/pages
-  fileInfoLabel: string = '';
 
-  ngOnInit() {
-    this.extractFileInfo();
-  }
+  // ngOnInit() {
+  //   this.extractFileInfo();
+  // }
 
-  // ==== Xử lý file ====
-  async extractFileInfo() {
-    const file = this.resource?.fileResource;
-    if (!file) return;
+  // // ==== Xử lý file ====
+  // async extractFileInfo() {
+  //   const file = this.resource?.fileResource;
+  //   if (!file) return;
 
-    if (file.type.startsWith('video/') || file.type.startsWith('audio/')) {
-      const seconds = await this.extractVideoDuration(file);
-      this.fileInfoLabel = this.formatDuration(seconds); // ví dụ: "03:25"
-    } else if (file.type === 'application/pdf') {
-      const pages = await this.extractPdfPageCount(file);
-      this.fileInfoLabel = `${pages} trang`;
-    } else {
-      this.fileInfoLabel = '';
-    }
-  }
+  //   if (file.type.startsWith('video/') || file.type.startsWith('audio/')) {
+  //     const seconds = await this.extractVideoDuration(file);
+  //     this.fileInfoLabel = this.formatDuration(seconds); // ví dụ: "03:25"
+  //   } else if (file.type === 'application/pdf') {
+  //     const pages = await this.extractPdfPageCount(file);
+  //     this.fileInfoLabel = `${pages} trang`;
+  //   } else {
+  //     this.fileInfoLabel = '';
+  //   }
+  // }
 
   extractVideoDuration(file: File): Promise<number> {
     return new Promise((resolve) => {

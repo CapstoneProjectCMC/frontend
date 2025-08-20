@@ -1,14 +1,15 @@
 export interface resourceCardInfo {
   id: string;
   avatarAuthor: string;
+  thumnailurl: string;
   authorId: string;
   authorName: string;
-  fileResource: File;
   progress: number;
   title: string;
   time: Date;
+  duration: string;
   description: string;
-  tags: string[];
+  tags: Tag[];
   status: string;
   public: boolean;
 }

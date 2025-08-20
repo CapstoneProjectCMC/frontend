@@ -5,6 +5,10 @@ import {
   ExerciseQuiz,
 } from '../../core/models/exercise.model';
 import { PostADD, Post } from '../../core/models/post.models';
+import {
+  ResourceData,
+  resourceCardInfo,
+} from '../../core/models/resource.model';
 import { CardExcercise } from '../components/fxdonad-shared/card-excercise/card-excercise.component';
 
 const newDate = new Date();
@@ -64,6 +68,44 @@ export function mapPostInfortoPost(post: PostADD): Post {
     },
     status: post.status,
   };
+}
+export function maptoReourseCard(resourse: ResourceData): resourceCardInfo {
+  return {
+    id: resourse.id,
+    avatarAuthor:
+      'https://i.pinimg.com/736x/8b/8e/ff/8b8eff070443cf6103c8279a28673809.jpg',
+    authorId: resourse.id,
+    authorName: 'author',
+    duration: resourse.duration,
+    progress: 5,
+    title: resourse.fileName,
+    thumnailurl: resourse.thumbnailUrl,
+    time: new Date('22-02-2003'),
+    description: resourse.description,
+    tags: resourse.tags,
+    status: resourse.transcodingStatus,
+    public: true, //đang cứng cần sửa
+  };
+}
+export function mapToResourceCardList(
+  resources: ResourceData[]
+): resourceCardInfo[] {
+  return resources.map((resource) => ({
+    id: resource.id,
+    avatarAuthor:
+      'https://i.pinimg.com/736x/8b/8e/ff/8b8eff070443cf6103c8279a28673809.jpg',
+    authorId: resource.id,
+    authorName: 'author',
+    duration: resource.duration,
+    thumnailurl: resource.thumbnailUrl,
+    progress: 5,
+    title: resource.fileName,
+    time: new Date('2003-02-22'), // Sửa định dạng ngày cho đúng
+    description: resource.description,
+    tags: resource.tags,
+    status: resource.transcodingStatus,
+    public: true, // TODO: Thay giá trị cứng bằng logic động
+  }));
 }
 
 export function mapToExerciseQuiz(ex: ExerciseCodeResponse): ExerciseQuiz {
