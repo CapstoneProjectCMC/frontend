@@ -16,9 +16,10 @@ export function sidebarExercises(role: string): SidebarItem[] {
     },
     {
       id: 'saved-exercises',
-      path: 'exercise/exercise-list/code',
+      path: '/exercise/exercise-layout/submissions-history',
       label: 'Bài tập đã làm',
       icon: 'fas fa-bookmark',
+      allowParentLink: true,
       children: [
         {
           id: 'post',

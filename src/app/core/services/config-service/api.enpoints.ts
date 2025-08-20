@@ -51,6 +51,7 @@ export const API_CONFIG = {
         `/submission/assignments/self?page=${page}&size=${size}`,
 
       GET_HISTORY_QUIZ: '/submission/quiz/self/history',
+      GET_MY_SUBMISSION_HISTORY: '/submission/self/history',
       GET_ALL_USER: (
         page: number,
         size: number,

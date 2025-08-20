@@ -256,3 +256,14 @@ export type MyQuizHistoryResponse = {
   timeTakenSeconds: number;
   submittedAt: string;
 };
+
+export type MySubmissionsHistoryResponse = {
+  submissionId: string;
+  exerciseId: string;
+  exerciseTitle: string;
+  exerciseType: 'QUIZ' | 'CODING';
+  score: number;
+  totalPoints: number;
+  timeTakenSeconds: number;
+  submittedAt: string;
+};

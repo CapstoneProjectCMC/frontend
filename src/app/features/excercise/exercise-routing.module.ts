@@ -14,6 +14,7 @@ import { QuizHistoryComponent } from './exercise-pages/quiz-history/quiz-history
 import { RoleGuard } from '../../core/guards/router-protected/role.guard';
 import { AssignExerciseComponent } from './exercise-pages/assign-exercise/assign-exercise.component';
 import { MyAssignmentsComponent } from './exercise-pages/my-assignments/my-assignments.component';
+import { SubmisstionHistoryComponent } from './exercise-pages/submisstion-history/submisstion-history.component';
 
 const routes: Routes = [
   {
@@ -61,6 +62,7 @@ const routes: Routes = [
         canDeactivate: [ConfirmExitGuard],
         runGuardsAndResolvers: 'always',
       },
+
       {
         path: 'quiz-submission/scored/:id',
         component: DisplayScoreComponent,
@@ -69,6 +71,11 @@ const routes: Routes = [
       {
         path: 'quiz-history/submited',
         component: QuizHistoryComponent,
+        data: { breadcrumb: 'Danh sách bài Quiz đã làm' },
+      },
+      {
+        path: 'submissions-history',
+        component: SubmisstionHistoryComponent,
         data: { breadcrumb: 'Danh sách bài Quiz đã làm' },
       },
       {
