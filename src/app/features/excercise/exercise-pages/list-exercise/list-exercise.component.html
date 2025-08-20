@@ -18,7 +18,7 @@
       <div class="dropdown-filter">
         <app-dropdown-button
           [label]="'Tags'"
-          [options]="genres"
+          [options]="tags"
           [variant]="'secondary'"
           [size]="'medium'"
           [customDropField]="'main-type'"
@@ -39,7 +39,7 @@
       <div class="dropdown-filter">
         <app-dropdown-button
           [label]="'Độ khó'"
-          [options]="genres"
+          [options]="difficultyLevel"
           [variant]="'secondary'"
           [size]="'medium'"
           [customDropField]="'main-type'"
@@ -52,28 +52,7 @@
           (toggle)="toggleDropdown('do-kho')"
           [isDisplaySelectedOpptionLabels]="true"
           [isButtonControl]="false"
-          [isSearchable]="true"
-          [minHeight]="true"
-          [needIndexColor]="true"
-        >
-        </app-dropdown-button>
-      </div>
-      <div class="dropdown-filter">
-        <app-dropdown-button
-          [label]="'Trạng thái'"
-          [options]="genres"
-          [variant]="'secondary'"
-          [size]="'medium'"
-          [customDropField]="'main-type'"
-          [disabled]="false"
-          [multiSelect]="true"
-          [isDisplayCheckbox]="false"
-          (onSelect)="handleSelect('trang-thai', $event)"
-          [isOpen]="activeDropdown === 'trang-thai'"
-          (toggle)="toggleDropdown('trang-thai')"
-          [isDisplaySelectedOpptionLabels]="true"
-          [isButtonControl]="false"
-          [isSearchable]="true"
+          [isSearchable]="false"
           [minHeight]="true"
           [needIndexColor]="true"
         >
@@ -91,7 +70,8 @@
     <div
       class="list-exercise"
       *ngIf="listExercise && !isLoading"
-      (scroll)="onListScroll($event)"
+      appScrollEnd
+      (appScrollEnd)="loadNextPage()"
     >
       <app-card-excercise
         *ngFor="let item of listExercise"

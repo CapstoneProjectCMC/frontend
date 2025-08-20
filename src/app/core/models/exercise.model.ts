@@ -1,3 +1,13 @@
+export type MyAssignExerciseResponse = {
+  assignmentId: String;
+  studentId: String;
+  exerciseTitle: string;
+  dueAt: string;
+  completed: boolean;
+  myBestScore: number;
+  totalPoints: number;
+};
+
 export type ExerciseItem = {
   id: string;
   userId: string;
@@ -67,7 +77,7 @@ export interface ExerciseQuiz {
   userId: string;
   title: string;
   description: string;
-  exerciseType: string;
+  exerciseType: 'CODING' | 'QUIZ';
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   orgId: string;
   active: boolean;
@@ -241,6 +251,17 @@ export type MyQuizHistoryResponse = {
   submissionId: string;
   exerciseId: string;
   exerciseTitle: string;
+  score: number;
+  totalPoints: number;
+  timeTakenSeconds: number;
+  submittedAt: string;
+};
+
+export type MySubmissionsHistoryResponse = {
+  submissionId: string;
+  exerciseId: string;
+  exerciseTitle: string;
+  exerciseType: 'QUIZ' | 'CODING';
   score: number;
   totalPoints: number;
   timeTakenSeconds: number;

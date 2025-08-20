@@ -1,0 +1,196 @@
+// Import theme variables nếu cần
+.my-assignments-container {
+  padding: 24px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  height: calc(100vh - 180px);
+
+  .title {
+    color: var(--accent-color);
+    font-size: 2rem;
+    margin-bottom: 24px;
+  }
+}
+
+.assignment-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  max-height: calc(100vh - 257px); // Chiều cao tối đa để có thanh cuộn
+  overflow-y: auto;
+  padding: 5px; // Thêm padding để bóng đổ không bị cắt
+  @media (max-width: 1080px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.assignment-card {
+  background-color: var(--surface-color);
+  border-radius: 8px;
+  padding: 20px;
+  border-left: 5px solid var(--disabled-color); // Màu mặc định
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px T12px rgba(0, 0, 0, 0.1);
+  }
+
+  // --- Trạng thái thẻ ---
+  &.completed {
+    border-left-color: var(--success-color);
+  }
+  &.overdue {
+    border-left-color: var(--error-color);
+  }
+  &.due-soon {
+    border-left-color: var(--warning-color);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .exercise-name {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--title-text);
+      margin: 0;
+    }
+
+    .status-tag {
+      background-color: var(--background-color-secondary);
+      color: var(--text-muted-color);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 500;
+
+      &.completed {
+        color: var(--success-color);
+      }
+      &.overdue {
+        color: var(--error-color);
+      }
+      &.due-soon {
+        color: var(--warning-color);
+      }
+    }
+  }
+
+  .due-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted-color);
+  }
+
+  .progress-section {
+    .score {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background-color: var(--background-color-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+
+      .progress-value {
+        height: 100%;
+        background-color: var(--progress-color);
+        border-radius: 4px;
+        transition: width 0.5s ease;
+      }
+    }
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+
+    .action-button {
+      padding: 10px 20px;
+      font-weight: 600;
+      background-color: var(--button-color);
+      color: var(--reverse-color-text);
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      &.done {
+        background-color: var(--success-color);
+      }
+
+      &:hover {
+        background-color: var(--button-color-hover);
+        &.done {
+          background-color: oklch(from var(--success-color) calc(l * 0.8) c h);
+        }
+      }
+    }
+  }
+}
+
+// --- Skeleton styles ---
+// (Bạn có thể tái sử dụng keyframes shimmer từ câu trả lời trước)
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+.skeleton {
+  animation: shimmer 1.5s linear infinite forwards;
+  background: linear-gradient(
+    to right,
+    var(--background-color-secondary) 8%,
+    var(--border-color) 18%,
+    var(--background-color-secondary) 33%
+  );
+  background-size: 800px 104px;
+  position: relative;
+  border-radius: 6px;
+}
+
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  .skeleton-text {
+    height: 16px;
+    margin-bottom: 8px;
+  }
+  .skeleton-progress {
+    height: 8px;
+    width: 100%;
+  }
+  .skeleton-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .skeleton-button {
+    height: 40px;
+    width: 100px;
+  }
+}
+.loading-more {
+  text-align: center;
+  padding: 20px;
+  color: var(--text-muted-color);
+}

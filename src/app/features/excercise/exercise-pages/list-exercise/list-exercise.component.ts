@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { sidebarExercises } from '../../../../core/constants/menu-router.data';
 import { BreadcrumbComponent } from '../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 import {
   CardExcercise,
@@ -18,7 +17,7 @@ import {
 } from '../../../../shared/utils/mapData';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { EnumType } from '../../../../core/models/data-handle';
+import { EnumType, SidebarItem } from '../../../../core/models/data-handle';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
 import { ExerciseModalComponent } from '../../exercise-modal/create-new-exercise/exercise-modal.component';
@@ -27,6 +26,9 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { sidebarExercises } from '../../../../core/router-manager/exercise-vetical-menu';
+import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 
 @Component({
   selector: 'app-list-exercise',
@@ -37,14 +39,15 @@ import {
     InputComponent,
     DropdownButtonComponent,
     SkeletonLoadingComponent,
-    ExerciseModalComponent, // thêm vào imports
+    ExerciseModalComponent,
+    ScrollEndDirective,
   ],
   templateUrl: './list-exercise.component.html',
   styleUrl: './list-exercise.component.scss',
 })
 export class ListExerciseComponent implements OnInit {
   isSidebarCollapsed = false;
-  sidebarData = sidebarExercises;
+  sidebarData: SidebarItem[] = [];
   listExercise: CardExcercise[] = [];
 
   pageIndex: number = 1;
@@ -56,7 +59,8 @@ export class ListExerciseComponent implements OnInit {
   isLoadingMore = false;
   hasMore = true;
 
-  genres: { value: string; label: string }[] = [];
+  tags: { value: string; label: string }[] = [];
+  difficultyLevel: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
 
@@ -70,7 +74,7 @@ export class ListExerciseComponent implements OnInit {
     private exerciseService: ExerciseService,
     private router: Router
   ) {
-    this.genres = [
+    this.tags = [
       { value: 'action', label: 'Hành động' },
       { value: 'comedy', label: 'Hài hước' },
       { value: 'drama', label: 'Tâm lý' },
@@ -80,6 +84,13 @@ export class ListExerciseComponent implements OnInit {
       { value: 'fantasy', label: 'Fantasy' },
       { value: 'slice-of-life', label: 'Đời thường' },
     ];
+    this.difficultyLevel = [
+      { value: '0', label: 'Dễ' },
+      { value: '1', label: 'Trung bình' },
+      { value: '2', label: 'Khó' },
+    ];
+    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
+    this.sidebarData = sidebarExercises(role);
   }
 
   private mapExerciseResToCardDataUI(data: ExerciseItem[]): CardExcercise[] {
@@ -93,12 +104,6 @@ export class ListExerciseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //promise để tránh gọi quá sớm bị angular báo lỗi
-    // Promise.resolve().then(() => {
-    //   this.store.dispatch(
-    //     setLoading({ isLoading: true, content: 'Đang tải dữ liệu, xin chờ...' })
-    //   );
-    // });
     this.fetchData();
   }
 
@@ -146,11 +151,25 @@ export class ListExerciseComponent implements OnInit {
       });
   }
 
-  onListScroll(event: Event) {
-    const target = event.target as HTMLElement;
-    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
-      this.loadNextPage();
-    }
+  filterData(keyMap: string) {
+    const values: string[] = [];
+
+    Object.keys(this.selectedOptions)
+      .filter((key) => key === keyMap)
+      .forEach((key) => {
+        const selected = this.selectedOptions[key];
+
+        if (Array.isArray(selected)) {
+          // multiSelect => mảng
+          values.push(...selected.map((opt) => opt.value));
+        } else if (selected) {
+          // singleSelect => 1 object
+          values.push(selected.value);
+        }
+      });
+
+    return values.join(', ');
+    // "tag1, tag2, ..."
   }
 
   handleSelect(dropdownKey: string, selected: any): void {
@@ -159,6 +178,8 @@ export class ListExerciseComponent implements OnInit {
 
     // Lưu lại option vừa chọn
     this.selectedOptions[dropdownKey] = selected;
+
+    console.log(dropdownKey, this.filterData(dropdownKey));
 
     // this.router.navigate(['/', dropdownKey, selected.label]);
   }

@@ -99,14 +99,15 @@ export class Tooltip implements OnInit, OnDestroy {
 }
 
 // Cách sử dụng
-
-// <div style="position: relative">
-//   <app-tooltip
-//     [content]="'Đổi theme'"
-//     [position]="'right'"
-//     [delay]="0.5"
-//     [distance]="30"
-//   >
-//     <div>Nội dung cần mô tả</div>
-//   </app-tooltip>
-// </div>
+/*
+  <div style="position: relative">
+    <app-tooltip
+      [content]="'Đổi theme'"
+      [position]="'right'"
+      [delay]="0.5"
+      [distance]="30"
+    >
+      <div>Nội dung cần mô tả</div>
+    </app-tooltip>
+  </div>
+*/

@@ -9,9 +9,15 @@
       >
         <div
           class="sidebar-link"
-          (click)="item.children ? toggleItem(item) : setActiveItem(item)"
+          (click)="
+            item.children && !item.allowParentLink
+              ? toggleItem(item)
+              : setActiveItem(item)
+          "
           [class.has-children]="item.children"
-          [routerLink]="!item.children ? item.path : null"
+          [routerLink]="
+            !item.children || item.allowParentLink ? item.path : null
+          "
           routerLinkActive="active"
         >
           <i *ngIf="item.icon" [class]="item.icon" class="sidebar-icon"></i>

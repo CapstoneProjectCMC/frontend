@@ -24,7 +24,7 @@ export type ExerciseCodeResponse = {
   userId: string;
   title: string;
   description: string;
-  exerciseType: 'CODING' | string; // hoặc tạo enum nếu cần cố định
+  exerciseType: 'CODING' | 'QUIZ'; // hoặc tạo enum nếu cần cố định
   difficulty: 'EASY' | 'MEDIUM' | 'HARD' | string;
   orgId: string;
   active: boolean;

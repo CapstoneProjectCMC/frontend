@@ -12,6 +12,9 @@ import { AddCodeDetailsComponent } from './exercise-pages/add-code-details/add-c
 import { CodeSubmissionComponent } from './exercise-pages/code-submission/code-submission.component';
 import { QuizHistoryComponent } from './exercise-pages/quiz-history/quiz-history.component';
 import { RoleGuard } from '../../core/guards/router-protected/role.guard';
+import { AssignExerciseComponent } from './exercise-pages/assign-exercise/assign-exercise.component';
+import { MyAssignmentsComponent } from './exercise-pages/my-assignments/my-assignments.component';
+import { SubmisstionHistoryComponent } from './exercise-pages/submisstion-history/submisstion-history.component';
 
 const routes: Routes = [
   {
@@ -47,12 +50,19 @@ const routes: Routes = [
         title: 'Danh sách bài tập',
       },
       {
+        path: 'my-assign-list',
+        component: MyAssignmentsComponent,
+        data: { breadcrumb: 'Danh sách bài tập được giao' },
+        title: 'Danh sách bài tập giao cho bạn',
+      },
+      {
         path: 'quiz-submission/:id',
         component: QuizSubmissionComponent,
         data: { breadcrumb: 'Làm bài' },
         canDeactivate: [ConfirmExitGuard],
         runGuardsAndResolvers: 'always',
       },
+
       {
         path: 'quiz-submission/scored/:id',
         component: DisplayScoreComponent,
@@ -62,6 +72,20 @@ const routes: Routes = [
         path: 'quiz-history/submited',
         component: QuizHistoryComponent,
         data: { breadcrumb: 'Danh sách bài Quiz đã làm' },
+      },
+      {
+        path: 'submissions-history',
+        component: SubmisstionHistoryComponent,
+        data: { breadcrumb: 'Danh sách bài Quiz đã làm' },
+      },
+      {
+        path: 'assign-exercise/:id',
+        component: AssignExerciseComponent,
+        data: {
+          breadcrumb: 'Giao bài tập',
+          roles: ['ROLE_TEACHER', 'ROLE_ADMIN'],
+        },
+        canActivate: [RoleGuard],
       },
     ],
   },
