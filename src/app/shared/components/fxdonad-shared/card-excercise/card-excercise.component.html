@@ -1,5 +1,5 @@
 <div class="excercise-card-container">
-  <div class="info-card" [class.border]="role !== 'admin'">
+  <div class="info-card" [class.border]="role !== typeRoles.admin">
     <div class="card-header">
       <h2 class="title" [title]="data.title" (click)="onTitleClick()">
         {{ data.title | truncate : 30 }}
@@ -86,10 +86,19 @@
           #{{ tag }}
         </span>
       </div>
+      <button
+        class="save-btn"
+        [class.saved]="isSaved"
+        (click)="toggleSave()"
+        aria-label="Save item"
+        title="Lưu bài tập này"
+      >
+        <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span>
+      </button>
     </div>
 
-    <div class="actions">
-      <!-- <div class="status-toggle">
+    <!-- <div class="actions">
+      <div class="status-toggle">
         <button
           class="toggle-btn"
           [class.completed]="data.status === 'completed'"
@@ -101,7 +110,7 @@
           }}</span>
           {{ data.status | titlecase }}
         </button>
-      </div> -->
+      </div>
       <button
         class="save-btn"
         [class.saved]="isSaved"
@@ -110,15 +119,16 @@
       >
         <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span>
       </button>
-    </div>
+    </div> -->
   </div>
 
+  <!-- Phần này không sử dụng nữa, đã tạm ẩn -->
   <div
     class="admin-actions"
     [class.accepted]="data.approval === 'accepted'"
     [class.pending]="data.approval === 'pending'"
     [class.rejected]="data.approval === 'rejected'"
-    *ngIf="role === 'admin'"
+    *ngIf="role === typeRoles.admin && false"
   >
     <button
       class="delete-btn"

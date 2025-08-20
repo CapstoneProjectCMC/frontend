@@ -420,7 +420,7 @@ export class ExerciseDetailsComponent implements OnInit {
 
   openAssignExercise() {
     this.router.navigate([
-      '/exercise/exercise-layout/assign-exercise',
+      '/exercise/exercise-layout/assign-exercise-quiz',
       this.exerciseId,
     ]);
   }

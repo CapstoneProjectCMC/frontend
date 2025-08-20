@@ -1,11 +1,13 @@
 export type MyAssignExerciseResponse = {
   assignmentId: String;
+  exerciseId: string;
   studentId: String;
   exerciseTitle: string;
   dueAt: string;
   completed: boolean;
   myBestScore: number;
   totalPoints: number;
+  exerciseType: 'CODING' | 'QUIZ';
 };
 
 export type ExerciseItem = {
