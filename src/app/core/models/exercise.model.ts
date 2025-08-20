@@ -1,3 +1,13 @@
+export type MyAssignExerciseResponse = {
+  assignmentId: String;
+  studentId: String;
+  exerciseTitle: string;
+  dueAt: string;
+  completed: boolean;
+  myBestScore: number;
+  totalPoints: number;
+};
+
 export type ExerciseItem = {
   id: string;
   userId: string;

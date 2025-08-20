@@ -13,6 +13,7 @@ import { CodeSubmissionComponent } from './exercise-pages/code-submission/code-s
 import { QuizHistoryComponent } from './exercise-pages/quiz-history/quiz-history.component';
 import { RoleGuard } from '../../core/guards/router-protected/role.guard';
 import { AssignExerciseComponent } from './exercise-pages/assign-exercise/assign-exercise.component';
+import { MyAssignmentsComponent } from './exercise-pages/my-assignments/my-assignments.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,12 @@ const routes: Routes = [
         component: ListExerciseComponent,
         data: { breadcrumb: 'Danh sách bài tập' },
         title: 'Danh sách bài tập',
+      },
+      {
+        path: 'my-assign-list',
+        component: MyAssignmentsComponent,
+        data: { breadcrumb: 'Danh sách bài tập được giao' },
+        title: 'Danh sách bài tập giao cho bạn',
       },
       {
         path: 'quiz-submission/:id',

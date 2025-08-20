@@ -1,0 +1,68 @@
+<div class="my-assignments-container">
+  <h1 class="title">Bài tập của tôi</h1>
+
+  <div *ngIf="isLoadingInitial; else content" class="assignment-list">
+    <div class="assignment-card skeleton-card" *ngFor="let i of [1, 2, 3]">
+      <div
+        class="skeleton skeleton-text"
+        style="width: 60%; height: 24px"
+      ></div>
+      <div class="skeleton skeleton-text" style="width: 40%"></div>
+      <div class="skeleton skeleton-progress"></div>
+      <div class="skeleton-footer">
+        <div
+          class="skeleton skeleton-text"
+          style="width: 25%; height: 28px"
+        ></div>
+        <div class="skeleton skeleton-button"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #content>
+    <div class="assignment-list" appScrollEnd (appScrollEnd)="loadNextPage()">
+      <div
+        class="assignment-card"
+        *ngFor="let assignment of assignments"
+        [ngClass]="getCardStatus(assignment).className"
+      >
+        <div class="card-header">
+          <h2 class="exercise-name">
+            {{ assignment.exerciseTitle || "Tên bài tập bị thiếu" }}
+          </h2>
+          <div class="status-tag">{{ getCardStatus(assignment).label }}</div>
+        </div>
+
+        <div class="due-date">
+          <i class="fa fa-calendar-alt"></i>
+          <span
+            >Hạn nộp: {{ assignment.dueAt | date : "dd/MM/yyyy HH:mm" }}</span
+          >
+        </div>
+
+        <div class="progress-section">
+          <span class="score"
+            >Điểm: {{ assignment.myBestScore || 0 }} /
+            {{ assignment.totalPoints }}</span
+          >
+          <div class="progress-bar">
+            <div
+              class="progress-value"
+              [style.width.%]="calculateProgress(assignment)"
+            ></div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="action-button">
+            {{ assignment.completed ? "Xem lại" : "Làm bài" }}
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="isLoadingNextPage" class="loading-more">
+        <p>Đang tải thêm...</p>
+      </div>
+    </div>
+  </ng-template>
+</div>

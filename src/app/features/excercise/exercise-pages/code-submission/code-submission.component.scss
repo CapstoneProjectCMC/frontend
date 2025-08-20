@@ -203,6 +203,50 @@
       }
     }
   }
+
+  .timer-wrapper {
+    margin-top: 0.5rem;
+    .time-display {
+      display: flex;
+      justify-content: space-between;
+      .time-text {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+        display: block;
+      }
+    }
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background-color: var(--background-secondary);
+      border-radius: 4px;
+      overflow: hidden;
+      background-color: var(--background-color);
+
+      .progress-fill {
+        height: 100%;
+        background-color: var(--accent-color);
+        transition: width 1s linear;
+        &.safe {
+          background-color: #4caf50;
+        }
+
+        &.warning {
+          background-color: #ffc107;
+        }
+
+        &.danger {
+          background-color: #f44336;
+        }
+
+        &.done {
+          background-color: green;
+          width: 10%;
+        }
+      }
+    }
+  }
 }
 
 .problem-header {
@@ -221,8 +265,8 @@
       color: var(--success-color);
     }
     &.medium {
-      background-color: oklch(from var(--warning-color) calc(l * 1.4) c h);
-      color: var(--waring-color);
+      background-color: oklch(from var(--warning-color) calc(l * 1.6) c h);
+      color: var(--warning-color);
     }
     &.hard {
       background-color: oklch(from var(--error-color) calc(l * 1.4) c h);

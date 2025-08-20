@@ -10,6 +10,7 @@ import {
   ExerciseQuiz,
   IExerciseAnswerRequest,
   IExerciseResultResponse,
+  MyAssignExerciseResponse,
   MyQuizHistoryResponse,
   OptionCreate,
   PatchUpdateExerciseRequest,
@@ -59,6 +60,12 @@ export class ExerciseService {
     return this.api.delete<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.DELETE.SOFT_DELETE_EXERCISE(exerciseId)
     );
+  }
+
+  getMyAssignExercise(page: number, size: number) {
+    return this.api.get<
+      ApiResponse<IPaginationResponse<MyAssignExerciseResponse[]>>
+    >(API_CONFIG.ENDPOINTS.GET.GET_MY_ASSGIN(page, size));
   }
 
   getMyQuizHistory() {
