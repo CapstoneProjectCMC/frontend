@@ -52,6 +52,13 @@ export class CodeSubmissionComponent {
   isSubmitting = false; // Thêm trạng thái submit
   hasError = false;
 
+  // --- Timer ---
+  timeLeftSeconds: number = 0;
+  totalDurationSeconds: number = 0;
+  timerInterval: any;
+  progressPercent: number = 100;
+  endTime!: number;
+
   // --- Test cases ---
   testCases: {
     id: string; // Giữ lại ID ban đầu để map
@@ -89,6 +96,39 @@ export class CodeSubmissionComponent {
     this.fetchCodingDetails();
   }
 
+  startTimer() {
+    this.clearTimer();
+    this.timerInterval = setInterval(() => {
+      const now = Date.now();
+      const diff = Math.floor((this.endTime - now) / 1000);
+
+      if (diff > 0) {
+        this.timeLeftSeconds = diff;
+        this.progressPercent =
+          (this.timeLeftSeconds / this.totalDurationSeconds) * 100;
+      } else {
+        this.timeLeftSeconds = 0;
+        this.progressPercent = 0;
+        this.clearTimer();
+        openModalNotification(
+          this.store,
+          '⏱ Hết thời gian làm bài',
+          'Bài của bạn đã được nộp!',
+          'Đồng ý',
+          'Thoát'
+        );
+        this.submitCode(); // auto submit khi hết giờ
+      }
+    }, 1000);
+  }
+
+  clearTimer() {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);
+      this.timerInterval = null;
+    }
+  }
+
   fetchCodingDetails() {
     Promise.resolve().then(() => {
       this.store.dispatch(
@@ -101,6 +141,13 @@ export class CodeSubmissionComponent {
       .subscribe({
         next: (res) => {
           this.exercise = res.result;
+          // Setup timer nếu có duration
+          if (this.exercise?.duration) {
+            this.totalDurationSeconds = this.exercise.duration * 60;
+            this.endTime = Date.now() + this.totalDurationSeconds * 1000;
+            this.startTimer();
+          }
+
           this.store.dispatch(clearLoading());
           this.testCases = this.exercise.codingDetail.testCases.map((tc) => ({
             id: tc.id,
@@ -188,6 +235,8 @@ export class CodeSubmissionComponent {
   // --- Quan trọng: Dọn dẹp listener khi component bị hủy ---
   ngOnDestroy() {
     this.onMouseUp(); // Đảm bảo các listener được gỡ bỏ
+    this.onMouseUp();
+    this.clearTimer(); // cleanup
   }
 
   // --- Các hàm xử lý UI ---
@@ -262,7 +311,9 @@ export class CodeSubmissionComponent {
       studentId: decodeJWT(localStorage.getItem('token') ?? '')?.payload.userId,
       language: this.codeEditorComponent.getLanguage(),
       sourceCode: this.codeEditorComponent.getCode(),
-      timeTakenSeconds: '50', // Có thể tính toán thời gian thực
+      timeTakenSeconds: (
+        this.totalDurationSeconds - this.timeLeftSeconds
+      ).toString(), // Có thể tính toán thời gian thực
     };
 
     this.codingService.submitCode(this.exerciseId, dataSubmit).subscribe({
@@ -310,5 +361,11 @@ export class CodeSubmissionComponent {
       'Soát lại',
       () => this.submitCode()
     );
+  }
+
+  get formattedTimeLeft(): string {
+    const minutes = Math.floor(this.timeLeftSeconds / 60);
+    const seconds = this.timeLeftSeconds % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 }

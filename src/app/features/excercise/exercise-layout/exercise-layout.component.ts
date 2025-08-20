@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { AdminRoutingModule } from '../../dashboard/dashboard-routing.module';
-import { sidebarExercises } from '../../../core/constants/menu-router.data';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/internal/operators/filter';
 import { CommonModule } from '@angular/common';
+import { sidebarExercises } from '../../../core/router-manager/exercise-vetical-menu';
+import { decodeJWT } from '../../../shared/utils/stringProcess';
+import { SidebarItem } from '../../../core/models/data-handle';
 
 @Component({
   selector: 'app-exercise-layout',
@@ -15,7 +17,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ExerciseLayoutComponent implements OnInit, OnDestroy {
   isSidebarCollapsed = true;
-  sidebarData = sidebarExercises;
+  sidebarData: SidebarItem[] = [];
 
   showSidebar = true;
 
@@ -27,7 +29,10 @@ export class ExerciseLayoutComponent implements OnInit, OnDestroy {
 
   private routerSubscription!: Subscription;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
+    this.sidebarData = sidebarExercises(role);
+  }
 
   ngOnInit() {
     this.routerSubscription = this.router.events

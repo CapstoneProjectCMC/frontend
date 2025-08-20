@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { sidebarExercises } from '../../../../core/constants/menu-router.data';
 import { BreadcrumbComponent } from '../../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 import {
   CardExcercise,
@@ -18,7 +17,7 @@ import {
 } from '../../../../shared/utils/mapData';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { EnumType } from '../../../../core/models/data-handle';
+import { EnumType, SidebarItem } from '../../../../core/models/data-handle';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
 import { ExerciseModalComponent } from '../../exercise-modal/create-new-exercise/exercise-modal.component';
@@ -27,6 +26,9 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { sidebarExercises } from '../../../../core/router-manager/exercise-vetical-menu';
+import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 
 @Component({
   selector: 'app-list-exercise',
@@ -37,14 +39,15 @@ import {
     InputComponent,
     DropdownButtonComponent,
     SkeletonLoadingComponent,
-    ExerciseModalComponent, // thêm vào imports
+    ExerciseModalComponent,
+    ScrollEndDirective,
   ],
   templateUrl: './list-exercise.component.html',
   styleUrl: './list-exercise.component.scss',
 })
 export class ListExerciseComponent implements OnInit {
   isSidebarCollapsed = false;
-  sidebarData = sidebarExercises;
+  sidebarData: SidebarItem[] = [];
   listExercise: CardExcercise[] = [];
 
   pageIndex: number = 1;
@@ -86,6 +89,8 @@ export class ListExerciseComponent implements OnInit {
       { value: '1', label: 'Trung bình' },
       { value: '2', label: 'Khó' },
     ];
+    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
+    this.sidebarData = sidebarExercises(role);
   }
 
   private mapExerciseResToCardDataUI(data: ExerciseItem[]): CardExcercise[] {
@@ -99,12 +104,6 @@ export class ListExerciseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //promise để tránh gọi quá sớm bị angular báo lỗi
-    // Promise.resolve().then(() => {
-    //   this.store.dispatch(
-    //     setLoading({ isLoading: true, content: 'Đang tải dữ liệu, xin chờ...' })
-    //   );
-    // });
     this.fetchData();
   }
 
@@ -150,13 +149,6 @@ export class ListExerciseComponent implements OnInit {
           this.isLoadingMore = false;
         },
       });
-  }
-
-  onListScroll(event: Event) {
-    const target = event.target as HTMLElement;
-    if (target.scrollTop + target.clientHeight >= target.scrollHeight - 10) {
-      this.loadNextPage();
-    }
   }
 
   filterData(keyMap: string) {

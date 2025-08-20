@@ -47,6 +47,8 @@ export const API_CONFIG = {
         if (search) query += `&q=${search}`;
         return query;
       },
+      GET_MY_ASSGIN: (page: number, size: number) =>
+        `/submission/assignments/self?page=${page}&size=${size}`,
 
       GET_HISTORY_QUIZ: '/submission/quiz/self/history',
       GET_ALL_USER: (

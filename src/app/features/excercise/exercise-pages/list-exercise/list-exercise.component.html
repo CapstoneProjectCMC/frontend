@@ -70,7 +70,8 @@
     <div
       class="list-exercise"
       *ngIf="listExercise && !isLoading"
-      (scroll)="onListScroll($event)"
+      appScrollEnd
+      (appScrollEnd)="loadNextPage()"
     >
       <app-card-excercise
         *ngFor="let item of listExercise"

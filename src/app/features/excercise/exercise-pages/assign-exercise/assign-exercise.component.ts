@@ -110,12 +110,15 @@ export class AssignExerciseComponent implements OnInit {
     const term = this.searchTerm.toLowerCase();
     const selectedIds = new Set(this.selectedStudents.map((s) => s.userId));
 
-    this.availableStudents = this.allStudents.filter(
-      (student) =>
+    this.availableStudents = this.allStudents.filter((student) => {
+      const name = student.displayName ? student.displayName.toLowerCase() : '';
+      const email = student.email ? student.email.toLowerCase() : '';
+
+      return (
         !selectedIds.has(student.userId) &&
-        (student.displayName.toLowerCase().includes(term) ||
-          student.email.toLowerCase().includes(term))
-    );
+        (name.includes(term) || email.includes(term))
+      );
+    });
   }
 
   selectStudent(student: User): void {
