@@ -82,10 +82,10 @@ export class ExerciseService {
   }
 
   searchExercise(
-    tags: string,
-    difficulty: number,
     page: number,
     size: number,
+    tags: string,
+    difficulty: number | null,
     search: string
   ) {
     return this.api.get<ApiResponse<IPaginationResponse<ExerciseItem[]>>>(

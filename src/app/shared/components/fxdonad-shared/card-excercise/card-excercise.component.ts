@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import { parseISO } from 'date-fns/parseISO';
 import { vi } from 'date-fns/locale/vi';
+import { decodeJWT } from '../../../utils/stringProcess';
 
 export interface CardExcercise {
   id: string;
@@ -33,7 +34,13 @@ export class CardExcerciseComponent {
   @Input() isDarkMode = false;
   @Input() exerciseId: string = '';
 
-  role: string = 'user';
+  typeRoles = {
+    admin: 'ROLE_ADMIN',
+    teacher: 'ROLE_TEACHER',
+    user: 'ROLE_USER',
+  };
+
+  role: string = 'ROLE_USER';
   isExpanded = false;
   isSaved = false;
   difficultyStars = [1, 2, 3];
@@ -42,6 +49,8 @@ export class CardExcerciseComponent {
   constructor(private router: Router) {}
 
   ngOnInit() {
+    this.role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
+
     this.setDifficultyLevel();
   }
 

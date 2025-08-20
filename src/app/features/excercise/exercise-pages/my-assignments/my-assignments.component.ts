@@ -3,6 +3,7 @@ import { ExerciseService } from '../../../../core/services/api-service/exercise.
 import { CommonModule } from '@angular/common';
 import { MyAssignExerciseResponse } from '../../../../core/models/exercise.model';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
+import { Router } from '@angular/router';
 // Giả sử bạn đã bổ sung exerciseName vào type
 
 @Component({
@@ -20,10 +21,27 @@ export class MyAssignmentsComponent implements OnInit {
   isLoadingInitial = true;
   isLoadingNextPage = false;
 
-  constructor(private exerciseService: ExerciseService) {}
+  constructor(
+    private exerciseService: ExerciseService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadAssignments(true);
+  }
+
+  doExercise(exId: string, type: 'CODING' | 'QUIZ') {
+    if (type === 'CODING') {
+      this.router.navigate([
+        '/exercise/exercise-layout/exercise-code-details',
+        exId,
+      ]);
+    } else {
+      this.router.navigate([
+        '/exercise/exercise-layout/exercise-details',
+        exId,
+      ]);
+    }
   }
 
   loadAssignments(isInitialLoad = false): void {

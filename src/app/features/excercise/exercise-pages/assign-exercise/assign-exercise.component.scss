@@ -12,9 +12,17 @@
     color: var(--accent-color);
     font-size: 1.5rem;
     margin: 0;
+    display: flex;
+    align-items: center;
     .exercise-name {
       color: var(--primary-color);
       font-weight: 600;
+      margin-left: 8px;
+    }
+    .skeleton-text {
+      height: 16px;
+      flex: 1;
+      margin-bottom: 8px;
     }
   }
 
@@ -137,6 +145,50 @@
           opacity: 1;
         }
       }
+    }
+    .skeleton-title {
+      height: 30px;
+      width: 40%;
+      margin-bottom: 24px;
+    }
+
+    .skeleton-text {
+      height: 16px;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-input {
+      height: 40px;
+      width: 100%;
+    }
+
+    .skeleton-button {
+      height: 48px;
+      width: 130px;
+    }
+
+    .skeleton-avatar {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%; // Hình tròn cho avatar
+      flex-shrink: 0;
+    }
+
+    // Style cho layout của card skeleton
+    .skeleton-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-info {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 8px;
     }
   }
 

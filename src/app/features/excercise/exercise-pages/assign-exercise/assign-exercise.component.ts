@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import {
-  faSearch,
-  faPlus,
-  faTimes,
-  faPaperPlane,
-} from '@fortawesome/free-solid-svg-icons'; // Import model User
-import { User } from '../../../../core/models/user.models';
+  SearchUserProfileResponse,
+  User,
+} from '../../../../core/models/user.models';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { UserService } from '../../../../core/services/api-service/user.service';
 import { CommonModule, Location } from '@angular/common';
@@ -21,6 +18,9 @@ import {
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { of } from 'rxjs/internal/observable/of';
+import { Subscription } from 'rxjs/internal/Subscription';
+import { MySubmissionsHistoryResponse } from '../../../../core/models/exercise.model';
+import { CodingService } from '../../../../core/services/api-service/coding.service';
 
 @Component({
   selector: 'app-assign-exercise',
@@ -29,23 +29,27 @@ import { of } from 'rxjs/internal/observable/of';
   imports: [CommonModule, FormsModule],
 })
 export class AssignExerciseComponent implements OnInit {
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  private checkTypeExercise: string[] = [
+    '/assign-exercise-code',
+    '/assign-exercise-quiz',
+  ];
+
   avatarUrlDefault: string = avatarUrlDefault;
+  exerciseTypeCall: MySubmissionsHistoryResponse['exerciseType'] = 'QUIZ';
   // Font Awesome Icons
-  faSearch = faSearch;
-  faPlus = faPlus;
-  faTimes = faTimes;
-  faPaperPlane = faPaperPlane;
 
   page = 1;
   size = 10;
 
   // Data lists
-  allStudents: User[] = [];
-  availableStudents: User[] = [];
-  selectedStudents: User[] = [];
+  allStudents: SearchUserProfileResponse[] = [];
+  availableStudents: SearchUserProfileResponse[] = [];
+  selectedStudents: SearchUserProfileResponse[] = [];
 
   // State management
   isLoading = true;
+  isLoadingSearchUser = false;
   exerciseId!: string;
   exerciseName = ''; // Lấy từ route hoặc service
   searchTerm = '';
@@ -53,14 +57,27 @@ export class AssignExerciseComponent implements OnInit {
 
   constructor(
     private exerciseService: ExerciseService,
+    private codingService: CodingService,
     private userService: UserService,
     private route: ActivatedRoute,
     private location: Location,
-    private store: Store
+    private store: Store,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    // Lấy param id từ route
     this.exerciseId = this.route.snapshot.paramMap.get('id')!;
+
+    // Lấy URL hiện tại
+    const currentUrl = this.router.url;
+
+    if (currentUrl.includes('/assign-exercise-code')) {
+      this.exerciseTypeCall = 'CODING';
+    } else if (currentUrl.includes('/assign-exercise-quiz')) {
+      this.exerciseTypeCall = 'QUIZ';
+    }
+
     this.loadExerciseAndStudents(this.exerciseId);
   }
 
@@ -68,16 +85,26 @@ export class AssignExerciseComponent implements OnInit {
     this.isLoading = true;
 
     forkJoin({
-      exercise: this.exerciseService
-        .getExerciseDetails(1, 99999, 'CREATED_AT', false, id)
-        .pipe(
-          catchError((err) => {
-            console.error('Lỗi lấy bài tập:', err);
-            return of(null); // Trả về null thay vì fail toàn bộ
-          })
-        ),
+      exercise:
+        this.exerciseTypeCall === 'QUIZ'
+          ? this.exerciseService
+              .getExerciseDetails(1, 99999, 'CREATED_AT', false, id)
+              .pipe(
+                catchError((err) => {
+                  console.error('Lỗi lấy bài tập:', err);
+                  return of(null); // Trả về null thay vì fail toàn bộ
+                })
+              )
+          : this.codingService
+              .getCodingExercise(id, 1, 99999, 'CREATED_AT', false)
+              .pipe(
+                catchError((err) => {
+                  console.error('Lỗi lấy bài tập:', err);
+                  return of(null); // Trả về null thay vì fail toàn bộ
+                })
+              ),
       students: this.userService
-        .getAllUser(this.page, this.size, 'CREATED_AT', false)
+        .searchUserProfile(this.page, this.size, { q: this.searchTerm })
         .pipe(
           catchError((err) => {
             console.error('Lỗi lấy học sinh:', err);
@@ -107,26 +134,51 @@ export class AssignExerciseComponent implements OnInit {
   }
 
   filterAvailableStudents(): void {
-    const term = this.searchTerm.toLowerCase();
-    const selectedIds = new Set(this.selectedStudents.map((s) => s.userId));
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
 
-    this.availableStudents = this.allStudents.filter((student) => {
-      const name = student.displayName ? student.displayName.toLowerCase() : '';
-      const email = student.email ? student.email.toLowerCase() : '';
-
-      return (
-        !selectedIds.has(student.userId) &&
-        (name.includes(term) || email.includes(term))
-      );
-    });
+    this.debounceTimer = setTimeout(() => {
+      this.fetchDataAfterSearchingUser();
+    }, 500); // chờ 500ms sau khi dừng gõ mới gọi
   }
 
-  selectStudent(student: User): void {
+  fetchDataAfterSearchingUser(): void {
+    this.isLoadingSearchUser = true;
+    this.userService
+      .searchUserProfile(this.page, this.size, { q: this.searchTerm })
+      .subscribe({
+        next: (res) => {
+          if (res.result) {
+            const selectedIds = new Set(
+              this.selectedStudents.map((s) => s.userId)
+            );
+
+            // chỉ giữ những student chưa được chọn
+            this.allStudents = res.result.data;
+            this.availableStudents = this.allStudents.filter(
+              (student) => !selectedIds.has(student.userId)
+            );
+          }
+          this.isLoadingSearchUser = false;
+        },
+        error: (err) => {
+          console.error('Lỗi khi load dữ liệu:', err);
+          this.isLoadingSearchUser = false;
+        },
+      });
+  }
+
+  selectStudent(student: SearchUserProfileResponse): void {
     this.selectedStudents.push(student);
+    this.availableStudents = this.availableStudents.filter(
+      (s) => s.userId !== student.userId
+    );
     this.filterAvailableStudents(); // Cập nhật lại cả 2 danh sách
   }
 
-  deselectStudent(studentToRemove: User): void {
+  deselectStudent(studentToRemove: SearchUserProfileResponse): void {
+    this.isLoadingSearchUser = true;
     this.selectedStudents = this.selectedStudents.filter(
       (student) => student.userId !== studentToRemove.userId
     );
