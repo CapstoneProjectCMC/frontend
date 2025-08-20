@@ -73,6 +73,16 @@
       border-radius: 12px;
       font-size: 0.8rem;
       font-weight: 500;
+
+      &.completed {
+        color: var(--success-color);
+      }
+      &.overdue {
+        color: var(--error-color);
+      }
+      &.due-soon {
+        color: var(--warning-color);
+      }
     }
   }
 
@@ -120,9 +130,15 @@
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.2s ease;
+      &.done {
+        background-color: var(--success-color);
+      }
 
       &:hover {
         background-color: var(--button-color-hover);
+        &.done {
+          background-color: oklch(from var(--success-color) calc(l * 0.8) c h);
+        }
       }
     }
   }

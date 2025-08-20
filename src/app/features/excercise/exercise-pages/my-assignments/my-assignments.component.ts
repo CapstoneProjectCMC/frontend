@@ -86,7 +86,7 @@ export class MyAssignmentsComponent implements OnInit {
     if (diffTime < 0) {
       return { className: 'overdue', label: 'Đã quá hạn' };
     }
-    if (diffDays <= 3) {
+    if (diffDays) {
       // Sắp đến hạn nếu còn 3 ngày hoặc ít hơn
       return { className: 'due-soon', label: `Còn ${diffDays} ngày` };
     }

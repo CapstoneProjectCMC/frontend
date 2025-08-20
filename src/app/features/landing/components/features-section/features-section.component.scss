@@ -1,0 +1,64 @@
+// Bọc tất cả style trong :host để đảm bảo biến --scroll-progress có thể truy cập được
+:host {
+  // Biến này sẽ được cập nhật liên tục bởi TypeScript
+  --scroll-progress: 0;
+}
+
+.features-section {
+  padding: 80px 20px;
+  background-color: var(--background-color-secondary);
+  // Quan trọng: để tránh các hiệu ứng không mong muốn khi item bị transform ra ngoài
+  overflow-x: hidden;
+
+  h2 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: var(--title-text);
+    margin-bottom: 60px;
+    transform: translateY(calc(-300% + 550% * var(--scroll-progress)));
+    opacity: calc(var(--scroll-progress) * 1.5);
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .feature-card {
+    background: var(--surface-color);
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+    // Tối ưu hóa performance cho trình duyệt
+    will-change: transform, opacity, hover;
+
+    // Độ mờ của card sẽ thay đổi từ 0 đến 1 dựa trên tiến trình cuộn
+    opacity: calc(var(--scroll-progress) * 2); // nhân 2 để sáng lên nhanh hơn
+
+    &.card-1 {
+      // Di chuyển từ -50% (bên trái) đến 0 (vị trí cuối)
+      // Khi progress = 0, translateX = -50%
+      // Khi progress = 1, translateX = 0
+      transform: translateX(calc(-100% + 150% * var(--scroll-progress)));
+    }
+
+    &.card-2 {
+      // Phóng to từ 0.8 đến 1
+      // Khi progress = 0, scale = 0.8
+      // Khi progress = 1, scale = 1
+      transform: scale(calc(0.8 + 0.2 * var(--scroll-progress)));
+    }
+
+    &.card-3 {
+      // Di chuyển từ 50% (bên phải) đến 0 (vị trí cuối)
+      // Khi progress = 0, translateX = 50%
+      // Khi progress = 1, translateX = 0
+      transform: translateX(calc(100% - 150% * var(--scroll-progress)));
+    }
+  }
+}
