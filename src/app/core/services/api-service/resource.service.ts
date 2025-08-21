@@ -18,7 +18,7 @@ export class ResourceService {
   constructor(private http: HttpClient, private api: ApiMethod) {}
   getResource(PageSize: number, PageIndex: number) {
     return this.api.post<ApiResponse<XuanIPaginationResponse<ResourceData[]>>>(
-      API_CONFIG.ENDPOINTS.POST.GET_RESOURCE,
+      API_CONFIG.ENDPOINTS.POST.GET_FILE,
       {
         PageIndex,
         PageSize,
@@ -27,7 +27,7 @@ export class ResourceService {
   }
   getResourceById(id: string) {
     return this.api.get<ApiResponse<XuanIPaginationResponse<ResourceData>>>(
-      API_CONFIG.ENDPOINTS.GET.GET_RESOURCE_BY_ID(id)
+      API_CONFIG.ENDPOINTS.GET.GET_FILE_BY_ID(id)
     );
   }
   addResource(
@@ -40,7 +40,7 @@ export class ResourceService {
     orgId: string
   ) {
     return this.api.post<ApiResponse<XuanPresignedUrlResponse>>(
-      API_CONFIG.ENDPOINTS.POST.ADD_RESOURCE,
+      API_CONFIG.ENDPOINTS.POST.ADD_FILE,
       { file, category, description, tags, isLectureVideo, isTextbook, orgId }
     );
   }
@@ -57,7 +57,7 @@ export class ResourceService {
     orgId: string
   ) {
     return this.api.put<ApiResponse<XuanIPaginationResponse<ResourceData>>>(
-      API_CONFIG.ENDPOINTS.PUT.EDIT_RESOURCE(id),
+      API_CONFIG.ENDPOINTS.PUT.EDIT_FILE(id),
       {
         id,
         fileName,
@@ -85,7 +85,7 @@ export class ResourceService {
     orgId: string
   ) {
     return this.api.deletehasbody<ApiResponse<XuanPresignedUrlResponse>>(
-      API_CONFIG.ENDPOINTS.DELETE.DELETE_RESOURCE(id),
+      API_CONFIG.ENDPOINTS.DELETE.DELETE_FILE(id),
       {
         id,
         fileName,

@@ -1,0 +1,162 @@
+<div class="video-container" (mousemove)="onMouseMove($event)">
+  <!-- Video element -->
+  <!-- <video #videoElement muted></video> -->
+  <video #videoElement></video>
+
+  <div class="overlay-player-episode">
+    <!-- <button
+      *ngIf="!isPlaying"
+      class="play-overlay-button"
+      (click)="togglePlay()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-play-icon lucide-play"
+      >
+        <path
+          d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"
+        />
+      </svg>
+    </button> -->
+  </div>
+
+  <!-- <div class="custom-controls" (mousemove)="onMouseMove($event)">
+    <button class="control-button" (click)="togglePlay()">
+      <ng-container *ngIf="isPlaying; else playIcon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-pause-icon lucide-pause"
+        >
+          <rect x="14" y="3" width="5" height="18" rx="1" />
+          <rect x="5" y="3" width="5" height="18" rx="1" />
+        </svg>
+      </ng-container>
+      <ng-template #playIcon>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-play-icon lucide-play"
+        >
+          <path
+            d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"
+          />
+        </svg>
+      </ng-template>
+    </button>
+
+    <button class="control-button" (click)="seekBackward()">-90s</button>
+
+    <input
+      type="range"
+      min="0"
+      max="100"
+      [value]="progress"
+      (input)="seekVideo($event)"
+      class="progress-bar"
+    />
+
+    <button class="control-button" (click)="seekForward()">+90s</button>
+
+    <span class="time-display">{{ currentTime }} / {{ totalTime }}</span>
+
+    <select
+      #qualitySelector
+      (change)="changeQuality($event)"
+      class="control-select"
+    >
+      <option *ngFor="let level of qualityLevels" [value]="level.index">
+        {{ level.label }}
+      </option>
+    </select>
+
+    <select (change)="changePlaybackSpeed($event)" class="control-select">
+      <option *ngFor="let speed of playbackSpeeds" [value]="speed.value">
+        {{ speed.label }}
+      </option>
+    </select>
+
+    <div class="volume-control">
+      <button
+        class="control-button"
+        (click)="showVolumeSlider = !showVolumeSlider"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-volume2-icon lucide-volume-2"
+        >
+          <path
+            d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"
+          />
+          <path d="M16 9a5 5 0 0 1 0 6" />
+          <path d="M19.364 18.364a9 9 0 0 0 0-12.728" />
+        </svg>
+      </button>
+      <input
+        *ngIf="showVolumeSlider"
+        type="range"
+        min="0"
+        max="1"
+        step="0.1"
+        [(ngModel)]="volume"
+        (input)="setVolume()"
+        (mouseenter)="cancelHideVolumeSlider()"
+        (mouseleave)="hideVolumeSliderWithDelay()"
+        class="volume-slider"
+      />
+    </div>
+
+    <button class="control-button" (click)="toggleFullscreen()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-maximize-icon lucide-maximize"
+      >
+        <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+        <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+        <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+        <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+      </svg>
+    </button>
+  </div> -->
+
+  <!-- Error message -->
+  <!-- <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div> -->
+</div>

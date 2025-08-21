@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { PieChartComponent } from '../../../shared/components/my-shared/pie-chart/pie-chart';
 import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
-import {
-  PostCardComponent,
-  PostCardInfo,
-} from '../../../shared/components/my-shared/post-card/post-card';
+import { PostCardComponent } from '../../../shared/components/my-shared/post-card/post-card';
+import { PostCardInfo } from '../../../core/models/post.models';
 
 @Component({
   selector: 'app-student-statistic',
@@ -20,7 +18,7 @@ export class StudentStatisticComponent {
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
     title: 'Làm thế nào để tối ưu hóa hiệu suất của thuật toán cây nhị phân',
-    time: new Date(),
+    time: '2025-07-20T10:00:00',
     description:
       'Cùng thảo luận kỹ thuật từ cơ bản đến nâng cao như memiization, code splitting, và vitualize long trong xử lý dữ liệu người dùng',
     tags: ['binarytree', 'Cơ bản', 'Hàm'],
@@ -36,7 +34,7 @@ export class StudentStatisticComponent {
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
     title: 'Làm thế nào để tối ưu hóa hiệu suất của thuật toán cây nhị phân',
-    time: new Date(),
+    time: '2025-07-20T10:00:00',
     description:
       'Cùng thảo luận kỹ thuật từ cơ bản đến nâng cao như memiization, code splitting, và vitualize long trong xử lý dữ liệu người dùng',
     tags: ['binarytree', 'Cơ bản', 'Hàm'],
@@ -52,7 +50,7 @@ export class StudentStatisticComponent {
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
     title: 'Làm thế nào để tối ưu hóa hiệu suất của thuật toán cây nhị phân',
-    time: new Date(),
+    time: '2025-07-20T10:00:00',
     description:
       'Cùng thảo luận kỹ thuật từ cơ bản đến nâng cao như memiization, code splitting, và vitualize long trong xử lý dữ liệu người dùng',
     tags: ['binarytree', 'Cơ bản', 'Hàm'],

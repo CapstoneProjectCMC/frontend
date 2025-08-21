@@ -8,6 +8,10 @@ import { TrendingItem } from '../../../../../shared/components/fxdonad-shared/tr
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { resourceCardInfo } from '../../../../../core/models/resource.model';
 import { ResourceCardComponent } from '../../../../../shared/components/my-shared/resource-card/resource-card';
+import { ResourceService } from '../../../../../core/services/api-service/resource.service';
+import { mapToResourceCardList } from '../../../../../shared/utils/mapData';
+import { Store } from '@ngrx/store';
+import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
 
 @Component({
   selector: 'app-resource-list',
@@ -25,67 +29,7 @@ import { ResourceCardComponent } from '../../../../../shared/components/my-share
   ],
 })
 export class ResourceListComponent {
-  resources: resourceCardInfo[] = [
-    {
-      id: '1',
-      avatarAuthor: 'https://i.pravatar.cc/100?img=1',
-      authorId: 'u001',
-      authorName: 'Fxdonad',
-      fileResource: new File([''], 'intro-video.mp4', { type: 'video/mp4' }),
-      progress: 1,
-      title: 'Video giới thiệu CodeCampus',
-      time: new Date('2025-06-24'),
-      description: 'Video mở đầu giới thiệu nền tảng CodeCampus.',
-      tags: ['document', 'tutorial', 'video'],
-      status: 'accepted',
-      public: true,
-    },
-    {
-      id: '2',
-      avatarAuthor: 'https://i.pravatar.cc/100?img=2',
-      authorId: 'u002',
-      authorName: 'Nguyễn Văn A',
-      fileResource: new File([''], 'hdsd-pdf.pdf', { type: 'application/pdf' }),
-      progress: 3,
-      title: 'Tài liệu hướng dẫn bật PDF thumbnail',
-      time: new Date('2025-06-25'),
-      description:
-        'Hướng dẫn bật chế độ hiển thị thumbnail cho file PDF trên Windows.',
-      tags: ['PDF', 'document', 'guide'],
-      status: 'accepted',
-      public: true,
-    },
-    {
-      id: '3',
-      avatarAuthor: 'https://i.pravatar.cc/100?img=3',
-      authorId: 'u003',
-      authorName: 'Lê Thị B',
-      fileResource: new File([''], 'bao-cao.docx', {
-        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      }),
-      progress: 4,
-      title: 'Báo cáo kết quả học tập',
-      time: new Date('2025-07-01'),
-      description: 'Báo cáo Word tổng kết điểm và tiến độ học tập.',
-      tags: ['Word', 'document', 'report'],
-      status: 'accepted',
-      public: true,
-    },
-    {
-      id: '4',
-      avatarAuthor: 'https://i.pravatar.cc/100?img=4',
-      authorId: 'u004',
-      authorName: 'Trần Văn C',
-      fileResource: new File([''], 'poster.png', { type: 'image/png' }),
-      progress: 3,
-      title: 'Poster quảng bá sự kiện',
-      time: new Date('2025-07-05'),
-      description: 'Poster PNG dùng để giới thiệu sự kiện Code Hackathon.',
-      tags: ['image', 'event', 'poster'],
-      status: 'accepted',
-      public: true,
-    },
-  ];
+  resources: resourceCardInfo[] = [];
   // fakeTags: TagInfo[] = [
   //   { name: 'React', level: 4, count: 49348 },
   //   { name: 'Vue', level: 3, count: 75 },
@@ -111,7 +55,13 @@ export class ResourceListComponent {
   status: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
-  constructor(private router: Router) {
+  pageIndex: number = 1;
+  itemsPerPage: number = 8;
+  constructor(
+    private router: Router,
+    private resourceService: ResourceService,
+    private store: Store
+  ) {
     this.tag = [
       { value: '1', label: 'react' },
       { value: '0', label: 'javascript' },
@@ -125,6 +75,26 @@ export class ResourceListComponent {
       { value: '1', label: 'Accepted' },
       { value: '2', label: 'Pendding' },
     ];
+  }
+  ngOnInit(): void {
+    this.isLoading = true;
+    this.resourceService
+      .getResource(this.pageIndex, this.itemsPerPage)
+      .subscribe({
+        next: (res) => {
+          this.resources = mapToResourceCardList(res.result.data);
+          if (this.resources.length < this.itemsPerPage) {
+            this.hasMore = false;
+          }
+          this.isLoading = false;
+          this.store.dispatch(clearLoading());
+        },
+        error: (err) => {
+          console.log(err);
+          this.isLoading = false;
+          this.store.dispatch(clearLoading());
+        },
+      });
   }
   handleInputChange(value: string | number): void {
     this.resourcename = value.toString();

@@ -2,7 +2,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ResourceListComponent } from './page/resource-list/resource-list';
-import { ResourceCreatePageComponent } from './page/rename-create/resource-create';
+import { ResourceCreatePageComponent } from './page/resource-create/resource-create';
+import { ResourceDetail } from './page/resource-detail/resource-detail';
 
 const routes: Routes = [
   {
@@ -18,6 +19,12 @@ const routes: Routes = [
     data: { breadcrumb: 'Tạo tài nguyên' },
     children: [],
     title: 'Tải lên tài liệu',
+  },
+  {
+    path: 'resource/:id',
+    component: ResourceDetail,
+    data: { breadcrumb: 'Tài nguyên chi tiết' },
+    title: 'Tài nguyên chi tiết',
   },
 ];
 

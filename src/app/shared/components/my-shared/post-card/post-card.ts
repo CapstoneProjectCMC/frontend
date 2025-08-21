@@ -1,23 +1,8 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
 import { NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { formatDate } from '../../../utils/stringProcess';
-
-export interface PostCardInfo {
-  id: string;
-  avatar: string;
-  author: string;
-  title: string;
-  time: Date;
-  description: string;
-  tags: string[];
-  comment: number;
-  upvote: number;
-  downvote: number;
-  status: string;
-  public: boolean;
-}
+import { PostCardInfo } from '../../../../core/models/post.models';
 
 @Component({
   selector: 'app-post-card',

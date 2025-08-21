@@ -3,6 +3,7 @@
 export type User = {
   userId: string; // id của user
   username: string;
+  active: boolean;
   email: string;
   firstName: string;
   lastName: string;

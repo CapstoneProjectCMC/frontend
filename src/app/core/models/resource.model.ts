@@ -1,14 +1,15 @@
 export interface resourceCardInfo {
   id: string;
   avatarAuthor: string;
+  thumnailurl: string;
   authorId: string;
   authorName: string;
-  fileResource: File;
   progress: number;
   title: string;
   time: Date;
+  duration: string;
   description: string;
-  tags: string[];
+  tags: Tag[];
   status: string;
   public: boolean;
 }
@@ -45,4 +46,14 @@ export interface ResourceData {
   orgId: string; // Guid
   duration: string; // TimeSpan
   hlsUrl: string;
+}
+//--------------Input episode local---------------------
+export interface IEpisodeLocal {
+  episodeId: string;
+  watchedDuration: number;
+  watchedDate: string;
+}
+
+export interface ILocalData {
+  localData: IEpisodeLocal[];
 }

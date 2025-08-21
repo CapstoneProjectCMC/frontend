@@ -3,5 +3,5 @@ export const userHeaders = [
   { label: 'Ngày sinh', value: 'dob', custom: true },
   { label: 'Vai trò', value: 'role', custom: true },
   { label: 'Trạng thái', value: 'status', custom: true },
-  { label: 'Tổ chức', value: 'org' },
+  // { label: 'Tổ chức', value: 'org' },
 ];

@@ -101,6 +101,7 @@ export const API_CONFIG = {
         `/profile/social/followers?page=${page}&size=${size}`,
       GET_FOLLOWINGS: (page: number, size: number) =>
         `/profile/social/followings?page=${page}&size=${size}`,
+      GET_FILE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
       GET_RESOURCE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
       GET_MY_THREADS: '/ai/chat/threads',
     },
@@ -135,14 +136,14 @@ export const API_CONFIG = {
       UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
       FOLLOWUSER: (targetUserId: string) =>
         `/profile/social/follow/${targetUserId}`,
-      GET_RESOURCE: `/file/api/FileDocument/public`,
-      ADD_RESOURCE: `/file/api/FileDocument/add`,
+      GET_FILE: `/file/api/FileDocument/public`,
+      ADD_FILE: `/file/api/FileDocument/add`,
       ADD_POST: `/post/posts/createPost`,
       GET_POST: `/post/posts/getAllAccessiblePosts`,
       CREATE_NEW_THREAD_CHATBOT: '/ai/chat/thread',
     },
     PUT: {
-      EDIT_RESOURCE: (id: string) => `/file/api/FileDocument/${id}`,
+      EDIT_FILE: (id: string) => `/file/api/FileDocument/${id}`,
       DELETE_POST: (postId: string) => `/post/posts/deletePost/${postId}`,
     },
     PATCH: {
@@ -167,7 +168,8 @@ export const API_CONFIG = {
         `/submission/exercise/${exerciseId}`,
       UNFOLLOWUSER: (targetUserId: string) =>
         `/profile/social/follow/${targetUserId}`,
-      DELETE_RESOURCE: (id: string) => `/file/api/FileDocument/${id}`,
+
+      DELETE_FILE: (id: string) => `/file/api/FileDocument/${id}`,
     },
   },
   HEADERS: {
