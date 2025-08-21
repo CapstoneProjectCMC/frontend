@@ -32,3 +32,38 @@ export type follow = {
   firstName: string;
   lastName: string;
 };
+
+export type SearchingUser = {
+  q?: string | null;
+  userId?: string | null;
+  username?: string | null;
+  email?: string | null;
+  roles?: string[] | null;
+  active?: boolean | null;
+  gender?: boolean | null;
+  city?: string | null;
+  educationMin?: number | null;
+  educationMax?: number | null;
+  createdAfter?: string | null; // ISO string
+  createdBefore?: string | null; // ISO string
+};
+
+export type SearchUserProfileResponse = {
+  userId: string;
+  username: string;
+  email: string;
+  active: boolean;
+  roles: string[];
+  firstName: string;
+  lastName: string;
+  dob: string; // dạng "dd/MM/yyyy", nếu backend chuẩn ISO thì dùng Date
+  bio: string;
+  gender: boolean; // true/false (có thể map sang enum "MALE"/"FEMALE")
+  displayName: string;
+  education: number; // ví dụ cấp học/lớp
+  links: string[];
+  city: string;
+  avatarUrl: string | null;
+  backgroundUrl: string | null;
+  createdAt: string; // ISO datetime từ backend
+};

@@ -38,11 +38,23 @@
           </div>
         </div>
 
-        <div class="due-date">
-          <i class="fa fa-calendar-alt"></i>
-          <span
-            >Hạn nộp: {{ assignment.dueAt | date : "dd/MM/yyyy HH:mm" }}</span
-          >
+        <div class="other-info">
+          <div class="due-date">
+            <i class="fa fa-calendar-alt"></i>
+            <span
+              >Hạn nộp: {{ assignment.dueAt | date : "dd/MM/yyyy HH:mm" }}</span
+            >
+          </div>
+          <div class="exercise-type">
+            <i
+              [class]="
+                assignment.exerciseType === 'QUIZ'
+                  ? 'fa-regular fa-circle-question'
+                  : 'fa fa-code'
+              "
+            ></i>
+            {{ assignment.exerciseType === "QUIZ" ? "Trắc nghiệm" : "Viết mã" }}
+          </div>
         </div>
 
         <div class="progress-section">
@@ -62,6 +74,7 @@
           <button
             class="action-button"
             [class]="assignment.completed ? 'done' : ''"
+            (click)="doExercise(assignment.exerciseId, assignment.exerciseType)"
           >
             {{ assignment.completed ? "Xem lại" : "Làm bài" }}
           </button>

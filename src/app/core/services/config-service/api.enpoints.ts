@@ -1,5 +1,6 @@
 import { environment } from '../../../../environments/environment';
 import { EnumType } from '../../models/data-handle';
+import { SearchingUser } from '../../models/user.models';
 
 export const version = '/v1';
 
@@ -41,10 +42,45 @@ export const API_CONFIG = {
         difficulty: number | null,
         search: string | null
       ) => {
-        let query = `/search/?page=${page}&size=${size}`;
+        let query = `/search/filter?page=${page}&size=${size}`;
         if (tags) query += `&tags=${tags}`;
         if (difficulty !== null) query += `&difficulty=${difficulty}`;
-        if (search) query += `&q=${search}`;
+        if (search) query += `&q=${encodeURIComponent(search)}`;
+        return query;
+      },
+      SEARCH_USER_PROFILES: (
+        page: number,
+        size: number,
+        params?: SearchingUser
+      ) => {
+        let query = `/search/user-profiles/filter?page=${page}&size=${size}`;
+
+        if (params) {
+          if (params.q) query += `&q=${encodeURIComponent(params.q)}`;
+          if (params.userId) query += `&userId=${params.userId}`;
+          if (params.username)
+            query += `&username=${encodeURIComponent(params.username)}`;
+          if (params.email)
+            query += `&email=${encodeURIComponent(params.email)}`;
+          if (params.roles && params.roles.length > 0)
+            query += `&roles=${params.roles.join(',')}`;
+          if (params.active !== null && params.active !== undefined)
+            query += `&active=${params.active}`;
+          if (params.gender !== null && params.gender !== undefined)
+            query += `&gender=${params.gender}`;
+          if (params.city) query += `&city=${encodeURIComponent(params.city)}`;
+          if (params.educationMin !== null && params.educationMin !== undefined)
+            query += `&educationMin=${params.educationMin}`;
+          if (params.educationMax !== null && params.educationMax !== undefined)
+            query += `&educationMax=${params.educationMax}`;
+          if (params.createdAfter)
+            query += `&createdAfter=${encodeURIComponent(params.createdAfter)}`;
+          if (params.createdBefore)
+            query += `&createdBefore=${encodeURIComponent(
+              params.createdBefore
+            )}`;
+        }
+
         return query;
       },
       GET_MY_ASSGIN: (page: number, size: number) =>
@@ -66,6 +102,8 @@ export const API_CONFIG = {
       GET_FOLLOWINGS: (page: number, size: number) =>
         `/profile/social/followings?page=${page}&size=${size}`,
       GET_FILE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
+      GET_RESOURCE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
+      GET_MY_THREADS: '/ai/chat/threads',
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -102,6 +140,7 @@ export const API_CONFIG = {
       ADD_FILE: `/file/api/FileDocument/add`,
       ADD_POST: `/post/posts/createPost`,
       GET_POST: `/post/posts/getAllAccessiblePosts`,
+      CREATE_NEW_THREAD_CHATBOT: '/ai/chat/thread',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/${id}`,

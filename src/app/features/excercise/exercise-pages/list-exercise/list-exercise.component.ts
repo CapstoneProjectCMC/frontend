@@ -17,7 +17,7 @@ import {
 } from '../../../../shared/utils/mapData';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { EnumType, SidebarItem } from '../../../../core/models/data-handle';
+import { SidebarItem } from '../../../../core/models/data-handle';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
 import { ExerciseModalComponent } from '../../exercise-modal/create-new-exercise/exercise-modal.component';
@@ -46,28 +46,32 @@ import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.dir
   styleUrl: './list-exercise.component.scss',
 })
 export class ListExerciseComponent implements OnInit {
-  isSidebarCollapsed = false;
-  sidebarData: SidebarItem[] = [];
-  listExercise: CardExcercise[] = [];
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   pageIndex: number = 1;
   itemsPerPage: number = 16;
-  sortBy: EnumType['sort'] = 'CREATED_AT';
-  asc: boolean = false;
 
   isLoading = false;
   isLoadingMore = false;
   hasMore = true;
+  showModalCreate = false;
+  isSidebarCollapsed = false;
 
-  tags: { value: string; label: string }[] = [];
-  difficultyLevel: { value: string; label: string }[] = [];
+  filterTagsKey = 'tags';
+  filterDifficultyKey = 'do-kho';
+
+  tagsSelected: string = '';
+  difficultySelected: number | null = null;
+  searchData: string | number = '';
+
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
+  errorSearch = '';
 
-  username: string | number = '';
-  usernameError: string | null = '';
-
-  showModalCreate = false;
+  sidebarData: SidebarItem[] = [];
+  listExercise: CardExcercise[] = [];
+  tags: { value: string; label: string }[] = [];
+  difficultyLevel: { value: string; label: string }[] = [];
 
   constructor(
     private store: Store,
@@ -75,14 +79,14 @@ export class ListExerciseComponent implements OnInit {
     private router: Router
   ) {
     this.tags = [
-      { value: 'action', label: 'Hành động' },
-      { value: 'comedy', label: 'Hài hước' },
-      { value: 'drama', label: 'Tâm lý' },
-      { value: 'romance', label: 'Lãng mạn' },
-      { value: 'horror', label: 'Kinh dị' },
-      { value: 'sci-fi', label: 'Khoa học viễn tưởng' },
-      { value: 'fantasy', label: 'Fantasy' },
-      { value: 'slice-of-life', label: 'Đời thường' },
+      { value: 'math', label: 'toán' },
+      { value: 'easy', label: 'dễ dàng' },
+      { value: 'tag1', label: '1' },
+      { value: 'tag2', label: '2' },
+      { value: 'tag3', label: '3' },
+      { value: 'tag4', label: '4' },
+      { value: 'tag5', label: '5' },
+      { value: 'tag6', label: '6' },
     ];
     this.difficultyLevel = [
       { value: '0', label: 'Dễ' },
@@ -109,22 +113,27 @@ export class ListExerciseComponent implements OnInit {
 
   fetchData() {
     this.isLoading = true;
+    this.hasMore = true;
     this.exerciseService
-      .getAllExercise(this.pageIndex, this.itemsPerPage, this.sortBy, this.asc)
+      .searchExercise(
+        this.pageIndex,
+        this.itemsPerPage,
+        this.tagsSelected,
+        this.difficultySelected,
+        this.searchData.toString()
+      )
       .subscribe({
         next: (res) => {
           const data = this.mapExerciseResToCardDataUI(res.result.data);
           this.listExercise = data;
-          if (data.length < this.itemsPerPage) {
+          if (res.result.currentPage >= res.result.totalPages) {
             this.hasMore = false;
           }
           this.isLoading = false;
-          // this.store.dispatch(clearLoading());
         },
         error: (err) => {
           console.log(err);
           this.isLoading = false;
-          // this.store.dispatch(clearLoading());
         },
       });
   }
@@ -134,11 +143,17 @@ export class ListExerciseComponent implements OnInit {
     this.isLoadingMore = true;
     this.pageIndex += 1;
     this.exerciseService
-      .getAllExercise(this.pageIndex, this.itemsPerPage, this.sortBy, this.asc)
+      .searchExercise(
+        this.pageIndex,
+        this.itemsPerPage,
+        this.tagsSelected,
+        this.difficultySelected,
+        this.searchData.toString()
+      )
       .subscribe({
         next: (res) => {
           const newData = this.mapExerciseResToCardDataUI(res.result.data);
-          if (newData.length < this.itemsPerPage) {
+          if (res.result.currentPage >= res.result.totalPages) {
             this.hasMore = false;
           }
           this.listExercise = [...this.listExercise, ...newData];
@@ -173,13 +188,25 @@ export class ListExerciseComponent implements OnInit {
   }
 
   handleSelect(dropdownKey: string, selected: any): void {
-    // Reset toàn bộ các lựa chọn trước đó
+    // Reset toàn bộ các lựa chọn trước đó tránh thừa query
     this.selectedOptions = {};
+
+    this.pageIndex = 1;
 
     // Lưu lại option vừa chọn
     this.selectedOptions[dropdownKey] = selected;
 
-    console.log(dropdownKey, this.filterData(dropdownKey));
+    if (dropdownKey === this.filterTagsKey) {
+      this.tagsSelected = this.filterData(dropdownKey);
+    } else if (dropdownKey === this.filterDifficultyKey) {
+      this.difficultySelected = this.filterData(dropdownKey)
+        ? Number(this.filterData(dropdownKey))
+        : null;
+    } else {
+      console.log('filter không khả dụng: ', dropdownKey);
+    }
+
+    this.fetchData();
 
     // this.router.navigate(['/', dropdownKey, selected.label]);
   }
@@ -227,6 +254,26 @@ export class ListExerciseComponent implements OnInit {
   }
 
   handleInputChange($event: string | number) {
-    console.log($event);
+    this.isLoading = true;
+    this.pageIndex = 1;
+
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+    // Nếu có / và ? thì lọc bỏ ký tự / và ?
+    // if (/[\/\?]/.test($event.toString())) {
+    //   this.searchData = $event.toString().replace(/[\/\?]/g, '');
+    //   this.errorSearch = 'Hãy loại bỏ ký tự "?" và "/" nếu có';
+    //   setTimeout(() => {
+    //     this.errorSearch = '';
+    //   }, 3000);
+    // } else {
+    //   this.searchData = $event;
+    // }
+    this.searchData = $event;
+
+    this.debounceTimer = setTimeout(() => {
+      this.fetchData();
+    }, 500); // chờ 500ms sau khi dừng gõ mới gọi
   }
 }

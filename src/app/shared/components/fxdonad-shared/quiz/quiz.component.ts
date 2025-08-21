@@ -33,13 +33,13 @@ import {
 import { Router } from '@angular/router';
 
 export interface QuizQuestionExtends extends QuestionPreview {
-  done?: boolean;
+  done?: boolean | string;
 }
 
 export interface QuizAnswer {
   questionId: string;
-  selectedOption: any;
-  answerText: string;
+  selectedOptions: string;
+  answerText?: string;
 }
 
 @Component({
@@ -98,6 +98,21 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
       () => this.submitQuiz(),
       () => this.cancelSubmit()
     );
+  }
+
+  isOptionSelected(questionIndex: number, optionId: string): boolean {
+    const question = this.questions[questionIndex];
+    if (!question) return false;
+
+    const answer = this.selectedAnswers.find(
+      (a) => a.questionId === question.id
+    );
+    if (!answer || !answer.selectedOptions) return false;
+
+    const selectedArray = answer.selectedOptions
+      .split(',')
+      .map((s) => s.trim());
+    return selectedArray.includes(optionId);
   }
 
   get selectedAnswer(): QuizAnswer | null {
@@ -214,25 +229,40 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
   selectAnswer(questionIndex: number, selectedOption: any): void {
     const question = this.questions[questionIndex];
 
-    // Tìm hoặc tạo answer cho câu hỏi này
     let answer = this.selectedAnswers.find((a) => a.questionId === question.id);
 
     if (!answer) {
       answer = {
         questionId: question.id,
-        selectedOption: selectedOption,
-        answerText: selectedOption.optionText,
+        selectedOptions: '',
       };
       this.selectedAnswers.push(answer);
-    } else {
-      answer.selectedOption = selectedOption;
-      answer.answerText = selectedOption.optionText;
     }
 
-    // Đánh dấu câu hỏi đã hoàn thành
-    this.questions[questionIndex].done = true;
+    if (question.questiontype === 'MULTI_CHOICE') {
+      // chuyển selectedOptions thành mảng tạm để xử lý
+      let selectedArray = answer.selectedOptions
+        ? answer.selectedOptions.split(',').map((s) => s.trim())
+        : [];
 
-    // Đánh dấu có dữ liệu thay đổi
+      const exists = selectedArray.includes(selectedOption.id);
+      if (exists) {
+        selectedArray = selectedArray.filter((id) => id !== selectedOption.id);
+      } else {
+        selectedArray.push(selectedOption.id);
+      }
+
+      // convert lại thành string
+      answer.selectedOptions = selectedArray.join(', ');
+    } else {
+      // SINGLE_CHOICE
+      answer.selectedOptions = selectedOption.id;
+    }
+
+    // đánh dấu done
+    this.questions[questionIndex].done =
+      answer.selectedOptions && answer.selectedOptions.length > 0;
+
     this.hasDataChanges = true;
     this.emitQuizState();
   }
@@ -244,11 +274,10 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
   submitQuiz(): void {
     this.clearTimer();
 
-    // Chuyển đổi sang format IAnswer để gửi lên server
+    // selectedOptions đã là string ("id1, id2, id3" hoặc "id1")
     const answers: IAnswer[] = this.selectedAnswers.map((answer) => ({
       questionId: answer.questionId,
-      selectedOptionId: answer.selectedOption.id,
-      // answerText: answer.answerText,
+      selectedOptionId: answer.selectedOptions ? answer.selectedOptions : '', // string
     }));
 
     const dataSendRequest: IExerciseAnswerRequest = {
@@ -261,9 +290,9 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
     this.store.dispatch(
       setLoading({ isLoading: true, content: 'Đang chấm điểm, xin chờ...' })
     );
+
     this.exerciseService.submitQuiz(this.quizId, dataSendRequest).subscribe({
       next: (res) => {
-        // Đánh dấu đã nộp bài
         this.isSubmitted = true;
         this.hasDataChanges = false;
         this.emitQuizState();
@@ -275,7 +304,6 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
         );
         this.store.dispatch(clearLoading());
 
-        // Truyền dữ liệu kết quả đến trang display-score
         this.router.navigate(
           ['/exercise/exercise-layout/quiz-submission/scored', this.exerciseId],
           {
@@ -291,7 +319,6 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
       error: (err) => {
         console.log(err);
         this.store.dispatch(clearLoading());
-        // Nếu lỗi, reset lại trạng thái nộp bài
         this.isSubmitted = false;
       },
     });

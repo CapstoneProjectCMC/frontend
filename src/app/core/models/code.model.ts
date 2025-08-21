@@ -131,3 +131,13 @@ export type SubmitCodeResponse = {
   cpus: number;
   peakmemorykb: number; // bộ nhớ cao nhất đo được
 };
+
+export type AddNewCodingDetailsResponse = {
+  submissionId: string;
+  status: string;
+  actualOutput: string;
+  expectedOutput: string;
+  message: string;
+  timeUsedMs: number;
+  memoryUsedKb: number;
+};

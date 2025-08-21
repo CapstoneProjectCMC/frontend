@@ -79,7 +79,16 @@ const routes: Routes = [
         data: { breadcrumb: 'Danh sách bài Quiz đã làm' },
       },
       {
-        path: 'assign-exercise/:id',
+        path: 'assign-exercise-code/:id',
+        component: AssignExerciseComponent,
+        data: {
+          breadcrumb: 'Giao bài tập',
+          roles: ['ROLE_TEACHER', 'ROLE_ADMIN'],
+        },
+        canActivate: [RoleGuard],
+      },
+      {
+        path: 'assign-exercise-quiz/:id',
         component: AssignExerciseComponent,
         data: {
           breadcrumb: 'Giao bài tập',

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ApiMethod } from '../config-service/api.methods';
 import { ApiResponse } from '../../models/api-response';
 import { API_CONFIG } from '../config-service/api.enpoints';
-import { CodeSubmission, CodingResponse } from '../../models/coding.model';
 import {
+  AddNewCodingDetailsResponse,
   CodingDetails,
   ExerciseCodeResponse,
   submitCodeRequest,
@@ -19,15 +19,8 @@ import { EnumType } from '../../models/data-handle';
 export class CodingService {
   constructor(private api: ApiMethod) {}
 
-  sendCode(data: CodeSubmission) {
-    return this.api.post<ApiResponse<CodingResponse>>(
-      API_CONFIG.ENDPOINTS.POST.SENDCODE,
-      data
-    );
-  }
-
   addCodingDetails(exerciseId: string, data: CodingDetails) {
-    return this.api.post<ApiResponse<CodingResponse>>(
+    return this.api.post<ApiResponse<AddNewCodingDetailsResponse>>(
       API_CONFIG.ENDPOINTS.POST.ADD_CODING_DETAILS(exerciseId),
       data
     );
