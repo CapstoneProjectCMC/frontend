@@ -1,11 +1,7 @@
 import { NgIf, NgClass, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { ProfilePopupComponent } from '../../../../shared/components/my-shared/profile-popup/profile-popup';
-import {
-  DecodedJwtPayload,
-  EnumType,
-} from '../../../../core/models/data-handle';
-import { getUserInfoFromLocalStorage } from '../../../../shared/utils/userInfo';
+import { EnumType } from '../../../../core/models/data-handle';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
 import { follow, User } from '../../../../core/models/user.models';
@@ -24,8 +20,6 @@ import {
 import { ExerciseItem } from '../../../../core/models/exercise.model';
 import { mapExerciseResToCardUI } from '../../../../shared/utils/mapData';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
-import { ExerciseModalComponent } from '../../../excercise/exercise-modal/create-new-exercise/exercise-modal.component';
-import { Title } from '@angular/platform-browser';
 import { ButtonComponent } from '../../../../shared/components/my-shared/button/button.component';
 
 @Component({
@@ -49,7 +43,7 @@ export class PersonalProfileComponent {
     userId: '',
     username: '',
     active: true,
-    roles: ['ADMIN'],
+    roles: [''],
     email: '',
     firstName: 'Không',
     lastName: 'rõ',
