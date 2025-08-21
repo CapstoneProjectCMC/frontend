@@ -102,6 +102,7 @@ export const API_CONFIG = {
       GET_FOLLOWINGS: (page: number, size: number) =>
         `/profile/social/followings?page=${page}&size=${size}`,
       GET_RESOURCE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
+      GET_MY_THREADS: '/ai/chat/threads',
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -138,6 +139,7 @@ export const API_CONFIG = {
       ADD_RESOURCE: `/file/api/FileDocument/add`,
       ADD_POST: `/post/posts/createPost`,
       GET_POST: `/post/posts/getAllAccessiblePosts`,
+      CREATE_NEW_THREAD_CHATBOT: '/ai/chat/thread',
     },
     PUT: {
       EDIT_RESOURCE: (id: string) => `/file/api/FileDocument/${id}`,

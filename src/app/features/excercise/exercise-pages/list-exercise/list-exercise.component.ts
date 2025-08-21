@@ -17,7 +17,7 @@ import {
 } from '../../../../shared/utils/mapData';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { EnumType, SidebarItem } from '../../../../core/models/data-handle';
+import { SidebarItem } from '../../../../core/models/data-handle';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
 import { ExerciseModalComponent } from '../../exercise-modal/create-new-exercise/exercise-modal.component';
@@ -113,6 +113,7 @@ export class ListExerciseComponent implements OnInit {
 
   fetchData() {
     this.isLoading = true;
+    this.hasMore = true;
     this.exerciseService
       .searchExercise(
         this.pageIndex,
@@ -125,16 +126,14 @@ export class ListExerciseComponent implements OnInit {
         next: (res) => {
           const data = this.mapExerciseResToCardDataUI(res.result.data);
           this.listExercise = data;
-          if (data.length < this.itemsPerPage) {
+          if (res.result.currentPage >= res.result.totalPages) {
             this.hasMore = false;
           }
           this.isLoading = false;
-          // this.store.dispatch(clearLoading());
         },
         error: (err) => {
           console.log(err);
           this.isLoading = false;
-          // this.store.dispatch(clearLoading());
         },
       });
   }
@@ -154,7 +153,7 @@ export class ListExerciseComponent implements OnInit {
       .subscribe({
         next: (res) => {
           const newData = this.mapExerciseResToCardDataUI(res.result.data);
-          if (newData.length < this.itemsPerPage) {
+          if (res.result.currentPage >= res.result.totalPages) {
             this.hasMore = false;
           }
           this.listExercise = [...this.listExercise, ...newData];
@@ -189,8 +188,10 @@ export class ListExerciseComponent implements OnInit {
   }
 
   handleSelect(dropdownKey: string, selected: any): void {
-    // Reset toàn bộ các lựa chọn trước đó
+    // Reset toàn bộ các lựa chọn trước đó tránh thừa query
     this.selectedOptions = {};
+
+    this.pageIndex = 1;
 
     // Lưu lại option vừa chọn
     this.selectedOptions[dropdownKey] = selected;
@@ -254,6 +255,7 @@ export class ListExerciseComponent implements OnInit {
 
   handleInputChange($event: string | number) {
     this.isLoading = true;
+    this.pageIndex = 1;
 
     if (this.debounceTimer) {
       clearTimeout(this.debounceTimer);
