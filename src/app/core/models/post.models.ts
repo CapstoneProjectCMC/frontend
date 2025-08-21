@@ -3,7 +3,7 @@ export interface PostCardInfo {
   avatar: string;
   author: string;
   title: string;
-  time: Date;
+  time: string;
   description: string;
   tags: string[];
   comment: number;
@@ -62,7 +62,7 @@ export interface postData {
     comment: string;
   }[];
   //nhật chưa làm
-  reactions: string[];
+  reactions: { upvote: number; downvote: number };
   //ds id những đứa được truy cập bài post
   accesses: string[];
   deleted: boolean;

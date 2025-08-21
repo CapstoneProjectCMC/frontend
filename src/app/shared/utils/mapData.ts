@@ -4,7 +4,12 @@ import {
   ExerciseItem,
   ExerciseQuiz,
 } from '../../core/models/exercise.model';
-import { PostADD, Post } from '../../core/models/post.models';
+import {
+  PostADD,
+  Post,
+  postData,
+  PostCardInfo,
+} from '../../core/models/post.models';
 import {
   ResourceData,
   resourceCardInfo,
@@ -67,6 +72,22 @@ export function mapPostInfortoPost(post: PostADD): Post {
       commentCount: 0,
     },
     status: post.status,
+  };
+}
+export function mapPostdatatoPostCardInfo(post: postData): PostCardInfo {
+  return {
+    id: post.postId,
+    avatar: post.imagesUrls[1],
+    author: post.createdBy,
+    title: post.title,
+    time: post.createdAt,
+    description: post.content,
+    tags: post.hashtag,
+    comment: post.comments.length,
+    upvote: post.reactions.upvote,
+    downvote: post.reactions.downvote,
+    status: post.status,
+    public: post.isPublic,
   };
 }
 export function maptoReourseCard(resourse: ResourceData): resourceCardInfo {

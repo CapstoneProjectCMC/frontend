@@ -10,10 +10,10 @@
         <span class="name">{{post.author}}</span>
         <div style="display: flex; flex-direction: row"></div>
         <span style="font-size: 12px; opacity: 20%" *ngIf="post.public"
-          >{{ formatDate(post.time) }} - Công khai</span
+          >{{ formatTime(post.time) }} - Công khai</span
         >
         <span *ngIf="!post.public" style="font-size: 12px; opacity: 20%"
-          >{{ formatDate(post.time) }} - Nội bộ tổ chức</span
+          >{{ formatTime(post.time) }} - Nội bộ tổ chức</span
         >
       </div>
       <div
