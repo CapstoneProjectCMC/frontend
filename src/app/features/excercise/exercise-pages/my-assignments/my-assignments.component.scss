@@ -1,14 +1,14 @@
 // Import theme variables nếu cần
 .my-assignments-container {
-  padding: 24px;
+  padding: 12px;
   background-color: var(--background-color);
   color: var(--text-color);
   height: calc(100vh - 180px);
 
   .title {
     color: var(--accent-color);
-    font-size: 2rem;
-    margin-bottom: 24px;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
   }
 }
 
@@ -40,7 +40,7 @@
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px T12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   }
 
   // --- Trạng thái thẻ ---
@@ -60,7 +60,7 @@
     align-items: flex-start;
 
     .exercise-name {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 600;
       color: var(--title-text);
       margin: 0;
@@ -71,7 +71,7 @@
       color: var(--text-muted-color);
       padding: 4px 10px;
       border-radius: 12px;
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       font-weight: 500;
 
       &.completed {
@@ -90,6 +90,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    font-size: 0.9rem;
     .due-date {
       display: flex;
       align-items: center;

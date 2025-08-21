@@ -33,6 +33,7 @@ export class CodeSubmissionComponent {
   @ViewChild('submissionContainer') submissionContainer!: ElementRef;
   @ViewChild('leftPanel') leftPanel!: ElementRef;
   @ViewChild('resizer') resizer!: ElementRef;
+
   // --- State cho UI ---
   activeLeftTab: 'description' | 'testcases' = 'description';
   activeRightTab: 'console' | 'results' = 'console';
@@ -50,6 +51,11 @@ export class CodeSubmissionComponent {
   isRunning = false;
   isSubmitting = false; // Thêm trạng thái submit
   hasError = false;
+
+  //anti-cheat
+  allowTab: boolean = true;
+  fullScreenRequire: boolean = false;
+  allowDevTools: boolean = false;
 
   // --- Timer ---
   timeLeftSeconds: number = 0;

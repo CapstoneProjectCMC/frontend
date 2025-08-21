@@ -17,5 +17,10 @@
     width: 100%;
     overflow-x: hidden; // Ngăn tràn ngang cho content
     box-sizing: border-box;
+    z-index: 1;
+  }
+
+  app-footer {
+    z-index: 1;
   }
 }
