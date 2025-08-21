@@ -17,6 +17,7 @@
     margin-bottom: 60px;
     transform: translateY(calc(-300% + 550% * var(--scroll-progress)));
     opacity: calc(var(--scroll-progress) * 1.5);
+    z-index: 100;
   }
 
   .features-grid {

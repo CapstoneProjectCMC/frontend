@@ -3,6 +3,7 @@ import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadc
 import { Router } from '@angular/router';
 import { InteractiveAnimationComponent } from '../components/interactive-animation/interactive-animation.component';
 import { FeaturesSectionComponent } from '../components/features-section/features-section.component';
+import { BackgroundEffectComponent } from '../components/matrix-rain-bg/background-effect.component';
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.html',
@@ -11,6 +12,7 @@ import { FeaturesSectionComponent } from '../components/features-section/feature
     BreadcrumbComponent,
     InteractiveAnimationComponent,
     FeaturesSectionComponent,
+    BackgroundEffectComponent,
   ],
   standalone: true,
 })

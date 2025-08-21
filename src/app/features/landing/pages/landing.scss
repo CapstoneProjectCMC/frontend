@@ -1,11 +1,37 @@
 .landing {
   max-width: 100vw;
   height: 100vh;
-  background-color: var(--background-color);
+  background-color: transparent;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
+
+  app-background-effect {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0; // Làm background
+    background-color: var(--background-color); // Nền đen như Matrix
+
+    // Nested cho các hiệu ứng nếu cần mở rộng (ví dụ: overlay)
+    // &::after {
+    //   content: "";
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   width: 100%;
+    //   height: 100%;
+    //   background: linear-gradient(
+    //     to bottom,
+    //     rgba(0, 0, 0, 0) 0%,
+    //     rgba(0, 0, 0, 1) 100%
+    //   ); // Gradient fade nếu muốn
+    //   pointer-events: none; // Không chặn tương tác
+    // }
+  }
 
   &-container {
     display: flex;
@@ -22,14 +48,18 @@
     flex-direction: column;
     gap: 24px;
     margin-left: 10%;
+    z-index: 1;
 
     &-title {
       // flex: 70%;
-      width: 80%;
+      width: 70%;
       font-size: 58px;
       font-weight: 700;
       color: var(--accent-color);
       line-height: 1.2;
+      user-select: none;
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none;
     }
 
     &-description {
@@ -37,6 +67,10 @@
       display: flex;
       align-items: center;
       gap: 16px;
+      backdrop-filter: blur(3px);
+      user-select: none;
+      -webkit-user-select: none; /* Safari */
+      -ms-user-select: none;
 
       &-icon {
         width: 30%;
@@ -76,6 +110,7 @@
     position: relative;
     height: 600px;
     right: 50px;
+    z-index: 2;
 
     &-container {
       position: relative;
@@ -121,6 +156,7 @@
     overflow: hidden;
     margin: 0;
     padding: 0;
+    z-index: 1;
 
     &-image {
       width: 100%;
