@@ -91,7 +91,7 @@ export class ExerciseCodeDetailsComponent {
   isOpenUpdateExercise: boolean = false;
   isDropdownOpen: boolean = false;
   authorName: string = '';
-  authorRoles: string = 'admin';
+  authorRoles: string = 'Tạm ẩn';
   avatarUrl: string = '';
   avatarUrlDefault: string = avatarUrlDefault;
 
@@ -151,7 +151,7 @@ export class ExerciseCodeDetailsComponent {
     this.profileService.getProfilebyId(userId).subscribe({
       next: (res) => {
         this.authorName = res.result.displayName;
-        // this.authorRoles = res.result.roles.join(', ');
+        this.authorRoles = res.result.roles.join(', ');
         this.avatarUrl = res.result.avatarUrl ?? avatarUrlDefault;
       },
       error: () => {

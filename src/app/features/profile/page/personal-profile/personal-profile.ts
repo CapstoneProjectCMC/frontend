@@ -49,6 +49,7 @@ export class PersonalProfileComponent {
     userId: '',
     username: '',
     active: true,
+    roles: ['ADMIN'],
     email: '',
     firstName: 'Không',
     lastName: 'rõ',

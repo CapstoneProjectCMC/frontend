@@ -78,6 +78,7 @@ Rất mong nhận được sự hỗ trợ từ các bạn!
     userId: 'u123456',
     username: 'johndoe',
     active: true,
+    roles: ['ADMIN'],
     email: 'johndoe@example.com',
     firstName: 'John',
     lastName: 'Doe',

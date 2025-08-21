@@ -4,6 +4,7 @@ export type User = {
   userId: string; // id của user
   username: string;
   active: boolean;
+  roles: string[];
   email: string;
   firstName: string;
   lastName: string;
