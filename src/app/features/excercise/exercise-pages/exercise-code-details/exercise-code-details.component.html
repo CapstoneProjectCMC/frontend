@@ -2,31 +2,75 @@
   <div class="problem-description">
     <div class="header-info">
       <h1 class="title">{{ exercise.title }}</h1>
-      <div class="header">
-        <img
-          class="avatar"
-          [src]="avatarUrl ? avatarUrl : avatarUrlDefault"
-          alt="Avatar"
-        />
-        <div class="info-main">
-          <div class="author">
-            <i class="fa fa-user"></i>
-            <span>{{ authorName }}</span>
-          </div>
-        </div>
+      <div class="meta-header">
+        <span
+          class="difficulty-badge"
+          [ngClass]="'difficulty-' + exercise.difficulty.toLowerCase()"
+        >
+          {{ exercise.difficulty }}
+        </span>
+        <span class="status-tag" *ngIf="exercise.active">
+          <i class="fa fa-circle"></i> Hoạt động
+        </span>
       </div>
     </div>
-
-    <div class="meta-header">
-      <span
-        class="difficulty-badge"
-        [ngClass]="'difficulty-' + exercise.difficulty.toLowerCase()"
-      >
-        {{ exercise.difficulty }}
-      </span>
-      <span class="status-tag" *ngIf="exercise.active">
-        <i class="fa fa-circle"></i> Hoạt động
-      </span>
+    <div class="header">
+      <img
+        class="avatar"
+        [src]="avatarUrl ? avatarUrl : avatarUrlDefault"
+        alt="Avatar"
+      />
+      <div class="info-main">
+        <div class="author">
+          <i class="fa fa-user"></i>
+          <span>{{ authorName }}</span>
+        </div>
+        <div class="author">
+          <i class="fa fa-fingerprint"></i>
+          <span>{{ authorRoles }}</span>
+        </div>
+      </div>
+      <div class="other-info-meta">
+        <div class="meta">
+          <span class="badge" title="Loại bài tập">
+            <i
+              class="fa"
+              [ngClass]="
+                exercise.exerciseType === 'QUIZ'
+                  ? 'fa-book'
+                  : 'fa-solid fa-file-code'
+              "
+            ></i>
+            {{ exercise.exerciseType }}
+          </span>
+          <span
+            class="badge"
+            *ngIf="exercise.orgId; else publicBadge"
+            title="Nội bộ"
+          >
+            <i class="fa fa-building"></i> Nội bộ
+          </span>
+          <ng-template #publicBadge>
+            <span class="badge" title="Công khai">
+              <i class="fa fa-globe"></i> Công khai
+            </span>
+          </ng-template>
+          <span class="badge" title="Trạng thái">
+            <i
+              class="fa"
+              [ngClass]="exercise.visibility ? 'fa-users' : 'fa-user-lock'"
+            ></i>
+            {{ exercise.visibility ? "Tất cả" : "Chỉ định" }}
+          </span>
+        </div>
+        <div class="time-info">
+          <i class="fa-regular fa-clock"></i>
+          <span *ngIf="exercise.startTime">
+            {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} -
+            {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}
+          </span>
+        </div>
+      </div>
     </div>
 
     <div class="section">

@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorComponent } from '../../../../shared/components/fxdonad-shared/code-editor/code-editor.component';
 import { CodingService } from '../../../../core/services/api-service/coding.service';
 import { Store } from '@ngrx/store';
-import { CodeSubmission } from '../../../../core/models/coding.model';
 import {
   ExerciseCodeResponse,
   submitCodeRequest,
@@ -249,31 +248,6 @@ export class CodeSubmissionComponent {
   }
 
   runCode() {
-    // Lấy code từ editor và in ra console
-    const code: CodeSubmission = {
-      submissionId: 4,
-      submittedCode: this.codeEditorComponent.getCode(),
-      userId: 'hdawhdjhawdbasj',
-      exerciseId: '1',
-      memory: 256,
-      cpus: 1,
-    };
-
-    // this.codingService.sendCode(code).subscribe({
-    //   next: (res) => {
-    //     console.log('đã gửi request');
-    //     sendNotification(
-    //       this.store,
-    //       'Thành công',
-    //       res.result.actualOutput,
-    //       'success'
-    //     );
-    //   },
-    //   error: (err) => {
-    //     console.log('Lỗi gửi');
-    //   },
-    // });
-
     this.isRunning = true;
     this.hasError = false;
     // Reset test case status

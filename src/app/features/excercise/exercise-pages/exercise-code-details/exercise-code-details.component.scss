@@ -23,70 +23,106 @@
         flex: 1;
       }
 
-      .header {
+      .meta-header {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 0.8rem;
+        color: white;
 
-        .avatar {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          border: 1.5px solid #eee;
-          object-fit: cover;
-        }
-        .info-main {
-          flex: 1;
-          h2 {
-            margin: 0 0 2px 0;
-            font-size: 1.25rem;
-            font-weight: 600;
-            line-height: 1.2;
+        .difficulty-badge {
+          padding: 0.25rem 0.7rem; // Tăng nhẹ padding
+          border-radius: 1rem;
+          font-weight: bold;
+          font-size: 0.52rem;
+
+          &.difficulty-easy {
+            background-color: var(--success-color);
           }
-          .author {
+          &.difficulty-medium {
+            background-color: var(--warning-color);
+          }
+          &.difficulty-hard {
+            background-color: var(--error-color);
+          }
+        }
+
+        .status-tag {
+          color: var(--success-color);
+          font-size: 0.585rem;
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
+      }
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 1.5rem;
+      .avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1.5px solid #eee;
+        object-fit: cover;
+      }
+      .info-main {
+        flex: 1;
+        h2 {
+          margin: 0 0 2px 0;
+          font-size: 1.25rem;
+          font-weight: 600;
+          line-height: 1.2;
+        }
+        .author {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: var(--text-muted-color);
+          font-size: 13px;
+          i {
+            font-size: 14px;
+          }
+        }
+      }
+      .other-info-meta {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: start;
+        gap: 4px;
+        .meta {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          .badge {
             display: flex;
             align-items: center;
-            gap: 6px;
-            color: var(--text-muted-color);
+            gap: 4px;
+            background: var(--tags-color);
+            color: var(--primary-color);
+            border-radius: 4px;
+            padding: 2px 8px;
             font-size: 13px;
+            font-weight: 500;
             i {
               font-size: 14px;
             }
           }
         }
-      }
-    }
-
-    .meta-header {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 1.5rem;
-      color: white;
-
-      .difficulty-badge {
-        padding: 0.25rem 0.7rem; // Tăng nhẹ padding
-        border-radius: 1rem;
-        font-weight: bold;
-        font-size: 0.52rem;
-
-        &.difficulty-easy {
-          background-color: var(--success-color);
+        .time-info {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 13px;
+          margin-left: 6px;
+          color: var(--text-muted-color);
+          i {
+            font-size: 15px;
+          }
         }
-        &.difficulty-medium {
-          background-color: var(--warning-color);
-        }
-        &.difficulty-hard {
-          background-color: var(--error-color);
-        }
-      }
-
-      .status-tag {
-        color: var(--success-color);
-        font-size: 0.585rem;
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
       }
     }
 
@@ -335,5 +371,9 @@
         }
       }
     }
+  }
+
+  @media (max-width: 1080px) {
+    flex-direction: column;
   }
 }

@@ -19,10 +19,10 @@
   max-height: calc(100vh - 257px); // Chiều cao tối đa để có thanh cuộn
   overflow-y: auto;
   padding: 5px; // Thêm padding để bóng đổ không bị cắt
-  @media (max-width: 1080px) {
+  @media (max-width: 1280px) {
     grid-template-columns: 1fr 1fr;
   }
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     grid-template-columns: 1fr;
   }
 }

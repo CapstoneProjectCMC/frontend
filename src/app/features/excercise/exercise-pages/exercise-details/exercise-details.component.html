@@ -118,7 +118,7 @@
       </div>
 
       <div class="time-info">
-        <i class="fa fa-clock-o"></i>
+        <i class="fa-regular fa-clock"></i>
         <span *ngIf="exercise.startTime">
           {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} -
           {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}
@@ -127,11 +127,11 @@
 
       <div class="stats">
         <span title="Số câu hỏi"
-          ><i class="fa fa-question-circle"></i>
+          ><i class="fa-regular fa-question-circle"></i>
           {{ exercise.quizDetail?.totalElements ?? 0 }}</span
         >
         <span title="Thời lượng"
-          ><i class="fa fa-hourglass-half"></i>
+          ><i class="fa-regular fa-hourglass-half"></i>
           {{ exercise.duration }} phút</span
         >
         <span title="Giá"
