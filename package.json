@@ -41,6 +41,7 @@
     "apexcharts": "^4.7.0",
     "codemirror": "^6.0.1",
     "date-fns": "^4.1.0",
+    "hls.js": "^1.6.10",
     "marked": "^16.1.1",
     "ng-apexcharts": "^1.11.0",
     "ngx-cookie-service": "^19.1.2",

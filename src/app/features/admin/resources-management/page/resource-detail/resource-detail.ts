@@ -1,11 +1,18 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { TextEditorConfig } from '../../../../../shared/components/fxdonad-shared/text-editor/text-editor';
-import { HtmlToMdService } from '../../../../../shared/utils/HTMLtoMarkDown';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { VideoPlayerComponent } from '../../../../../shared/components/my-shared/video-view/video-view';
 
 @Component({
   selector: 'app-resource-detail',
   templateUrl: './resource-detail.html',
   styleUrls: ['./resource-detail.scss'],
-  imports: [],
+  imports: [CommonModule, FormsModule, VideoPlayerComponent],
 })
-export class ResourceDetailPageComponent {}
+export class ResourceDetail {
+  resourceId: string | null = null;
+  constructor(private route: ActivatedRoute) {
+    this.resourceId = this.route.snapshot.paramMap.get('id');
+  }
+}

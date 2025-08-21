@@ -1,80 +1,19 @@
-.post-create-container {
-  display: flex;
-  flex-direction: row;
-  .general-infor {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    padding: 16px;
-    flex: 2;
-    .input-title {
-      width: 100%;
-      font-size: 1.5rem;
-    }
-    .input-info {
-      display: flex;
-      flex-direction: row;
-      gap: 8px;
-      width: 100%;
-    }
+.resource-detail-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
 
-    .input-content {
-      .title {
-        font-size: 14px;
-        font-weight: 600;
-        color: oklch(from var(--title-text) l c h);
-      }
-
-      width: 100%;
-      .require {
-        color: red;
-      }
-    }
-    .post-create-button {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-      width: 100%;
-      align-items: flex-end; // canh trái
-      justify-content: flex-end; // không cần nhưng an toàn
-    }
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #333;
   }
-  .file-upload {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-    margin-top: 40px;
 
-    .upload-label {
-      align-self: center;
-      width: 95%;
-      cursor: pointer;
-      align-self: flex-start;
-    }
-
-    .preview-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .preview-image {
-        max-height: 250px;
-        border-radius: 6px;
-        border: 1px solid #ddd;
-        object-fit: cover;
-      }
-
-      .file-info {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 14px;
-        color: #555;
-      }
+  .resource-info {
+    margin-top: 20px;
+    p {
+      font-size: 1rem;
+      color: #666;
     }
   }
 }

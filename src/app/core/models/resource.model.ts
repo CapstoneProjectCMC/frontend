@@ -47,3 +47,13 @@ export interface ResourceData {
   duration: string; // TimeSpan
   hlsUrl: string;
 }
+//--------------Input episode local---------------------
+export interface IEpisodeLocal {
+  episodeId: string;
+  watchedDuration: number;
+  watchedDate: string;
+}
+
+export interface ILocalData {
+  localData: IEpisodeLocal[];
+}
