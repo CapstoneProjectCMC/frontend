@@ -81,7 +81,7 @@ export class CodeSubmissionComponent {
     score: number;
     totalPoints: number;
     passedAll: boolean;
-    peakMemoryKb: number;
+    peakMemorymb: number;
   } | null = null;
 
   private unlistenMouseMove!: () => void;
@@ -305,7 +305,7 @@ export class CodeSubmissionComponent {
           score: responseData.score,
           totalPoints: responseData.totalpoints,
           passedAll: responseData.passed,
-          peakMemoryKb: responseData.peakmemorykb,
+          peakMemorymb: responseData.peakmemorymb,
         };
 
         // Cập nhật chi tiết cho từng test case

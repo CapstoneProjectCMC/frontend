@@ -8,7 +8,10 @@ import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { CommonModule } from '@angular/common';
 import { ChatbotService } from '../../../../core/services/api-service/chatbot.service';
-import { IContextThreadResponse } from '../../../../core/models/chatbot.model';
+import {
+  IContextThreadResponse,
+  MessageInfo,
+} from '../../../../core/models/chatbot.model';
 import { map } from 'rxjs/internal/operators/map';
 
 @Component({
@@ -155,17 +158,19 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
     this.hasQuizDataChanges = state.hasDataChanges;
   }
 
-  /////////////////////////////////////////////Phần này code cho chatboxAi chỉ để test/////////////////////////////
+  /////////////////////////////////////////////Phần này code cho chatboxAi /////////////////////////////
 
   fetchListThreads() {
     this.chatbotService.getMyThreads().subscribe({
       next: (res) => {
         this.chatContexts = res.result.map((thread) => ({
           ...thread,
-          messages: null,
+          messages: [],
         }));
-        this.currentContextId = this.chatContexts[0].id;
-        this.fetchContextOfThreadById(this.currentContextId);
+        if (res.result.length > 0) {
+          this.currentContextId = this.chatContexts[0].id;
+          this.fetchContextOfThreadById(this.currentContextId);
+        }
       },
       error: (err) => {
         console.log(err);
@@ -215,31 +220,38 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
   }): void {
     this.isLoading = true;
 
-    if (!event.file) {
-      this.sendMessage(event.contextId, event.message).subscribe({
-        next: (response) => {
-          const context = this.chatContexts.find(
-            (c) => c.id === event.contextId
-          );
-          if (context) {
-            context.messages?.push({
-              id: Date.now().toString(),
-              content: response, // response từ API
-              role: 'ASSISTANT',
-              imageContentType: null,
-              imageOriginalName: null,
-              imageUrl: null,
-              createdAt: new Date(),
-            });
-          }
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error(err);
-          this.isLoading = false;
-        },
+    const handleSuccess = (response: string) => {
+      const aiMessage: MessageInfo = {
+        id: Date.now().toString(),
+        content: response, // response từ API
+        role: 'ASSISTANT',
+        imageContentType: null,
+        imageOriginalName: null,
+        imageUrl: null,
+        createdAt: new Date(),
+      };
+
+      // ✨ SỬA Ở ĐÂY: Dùng .map() để tạo ra một mảng mới
+      this.chatContexts = this.chatContexts.map((context) => {
+        // Nếu đây là context cần cập nhật
+        if (context.id === event.contextId) {
+          // Trả về một object context MỚI
+          return {
+            ...context, // Sao chép tất cả thuộc tính cũ
+            messages: [...(context.messages || []), aiMessage], // Tạo một mảng messages MỚI chứa tin nhắn của AI
+          };
+        }
+        // Nếu không phải, trả về context cũ không thay đổi
+        return context;
       });
-    }
+
+      this.isLoading = false;
+    };
+
+    const handleError = (err: any) => {
+      console.error(err);
+      this.isLoading = false;
+    };
 
     if (event.file) {
       this.sendMessageWithFile(
@@ -247,34 +259,34 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
         event.message,
         event.file
       ).subscribe({
-        next: (response) => {
-          const context = this.chatContexts.find(
-            (c) => c.id === event.contextId
-          );
-          if (context) {
-            context.messages?.push({
-              id: Date.now().toString(),
-              content: response, // response từ API
-              role: 'ASSISTANT',
-              imageContentType: null,
-              imageOriginalName: null,
-              imageUrl: null,
-              createdAt: new Date(),
-            });
-          }
-          this.isLoading = false;
-        },
-        error: (err) => {
-          console.error(err);
-          this.isLoading = false;
-        },
+        next: handleSuccess,
+        error: handleError,
+      });
+    } else {
+      this.sendMessage(event.contextId, event.message).subscribe({
+        next: handleSuccess,
+        error: handleError,
       });
     }
   }
 
-  handleCreateNewChat(): void {
-    // In a real app, you might want to call an API to create a new chat
-    console.log('New chat created');
+  handleCreateNewChat(contextId: string): void {
+    this.currentContextId = contextId;
+
+    // 🔥 Fix: tạo context mới trong mảng cha
+    const newContext: IContextThreadResponse = {
+      id: contextId,
+      title: 'Cuộc trò chuyện mới',
+      lastMessageAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      messages: [], // để push message đầu tiên vào đây
+    };
+
+    // Thêm vào đầu danh sách
+    this.chatContexts = [newContext, ...this.chatContexts];
+
+    console.log('New chat created:', newContext);
   }
 
   handleSelectContext(contextId: string): void {

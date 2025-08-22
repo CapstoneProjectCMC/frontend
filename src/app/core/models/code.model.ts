@@ -129,7 +129,7 @@ export type SubmitCodeResponse = {
   }[];
   memorymb: number;
   cpus: number;
-  peakmemorykb: number; // bộ nhớ cao nhất đo được
+  peakmemorymb: number; // bộ nhớ cao nhất đo được
 };
 
 export type AddNewCodingDetailsResponse = {
