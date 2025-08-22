@@ -42,7 +42,7 @@ export const API_CONFIG = {
         difficulty: number | null,
         search: string | null
       ) => {
-        let query = `/search/filter?page=${page}&size=${size}`;
+        let query = `/search/exercises/filter?page=${page}&size=${size}`;
         if (tags) query += `&tags=${tags}`;
         if (difficulty !== null) query += `&difficulty=${difficulty}`;
         if (search) query += `&q=${encodeURIComponent(search)}`;

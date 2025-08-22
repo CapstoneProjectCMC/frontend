@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, SimpleChanges } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -8,6 +8,11 @@ import { decodeJWT } from '../../../utils/stringProcess';
 
 import { ToggleSwitch } from '../../fxdonad-shared/toggle-switch/toggle-switch';
 import { ThemeService } from '../../../../styles/theme-service/theme.service';
+import { ProvinceService } from '../../../../core/services/api-service/province.service';
+import { ProfileService } from '../../../../core/services/api-service/profile.service';
+import { Observable } from 'rxjs';
+import { selectVariable } from '../../../store/variable-state/variable.selectors';
+import { resetVariable } from '../../../store/variable-state/variable.actions';
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
@@ -16,6 +21,8 @@ import { ThemeService } from '../../../../styles/theme-service/theme.service';
   imports: [NgIf, ProfileMenuComponent, ToggleSwitch],
 })
 export class HeaderComponent {
+  needReloadAvatar$: Observable<boolean>;
+
   isDarkMode: boolean = false;
   notificationCount: number = 10;
   isLoggedIn: boolean = false;
@@ -23,12 +30,19 @@ export class HeaderComponent {
   isMenuVisible = false;
   timeExpiresAt: string = '';
   role: string = '';
+  avatarUrl: string = '';
+  avatarDefault: string = '/auth-assets/avatar_placeholder.png';
 
   constructor(
     private router: Router,
-    private store: Store,
-    private themeService: ThemeService
+    private profileService: ProfileService,
+    private themeService: ThemeService,
+    private store: Store
   ) {
+    this.needReloadAvatar$ = this.store.select(
+      selectVariable('reloadAvatarHeader')
+    );
+
     this.timeExpiresAt =
       decodeJWT(localStorage.getItem('token') ?? '')?.expiresAt || '';
     const expiresAt = new Date(this.timeExpiresAt).getTime();
@@ -36,6 +50,24 @@ export class HeaderComponent {
 
     this.role =
       decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles || '';
+  }
+
+  ngOnInit() {
+    this.needReloadAvatar$.subscribe((reload) => {
+      if (reload) {
+        const avatarUrl = sessionStorage.getItem('avatar-url');
+        if (!avatarUrl) {
+          this.getUserInfo();
+        } else {
+          this.avatarUrl = avatarUrl;
+        }
+      }
+    });
+
+    this.avatarUrl = sessionStorage.getItem('avatar-url') ?? '';
+    if (!this.avatarUrl) {
+      this.getUserInfo();
+    }
   }
 
   organizations = [
@@ -62,6 +94,21 @@ export class HeaderComponent {
   goToHome() {
     console.log('Click về trang chủ');
     this.router.navigate(['/']);
+  }
+
+  getUserInfo() {
+    this.profileService.getMyProfile().subscribe({
+      next: (res) => {
+        if (res.result.avatarUrl !== null) {
+          sessionStorage.setItem('avatar-url', res.result.avatarUrl);
+          this.avatarUrl = sessionStorage.getItem('avatar-url') ?? '';
+          this.store.dispatch(resetVariable({ key: 'reloadAvatarHeader' })); //reset biến để dùng cho các lần update tiếp
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   toggleProfileMenu() {
