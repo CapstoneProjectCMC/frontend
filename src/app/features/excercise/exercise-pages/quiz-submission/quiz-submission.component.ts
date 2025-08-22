@@ -1,27 +1,15 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  Renderer2,
-  AfterViewInit,
-  OnDestroy,
-  HostListener,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { QuizComponent } from '../../../../shared/components/fxdonad-shared/quiz/quiz.component';
-import {
-  QuestionPreview,
-  QuizQuestion,
-} from '../../../../core/models/exercise.model';
+import { QuestionPreview } from '../../../../core/models/exercise.model';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
-import {
-  BoxChatAiComponent,
-  ChatContext,
-  ChatMessage,
-} from '../../../../shared/components/fxdonad-shared/box-chat-ai/box-chat-ai.component';
+import { BoxChatAiComponent } from '../../../../shared/components/fxdonad-shared/box-chat-ai/box-chat-ai.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { CommonModule } from '@angular/common';
+import { ChatbotService } from '../../../../core/services/api-service/chatbot.service';
+import { IContextThreadResponse } from '../../../../core/models/chatbot.model';
+import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-quiz-submission',
@@ -44,7 +32,7 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
   hasQuizDataChanges = false;
 
   // Chat data
-  chatContexts: ChatContext[] = [];
+  chatContexts: IContextThreadResponse[] = [];
   currentContextId: string = '';
   isLoading: boolean = false;
 
@@ -59,11 +47,10 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private exerciseService: ExerciseService,
-    private renderer: Renderer2,
-    private el: ElementRef
+    private chatbotService: ChatbotService
   ) {
     // Initialize fake chat data
-    this.initializeFakeChatData();
+    this.fetchListThreads();
   }
 
   canDeactivate(): Observable<boolean> {
@@ -136,7 +123,7 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
    * Kiểm tra xem có phải truy cập hợp lệ không
    */
   private isValidAccess(): boolean {
-    // Kiểm tra referrer hoặc session storage để đảm bảo user đến từ trang exercise details
+    // Kiểm tra referrer hoặc session storage để đảm bảo USER đến từ trang exercise details
     const referrer = document.referrer;
     const hasValidReferrer =
       referrer.includes('/exercise-details') ||
@@ -170,105 +157,119 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
 
   /////////////////////////////////////////////Phần này code cho chatboxAi chỉ để test/////////////////////////////
 
-  private initializeFakeChatData(): void {
-    // Create a few sample chat contexts with messages
-    const context1: ChatContext = {
-      id: '1',
-      title: 'Hỏi đáp về bài tập',
-      messages: [
-        {
-          id: '1',
-          content:
-            'Tôi không hiểu câu hỏi số 2 lắm. Bạn có thể giải thích thêm không?',
-          sender: 'user',
-          timestamp: new Date(Date.now() - 3600000), // 1 hour ago
-        },
-        {
-          id: '2',
-          content:
-            'Câu hỏi số 2 đang hỏi về cách triển khai thuật toán sắp xếp. Bạn cần phân tích độ phức tạp của thuật toán và chọn phương án tối ưu nhất.',
-          sender: 'ai',
-          timestamp: new Date(Date.now() - 3540000), // 59 minutes ago
-        },
-        {
-          id: '3',
-          content: 'Cảm ơn bạn! Vậy tôi nên chọn Quick Sort phải không?',
-          sender: 'user',
-          timestamp: new Date(Date.now() - 3480000), // 58 minutes ago
-        },
-        {
-          id: '4',
-          content:
-            'Đúng vậy, Quick Sort có độ phức tạp trung bình là O(n log n) và thường hiệu quả trong thực tế. Tuy nhiên, hãy nhớ rằng trong trường hợp xấu nhất, độ phức tạp có thể lên tới O(n²).',
-          sender: 'ai',
-          timestamp: new Date(Date.now() - 3420000), // 57 minutes ago
-        },
-      ],
-    };
-
-    const context2: ChatContext = {
-      id: '2',
-      title: 'Hỏi về thời gian làm bài',
-      messages: [
-        {
-          id: '1',
-          content: 'Tôi có thể gia hạn thời gian làm bài không?',
-          sender: 'user',
-          timestamp: new Date(Date.now() - 1800000), // 30 minutes ago
-        },
-        {
-          id: '2',
-          content:
-            'Rất tiếc, thời gian làm bài được cố định và không thể gia hạn. Bạn nên tập trung vào những câu hỏi dễ trước để đảm bảo hoàn thành càng nhiều càng tốt.',
-          sender: 'ai',
-          timestamp: new Date(Date.now() - 1740000), // 29 minutes ago
-        },
-      ],
-    };
-
-    const context3: ChatContext = {
-      id: '3',
-      title: 'Cuộc trò chuyện mới',
-      messages: [],
-    };
-
-    this.chatContexts = [context1, context2, context3];
-    this.currentContextId = context1.id; // Set the first context as active
+  fetchListThreads() {
+    this.chatbotService.getMyThreads().subscribe({
+      next: (res) => {
+        this.chatContexts = res.result.map((thread) => ({
+          ...thread,
+          messages: null,
+        }));
+        this.currentContextId = this.chatContexts[0].id;
+        this.fetchContextOfThreadById(this.currentContextId);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
-  handleSendMessage(event: { contextId: string; message: string }): void {
+  fetchContextOfThreadById(threadId: string) {
+    this.chatbotService.getThreadById(threadId).subscribe({
+      next: (res) => {
+        const index = this.chatContexts.findIndex(
+          (t) => t.id === res.result.id
+        );
+        if (index !== -1) {
+          // Cập nhật messages cho thread này
+          this.chatContexts[index] = {
+            ...this.chatContexts[index],
+            messages: res.result.messages, // gắn messages vào
+          };
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  sendMessage(threadId: string, message: string) {
+    // return luôn observable để handleSendMessage subscribe
+    return this.chatbotService.sendChat(threadId, message).pipe(
+      //API trả { result: string }
+      map((res) => res.result)
+    );
+  }
+
+  sendMessageWithFile(threadId: string, message: string, file: File) {
+    return this.chatbotService.sendChatWithImage(threadId, message, file).pipe(
+      //API trả { result: string }
+      map((res) => res.result)
+    );
+  }
+
+  handleSendMessage(event: {
+    contextId: string;
+    message: string;
+    file?: File;
+  }): void {
     this.isLoading = true;
 
-    // Simulate API delay
-    setTimeout(() => {
-      // Find the current context
-      const context = this.chatContexts.find((c) => c.id === event.contextId);
-      if (context) {
-        // Add AI response
-        context.messages.push({
-          id: Date.now().toString(),
-          content: this.generateAIResponse(event.message),
-          sender: 'ai',
-          timestamp: new Date(),
-        });
-      }
-      this.isLoading = false;
-    }, 1500);
-  }
+    if (!event.file) {
+      this.sendMessage(event.contextId, event.message).subscribe({
+        next: (response) => {
+          const context = this.chatContexts.find(
+            (c) => c.id === event.contextId
+          );
+          if (context) {
+            context.messages?.push({
+              id: Date.now().toString(),
+              content: response, // response từ API
+              role: 'ASSISTANT',
+              imageContentType: null,
+              imageOriginalName: null,
+              imageUrl: null,
+              createdAt: new Date(),
+            });
+          }
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoading = false;
+        },
+      });
+    }
 
-  private generateAIResponse(message: string): string {
-    // Simple fake AI response generator
-    const responses = [
-      'Tôi hiểu câu hỏi của bạn. Trong bài tập này, bạn nên tập trung vào việc phân tích yêu cầu trước khi đưa ra giải pháp.',
-      'Đây là một câu hỏi hay. Hãy xem xét các khái niệm đã học trong chương trước để tìm ra đáp án.',
-      'Để giải quyết vấn đề này, bạn cần áp dụng kiến thức về cấu trúc dữ liệu và thuật toán.',
-      'Tôi khuyên bạn nên đọc kỹ đề bài và xác định các yêu cầu chính trước khi trả lời.',
-      'Câu hỏi này liên quan đến các nguyên tắc cơ bản của lập trình. Hãy nhớ lại các khái niệm về biến, điều kiện và vòng lặp.',
-      'Đây là một khái niệm quan trọng trong môn học. Bạn có thể tìm thêm thông tin trong tài liệu tham khảo.',
-    ];
-
-    // Return a random response
-    return responses[Math.floor(Math.random() * responses.length)];
+    if (event.file) {
+      this.sendMessageWithFile(
+        event.contextId,
+        event.message,
+        event.file
+      ).subscribe({
+        next: (response) => {
+          const context = this.chatContexts.find(
+            (c) => c.id === event.contextId
+          );
+          if (context) {
+            context.messages?.push({
+              id: Date.now().toString(),
+              content: response, // response từ API
+              role: 'ASSISTANT',
+              imageContentType: null,
+              imageOriginalName: null,
+              imageUrl: null,
+              createdAt: new Date(),
+            });
+          }
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.error(err);
+          this.isLoading = false;
+        },
+      });
+    }
   }
 
   handleCreateNewChat(): void {
@@ -278,6 +279,7 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
 
   handleSelectContext(contextId: string): void {
     this.currentContextId = contextId;
+    this.fetchContextOfThreadById(contextId);
   }
 
   handleDeleteContext(contextId: string): void {
