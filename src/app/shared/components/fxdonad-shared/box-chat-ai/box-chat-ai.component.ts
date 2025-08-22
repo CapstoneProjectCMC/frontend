@@ -18,8 +18,11 @@ import { FormsModule } from '@angular/forms';
 import {
   IContextThreadResponse,
   MessageInfo,
+  ThreadInfoResponse,
 } from '../../../../core/models/chatbot.model';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
+import { ChatbotService } from '../../../../core/services/api-service/chatbot.service';
+import { MarkdownModule } from 'ngx-markdown';
 
 export type fileUrlIndex = {
   messageId: string;
@@ -30,7 +33,7 @@ export type fileUrlIndex = {
 @Component({
   selector: 'app-box-chat-ai',
   standalone: true,
-  imports: [CommonModule, FormsModule, TruncatePipe],
+  imports: [CommonModule, FormsModule, TruncatePipe, MarkdownModule],
   templateUrl: './box-chat-ai.component.html',
   styleUrls: ['./box-chat-ai.component.scss'],
 })
@@ -65,12 +68,15 @@ export class BoxChatAiComponent
   @ViewChild('contextListRef') contextListRef!: ElementRef;
   @ViewChild('contextButtonRef') contextButtonRef!: ElementRef;
   @ViewChild('fileInput') fileInput!: ElementRef;
+  @ViewChild('titleInput') titleInput!: ElementRef;
 
   newMessage: string = '';
+  newContext: ThreadInfoResponse | null = null;
   file: File | null = null;
   isExpanded: boolean = true;
   showContextList: boolean = false;
   shouldScrollToBottom: boolean = true;
+  isCreatingNewThread: boolean = false;
 
   // Resize properties
   isResizing: boolean = false;
@@ -78,11 +84,19 @@ export class BoxChatAiComponent
   startX: number = 0;
   startWidth: number = 0;
 
+  // ADD THESE PROPERTIES
+  isEditingTitle: boolean = false;
+  editingTitleText: string = '';
+
   private resizeListenerFn: (() => void) | null = null;
   private mouseMoveListenerFn: (() => void) | null = null;
   private mouseUpListenerFn: (() => void) | null = null;
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+    private chatbotService: ChatbotService
+  ) {}
 
   ngOnInit(): void {
     // Initialize with default context if none exists
@@ -173,19 +187,76 @@ export class BoxChatAiComponent
   }
 
   createNewChatContext(): void {
-    const newContext: IContextThreadResponse = {
-      id: Date.now().toString(),
-      title: 'Cuộc trò chuyện mới',
-      lastMessageAt: new Date().toString(),
-      createdAt: new Date().toString(),
-      updatedAt: new Date().toString(),
-      messages: [],
-    };
+    this.isCreatingNewThread = true;
+    this.chatbotService.createNewThread('Cuộc trò chuyện mới').subscribe({
+      next: (res) => {
+        this.newContext = res.result;
+        if (this.newContext) {
+          const data: IContextThreadResponse = {
+            ...this.newContext,
+            messages: null,
+          };
 
-    this.chatContexts = [newContext, ...this.chatContexts];
-    this.currentContextId = newContext.id;
-    this.selectContext.emit(newContext.id);
-    this.showContextList = false;
+          this.chatContexts = [data, ...this.chatContexts];
+          this.currentContextId = this.newContext.id;
+          this.selectContext.emit(this.newContext.id);
+          this.showContextList = false;
+          this.isCreatingNewThread = true;
+        }
+      },
+      error: (err) => {
+        this.isCreatingNewThread = true;
+        console.log(err);
+      },
+    });
+
+    // const newContext: IContextThreadResponse = {
+    //   id: Date.now().toString(),
+    //   title: 'Cuộc trò chuyện mới',
+    //   lastMessageAt: new Date().toString(),
+    //   createdAt: new Date().toString(),
+    //   updatedAt: new Date().toString(),
+    //   messages: [],
+    // };
+  }
+
+  startEditingTitle(): void {
+    const currentContext = this.getCurrentContext();
+    if (currentContext) {
+      this.isEditingTitle = true;
+      this.editingTitleText = currentContext.title;
+      // Focus the input element after the view updates
+      setTimeout(() => {
+        this.titleInput.nativeElement.focus();
+        this.titleInput.nativeElement.select(); // Select text for easy replacement
+      }, 0);
+    }
+  }
+
+  saveTitle(): void {
+    if (!this.isEditingTitle) return;
+
+    const currentContext = this.getCurrentContext();
+    const newTitle = this.editingTitleText.trim();
+
+    if (currentContext && newTitle && newTitle !== currentContext.title) {
+      this.chatbotService
+        .renameThread(currentContext.id, this.editingTitleText)
+        .subscribe({
+          next: () => {
+            currentContext.title = newTitle;
+          },
+          error: (err) => console.error('Failed to update title:', err),
+        });
+
+      currentContext.title = newTitle;
+    }
+
+    this.isEditingTitle = false;
+  }
+
+  cancelEditTitle(): void {
+    this.isEditingTitle = false;
   }
 
   onSelectContext(contextId: string): void {
@@ -197,27 +268,41 @@ export class BoxChatAiComponent
   onDeleteContext(event: Event, contextId: string): void {
     event.stopPropagation();
 
-    // Find the index of the context to be deleted
     const contextIndex = this.chatContexts.findIndex((c) => c.id === contextId);
+    if (contextIndex === -1) return; // không tìm thấy
 
-    // If we're deleting the current context, select another one
-    if (contextId === this.currentContextId && this.chatContexts.length > 1) {
-      // Try to select the next context, or the previous one if we're deleting the last context
-      const newContextIndex =
-        contextIndex < this.chatContexts.length - 1
-          ? contextIndex + 1
-          : contextIndex - 1;
-      this.currentContextId = this.chatContexts[newContextIndex].id;
-      this.selectContext.emit(this.currentContextId);
-    }
+    this.chatbotService.deleteThread(contextId).subscribe({
+      next: () => {
+        // Xoá khỏi local state
+        this.chatContexts.splice(contextIndex, 1);
 
-    // Emit the delete event
-    this.deleteContext.emit(contextId);
+        // Nếu xoá context hiện tại → chọn context khác
+        if (
+          contextId === this.currentContextId &&
+          this.chatContexts.length > 0
+        ) {
+          const newContextIndex =
+            contextIndex < this.chatContexts.length
+              ? contextIndex // chọn context kế tiếp (vị trí cũ)
+              : contextIndex - 1; // nếu xoá cuối cùng thì chọn context trước đó
 
-    // If we're deleting the last context, create a new one
-    if (this.chatContexts.length === 1) {
-      this.createNewChatContext();
-    }
+          this.currentContextId = this.chatContexts[newContextIndex].id;
+          this.selectContext.emit(this.currentContextId);
+        }
+
+        // Emit delete event ra ngoài
+        this.deleteContext.emit(contextId);
+
+        // Nếu xoá hết context → tạo mới
+        if (this.chatContexts.length === 0) {
+          this.createNewChatContext();
+        }
+      },
+      error: (err) => {
+        console.error('Delete context failed:', err);
+        // Optionally: hiển thị toast thông báo lỗi
+      },
+    });
   }
 
   toggleExpand(): void {
@@ -264,6 +349,24 @@ export class BoxChatAiComponent
   removeAttachment(): void {
     this.file = null;
     this.fileInput.nativeElement.value = '';
+  }
+
+  handlePaste(event: ClipboardEvent): void {
+    const items = event.clipboardData?.items;
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          if (blob) {
+            this.file = new File([blob], 'pasted-image.png', {
+              type: blob.type,
+            });
+          }
+          event.preventDefault();
+          break;
+        }
+      }
+    }
   }
 
   // Resize functionality
