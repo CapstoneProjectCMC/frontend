@@ -100,7 +100,7 @@ export class Register {
           sendNotification(
             this.store,
             'Thành công',
-            'Tài khoản đã được tạo, nhập OTP để kích hoạt!',
+            'Tài khoản đã được tạo, nhập OTP trong vòng 5 phút để kích hoạt!',
             'success'
           );
           this.openOTP = true;
