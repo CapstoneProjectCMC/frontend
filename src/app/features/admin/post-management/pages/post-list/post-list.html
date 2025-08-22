@@ -77,35 +77,51 @@
     </div>
 
     <div class="list-post-card-container">
-      <div *ngIf="!isLoading && posts" class="list-post-card">
+      <!-- Hiển thị bài viết khi có dữ liệu và không đang tải -->
+      <div
+        *ngIf="!isLoading && posts && posts.length > 0"
+        class="list-post-card"
+      >
         <div *ngFor="let post of posts">
           <app-post-card [post]="post" [onMain]="goToDetail"></app-post-card>
         </div>
       </div>
 
-      <div *ngIf="isLoading " class="list-post-card">
-        <app-skeleton-loading
-          *ngIf="isLoading"
-          type="card"
-          [count]="8"
-        ></app-skeleton-loading>
+      <!-- Hiển thị skeleton loading khi đang tải -->
+      <div *ngIf="isLoading" class="list-post-card">
+        <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
       </div>
+
+      <!-- Hiển thị thông báo "Không có dữ liệu" với hình ảnh động khi không có bài viết -->
+      <div
+        *ngIf="!isLoading && (!posts || posts.length === 0)"
+        class="no-data-container"
+      >
+        <ng-lottie
+          [options]="lottieOptions"
+          style="width: 200px; height: 200px"
+        >
+        </ng-lottie>
+        <p>Không có dữ liệu</p>
+      </div>
+
+      <!-- Phân trang (bỏ chú thích nếu cần) -->
       <!-- <div class="list-post-pagination">
-        <app-pagination
-          [totalData]="posts.length"
-          [amountDataPerPage]="10"
-          [currentPageIndex]=" 1"
-          (onPageChange)="handlePageChange($event)"
-        ></app-pagination>
-      </div> -->
+      <app-pagination
+        [totalData]="posts.length"
+        [amountDataPerPage]="10"
+        [currentPageIndex]="1"
+        (onPageChange)="handlePageChange($event)"
+      ></app-pagination>
+    </div> -->
     </div>
   </div>
   <div class="popular">
     <div class="popular-content">
       <!-- <app-popular-content
-        [numTags]="fakeTags.length"
-        [tags]="fakeTags"
-      ></app-popular-content> -->
+          [numTags]="fakeTags.length"
+          [tags]="fakeTags"
+        ></app-popular-content> -->
       <app-trending
         [items]="trendingData"
         title="Popular Technologies"
