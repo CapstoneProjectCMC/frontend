@@ -354,6 +354,11 @@
             &.you-color-text {
               color: white;
             }
+            .message-image {
+              max-width: 100%;
+              border-radius: 8px;
+              margin-top: 8px;
+            }
           }
         }
       }
@@ -388,6 +393,47 @@
       }
     }
 
+    // Attachment Preview
+    .attachment-preview {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background-color: var(--background-secondary);
+      border-top: 1px solid var(--border-color);
+      font-size: 13px;
+
+      .attachment-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-color);
+
+        i {
+          font-size: 16px;
+          color: var(--primary-color);
+        }
+      }
+
+      .remove-attachment-button {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 14px;
+        padding: 4px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+          color: var(--error-color);
+          background-color: var(--hover-color);
+        }
+      }
+    }
+
     // Chat Input
     .chat-input {
       display: flex;
@@ -395,6 +441,26 @@
       padding: 12px;
       border-top: 1px solid var(--border-color);
       background-color: var(--background-color);
+
+      .attach-button {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 16px;
+        padding: 8px;
+        border-radius: 50%;
+        margin-right: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+
+        &:hover {
+          color: var(--primary-color);
+          background-color: var(--hover-color);
+        }
+      }
 
       textarea {
         flex: 1;

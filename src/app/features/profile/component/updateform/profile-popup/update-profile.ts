@@ -16,6 +16,7 @@ import {
 } from '../../../../../shared/store/loading-state/loading.action';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
+import { setVariable } from '../../../../../shared/store/variable-state/variable.actions';
 
 @Component({
   selector: 'app-update-profile',
@@ -245,7 +246,13 @@ export class UpdateProfileComponent {
     // Update avatar nếu có file
     if (this.avatarFile) {
       this.profileService.updateAvatar(this.avatarFile).subscribe({
-        next: (res) => console.log('Cập nhật avatar thành công:', res),
+        next: (res) => {
+          console.log('Cập nhật avatar thành công:', res),
+            sessionStorage.removeItem('avatar-url');
+          this.store.dispatch(
+            setVariable({ key: 'reloadAvatarHeader', value: true })
+          );
+        },
         error: (err) => console.error('Lỗi cập nhật avatar:', err),
       });
     }

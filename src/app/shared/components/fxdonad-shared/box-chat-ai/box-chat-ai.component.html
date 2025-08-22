@@ -77,26 +77,32 @@
 
     <!-- Chat messages -->
     <div class="chat-messages" #chatContainer>
-      @if (getCurrentContext()) { @if (getCurrentContext()!.messages.length) {
+      @if (getCurrentContext()) { @if (getCurrentContext()!.messages?.length) {
       @for (message of getCurrentContext()!.messages; track message.id) {
       <div
         class="message"
-        [class.user-message]="message.sender === 'user'"
-        [class.ai-message]="message.sender === 'ai'"
+        [class.user-message]="message.role === 'USER'"
+        [class.ai-message]="message.role === 'ASSISTANT'"
       >
         <div class="message-content">
           <div class="message-header">
             <span class="sender-name">{{
-              message.sender === "user" ? "Bạn" : aiName
+              message.role === "USER" ? "Bạn" : aiName
             }}</span>
             <span class="message-time">{{
-              getMessageTime(message.timestamp)
+              getMessageTime(message.createdAt)
             }}</span>
           </div>
           <div
             class="message-text"
-            [class.you-color-text]="message.sender === 'user'"
+            [class.you-color-text]="message.role === 'USER'"
           >
+            <img
+              *ngIf="message.imageUrl"
+              [src]="message.imageUrl"
+              alt="Uploaded Image"
+              class="message-image"
+            />
             {{ message.content }}
           </div>
         </div>
@@ -131,8 +137,32 @@
       }
     </div>
 
+    <!-- Attachment Preview -->
+    <div class="attachment-preview" *ngIf="file">
+      <div class="attachment-info">
+        <i class="fas fa-file-alt"></i>
+        <span>{{ file.name | truncate : 30 }}</span>
+      </div>
+      <button class="remove-attachment-button" (click)="removeAttachment()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
     <!-- Chat input -->
     <div class="chat-input">
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        style="display: none"
+      />
+      <button
+        class="attach-button"
+        (click)="fileInput.click()"
+        title="Đính kèm tệp"
+      >
+        <i class="fas fa-paperclip"></i>
+      </button>
       <textarea
         [(ngModel)]="newMessage"
         [placeholder]="placeholder"
@@ -142,7 +172,9 @@
       <button
         class="send-button"
         (click)="onSendMessage()"
-        [disabled]="!newMessage.trim() || isLoading || !getCurrentContext()"
+        [disabled]="
+          (!newMessage.trim() && !file) || isLoading || !getCurrentContext()
+        "
       >
         <i class="fas fa-paper-plane"></i>
       </button>

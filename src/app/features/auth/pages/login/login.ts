@@ -109,7 +109,7 @@ export class Login {
 
         localStorage.setItem('token', res.result.accessToken);
         localStorage.setItem('refreshToken', res.result.refreshToken);
-        sendNotification(this.store, res.status, res.message, 'success');
+        sessionStorage.removeItem('avatar-url');
 
         this.router.navigate(['/exercise/exercise-layout/list']);
       },
