@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
@@ -21,6 +21,8 @@ import { PostService } from '../../../../../core/services/api-service/post.servi
 import { Store } from '@ngrx/store';
 import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
 import { mapPostdatatoPostCardInfo } from '../../../../../shared/utils/mapData';
+import player from 'lottie-web';
+import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'app-post-list',
@@ -37,9 +39,18 @@ import { mapPostdatatoPostCardInfo } from '../../../../../shared/utils/mapData';
     PopularPostComponent,
     SkeletonLoadingComponent,
     TrendingComponent,
+    LottieComponent,
   ],
+  providers: [provideLottieOptions({ player: () => import('lottie-web') })],
+
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PostListComponent {
+  lottieOptions = {
+    path: 'assets/lottie-animation/nodata.json',
+    autoplay: true,
+    loop: true,
+  };
   posts: PostCardInfo[] = [
     // {
     //   id: '1',

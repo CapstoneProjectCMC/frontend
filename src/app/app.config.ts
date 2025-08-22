@@ -11,13 +11,16 @@ import { errorInterceptor } from './core/interceptors/handle/error.interceptor';
 import { loadingReducer } from './shared/store/loading-state/loading.reduce';
 import { modalNoticeReducer } from './shared/store/modal-notice-state/modal-notice.reducer';
 import { provideMarkdown } from 'ngx-markdown';
+import { provideLottieOptions } from 'ngx-lottie';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(withInterceptors([errorInterceptor])),
-
+    provideLottieOptions({
+      player: () => import('lottie-web'),
+    }),
     provideStore({
       form: formReducer,
       notification: notificationReducer,
