@@ -57,7 +57,7 @@ export class BoxChatAiComponent
     message: string;
     file?: File;
   }>();
-  @Output() createNewChat = new EventEmitter<void>();
+  @Output() createNewChat = new EventEmitter<string>();
   @Output() selectContext = new EventEmitter<string>();
   @Output() deleteContext = new EventEmitter<string>();
   @Output() widthChanged = new EventEmitter<string>();
@@ -181,31 +181,28 @@ export class BoxChatAiComponent
     this.file = null;
   }
 
-  onCreateNewChat(): void {
-    this.createNewChatContext();
-    this.createNewChat.emit();
-  }
-
   createNewChatContext(): void {
     this.isCreatingNewThread = true;
     this.chatbotService.createNewThread('Cuộc trò chuyện mới').subscribe({
       next: (res) => {
         this.newContext = res.result;
+        this.createNewChat.emit(this.newContext.id);
+
         if (this.newContext) {
           const data: IContextThreadResponse = {
             ...this.newContext,
-            messages: null,
+            messages: [],
           };
 
           this.chatContexts = [data, ...this.chatContexts];
           this.currentContextId = this.newContext.id;
           this.selectContext.emit(this.newContext.id);
           this.showContextList = false;
-          this.isCreatingNewThread = true;
+          this.isCreatingNewThread = false;
         }
       },
       error: (err) => {
-        this.isCreatingNewThread = true;
+        this.isCreatingNewThread = false;
         console.log(err);
       },
     });

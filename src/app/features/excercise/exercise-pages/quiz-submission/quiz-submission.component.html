@@ -18,7 +18,7 @@
     [maxWidth]="'500px'"
     [position]="'right'"
     (sendMessage)="handleSendMessage($event)"
-    (createNewChat)="handleCreateNewChat()"
+    (createNewChat)="handleCreateNewChat($event)"
     (selectContext)="handleSelectContext($event)"
     (deleteContext)="handleDeleteContext($event)"
   ></app-box-chat-ai>
