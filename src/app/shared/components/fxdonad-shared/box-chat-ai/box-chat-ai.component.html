@@ -187,6 +187,7 @@
         [(ngModel)]="newMessage"
         [placeholder]="placeholder"
         (keydown)="handleKeyDown($event)"
+        (paste)="handlePaste($event)"
         [disabled]="isLoading"
       ></textarea>
       <button

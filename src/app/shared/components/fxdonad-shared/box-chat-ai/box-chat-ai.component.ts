@@ -351,6 +351,24 @@ export class BoxChatAiComponent
     this.fileInput.nativeElement.value = '';
   }
 
+  handlePaste(event: ClipboardEvent): void {
+    const items = event.clipboardData?.items;
+    if (items) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const blob = items[i].getAsFile();
+          if (blob) {
+            this.file = new File([blob], 'pasted-image.png', {
+              type: blob.type,
+            });
+          }
+          event.preventDefault();
+          break;
+        }
+      }
+    }
+  }
+
   // Resize functionality
   setupResizeHandle(): void {
     const resizeHandle = this.resizeHandleElement.nativeElement;
