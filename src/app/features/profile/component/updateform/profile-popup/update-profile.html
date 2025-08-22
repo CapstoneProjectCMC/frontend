@@ -1,7 +1,13 @@
 <div class="profile-popup" [ngClass]="variant">
-  <div class="avt-bg">
+  <div *ngIf="!isLoading && (hasError || !user)" class="no-data-container">
+    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+    </ng-lottie>
+    <p>Không có dữ liệu</p>
+  </div>
+
+  <div class="avt-bg" *ngIf="hasError!=true ">
     <div class="bg-container">
-      <img class="bg" [src]="user.backgroundUrl" />
+      <img class="bg" [src]="background" />
       <button class="upload-btn-bg" (click)="uploadBackground()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +29,7 @@
     </div>
 
     <div class="avt-container">
-      <img class="avt" [src]="user.avatarUrl" />
+      <img class="avt" [src]="avatar" />
       <button class="upload-btn-avt" (click)="uploadAvatar()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +51,7 @@
     </div>
   </div>
 
-  <div class="general-infor">
+  <div class="general-infor" *ngIf="hasError!=true ">
     <div class="detail-infor">
       <!-- Tên hiển thị -->
       <app-input
@@ -87,6 +93,7 @@
       <div class="dropdown">
         <span class="dropdown-title">Trình độ học vấn</span>
         <app-dropdown-button
+          *ngIf="selectedEducation"
           [label]="selectedEducation.label"
           [options]="education"
           [variant]="'secondary'"
@@ -111,6 +118,7 @@
         <div class="dropdown">
           <span class="dropdown-title">Giới tính</span>
           <app-dropdown-button
+            *ngIf="selectedGender"
             [label]="selectedGender.label"
             [options]="gender"
             [variant]="'secondary'"
@@ -131,7 +139,12 @@
         </div>
         <div class="dropdown">
           <span class="dropdown-title">Ngày sinh</span>
-          <input class="date-picker" type="datetime-local" [(ngModel)]="dob" />
+          <input
+            class="date-picker"
+            type="datetime-local"
+            [(ngModel)]="dob"
+            *ngIf="dob !== null"
+          />
         </div>
       </div>
       <!-- Thành phố -->
@@ -272,7 +285,7 @@
     </div>
   </div>
 
-  <div class="update-button">
+  <div class="update-button" *ngIf="hasError!=true ">
     <app-button
       [variant]="'solid'"
       [width]="'130px'"

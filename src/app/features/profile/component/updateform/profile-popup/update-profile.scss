@@ -18,6 +18,34 @@
   &.other {
     max-height: 60vh;
   }
+  .no-data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: center;
+    color: #555;
+    font-size: 16px;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-in-out;
+
+    p {
+      margin-top: 12px;
+      color: #666;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
   .avt-bg {
     position: relative;

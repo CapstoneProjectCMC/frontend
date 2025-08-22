@@ -1,4 +1,8 @@
 //ví dụ
+export const DEFAULT_AVATAR =
+  'https://i.pinimg.com/736x/91/12/02/911202d369ed382e806e246dca39399e.jpg';
+export const DEFAULT_BG =
+  'https://i.pinimg.com/736x/2f/5f/0e/2f5f0e56562fbef9ca734f233fa2c0b0.jpg';
 
 export type User = {
   userId: string; // id của user
