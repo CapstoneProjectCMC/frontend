@@ -18,7 +18,27 @@
       >
         <i class="fas fa-comments"></i>
       </button>
-      <h3 class="chat-title">{{ getCurrentContext()?.title || aiName }}</h3>
+      <div class="chat-title-container">
+        <h3
+          *ngIf="!isEditingTitle"
+          class="chat-title"
+          (dblclick)="startEditingTitle()"
+          title="Double-click để sửa tiêu đề này"
+        >
+          {{ getCurrentContext()?.title || aiName }}
+        </h3>
+
+        <input
+          #titleInput
+          *ngIf="isEditingTitle"
+          type="text"
+          class="title-edit-input"
+          [(ngModel)]="editingTitleText"
+          (blur)="saveTitle()"
+          (keydown.enter)="saveTitle()"
+          (keydown.escape)="cancelEditTitle()"
+        />
+      </div>
     </div>
     <div class="header-right">
       <button
@@ -103,7 +123,7 @@
               alt="Uploaded Image"
               class="message-image"
             />
-            {{ message.content }}
+            <markdown [data]="message.content"></markdown>
           </div>
         </div>
       </div>

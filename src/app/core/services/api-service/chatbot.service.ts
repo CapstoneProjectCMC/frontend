@@ -58,7 +58,7 @@ export class ChatbotService {
   renameThread(threadId: string, newName: string) {
     return this.api.patch<ApiResponse<ThreadInfoResponse>>(
       API_CONFIG.ENDPOINTS.PATCH.RENAME_THREAD(threadId),
-      newName
+      { title: newName }
     );
   }
 }
