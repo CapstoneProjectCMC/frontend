@@ -19,6 +19,7 @@ import {
   IContextThreadResponse,
   MessageInfo,
 } from '../../../../core/models/chatbot.model';
+import { TruncatePipe } from '../../../pipes/format-view.pipe';
 
 export type fileUrlIndex = {
   messageId: string;
@@ -29,7 +30,7 @@ export type fileUrlIndex = {
 @Component({
   selector: 'app-box-chat-ai',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TruncatePipe],
   templateUrl: './box-chat-ai.component.html',
   styleUrls: ['./box-chat-ai.component.scss'],
 })
@@ -63,6 +64,7 @@ export class BoxChatAiComponent
   @ViewChild('resizeHandle') resizeHandleElement!: ElementRef;
   @ViewChild('contextListRef') contextListRef!: ElementRef;
   @ViewChild('contextButtonRef') contextButtonRef!: ElementRef;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   newMessage: string = '';
   file: File | null = null;
@@ -138,11 +140,12 @@ export class BoxChatAiComponent
   }
 
   onSendMessage(): void {
-    if (this.newMessage.trim() === '') return;
+    if (this.newMessage.trim() === '' && !this.file) return;
 
     this.sendMessage.emit({
       contextId: this.currentContextId,
       message: this.newMessage,
+      file: this.file as File,
     });
 
     // Optimistically add the message to the UI
@@ -152,15 +155,16 @@ export class BoxChatAiComponent
         id: Date.now().toString(),
         content: this.newMessage,
         role: 'USER',
-        imageContentType: null,
-        imageOriginalName: null,
-        imageUrl: null,
+        imageContentType: this.file ? this.file.type : null,
+        imageOriginalName: this.file ? this.file.name : null,
+        imageUrl: this.file ? URL.createObjectURL(this.file) : null,
         createdAt: new Date(),
       });
       this.shouldScrollToBottom = true;
     }
 
     this.newMessage = '';
+    this.file = null;
   }
 
   onCreateNewChat(): void {
@@ -248,6 +252,18 @@ export class BoxChatAiComponent
       event.preventDefault();
       this.onSendMessage();
     }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.file = input.files[0];
+    }
+  }
+
+  removeAttachment(): void {
+    this.file = null;
+    this.fileInput.nativeElement.value = '';
   }
 
   // Resize functionality

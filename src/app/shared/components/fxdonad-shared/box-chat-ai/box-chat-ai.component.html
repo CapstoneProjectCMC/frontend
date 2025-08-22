@@ -97,6 +97,12 @@
             class="message-text"
             [class.you-color-text]="message.role === 'USER'"
           >
+            <img
+              *ngIf="message.imageUrl"
+              [src]="message.imageUrl"
+              alt="Uploaded Image"
+              class="message-image"
+            />
             {{ message.content }}
           </div>
         </div>
@@ -131,8 +137,32 @@
       }
     </div>
 
+    <!-- Attachment Preview -->
+    <div class="attachment-preview" *ngIf="file">
+      <div class="attachment-info">
+        <i class="fas fa-file-alt"></i>
+        <span>{{ file.name | truncate : 30 }}</span>
+      </div>
+      <button class="remove-attachment-button" (click)="removeAttachment()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
     <!-- Chat input -->
     <div class="chat-input">
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        style="display: none"
+      />
+      <button
+        class="attach-button"
+        (click)="fileInput.click()"
+        title="Đính kèm tệp"
+      >
+        <i class="fas fa-paperclip"></i>
+      </button>
       <textarea
         [(ngModel)]="newMessage"
         [placeholder]="placeholder"
@@ -142,7 +172,9 @@
       <button
         class="send-button"
         (click)="onSendMessage()"
-        [disabled]="!newMessage.trim() || isLoading || !getCurrentContext()"
+        [disabled]="
+          (!newMessage.trim() && !file) || isLoading || !getCurrentContext()
+        "
       >
         <i class="fas fa-paper-plane"></i>
       </button>
