@@ -104,6 +104,7 @@ export const API_CONFIG = {
       GET_FILE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
       GET_RESOURCE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
       GET_MY_THREADS: '/ai/chat/threads',
+      GET_THREAD_BY_ID: (threadId: string) => `/ai/chat/thread/${threadId}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -141,6 +142,10 @@ export const API_CONFIG = {
       ADD_POST: `/post/posts/createPost`,
       GET_POST: `/post/posts/getAllAccessiblePosts`,
       CREATE_NEW_THREAD_CHATBOT: '/ai/chat/thread',
+      SEND_MESSAGE_TO_CHAT: (threadId: string) =>
+        `/ai/chat/thread/${threadId}/messages`,
+      SEND_MESSAGE_IMG_TO_CHAT: (threadId: string) =>
+        `/ai/chat/thread/${threadId}/messages-with-image`,
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/${id}`,
@@ -160,6 +165,7 @@ export const API_CONFIG = {
         `/submission/quiz/${exerciseId}/question/${questionId}`,
       UPDATE_CODING_DETAILS: (exerciseId: string) =>
         `/submission/coding/exercise/${exerciseId}/coding-detail`,
+      RENAME_THREAD: (threadId: string) => `/ai/chat/thread/${threadId}`,
     },
     DELETE: {
       DELETE_QUESTION: (exerciseId: string, questionId: string) =>
@@ -170,6 +176,8 @@ export const API_CONFIG = {
         `/profile/social/follow/${targetUserId}`,
 
       DELETE_FILE: (id: string) => `/file/api/FileDocument/${id}`,
+      DELETE_THREAD_CHATBOT: (threadId: string) =>
+        `/ai/chat/thread/${threadId}`,
     },
   },
   HEADERS: {

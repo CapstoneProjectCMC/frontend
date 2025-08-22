@@ -15,19 +15,16 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import {
+  IContextThreadResponse,
+  MessageInfo,
+} from '../../../../core/models/chatbot.model';
 
-export interface ChatMessage {
-  id: string;
-  content: string;
-  sender: 'user' | 'ai';
-  timestamp: Date;
-}
-
-export interface ChatContext {
-  id: string;
-  title: string;
-  messages: ChatMessage[];
-}
+export type fileUrlIndex = {
+  messageId: string;
+  fileUrl: String;
+  fileName: string;
+};
 
 @Component({
   selector: 'app-box-chat-ai',
@@ -39,10 +36,11 @@ export interface ChatContext {
 export class BoxChatAiComponent
   implements OnInit, AfterViewChecked, OnChanges, OnDestroy
 {
-  @Input() chatContexts: ChatContext[] = [];
+  @Input() chatContexts: IContextThreadResponse[] = [];
   @Input() currentContextId: string = '';
   @Input() isLoading: boolean = false;
   @Input() placeholder: string = 'Nhập tin nhắn...';
+  @Input() fileUrl: fileUrlIndex | {} = {};
   @Input() aiName: string = 'AI Assistant';
   @Input() autoScroll: boolean = true;
   @Input() initialWidth: string = '30%';
@@ -53,6 +51,7 @@ export class BoxChatAiComponent
   @Output() sendMessage = new EventEmitter<{
     contextId: string;
     message: string;
+    file?: File;
   }>();
   @Output() createNewChat = new EventEmitter<void>();
   @Output() selectContext = new EventEmitter<string>();
@@ -66,6 +65,7 @@ export class BoxChatAiComponent
   @ViewChild('contextButtonRef') contextButtonRef!: ElementRef;
 
   newMessage: string = '';
+  file: File | null = null;
   isExpanded: boolean = true;
   showContextList: boolean = false;
   shouldScrollToBottom: boolean = true;
@@ -131,7 +131,7 @@ export class BoxChatAiComponent
     }
   }
 
-  getCurrentContext(): ChatContext | undefined {
+  getCurrentContext(): IContextThreadResponse | undefined {
     return this.chatContexts.find(
       (context) => context.id === this.currentContextId
     );
@@ -148,11 +148,14 @@ export class BoxChatAiComponent
     // Optimistically add the message to the UI
     const currentContext = this.getCurrentContext();
     if (currentContext) {
-      currentContext.messages.push({
+      currentContext.messages?.push({
         id: Date.now().toString(),
         content: this.newMessage,
-        sender: 'user',
-        timestamp: new Date(),
+        role: 'USER',
+        imageContentType: null,
+        imageOriginalName: null,
+        imageUrl: null,
+        createdAt: new Date(),
       });
       this.shouldScrollToBottom = true;
     }
@@ -166,9 +169,12 @@ export class BoxChatAiComponent
   }
 
   createNewChatContext(): void {
-    const newContext: ChatContext = {
+    const newContext: IContextThreadResponse = {
       id: Date.now().toString(),
       title: 'Cuộc trò chuyện mới',
+      lastMessageAt: new Date().toString(),
+      createdAt: new Date().toString(),
+      updatedAt: new Date().toString(),
       messages: [],
     };
 
@@ -229,11 +235,11 @@ export class BoxChatAiComponent
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
-  trackByMessageId(index: number, message: ChatMessage): string {
+  trackByMessageId(index: number, message: MessageInfo): string {
     return message.id;
   }
 
-  trackByContextId(index: number, context: ChatContext): string {
+  trackByContextId(index: number, context: IContextThreadResponse): string {
     return context.id;
   }
 

@@ -156,6 +156,47 @@ export class ApiMethod {
   }
 
   //Method Patch
+  postWithFormData<T>(
+    endpoint: string,
+    data?: Record<string, any>,
+    files?: File | { [fieldName: string]: File | File[] },
+    apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
+  ): Observable<T> {
+    const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
+    const formData = new FormData();
+
+    // Đính kèm dữ liệu thông thường nếu có
+    if (data) {
+      Object.keys(data).forEach((key) => {
+        formData.append(key, data[key]);
+      });
+    }
+
+    // Đính kèm file hoặc nhiều file nếu có
+    if (files) {
+      if (files instanceof File) {
+        formData.append('file', files);
+      } else {
+        Object.keys(files).forEach((fieldName) => {
+          const fileItem = files[fieldName];
+          if (Array.isArray(fileItem)) {
+            fileItem.forEach((file) => formData.append(fieldName, file));
+          } else {
+            formData.append(fieldName, fileItem);
+          }
+        });
+      }
+    }
+
+    // Sử dụng header chỉ có Authorization, để trình duyệt tự động xử lý Content-Type cho multipart/form-data
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('token') || ''}`,
+    });
+
+    return this.http.post<T>(url, formData, { headers });
+  }
+
+  //Method Patch
   patchWithFormData<T>(
     endpoint: string,
     data?: Record<string, any>,

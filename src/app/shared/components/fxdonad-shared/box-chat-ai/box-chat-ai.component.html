@@ -77,25 +77,25 @@
 
     <!-- Chat messages -->
     <div class="chat-messages" #chatContainer>
-      @if (getCurrentContext()) { @if (getCurrentContext()!.messages.length) {
+      @if (getCurrentContext()) { @if (getCurrentContext()!.messages?.length) {
       @for (message of getCurrentContext()!.messages; track message.id) {
       <div
         class="message"
-        [class.user-message]="message.sender === 'user'"
-        [class.ai-message]="message.sender === 'ai'"
+        [class.user-message]="message.role === 'USER'"
+        [class.ai-message]="message.role === 'ASSISTANT'"
       >
         <div class="message-content">
           <div class="message-header">
             <span class="sender-name">{{
-              message.sender === "user" ? "Bạn" : aiName
+              message.role === "USER" ? "Bạn" : aiName
             }}</span>
             <span class="message-time">{{
-              getMessageTime(message.timestamp)
+              getMessageTime(message.createdAt)
             }}</span>
           </div>
           <div
             class="message-text"
-            [class.you-color-text]="message.sender === 'user'"
+            [class.you-color-text]="message.role === 'USER'"
           >
             {{ message.content }}
           </div>
