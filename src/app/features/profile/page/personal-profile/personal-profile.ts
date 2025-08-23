@@ -197,7 +197,8 @@ export class PersonalProfileComponent {
   refetchUserData(event: boolean) {
     if (event) {
       this.fetchUserData();
-      this.onDisplayNameClick(this.user, true);
+      this.isClosing = false;
+      this.closeProfilePopup();
     }
   }
 
