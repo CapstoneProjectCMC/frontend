@@ -1,7 +1,16 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
-import { formatDate } from '../../../../../shared/utils/stringProcess';
+import {
+  formatDate,
+  formatDateToDDMMYYYY,
+} from '../../../../../shared/utils/stringProcess';
 import {
   DEFAULT_AVATAR,
   DEFAULT_BG,
@@ -21,6 +30,8 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { setVariable } from '../../../../../shared/store/variable-state/variable.actions';
 import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
+import { forkJoin } from 'rxjs';
+import { TruncatePipe } from '../../../../../shared/pipes/format-view.pipe';
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.html',
@@ -35,6 +46,7 @@ import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
     ButtonComponent,
     NgIf,
     LottieComponent,
+    TruncatePipe,
   ],
   providers: [provideLottieOptions({ player: () => import('lottie-web') })],
 
@@ -44,6 +56,8 @@ export class UpdateProfileComponent {
   @Input() user!: User;
   @Input() variant: 'personal' | 'other' | 'popup' = 'popup';
   @Input() onClickEdit?: () => void;
+  @Output() refresh = new EventEmitter<boolean>();
+
   lottieOptions = {
     path: 'assets/lottie-animation/nodata.json',
     autoplay: true,
@@ -60,6 +74,7 @@ export class UpdateProfileComponent {
   selectedEducation: any = null;
   selectedGender: any = null;
   dob: string = ''; // ngày sinh dạng string để bind với datetime-local
+  originalDob: string = '';
   bio: string = '';
   cities: { value: string; label: string }[] = [];
   selectedCity: string = '';
@@ -86,9 +101,6 @@ export class UpdateProfileComponent {
     private store: Store,
     private router: Router
   ) {
-    if (!this.user) {
-      this.hasError = true;
-    }
     console.log('data ở đây', this.user);
     // dữ liệu dropdown mẫu
     this.education = [
@@ -127,7 +139,6 @@ export class UpdateProfileComponent {
       },
       error: (err) => {
         console.error('Lỗi lấy danh sách tỉnh:', err);
-        this.hasError = true;
         this.isLoading = false;
         console.log('lỗi', this.hasError);
       },
@@ -140,7 +151,14 @@ export class UpdateProfileComponent {
       this.firstName = this.user.firstName;
       this.lastName = this.user.lastName;
       this.bio = this.user.bio;
-
+      this.originalDob = this.user.dob;
+      if (this.user.dob) {
+        const [day, month, year] = this.user.dob.split('/');
+        this.dob = `${year}-${month.padStart(2, '0')}-${day.padStart(
+          2,
+          '0'
+        )}T00:00`;
+      }
       const genderStr = this.user.gender?.toString();
       this.selectedGender =
         this.gender.find((g) => g.value === genderStr) || null;
@@ -151,6 +169,8 @@ export class UpdateProfileComponent {
       const eduStr = this.user.education?.toString();
       this.selectedEducation =
         this.education.find((g) => g.value === eduStr) || null;
+    } else {
+      this.hasError = true;
     }
   }
 
@@ -219,65 +239,121 @@ export class UpdateProfileComponent {
     };
     input.click();
   }
+  //kiểm tra thay đổi
+  // Kiểm tra thay đổi
+  hasProfileChanged(): boolean {
+    if (!this.user) return false;
 
-  /** Cập nhật profile */
-  updateProfile() {
+    const isFirstNameChanged = this.firstName !== this.user.firstName;
+
+    const isLastNameChanged = this.lastName !== this.user.lastName;
+
+    const isDobChanged = this.originalDob.trim() !== this.user.dob.trim();
+
+    const isBioChanged = (this.bio || '') !== (this.user.bio || '');
+
+    const isGenderChanged =
+      (this.selectedGender === 'true') !== this.user.gender;
+
+    const isDisplayNameChanged =
+      (this.displayName || '') !== (this.user.displayName || '');
+
+    const isEducationChanged =
+      Number(this.selectedEducation?.value) !== this.user.education;
+
+    const isLinksChanged =
+      JSON.stringify(this.links) !== JSON.stringify(this.user.links || []);
+
+    const isCityChanged = (this.selectedCity || '') !== (this.user.city || '');
+
+    return (
+      isFirstNameChanged ||
+      isLastNameChanged ||
+      isDobChanged ||
+      isBioChanged ||
+      isGenderChanged ||
+      isDisplayNameChanged ||
+      isEducationChanged ||
+      isLinksChanged ||
+      isCityChanged
+    );
+  }
+
+  /** Cập nhật profile */ updateProfile() {
+    if (!this.hasProfileChanged() && !this.avatarFile && !this.backgroundFile) {
+      sendNotification(this.store, 'Thông tin chưa thay đổi', '', 'error');
+      return;
+    }
+
     this.store.dispatch(
-      setLoading({ isLoading: true, content: 'Đang tạo, xin chờ...' })
+      setLoading({ isLoading: true, content: 'Đang cập nhật, xin chờ...' })
     );
 
-    // Update thông tin cơ bản
-    this.profileService
-      .updateProfile(
-        this.firstName,
-        this.lastName,
-        new Date(this.dob), // dob phải dạng Date
-        this.bio || '',
-        this.selectedGender === 'true',
-        this.displayName,
-        Number(this.selectedEducation.value),
-        this.links,
-        this.selectedCity || ''
-      )
-      .subscribe({
-        next: (res) => {
-          sendNotification(
-            this.store,
-            'Đã cập nhật thành công',
-            res.message,
-            'success'
-          );
-          setTimeout(() => {
-            this.router.navigate(['/profile/personal-profile']);
-            this.store.dispatch(clearLoading());
-          }, 300);
-        },
-        error: (err) => {
-          console.error('Lỗi cập nhật thông tin:', err);
-          this.store.dispatch(clearLoading());
-        },
-      });
+    const requests = [];
 
-    // Update avatar nếu có file
+    // 1. Update profile nếu có thay đổi
+    if (this.hasProfileChanged()) {
+      requests.push(
+        this.profileService.updateProfile(
+          this.firstName,
+          this.lastName,
+          formatDateToDDMMYYYY(this.dob),
+          this.bio || '',
+          this.selectedGender === 'true',
+          this.displayName,
+          Number(this.selectedEducation.value),
+          this.links,
+          this.selectedCity || ''
+        )
+      );
+    }
+
+    // 2. Update avatar nếu có file
     if (this.avatarFile) {
-      this.profileService.updateAvatar(this.avatarFile).subscribe({
-        next: (res) => {
-          console.log('Cập nhật avatar thành công:', res),
-            sessionStorage.removeItem('avatar-url');
+      requests.push(this.profileService.updateAvatar(this.avatarFile));
+    }
+
+    // 3. Update background nếu có file
+    if (this.backgroundFile) {
+      requests.push(this.profileService.updateBackground(this.backgroundFile));
+    }
+
+    // Nếu không có gì thì return
+    if (requests.length === 0) {
+      this.store.dispatch(clearLoading());
+      return;
+    }
+
+    forkJoin(requests).subscribe({
+      next: (results) => {
+        console.log('Kết quả tất cả:', results);
+        sendNotification(
+          this.store,
+          'Đã cập nhật thành công',
+          'Thông tin profile đã được cập nhật',
+          'success'
+        );
+
+        // Nếu có update avatar thì set reload cho header
+        if (this.avatarFile) {
+          sessionStorage.removeItem('avatar-url');
           this.store.dispatch(
             setVariable({ key: 'reloadAvatarHeader', value: true })
           );
-        },
-        error: (err) => console.error('Lỗi cập nhật avatar:', err),
-      });
-    }
+        }
+        //fetch lại thông tin user
+        this.refresh.emit(true);
 
-    // Update background nếu có file
-    if (this.backgroundFile) {
-      this.profileService.updateBackground(this.backgroundFile).subscribe({
-        next: (res) => console.log('Cập nhật background thành công:', res),
-        error: (err) => console.error('Lỗi cập nhật background:', err),
-      });
-    }
+        setTimeout(() => {
+          this.router.navigate(['/profile/personal-profile']);
+          this.store.dispatch(clearLoading());
+        }, 300);
+      },
+      error: (err) => {
+        console.error('Lỗi khi cập nhật:', err);
+        sendNotification(this.store, 'Xảy ra lỗi', 'error');
+        this.store.dispatch(clearLoading());
+      },
+    });
   }
 }

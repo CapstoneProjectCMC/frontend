@@ -3,7 +3,7 @@
     <app-profile-popup
       [user]="user"
       [variant]="'personal'"
-      [onClickEdit]="onDisplayNameClick.bind(this, user)"
+      [onClickEdit]="onDisplayNameClick.bind(this, user, false)"
       [follower]="followerList"
       [following]="followingList"
     ></app-profile-popup>
@@ -116,6 +116,7 @@
       <app-update-profile
         [user]="openedUser"
         [variant]="'popup'"
+        (refresh)="refetchUserData($event)"
       ></app-update-profile>
     </div>
   </div>
