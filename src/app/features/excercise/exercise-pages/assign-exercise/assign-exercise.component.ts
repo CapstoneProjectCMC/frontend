@@ -19,7 +19,10 @@ import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { of } from 'rxjs/internal/observable/of';
 import { Subscription } from 'rxjs/internal/Subscription';
-import { MySubmissionsHistoryResponse } from '../../../../core/models/exercise.model';
+import {
+  AssignedStudentsListResponse,
+  MySubmissionsHistoryResponse,
+} from '../../../../core/models/exercise.model';
 import { CodingService } from '../../../../core/services/api-service/coding.service';
 
 @Component({
@@ -55,6 +58,15 @@ export class AssignExerciseComponent implements OnInit {
   searchTerm = '';
   dueAt: string = '';
 
+  assignedStudents: AssignedStudentsListResponse[] = [];
+  isLoadingAssigned = true;
+  assignedPage = 1;
+  assignedSize = 3;
+  assignedTotalPages = 1;
+  assignedTotalElements = 0;
+  assignedFilterCompleted: boolean | undefined = undefined; // undefined = all, true/false = filter
+  assignedSearchTerm = ''; // Tìm kiếm riêng cho assigned
+
   constructor(
     private exerciseService: ExerciseService,
     private codingService: CodingService,
@@ -79,6 +91,77 @@ export class AssignExerciseComponent implements OnInit {
     }
 
     this.loadExerciseAndStudents(this.exerciseId);
+    this.loadAssignedStudents();
+  }
+
+  loadAssignedStudents(page: number = this.assignedPage): void {
+    this.isLoadingAssigned = true;
+    this.exerciseService
+      .getAssignedStudentsForExercise(
+        page,
+        this.assignedSize,
+        this.exerciseId,
+        this.assignedFilterCompleted
+      )
+      .subscribe({
+        next: (res) => {
+          if (res) {
+            this.assignedStudents = res.data;
+            console.log(res.data);
+            this.assignedTotalPages = res.totalPages;
+            this.assignedTotalElements = res.totalElements;
+            this.assignedPage = res.currentPage;
+          }
+          this.isLoadingAssigned = false;
+        },
+        error: (err) => {
+          console.error('Lỗi tải danh sách assigned:', err);
+          this.isLoadingAssigned = false;
+          // Có thể add toast error
+        },
+      });
+  }
+
+  filterAssignedStudents(): void {
+    if (this.debounceTimer) clearTimeout(this.debounceTimer);
+    this.debounceTimer = setTimeout(() => {
+      // Nếu search term thay đổi, reset page và load lại (có thể add param q vào API nếu hỗ trợ)
+      this.assignedPage = 1;
+      this.loadAssignedStudents();
+    }, 500);
+  }
+
+  changeAssignedPage(delta: number): void {
+    const newPage = this.assignedPage + delta;
+    if (newPage >= 1 && newPage <= this.assignedTotalPages) {
+      this.loadAssignedStudents(newPage);
+    }
+  }
+
+  setAssignedFilter(completed: boolean | undefined): void {
+    this.assignedFilterCompleted = completed;
+    this.assignedPage = 1;
+    this.loadAssignedStudents();
+  }
+
+  remindStudent(assignmentId: string): void {
+    // Implement gửi notification, ví dụ call API remind
+    sendNotification(
+      this.store,
+      'Nhắc nhở',
+      'Đã gửi nhắc nhở đến học sinh',
+      'info'
+    );
+  }
+
+  deleteAssignment(assignmentId: string): void {
+    // Confirm dialog, rồi call API delete, refresh list
+    if (confirm('Xác nhận xóa giao bài?')) {
+      // Giả sử có method delete
+      // this.exerciseService.deleteAssignment(assignmentId).subscribe(() => {
+      //   this.loadAssignedStudents();
+      // });
+    }
   }
 
   loadExerciseAndStudents(id: string): void {

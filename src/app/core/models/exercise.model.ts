@@ -279,3 +279,14 @@ export type MySubmissionsHistoryResponse = {
   timeTakenSeconds: number;
   submittedAt: string;
 };
+
+export type AssignedStudentsListResponse = {
+  assignmentId: string;
+  student: UserBasicInfo;
+  dueAt: string;
+  completed: boolean;
+  bestScore: number;
+  totalPoints: number;
+  exerciseType: 'QUIZ' | 'CODING';
+  completedAt: string;
+};

@@ -4,6 +4,7 @@ import { ApiResponse, IPaginationResponse } from '../../models/api-response';
 import { API_CONFIG } from '../config-service/api.enpoints';
 import { EnumType } from '../../models/data-handle';
 import {
+  AssignedStudentsListResponse,
   CreateExerciseRequest,
   ExerciseItem,
   ExercisePreview,
@@ -118,6 +119,22 @@ export class ExerciseService {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ASSIGN_EXERCISE(exerciseId),
       data
+    );
+  }
+
+  getAssignedStudentsForExercise(
+    page: number,
+    size: number,
+    excerciseId: string,
+    completed?: boolean
+  ) {
+    return this.api.get<IPaginationResponse<AssignedStudentsListResponse[]>>(
+      API_CONFIG.ENDPOINTS.GET.GET_ASSIGNED_STUDENTS_FOR_EXERCISE(
+        excerciseId,
+        page,
+        size,
+        completed
+      )
     );
   }
 

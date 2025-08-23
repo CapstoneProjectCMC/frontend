@@ -55,8 +55,9 @@ export const API_CONFIG = {
         size: number,
         completed?: boolean
       ) => {
-        let query = `submission/assignments/${excerciseId}?page=${page}&size=${size}`;
-        if (completed) query += `&completed=${completed}`;
+        let query = `/submission/assignments/${excerciseId}?page=${page}&size=${size}`;
+        if (completed === false) query += `&completed=${completed}`;
+        return query;
       },
 
       SEARCH_USER_PROFILES: (

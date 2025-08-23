@@ -28,10 +28,17 @@
 
   .main-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 24px;
     flex-grow: 1;
     overflow: hidden;
+
+    @media (max-width: 1080px) {
+      grid-template-columns: 1fr 1fr;
+      height: auto;
+      min-height: 100vh;
+      overflow: auto;
+    }
 
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
@@ -86,6 +93,72 @@
           outline: none;
           border-color: var(--primary-color);
           box-shadow: 0 0 0 2px var(--primary-color-lighter);
+        }
+      }
+    }
+  }
+
+  // ... (giữ nguyên CSS hiện tại, thêm phần sau)
+
+  .assigned-panel {
+    // Tương tự .student-panel, nhưng thêm styles cho elements mới
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      button {
+        padding: 6px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        background: var(--background-color);
+        cursor: pointer;
+        &.active {
+          background: var(--primary-color);
+          color: var(--reverse-color-text);
+        }
+      }
+    }
+
+    .student-card {
+      .student-info {
+        .due,
+        .status,
+        .score,
+        .completed-at {
+          font-size: 0.85rem;
+          color: var(--text-muted-color);
+        }
+        .status .text-success {
+          color: var(--success-color);
+        }
+        .status .text-error {
+          color: var(--error-color);
+        }
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        .remind-btn:hover {
+          color: var(--primary-color);
+        }
+        .delete-btn:hover {
+          color: var(--error-color);
+        }
+      }
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        &:disabled {
+          opacity: 0.5;
         }
       }
     }
