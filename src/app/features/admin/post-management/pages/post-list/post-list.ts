@@ -21,7 +21,6 @@ import { PostService } from '../../../../../core/services/api-service/post.servi
 import { Store } from '@ngrx/store';
 import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
 import { mapPostdatatoPostCardInfo } from '../../../../../shared/utils/mapData';
-import player from 'lottie-web';
 import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
 
 @Component({

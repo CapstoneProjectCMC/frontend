@@ -1,14 +1,17 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { formatDate } from '../../../../../shared/utils/stringProcess';
-import { User } from '../../../../../core/models/user.models';
+import {
+  DEFAULT_AVATAR,
+  DEFAULT_BG,
+  User,
+} from '../../../../../core/models/user.models';
 import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { FormsModule } from '@angular/forms';
 import { ProfileService } from '../../../../../core/services/api-service/profile.service';
 import { ProvinceService } from '../../../../../core/services/api-service/province.service';
-import { Observable } from 'rxjs';
 import { sendNotification } from '../../../../../shared/utils/notification';
 import {
   clearLoading,
@@ -17,7 +20,7 @@ import {
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { setVariable } from '../../../../../shared/store/variable-state/variable.actions';
-
+import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
 @Component({
   selector: 'app-update-profile',
   templateUrl: './update-profile.html',
@@ -31,13 +34,21 @@ import { setVariable } from '../../../../../shared/store/variable-state/variable
     FormsModule,
     ButtonComponent,
     NgIf,
+    LottieComponent,
   ],
+  providers: [provideLottieOptions({ player: () => import('lottie-web') })],
+
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UpdateProfileComponent {
   @Input() user!: User;
   @Input() variant: 'personal' | 'other' | 'popup' = 'popup';
   @Input() onClickEdit?: () => void;
-
+  lottieOptions = {
+    path: 'assets/lottie-animation/nodata.json',
+    autoplay: true,
+    loop: true,
+  };
   /** Các danh sách chọn */
   education: { value: string; label: string }[] = [];
   gender: { value: string; label: string }[] = [];
@@ -52,6 +63,9 @@ export class UpdateProfileComponent {
   bio: string = '';
   cities: { value: string; label: string }[] = [];
   selectedCity: string = '';
+  //link
+  background: string = '';
+  avatar: string = '';
 
   /** Upload ảnh */
   avatarFile: File | null = null;
@@ -62,6 +76,9 @@ export class UpdateProfileComponent {
   newLink = '';
   links: string[] = [];
   activeDropdown: string | null = null;
+  //state
+  isLoading: boolean = false;
+  hasError: boolean = false;
 
   constructor(
     private profileService: ProfileService,
@@ -69,6 +86,9 @@ export class UpdateProfileComponent {
     private store: Store,
     private router: Router
   ) {
+    if (!this.user) {
+      this.hasError = true;
+    }
     console.log('data ở đây', this.user);
     // dữ liệu dropdown mẫu
     this.education = [
@@ -96,47 +116,42 @@ export class UpdateProfileComponent {
   }
 
   ngOnInit() {
+    this.isLoading = true;
+    this.provinceService.getProvinces().subscribe({
+      next: (data) => {
+        this.cities = data.map((item) => ({
+          value: item.name,
+          label: item.name,
+        }));
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Lỗi lấy danh sách tỉnh:', err);
+        this.hasError = true;
+        this.isLoading = false;
+        console.log('lỗi', this.hasError);
+      },
+    });
+
     if (this.user) {
+      this.avatar = this.user?.avatarUrl || DEFAULT_AVATAR;
+      this.background = this.user?.backgroundUrl || DEFAULT_BG;
       this.displayName = this.user.displayName || '';
       this.firstName = this.user.firstName;
       this.lastName = this.user.lastName;
       this.bio = this.user.bio;
-      // ép user.gender về string
-      const genderStr = this.user.gender.toString();
 
-      // tìm object tương ứng
-      const selected = this.gender.find((g) => g.value === genderStr);
-
-      // gán lại
-      if (selected) {
-        this.selectedGender = selected;
-      }
+      const genderStr = this.user.gender?.toString();
+      this.selectedGender =
+        this.gender.find((g) => g.value === genderStr) || null;
 
       this.links = [...(this.user.links || [])];
       this.selectedCity = this.user.city || '';
-      // ép user.education về string
-      const eduStr = this.user.education.toString();
 
-      // tìm object tương ứng
-      const selectededu = this.education.find((g) => g.value === eduStr);
-
-      // gán lại
-      if (selectededu) {
-        this.selectedEducation = selectededu;
-        console.log('dùy', this.selectedEducation);
-      }
-
-      this.links = [...(this.user.links || [])];
-      this.selectedCity = this.user.city || '';
+      const eduStr = this.user.education?.toString();
+      this.selectedEducation =
+        this.education.find((g) => g.value === eduStr) || null;
     }
-
-    // gọi API lấy danh sách tỉnh
-    this.provinceService.getProvinces().subscribe((data) => {
-      this.cities = data.map((item) => ({
-        value: item.name, // Hoặc dùng item.code nếu BE yêu cầu
-        label: item.name,
-      }));
-    });
   }
 
   formatDate(time: Date) {
