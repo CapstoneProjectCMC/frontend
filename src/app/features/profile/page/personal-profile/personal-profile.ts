@@ -160,25 +160,7 @@ export class PersonalProfileComponent {
   }
   ngOnInit(): void {
     this.isLoading = true;
-    this.profileService.getProfilebyId(this.userId ?? '').subscribe({
-      next: (res) => {
-        this.user = res.result;
-
-        sendNotification(
-          this.store,
-          'Thành công',
-          'Lấy hồ sơ người dùng thành công',
-          'success'
-        );
-        this.isLoading = false;
-        this.store.dispatch(clearLoading());
-      },
-      error: (err) => {
-        console.log(err);
-        this.isLoading = false;
-        this.store.dispatch(clearLoading());
-      },
-    });
+    this.fetchUserData();
     this.fetchData();
   }
 
@@ -198,6 +180,26 @@ export class PersonalProfileComponent {
         },
       });
   }
+  fetchUserData() {
+    this.profileService.getProfilebyId(this.userId ?? '').subscribe({
+      next: (res) => {
+        this.user = res.result;
+        this.isLoading = false;
+        this.store.dispatch(clearLoading());
+      },
+      error: (err) => {
+        console.log(err);
+        this.isLoading = false;
+        this.store.dispatch(clearLoading());
+      },
+    });
+  }
+  refetchUserData(event: boolean) {
+    if (event) {
+      this.fetchUserData();
+      this.onDisplayNameClick(this.user, true);
+    }
+  }
 
   // chửa dùng
   openModalConfirm() {
@@ -209,9 +211,9 @@ export class PersonalProfileComponent {
       'Soát lại'
     );
   }
-  onDisplayNameClick(row: User) {
+  onDisplayNameClick(row: User, close: boolean) {
     this.openedUser = row;
-    this.isClosing = false;
+    this.isClosing = close;
   }
   closeProfilePopup() {
     this.isClosing = true;

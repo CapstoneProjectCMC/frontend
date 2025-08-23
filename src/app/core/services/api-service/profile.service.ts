@@ -26,7 +26,7 @@ export class ProfileService {
   updateProfile(
     firstName: string,
     lastName: string,
-    dob: Date,
+    dob: string,
     bio: string,
     gender: boolean,
     displayName: string,

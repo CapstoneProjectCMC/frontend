@@ -7,7 +7,10 @@
 
   <div class="avt-bg" *ngIf="hasError!=true ">
     <div class="bg-container">
-      <img class="bg" [src]="background" />
+      <img
+        class="bg"
+        [src]="this.user.backgroundUrl ? this.user.backgroundUrl : this.background"
+      />
       <button class="upload-btn-bg" (click)="uploadBackground()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -29,7 +32,10 @@
     </div>
 
     <div class="avt-container">
-      <img class="avt" [src]="avatar" />
+      <img
+        class="avt"
+        [src]="this.user.avatarUrl ? this.user.avatarUrl : this.avatar"
+      />
       <button class="upload-btn-avt" (click)="uploadAvatar()">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +157,7 @@
       <div class="dropdown">
         <span class="dropdown-title">Thành phố</span>
         <app-dropdown-button
-          [label]="'Chọn thành phố'"
+          [label]="this.user.city ? this.user.city : 'Chọn thành phố'"
           [options]="cities"
           [variant]="'secondary'"
           [size]="'small'"
@@ -213,7 +219,7 @@
                 text-overflow: ellipsis;
               "
             >
-              {{ link }}
+              {{ link | truncate: 40 }}
             </span>
           </a>
 
