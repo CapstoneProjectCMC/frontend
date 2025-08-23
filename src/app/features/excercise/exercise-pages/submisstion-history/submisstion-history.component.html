@@ -21,7 +21,8 @@
       <div class="card-body">
         <div class="info">
           <span
-            ><i class="fa fa-clock"></i> {{ item.timeTakenSeconds }} giây</span
+            ><i class="fa fa-clock"></i>
+            {{ item.timeTakenSeconds | durationFormat }}</span
           >
           <span
             ><i class="fa fa-calendar"></i>

@@ -71,6 +71,9 @@
         </div>
 
         <div class="card-footer">
+          <div class="completed-time" *ngIf="assignment.completedAt">
+            Đã nộp: {{ assignment.completedAt | date : "dd/MM/yyyy HH:mm" }}
+          </div>
           <button
             class="action-button"
             [class]="assignment.completed ? 'done' : ''"

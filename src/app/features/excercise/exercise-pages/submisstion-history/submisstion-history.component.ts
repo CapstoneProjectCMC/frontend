@@ -1,15 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-  MyQuizHistoryResponse,
-  MySubmissionsHistoryResponse,
-} from '../../../../core/models/exercise.model';
+import { MySubmissionsHistoryResponse } from '../../../../core/models/exercise.model';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { Router } from '@angular/router';
+import { DurationFormatPipe } from '../../../../shared/pipes/duration-format.pipe';
 
 @Component({
   selector: 'app-submisstion-history',
-  imports: [CommonModule],
+  imports: [CommonModule, DurationFormatPipe],
   templateUrl: './submisstion-history.component.html',
   styleUrl: './submisstion-history.component.scss',
 })

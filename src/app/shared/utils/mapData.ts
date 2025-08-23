@@ -1,3 +1,4 @@
+import { avatarUrlDefault } from '../../core/constants/value.constant';
 import { ExerciseCodeResponse } from '../../core/models/code.model';
 import {
   CreateExerciseRequest,
@@ -24,8 +25,8 @@ export function mapExerciseResToCardUI(exercise: ExerciseItem): CardExcercise {
     title: exercise.title,
     description: exercise.description,
     uploader: {
-      name: 'Ẩn danh',
-      avatar: '',
+      name: exercise.user?.displayName ?? 'Ẩn danh',
+      avatar: exercise.user?.avatarUrl ?? avatarUrlDefault,
     },
     uploadTime: exercise.createdAt,
     difficulty: exercise.difficulty,
@@ -132,7 +133,7 @@ export function mapToResourceCardList(
 export function mapToExerciseQuiz(ex: ExerciseCodeResponse): ExerciseQuiz {
   return {
     id: ex.id,
-    userId: ex.userId,
+    user: ex.user,
     title: ex.title,
     description: ex.description,
     exerciseType: ex.exerciseType, // hoặc gán cứng 'QUIZ' nếu bạn muốn

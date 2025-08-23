@@ -30,7 +30,6 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
-import { ProfileService } from '../../../../core/services/api-service/profile.service';
 import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/tooltip';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 
@@ -104,7 +103,7 @@ export class ExerciseDetailsComponent implements OnInit {
 
   exercise: ExerciseQuiz = {
     id: '',
-    userId: '',
+    user: null,
     title: '',
     description: '',
     exerciseType: 'QUIZ',
@@ -151,7 +150,6 @@ export class ExerciseDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private exerciseService: ExerciseService,
-    private profileService: ProfileService,
     private store: Store,
     private router: Router,
     private location: Location
@@ -172,7 +170,10 @@ export class ExerciseDetailsComponent implements OnInit {
         next: (res) => {
           if (res && res.result) {
             this.exercise = res.result;
-            this.getUserInfo(res.result.userId);
+            if (res.result.user) {
+              this.authorName = res.result.user.displayName;
+              this.avatarUrl = res.result.user.avatarUrl;
+            }
             this.setDifficultyLevel();
           }
         },
@@ -199,18 +200,6 @@ export class ExerciseDetailsComponent implements OnInit {
           console.log(err);
         },
       });
-  }
-
-  getUserInfo(userId: string) {
-    this.profileService.getProfilebyId(userId).subscribe({
-      next: (res) => {
-        this.authorName = res.result.displayName;
-        this.avatarUrl = res.result.avatarUrl;
-      },
-      error: () => {
-        console.log('Lỗi lấy thông tin tác giả.');
-      },
-    });
   }
 
   setDifficultyLevel() {

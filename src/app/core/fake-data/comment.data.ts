@@ -1,4 +1,6 @@
+import { avatarUrlDefault } from '../constants/value.constant';
 import { ICommentFilmResponse } from '../models/comment.models';
+const avatarDefault = avatarUrlDefault;
 
 export const mockComments: ICommentFilmResponse[] = [
   {
@@ -13,8 +15,7 @@ export const mockComments: ICommentFilmResponse[] = [
       username: 'hoanganh',
       email: 'hoanganh@example.com',
       role: 'user',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [
       {
@@ -27,8 +28,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u2',
           username: 'linhpham',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
       {
@@ -41,8 +41,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u3',
           username: 'davidnguyen',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
     ],
@@ -57,8 +56,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u3',
       username: 'davidnguyen',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [
       {
@@ -71,8 +69,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u4',
           username: 'minhthuy',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
     ],
@@ -87,8 +84,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u4',
       username: 'minhthuy',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [
       {
@@ -101,8 +97,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u5',
           username: 'tranquang',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
     ],
@@ -117,8 +112,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u5',
       username: 'tranquang',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [
       {
@@ -131,8 +125,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u6',
           username: 'kimanh',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
     ],
@@ -147,8 +140,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u6',
       username: 'kimanh',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [
       {
@@ -161,8 +153,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u7',
           username: 'tuanle',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
     ],
@@ -177,8 +168,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u7',
       username: 'tuanle',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [],
   },
@@ -192,8 +182,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u8',
       username: 'ngocmai',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [
       {
@@ -206,8 +195,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u9',
           username: 'longvu',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
     ],
@@ -222,8 +210,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u9',
       username: 'longvu',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [],
   },
@@ -237,8 +224,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u10',
       username: 'quynhhoa',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [
       {
@@ -251,8 +237,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u11',
           username: 'hoainam',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
     ],
@@ -267,8 +252,7 @@ export const mockComments: ICommentFilmResponse[] = [
     user: {
       id: 'u11',
       username: 'hoainam',
-      avatarUrl:
-        'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+      avatarUrl: avatarDefault,
     },
     replies: [
       {
@@ -281,8 +265,7 @@ export const mockComments: ICommentFilmResponse[] = [
         user: {
           id: 'u1',
           username: 'hoanganh',
-          avatarUrl:
-            'https://i.pinimg.com/1200x/f2/6c/e5/f26ce529130b307706b065876b756f65.jpg',
+          avatarUrl: avatarDefault,
         },
       },
     ],

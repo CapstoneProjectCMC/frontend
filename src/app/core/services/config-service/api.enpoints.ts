@@ -48,6 +48,17 @@ export const API_CONFIG = {
         if (search) query += `&q=${encodeURIComponent(search)}`;
         return query;
       },
+
+      GET_ASSIGNED_STUDENTS_FOR_EXERCISE: (
+        excerciseId: string,
+        page: number,
+        size: number,
+        completed?: boolean
+      ) => {
+        let query = `submission/assignments/${excerciseId}?page=${page}&size=${size}`;
+        if (completed) query += `&completed=${completed}`;
+      },
+
       SEARCH_USER_PROFILES: (
         page: number,
         size: number,

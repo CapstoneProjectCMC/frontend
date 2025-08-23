@@ -42,7 +42,7 @@ export class ExerciseCodeDetailsComponent {
 
   exerciseBasic: ExerciseQuiz = {
     id: '',
-    userId: '',
+    user: null,
     title: '',
     description: '',
     exerciseType: 'QUIZ',
@@ -131,8 +131,11 @@ export class ExerciseCodeDetailsComponent {
           this.exercise = res.result;
           this.hasNoDetails();
           this.store.dispatch(clearLoading());
-          this.getUserInfo(res.result.userId);
-
+          if (res.result.user) {
+            this.authorName = res.result.user.displayName;
+            this.authorRoles = Array.from(res.result.user.roles).join(', ');
+            this.avatarUrl = res.result.user.avatarUrl ?? avatarUrlDefault;
+          }
           this.exerciseBasic = mapToExerciseQuiz(res.result);
         },
         error: (err) => {
@@ -145,19 +148,6 @@ export class ExerciseCodeDetailsComponent {
           this.store.dispatch(clearLoading());
         },
       });
-  }
-
-  getUserInfo(userId: string) {
-    this.profileService.getProfilebyId(userId).subscribe({
-      next: (res) => {
-        this.authorName = res.result.displayName;
-        this.authorRoles = res.result.roles.join(', ');
-        this.avatarUrl = res.result.avatarUrl ?? avatarUrlDefault;
-      },
-      error: () => {
-        console.log('Lỗi lấy thông tin tác giả.');
-      },
-    });
   }
 
   hasNoDetails() {

@@ -1,18 +1,18 @@
 export type MyAssignExerciseResponse = {
   assignmentId: String;
   exerciseId: string;
-  studentId: String;
   exerciseTitle: string;
   dueAt: string;
   completed: boolean;
   myBestScore: number;
   totalPoints: number;
   exerciseType: 'CODING' | 'QUIZ';
+  completedAt: string;
 };
 
 export type ExerciseItem = {
   id: string;
-  userId: string;
+  user: UserBasicInfo | null;
   title: string;
   description: string;
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
@@ -22,6 +22,16 @@ export type ExerciseItem = {
   freeForOrg: boolean;
   tags: Set<string>;
   createdAt: string;
+};
+
+export type UserBasicInfo = {
+  userId: string;
+  username: string;
+  email: string;
+  displayName: string;
+  avatarUrl: string;
+  active: Boolean;
+  roles: Set<string>;
 };
 
 //Quiz
@@ -76,7 +86,7 @@ export interface QuizDetail {
 // Interface cho bài tập
 export interface ExerciseQuiz {
   id: string;
-  userId: string;
+  user: UserBasicInfo | null;
   title: string;
   description: string;
   exerciseType: 'CODING' | 'QUIZ';

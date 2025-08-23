@@ -125,18 +125,26 @@
   .card-footer {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     margin-top: 8px;
+
+    .completed-time {
+      color: oklch(from var(--text-color) calc(l * 0.7) c h);
+      font-size: 0.9rem;
+      flex: 1;
+    }
 
     .action-button {
       padding: 10px 20px;
       font-weight: 600;
       background-color: var(--button-color);
-      color: var(--reverse-color-text);
+      color: oklch(from var(--button-color) calc(l * 2) c h);
       border: none;
       border-radius: 6px;
       cursor: pointer;
       transition: background-color 0.2s ease;
       &.done {
+        color: oklch(from var(--success-color) calc(l * 2) c h);
         background-color: var(--success-color);
       }
 

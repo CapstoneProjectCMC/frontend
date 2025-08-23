@@ -5,10 +5,20 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class DurationFormatPipe implements PipeTransform {
-  transform(totalSeconds: number): string {
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${this.pad(minutes)}:${this.pad(seconds)}`;
+  transform(value: number): string {
+    if (value == null || isNaN(value)) return '00:00';
+
+    const hours = Math.floor(value / 3600);
+    const minutes = Math.floor((value % 3600) / 60);
+    const seconds = value % 60;
+
+    const pad = (num: number) => num.toString().padStart(2, '0');
+
+    if (hours > 0) {
+      return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    } else {
+      return `${pad(minutes)}:${pad(seconds)}`;
+    }
   }
 
   private pad(num: number): string {
