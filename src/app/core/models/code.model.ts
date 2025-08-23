@@ -1,3 +1,5 @@
+import { UserBasicInfo } from './exercise.model';
+
 export type CodingDetails = {
   topic: string;
   allowedLanguages: string[];
@@ -21,7 +23,7 @@ export type TestCase = {
 
 export type ExerciseCodeResponse = {
   id: string;
-  userId: string;
+  user: UserBasicInfo | null;
   title: string;
   description: string;
   exerciseType: 'CODING' | 'QUIZ'; // hoặc tạo enum nếu cần cố định

@@ -13,6 +13,7 @@ import { ProfileService } from '../../../../core/services/api-service/profile.se
 import { Observable } from 'rxjs';
 import { selectVariable } from '../../../store/variable-state/variable.selectors';
 import { resetVariable } from '../../../store/variable-state/variable.actions';
+import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
@@ -31,7 +32,7 @@ export class HeaderComponent {
   timeExpiresAt: string = '';
   role: string = '';
   avatarUrl: string = '';
-  avatarDefault: string = '/auth-assets/avatar_placeholder.png';
+  avatarDefault = avatarUrlDefault;
 
   constructor(
     private router: Router,

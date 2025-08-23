@@ -9,6 +9,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { buildImageUrl } from '../../../utils/BuildUrlFile';
 import { ICommentFilmResponse } from '../../../../core/models/comment.models';
 import { mockComments } from '../../../../core/fake-data/comment.data';
+import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-comment',
@@ -21,7 +22,7 @@ export class CommentComponent implements OnInit {
   @Input() animeId: string = '';
   comments: ICommentFilmResponse[] = [];
   userAvatar: string = ''; // Avatar user hiện tại
-  avatarDefault = 'assets/avatar-default.png';
+  avatarDefault = avatarUrlDefault;
   role: string = '';
 
   newComment: string = ''; // Nội dung bình luận mới
