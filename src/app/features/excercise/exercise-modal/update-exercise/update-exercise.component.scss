@@ -7,6 +7,7 @@
   background: oklch(from var(--background-color) calc(l * 0.5) c h / 0.4);
   display: flex;
   align-items: center;
+  backdrop-filter: blur(6px);
   justify-content: center;
   opacity: 0;
   z-index: 1000;

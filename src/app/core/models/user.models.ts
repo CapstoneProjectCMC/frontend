@@ -43,7 +43,7 @@ export type SearchingUser = {
   userId?: string | null;
   username?: string | null;
   email?: string | null;
-  roles?: string[] | null;
+  roles?: string | null;
   active?: boolean | null;
   gender?: boolean | null;
   city?: string | null;

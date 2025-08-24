@@ -37,6 +37,15 @@
         max-width: 220px;
         width: 100%;
       }
+
+      .create-exercise-btn {
+        display: flex;
+        gap: 12px;
+        flex: 1 1 180px;
+        min-width: 140px;
+        max-width: 220px;
+        width: 100%;
+      }
     }
 
     .list-exercise {

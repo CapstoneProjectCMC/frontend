@@ -8,7 +8,7 @@ export type MyAssignExerciseResponse = {
   totalPoints: number;
   exerciseType: 'CODING' | 'QUIZ';
   completedAt: string;
-  passed: boolean;
+  pass: boolean;
 };
 
 export type ExerciseItem = {

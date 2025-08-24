@@ -4,7 +4,10 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { formatDate } from '../../../utils/stringProcess';
 import { ButtonComponent } from '../button/button.component';
-import { follow, User } from '../../../../core/models/user.models';
+import {
+  follow,
+  SearchUserProfileResponse,
+} from '../../../../core/models/user.models';
 import { FollowPopup } from './follow-popup/follow-popup.';
 
 @Component({
@@ -15,7 +18,7 @@ import { FollowPopup } from './follow-popup/follow-popup.';
   imports: [NgFor, ButtonComponent, NgClass, NgIf, FollowPopup],
 })
 export class ProfilePopupComponent {
-  @Input() user!: User;
+  @Input() user!: SearchUserProfileResponse;
   @Input() follower!: follow[];
   @Input() following!: follow[];
   @Input() variant: 'personal' | 'other' | 'popup' = 'popup';

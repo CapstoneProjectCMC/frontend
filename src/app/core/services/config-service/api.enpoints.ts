@@ -75,7 +75,7 @@ export const API_CONFIG = {
           if (params.email)
             query += `&email=${encodeURIComponent(params.email)}`;
           if (params.roles && params.roles.length > 0)
-            query += `&roles=${params.roles.join(',')}`;
+            query += `&roles=${params.roles}`;
           if (params.active !== null && params.active !== undefined)
             query += `&active=${params.active}`;
           if (params.gender !== null && params.gender !== undefined)

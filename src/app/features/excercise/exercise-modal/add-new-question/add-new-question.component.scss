@@ -9,6 +9,7 @@
   align-items: center;
   justify-content: center;
   opacity: 0;
+  backdrop-filter: blur(6px);
   z-index: 1000;
   pointer-events: none;
   transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1),

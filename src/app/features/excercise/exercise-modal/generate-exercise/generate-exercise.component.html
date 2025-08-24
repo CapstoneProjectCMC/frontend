@@ -1,9 +1,4 @@
-<div
-  class="modal-overlay"
-  *ngIf="isVisible"
-  [class.active]="isVisible"
-  (click)="closeModal()"
->
+<div class="modal-overlay" [class.active]="isVisible" (click)="closeModal()">
   <div
     class="modal-panel"
     [class.visible]="isVisible"

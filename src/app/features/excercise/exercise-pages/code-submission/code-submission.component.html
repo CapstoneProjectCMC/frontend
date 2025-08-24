@@ -185,12 +185,30 @@
           </button>
         </div>
       </div>
-      <div class="console-content">
+      <div #consoleContainer class="console-content">
         <div class="metrics" *ngIf="!isRunning">
           <span>Time: {{ executionTime }}ms</span>
           <span>Memory: {{ memoryUsage }}MB</span>
         </div>
-        <pre [ngClass]="{ error: hasError }">{{ output }}</pre>
+
+        <!-- progress bar khi đang chạy -->
+        <div *ngIf="isRunning" class="phase-progress">
+          <div class="bar">
+            <div class="fill" [style.width.%]="phaseProgress"></div>
+          </div>
+          <span class="label">Phase: {{ currentPhase }}</span>
+        </div>
+
+        <!-- 2 panel song song -->
+        <div class="console-split">
+          <pre class="output">{{ output }}</pre>
+
+          <div class="logs" #logsContainer>
+            <div class="list-logs" *ngFor="let log of logs">
+              <span class="phase">[{{ log.phase }}]</span> {{ log.chunk }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
