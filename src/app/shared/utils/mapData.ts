@@ -63,8 +63,8 @@ export function mapPostInfortoPost(post: PostADD): Post {
     orgId: post.orgId,
     title: post.title,
     content: post.content, // markdown format
-    tags: post.hashtag,
-    field: post.oldImagesUrls, // list of URLs to images, documents, videos, etc.
+    tags: post.fileDocument?.tags || [],
+    field: post.fileDocument?.tags || [], // list of URLs to images, documents, videos, etc.
     metrics: {
       view: 0,
       up: 0,

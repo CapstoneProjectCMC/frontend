@@ -67,27 +67,28 @@ export interface postData {
   accesses: string[];
   deleted: boolean;
 }
-// Định nghĩa kiểu dữ liệu cho fileDocument
-interface FileDocument {
+export type PostType = 'Global' | 'Private' | 'Org';
+export type PostStatus = 'REJECTED' | 'APPROVED' | 'PENDING';
+export interface FileDocument {
   file?: File;
-  category: string[];
-  description: string;
-  tags: string[];
-  isLectureVideo: boolean;
-  isTextBook: boolean;
-  orgId: string;
+  category?: string; // BE mong muốn STRING
+  description?: string;
+  tags?: string[]; // mảng -> sẽ append tags[0], tags[1]...
+  isLectureVideo?: boolean;
+  isTextBook?: boolean;
+  orgId?: string;
 }
 
-// Định nghĩa kiểu dữ liệu cho post
 export interface PostADD {
+  postId?: string; // BE có field này -> optional
   title: string;
   orgId: string;
   content: string;
-  isPublic: boolean;
+  isPublic: boolean; // sẽ tính từ postType ở component
   allowComment: boolean;
-  postType: 'Global' | 'Private' | 'Org';
-  oldImagesUrls: string[];
-  hashtag: string[];
-  status: 'PENDING' | 'APPROVED' | 'REJECTED'; // có thể thêm enum thay vì string
+  postType: PostType;
+  oldImgesUrls: string; // CHUẨN THEO BE (lưu ý đánh vần!)
+  hashtag: string; // nếu muốn gửi dạng mảng
+  status: PostStatus;
   fileDocument?: FileDocument;
 }

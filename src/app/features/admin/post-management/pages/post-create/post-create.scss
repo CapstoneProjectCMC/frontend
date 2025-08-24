@@ -96,9 +96,7 @@
     .link-section {
       margin-top: 16px;
       width: 100%;
-      & :hover {
-        background-color: var(--primary-color-lighter);
-      }
+
       .link-header {
         width: 50%;
         display: flex;
@@ -107,27 +105,8 @@
         border: 1px solid var(--primary-color);
         justify-content: center;
         padding: 5px;
-        justify-self: start;
-      }
-
-      .add-link-btn {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 16px;
-        border: none;
-        background: none;
         cursor: pointer;
-        color: #334eac;
-
-        svg {
-          width: 18px;
-          height: 18px;
-        }
-
-        &:hover {
-          color: #081f5c;
-        }
+        gap: 10px;
       }
 
       .link-input {
@@ -156,51 +135,45 @@
         }
       }
 
-      .link-list {
-        list-style: none;
-        padding: 0;
+      /* style cho link duy nhất */
+      .single-link {
+        display: flex;
+        align-items: center;
+        background: var(--input-primary-color);
+        padding: 6px 8px;
+        border-radius: 4px;
         margin-top: 8px;
         max-width: 400px;
-        li {
-          svg {
-            flex-shrink: 0;
-            color: var(--primary-color);
-          }
 
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          background: var(--input-primary-color);
+        svg {
+          flex-shrink: 0;
+          color: var(--primary-color);
+        }
 
-          padding: 6px 8px;
-          border-radius: 4px;
-          margin-bottom: 4px;
+        a {
+          flex: 1;
+          padding-left: 5px;
+          color: var(--primary-color);
+          text-decoration: none;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
-          a {
-            padding-left: 5px;
-            color: var(--primary-color);
-            text-decoration: none;
-            white-space: nowrap; // không xuống dòng
-            overflow: hidden; // ẩn phần dư
-            text-overflow: ellipsis; // thêm dấu …
-            max-width: calc(100% - 40px); // chừa khoảng cho nút x
-            display: inline-block;
-          }
+        .remove-link {
+          background: var(--surface-color);
+          border: none;
+          border-radius: 20px;
+          color: rgb(202, 35, 35);
+          font-size: 16px;
+          cursor: pointer;
+          line-height: 1;
+          flex-shrink: 0;
+          margin-left: 8px;
 
-          .remove-link {
-            background: var(--surface-color);
-            border: none;
-            border-radius: 20px;
-            color: rgb(202, 35, 35);
-            font-size: 16px;
-            cursor: pointer;
-            line-height: 1;
-            flex-shrink: 0;
-            margin-left: 8px;
-            &:hover {
-              background: var(--hover-color);
-              color: rgb(255, 83, 83);
-            }
+          &:hover {
+            background: var(--hover-color);
+            color: rgb(255, 83, 83);
           }
         }
       }
