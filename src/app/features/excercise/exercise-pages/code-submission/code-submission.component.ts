@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  NgZone,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CodeEditorComponent } from '../../../../shared/components/fxdonad-shared/code-editor/code-editor.component';
 import { CodingService } from '../../../../core/services/api-service/coding.service';
@@ -15,6 +21,7 @@ import {
 } from '../../../../shared/store/loading-state/loading.action';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { openModalNotification } from '../../../../shared/utils/notification';
+import { SocketService } from '../../../../core/services/socket-service/socket.service';
 
 @Component({
   selector: 'app-code-submission',
@@ -33,6 +40,8 @@ export class CodeSubmissionComponent {
   @ViewChild('submissionContainer') submissionContainer!: ElementRef;
   @ViewChild('leftPanel') leftPanel!: ElementRef;
   @ViewChild('resizer') resizer!: ElementRef;
+  @ViewChild('consoleContainer') consoleContainer!: ElementRef;
+  @ViewChild('logsContainer') logsContainer!: ElementRef;
 
   // --- State cho UI ---
   activeLeftTab: 'description' | 'testcases' = 'description';
@@ -87,18 +96,87 @@ export class CodeSubmissionComponent {
   private unlistenMouseMove!: () => void;
   private unlistenMouseUp!: () => void;
 
+  // --- Socket---
+  private socketSubs: any[] = [];
+  private phaseMap: { [key: string]: number } = {
+    STARTED: 0,
+    RUNNING: 30,
+    STDOUT: 60,
+    STDERR: 60, // lỗi thì cũng ngang STDOUT
+    FINISHED: 100,
+  };
+
+  logs: { phase: string; chunk: string }[] = [];
+  currentPhase: string = '';
+  phaseProgress: number = 0;
+
   constructor(
     private codingService: CodingService,
     private store: Store,
     private route: ActivatedRoute,
     private router: Router,
-    private renderer: Renderer2 // Inject Renderer2
+    private renderer: Renderer2, // Inject Renderer2
+    private socketService: SocketService,
+    private ngZone: NgZone
   ) {
     this.exerciseId = this.route.snapshot.paramMap.get('id') ?? '';
   }
 
   ngOnInit() {
     this.fetchCodingDetails();
+
+    // lắng nghe socket events
+    this.socketSubs.push(
+      this.socketService.on<any>('playground:run').subscribe((u) => {
+        this.ngZone.run(() => {
+          // console.log('🔄 phase', u);
+
+          this.isRunning = true;
+          this.currentPhase = u.phase;
+          this.logs.push({ phase: u.phase, chunk: u.chunk ?? '' });
+
+          if (u.phase === 'STDOUT') {
+            this.output += u.chunk;
+          }
+
+          if (u.phase === 'STDERR') {
+            this.output += `[ERROR] ${u.chunk}\n`;
+            this.hasError = true;
+          }
+
+          // map phase → progress
+          this.phaseProgress = this.phaseMap[u.phase] ?? this.phaseProgress;
+        });
+      }),
+
+      this.socketService.on<any>('playground:finished').subscribe((u) => {
+        this.ngZone.run(() => {
+          console.log('✅ finished', u);
+          this.isRunning = false;
+          this.executionTime = u.runtimeMs.toString();
+          this.memoryUsage = u.memoryMb.toString();
+          // this.output += `\n[FINISHED] ExitCode=${u.exitCode}`;
+
+          this.logs.push({ phase: 'FINISHED', chunk: `Exit ${u.exitCode}` });
+          this.phaseProgress = 100; // full progress
+        });
+      }),
+
+      this.socketService.on<any>('playground:error').subscribe((msg) => {
+        this.ngZone.run(() => {
+          this.isRunning = false;
+          this.hasError = true;
+          this.output = `[ERROR] ${msg}`;
+        });
+      })
+    );
+  }
+
+  ngAfterViewChecked() {
+    if (this.isRunning && this.logsContainer) {
+      const el = this.logsContainer.nativeElement;
+      el.scrollTop = el.scrollHeight;
+    }
   }
 
   startTimer() {
@@ -242,6 +320,10 @@ export class CodeSubmissionComponent {
     this.onMouseUp(); // Đảm bảo các listener được gỡ bỏ
     this.onMouseUp();
     this.clearTimer(); // cleanup
+
+    // cleanup socket
+    this.socketSubs.forEach((s) => s.unsubscribe());
+    this.socketService.disconnect();
   }
 
   // --- Các hàm xử lý UI ---
@@ -256,21 +338,32 @@ export class CodeSubmissionComponent {
   runCode() {
     this.isRunning = true;
     this.hasError = false;
-    // Reset test case status
+    this.output = ''; // reset console
+
+    const code = this.codeEditorComponent.getCode();
+    const lang = this.codeEditorComponent.getLanguage();
+
+    // gửi lên server để thực thi
+    this.socketService.emit('playground:run', {
+      language: lang,
+      sourceCode: code,
+      stdin: '',
+      memoryMb: 256,
+      cpus: 0.5,
+      timeLimitSec: 5,
+    });
+
+    // reset test cases sang pending
     this.testCases = this.testCases.map((tc) => ({ ...tc, status: 'pending' }));
-    // Simulate code execution
-    setTimeout(() => {
-      this.output = '[0, 1]';
-      this.executionTime = '0.05';
-      this.memoryUsage = '5.2';
-      this.isRunning = false;
-      // Simulate test case checking
-      this.testCases = this.testCases.map((tc) => ({
-        ...tc,
-        status: tc.expected === '[0,1]' ? 'pass' : 'fail',
-      }));
-    }, 1000);
   }
+
+  // stopCode() {
+  //   if (this.socketService) {
+  //     this.socketService.send(JSON.stringify({ event: 'playground:stop' })); // nếu server hỗ trợ cancel
+  //     this.socketService.close(); // fallback: đóng socket luôn
+  //     this.isRunning = false;
+  //   }
+  // }
 
   submitCode() {
     this.isSubmitting = true;

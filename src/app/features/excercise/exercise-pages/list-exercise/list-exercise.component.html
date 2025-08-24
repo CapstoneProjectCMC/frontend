@@ -59,18 +59,20 @@
         </app-dropdown-button>
       </div>
 
-      <app-btn-type1
-        thumb="+"
-        [thumbSize]="24"
-        description="Tạo thủ công"
-        (click)="toggleOpenModalCreate()"
-      ></app-btn-type1>
-      <app-btn-type1
-        thumb="AI +"
-        [thumbSize]="16"
-        description="Tạo bằng AI"
-        (click)="toggleOpenModalGenerate()"
-      ></app-btn-type1>
+      <div class="create-exercise-btn">
+        <app-btn-type1
+          thumb="+"
+          [thumbSize]="24"
+          description="Tạo thủ công"
+          (click)="toggleOpenModalCreate()"
+        ></app-btn-type1>
+        <app-btn-type1
+          thumb="AI +"
+          [thumbSize]="16"
+          description="Tạo bằng AI"
+          (click)="toggleOpenModalGenerate()"
+        ></app-btn-type1>
+      </div>
     </div>
     <div
       class="list-exercise"

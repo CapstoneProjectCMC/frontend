@@ -50,6 +50,7 @@
     "ngx-markdown": "^19.1.1",
     "pdfjs-dist": "^5.4.54",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.8.1",
     "sub-vn": "^0.0.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
