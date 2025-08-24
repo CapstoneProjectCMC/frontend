@@ -20,7 +20,7 @@ export class BackgroundEffectComponent implements AfterViewInit {
   private numParticles = 400;
   private codeChars =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}[]();+-*/=><!@#$%^&*⊞'; // Thêm ⊞ (Windows),  (fa-home),  (fa-code)
-  private specialChars = [''];
+  private specialChars = ['A+'];
 
   ngAfterViewInit(): void {
     const canvas = this.canvasRef.nativeElement;

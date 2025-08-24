@@ -18,8 +18,8 @@ export class ScrollEndDirective {
   @HostListener('scroll', ['$event'])
   onScroll(event: Event): void {
     const element = event.target as HTMLElement;
-    // Kiểm tra nếu người dùng đã cuộn đến gần cuối (ví dụ: còn 1px)
-    if (element.scrollHeight - element.scrollTop <= element.clientHeight + 1) {
+    // Kiểm tra nếu người dùng đã cuộn đến gần cuối (ví dụ: còn 30px)
+    if (element.scrollHeight - element.scrollTop <= element.clientHeight + 30) {
       this.appScrollEnd.emit();
     }
   }

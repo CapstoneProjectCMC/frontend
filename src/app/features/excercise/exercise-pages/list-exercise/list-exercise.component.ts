@@ -29,6 +29,8 @@ import {
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { sidebarExercises } from '../../../../core/router-manager/exercise-vetical-menu';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
+import { BtnType1Component } from '../../../../shared/components/fxdonad-shared/ui-verser-io/btn-type1/btn-type1.component';
+import { GenerateExerciseModalComponent } from '../../exercise-modal/generate-exercise/generate-exercise.component';
 
 @Component({
   selector: 'app-list-exercise',
@@ -41,6 +43,8 @@ import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.dir
     SkeletonLoadingComponent,
     ExerciseModalComponent,
     ScrollEndDirective,
+    BtnType1Component,
+    GenerateExerciseModalComponent,
   ],
   templateUrl: './list-exercise.component.html',
   styleUrl: './list-exercise.component.scss',
@@ -55,6 +59,7 @@ export class ListExerciseComponent implements OnInit {
   isLoadingMore = false;
   hasMore = true;
   showModalCreate = false;
+  showModalGenerate = false;
   isSidebarCollapsed = false;
 
   filterTagsKey = 'tags';
@@ -220,6 +225,17 @@ export class ListExerciseComponent implements OnInit {
     this.showModalCreate = !this.showModalCreate;
   }
 
+  toggleOpenModalGenerate() {
+    this.showModalGenerate = !this.showModalGenerate;
+  }
+
+  exerciseCreated() {
+    throw new Error('Method not implemented.');
+  }
+  onClose() {
+    this.showModalGenerate = false;
+  }
+
   onModalCreateSubmit(data: CreateExerciseRequest) {
     // TODO: Gọi API tạo mới exercise ở đây
 
@@ -234,8 +250,8 @@ export class ListExerciseComponent implements OnInit {
 
     this.exerciseService.createExercise(data).subscribe({
       next: (res) => {
-        // Assuming res contains the created exercise with all required fields
-        const newExercise = this.mapCreateExerciseToCardDataUI(data);
+        this.pageIndex = 1;
+        this.searchData = '';
         this.fetchData();
         this.showModalCreate = false;
         sendNotification(this.store, 'Thành công', res.message, 'success');

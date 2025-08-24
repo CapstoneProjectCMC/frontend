@@ -1,0 +1,157 @@
+<div
+  class="modal-overlay"
+  *ngIf="isVisible"
+  [class.active]="isVisible"
+  (click)="closeModal()"
+>
+  <div
+    class="modal-panel"
+    [class.visible]="isVisible"
+    (click)="!isLoading ? $event.stopPropagation() : null"
+  >
+    <!-- Close button luôn hiện -->
+    <button class="close-btn" (click)="closeModal()">&times;</button>
+
+    <!-- Stepper container -->
+    <div
+      class="stepper-container"
+      [ngClass]="{ 'step-2-active': currentStep === 'fillForm' }"
+    >
+      <!-- STEP 1 -->
+      <div class="step step-1">
+        <h2>Tạo bài tập mới</h2>
+        <p class="subtitle">Chọn một loại bài tập để bắt đầu tạo bằng AI.</p>
+        <div class="type-selection">
+          <div class="type-card" (click)="selectType('QUIZ')">
+            <i class="fa fa-list-check icon"></i>
+            <h3>Trắc nghiệm (Quiz)</h3>
+            <p>Tạo các câu hỏi trắc nghiệm với nhiều lựa chọn.</p>
+          </div>
+          <div class="type-card" (click)="selectType('CODING')">
+            <i class="fa fa-code icon"></i>
+            <h3>Bài tập Code</h3>
+            <p>Tạo một thử thách lập trình với các test case tự động.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step step-2">
+        <button class="back-btn" (click)="goToStep1()">
+          <i class="fa fa-arrow-left"></i>
+        </button>
+
+        <div class="step-header">
+          <h2>
+            {{
+              selectedType === "QUIZ"
+                ? "Tạo bài tập Trắc nghiệm"
+                : "Tạo bài tập Code"
+            }}
+          </h2>
+        </div>
+
+        <form
+          [formGroup]="exerciseForm"
+          (ngSubmit)="onSubmit()"
+          class="exercise-form"
+          *ngIf="exerciseForm"
+        >
+          <!-- ===== COMMON FIELDS ===== -->
+          <div formGroupName="exercisePromptIn">
+            <div class="form-group">
+              <label>Tiêu đề</label>
+              <input
+                type="text"
+                placeholder="Nhập tiêu đề"
+                formControlName="title"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Mô tả chi tiết</label>
+              <textarea
+                placeholder="Mô tả..."
+                formControlName="description"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Độ khó</label>
+              <select formControlName="difficulty">
+                <option value="EASY">Dễ</option>
+                <option value="MEDIUM">Trung bình</option>
+                <option value="HARD">Khó</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Thời lượng (phút)</label>
+              <input type="number" formControlName="duration" />
+            </div>
+
+            <div class="form-group">
+              <label>Tags (cách nhau bằng dấu phẩy)</label>
+              <input
+                type="text"
+                placeholder="VD: toán, đại số"
+                (change)="updateTags($event)"
+              />
+            </div>
+          </div>
+
+          <!-- ===== QUIZ SPECIFIC ===== -->
+          <div *ngIf="selectedType === 'QUIZ'" class="form-group">
+            <label>Số câu hỏi</label>
+            <input type="number" formControlName="numQuestions" />
+          </div>
+
+          <!-- ===== CODING SPECIFIC ===== -->
+          <div *ngIf="selectedType === 'CODING'">
+            <div class="form-group">
+              <label>Ngôn ngữ được phép</label>
+              <input
+                type="text"
+                placeholder="VD: javascript, python"
+                (change)="updateAllowedLanguages($event)"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Time limit (ms)</label>
+              <input type="number" formControlName="timeLimit" />
+            </div>
+
+            <div class="form-group">
+              <label>Memory limit (MB)</label>
+              <input type="number" formControlName="memoryLimit" />
+            </div>
+
+            <div class="form-group">
+              <label>Số lần nộp tối đa</label>
+              <input type="number" formControlName="maxSubmissions" />
+            </div>
+
+            <div class="form-group">
+              <label>Số lượng test case</label>
+              <input type="number" formControlName="numTestCases" />
+            </div>
+          </div>
+
+          <!-- ===== FOOTER ===== -->
+          <div class="form-footer">
+            <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+            <button
+              type="submit"
+              [disabled]="exerciseForm.invalid || isLoading"
+            >
+              <span *ngIf="!isLoading">Tạo bài tập</span>
+              <span *ngIf="isLoading" class="loader"></span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

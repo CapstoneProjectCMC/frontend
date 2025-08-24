@@ -1,4 +1,4 @@
-<div class="history-container">
+<div class="history-container" appScrollEnd (appScrollEnd)="loadNextPage()">
   <h2 class="page-title">📘 Lịch sử nộp bài Quiz</h2>
 
   <div class="history-list" *ngIf="submissions">
