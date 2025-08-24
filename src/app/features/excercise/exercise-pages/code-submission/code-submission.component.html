@@ -57,8 +57,12 @@
       </div>
       <div class="examples" *ngFor="let example of examples; let i = index">
         <h4>Mẫu Testcase {{ i + 1 }}</h4>
-        <pre><strong>Input:</strong> {{ example.input }}</pre>
-        <pre><strong>Output:</strong> {{ example.output }}</pre>
+        <pre
+          class="test-case-example"
+        ><strong>Input:</strong>{{ example.input }}</pre>
+        <pre
+          class="test-case-example"
+        ><strong>Output:</strong>{{ example.output }}</pre>
       </div>
     </div>
 

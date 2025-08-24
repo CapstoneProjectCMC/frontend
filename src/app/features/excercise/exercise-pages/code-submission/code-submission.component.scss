@@ -282,6 +282,9 @@
   border: 1px solid var(--border-color);
   white-space: pre-wrap;
   word-break: break-all;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* --- Test Case Styling --- */

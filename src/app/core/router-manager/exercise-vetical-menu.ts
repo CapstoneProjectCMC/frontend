@@ -23,7 +23,7 @@ export function sidebarExercises(role: string): SidebarItem[] {
       children: [
         {
           id: 'post',
-          path: 'exercise/exercise-list',
+          path: '/exercise/exercise-layout/code-history/submited',
           label: 'Bài tập Code',
           icon: 'fas fa-code',
         },

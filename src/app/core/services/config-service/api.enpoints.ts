@@ -100,6 +100,8 @@ export const API_CONFIG = {
 
       GET_HISTORY_QUIZ: (page: number, size: number) =>
         `/submission/quiz/self/history?page=${page}&size=${size}`,
+      GET_HISTORY_CODE: (page: number, size: number) =>
+        `/submission/coding/self/history?page=${page}&size=${size}`,
       GET_MY_SUBMISSION_HISTORY: (page: number, size: number) =>
         `/submission/self/history?page=${page}&size=${size}`,
       GET_ALL_USER: (
