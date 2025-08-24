@@ -1,0 +1,324 @@
+$transition-speed: 0.5s;
+$transition-timing: ease-in-out;
+
+// ===============================================
+// == MODAL OVERLAY & PANEL
+// ===============================================
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 18, 18, 0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  &.active {
+    opacity: 1;
+  }
+}
+
+.modal-panel {
+  width: 95%;
+  max-width: 720px;
+  background: var(--surface-color);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transform: translateY(30px) scale(0.95);
+  opacity: 0;
+  transition: all 0.4s ease;
+  &.visible {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+// ===============================================
+// == NÚT (BUTTONS)
+// ===============================================
+.close-btn {
+  position: absolute;
+  top: 15px;
+  background: none;
+  border: none;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--text-muted-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    background-color: var(--background-color-secondary);
+    color: var(--text-color);
+  }
+}
+.back-btn {
+  top: 15px;
+  background: none;
+  border: none;
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--text-muted-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  z-index: 10;
+
+  &:hover {
+    color: var(--text-color);
+  }
+}
+
+.back-btn {
+  left: 15px;
+  font-size: 1rem; // Kích thước icon nhỏ hơn
+}
+
+// ===============================================
+// == STEPPER CONTAINER
+// ===============================================
+.stepper-container {
+  display: flex;
+  width: 200%;
+  transition: transform $transition-speed $transition-timing;
+
+  &.step-2-active {
+    transform: translateX(-50%);
+  }
+}
+
+.step {
+  width: 50%;
+  padding: 40px 50px; // Tăng padding cho thoáng
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 450px; // Chiều cao tối thiểu để modal không bị giật khi chuyển step
+  max-height: 500px;
+  overflow: auto;
+
+  h2 {
+    color: var(--title-text);
+    font-size: 1.8rem;
+    margin-top: 0;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: var(--text-muted-color);
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
+}
+
+// ===============================================
+// == STEP 1: CHỌN LOẠI
+// ===============================================
+.step-1 {
+  .type-selection {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    margin-top: 20px;
+  }
+
+  .type-card {
+    background-color: var(--background-color); // Màu nền nhẹ
+    border: 2px solid var(--border-color);
+    border-radius: 12px; // Bo tròn hơn
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out,
+      border-color 0.2s ease-out;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(var(--primary-color-rgb, 51, 78, 172), 0.1);
+      border-color: var(--primary-color);
+    }
+
+    .icon {
+      font-size: 2.8rem;
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    h3 {
+      font-size: 1.1rem;
+      color: var(--title-text);
+      margin: 10px 0 5px;
+    }
+    p {
+      font-size: 0.9rem;
+      color: var(--text-muted-color);
+      line-height: 1.5;
+    }
+  }
+}
+
+// ===============================================
+// == STEP 2: FORM NHẬP LIỆU
+// ===============================================
+.step-2 {
+  .exercise-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; // Tăng khoảng cách giữa các trường
+    margin-top: 20px;
+    flex-grow: 1;
+  }
+
+  .form-group {
+    // Bọc label và input vào một group
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+  }
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+  }
+  select {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      border-color: #888;
+    }
+
+    &:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+    }
+
+    option {
+      padding: 6px;
+    }
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+
+    &::placeholder {
+      color: var(--text-muted-color);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px var(--primary-color-lighter);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .form-footer {
+    margin-top: auto;
+    padding-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+
+    .error-message {
+      color: var(--error-color);
+      font-size: 0.9rem;
+      flex-grow: 1; // Đẩy lỗi về bên trái
+      text-align: left;
+      margin-bottom: 0;
+    }
+
+    button[type="submit"] {
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background-color: var(--button-color);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 150px; // Chiều rộng tối thiểu để không bị giật khi chuyển sang loader
+      transition: background-color 0.2s ease, transform 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background-color: var(--button-color-hover);
+        transform: translateY(-2px);
+      }
+
+      &:disabled {
+        background-color: var(--disabled-color);
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // Spinner cho trạng thái loading
+  .loader {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+// ===============================================
+// == RESPONSIVE DESIGN
+// ===============================================
+@media (max-width: 768px) {
+  .step {
+    padding: 30px 25px; // Giảm padding trên mobile
+    min-height: auto;
+  }
+
+  .step-1 .type-selection {
+    grid-template-columns: 1fr; // Chuyển thành 1 cột
+  }
+}

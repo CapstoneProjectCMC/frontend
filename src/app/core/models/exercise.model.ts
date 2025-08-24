@@ -8,6 +8,7 @@ export type MyAssignExerciseResponse = {
   totalPoints: number;
   exerciseType: 'CODING' | 'QUIZ';
   completedAt: string;
+  passed: boolean;
 };
 
 export type ExerciseItem = {
@@ -267,6 +268,7 @@ export type MyQuizHistoryResponse = {
   totalPoints: number;
   timeTakenSeconds: number;
   submittedAt: string;
+  passed: boolean;
 };
 
 export type MySubmissionsHistoryResponse = {
@@ -278,6 +280,7 @@ export type MySubmissionsHistoryResponse = {
   totalPoints: number;
   timeTakenSeconds: number;
   submittedAt: string;
+  passed: boolean;
 };
 
 export type AssignedStudentsListResponse = {
@@ -289,4 +292,5 @@ export type AssignedStudentsListResponse = {
   totalPoints: number;
   exerciseType: 'QUIZ' | 'CODING';
   completedAt: string;
+  passed: boolean;
 };

@@ -98,8 +98,10 @@ export const API_CONFIG = {
       GET_MY_ASSGIN: (page: number, size: number) =>
         `/submission/assignments/self?page=${page}&size=${size}`,
 
-      GET_HISTORY_QUIZ: '/submission/quiz/self/history',
-      GET_MY_SUBMISSION_HISTORY: '/submission/self/history',
+      GET_HISTORY_QUIZ: (page: number, size: number) =>
+        `/submission/quiz/self/history?page=${page}&size=${size}`,
+      GET_MY_SUBMISSION_HISTORY: (page: number, size: number) =>
+        `/submission/self/history?page=${page}&size=${size}`,
       GET_ALL_USER: (
         page: number,
         size: number,
@@ -142,6 +144,8 @@ export const API_CONFIG = {
         `/submission/quiz/question/${questionId}/option`,
       ADD_CODING_DETAILS: (exerciseId: string) =>
         `/submission/coding/exercise/${exerciseId}/coding-detail`,
+      AI_GENERATE_QUIZ_EXERCISE: '/ai/generate/quiz',
+      AI_GENERATE_CODE_EXERCISE: '/ai/generate/coding',
       ADD_TEST_CASE: (exerciseId: string) =>
         `/submission/coding/${exerciseId}/test-case`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,

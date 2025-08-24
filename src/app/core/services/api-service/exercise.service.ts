@@ -70,16 +70,16 @@ export class ExerciseService {
     >(API_CONFIG.ENDPOINTS.GET.GET_MY_ASSGIN(page, size));
   }
 
-  getMyQuizHistory() {
-    return this.api.get<ApiResponse<MyQuizHistoryResponse[]>>(
-      API_CONFIG.ENDPOINTS.GET.GET_HISTORY_QUIZ
-    );
+  getMyQuizHistory(page: number, size: number) {
+    return this.api.get<
+      ApiResponse<IPaginationResponse<MyQuizHistoryResponse[]>>
+    >(API_CONFIG.ENDPOINTS.GET.GET_HISTORY_QUIZ(page, size));
   }
 
-  getMySubmissionsHistory() {
-    return this.api.get<ApiResponse<MySubmissionsHistoryResponse[]>>(
-      API_CONFIG.ENDPOINTS.GET.GET_MY_SUBMISSION_HISTORY
-    );
+  getMySubmissionsHistory(page: number, size: number) {
+    return this.api.get<
+      ApiResponse<IPaginationResponse<MySubmissionsHistoryResponse[]>>
+    >(API_CONFIG.ENDPOINTS.GET.GET_MY_SUBMISSION_HISTORY(page, size));
   }
 
   searchExercise(

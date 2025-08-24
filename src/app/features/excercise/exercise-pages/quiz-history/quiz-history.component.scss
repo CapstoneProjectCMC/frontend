@@ -2,14 +2,16 @@
   padding: 2rem;
   background: var(--background-color);
   color: var(--text-color);
-  min-height: 100vh;
+  max-height: calc(100vh - 200px);
+  overflow: auto;
 }
 
 .page-title {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: var(--accent-color);
   margin-bottom: 1.5rem;
+  margin-top: 0px;
 }
 
 .history-list {

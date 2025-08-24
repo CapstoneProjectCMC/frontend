@@ -96,6 +96,13 @@ const routes: Routes = [
         },
         canActivate: [RoleGuard],
       },
+      {
+        path: '**',
+        loadComponent: () =>
+          import('../auth/pages/error-404/error-404.component').then(
+            (m) => m.Error404Component
+          ),
+      },
     ],
   },
 ];
