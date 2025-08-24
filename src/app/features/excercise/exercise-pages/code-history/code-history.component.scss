@@ -1,0 +1,86 @@
+.history-container {
+  padding: 2rem;
+  background: var(--background-color);
+  color: var(--text-color);
+  max-height: calc(100vh - 200px);
+  overflow: auto;
+}
+
+.page-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 1.5rem;
+  margin-top: 0px;
+}
+
+.history-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.history-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .exercise-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--title-text);
+    }
+
+    .score {
+      font-weight: bold;
+      padding: 0.3rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+
+      &.passed {
+        background: var(--success-color);
+        color: #fff;
+      }
+
+      &.failed {
+        background: var(--error-color);
+        color: #fff;
+      }
+    }
+  }
+
+  .card-body {
+    .info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted-color);
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        background: var(--surface-color-light);
+        padding: 0.2rem 0.5rem;
+        border-radius: 6px;
+      }
+
+      i {
+        color: var(--primary-color);
+      }
+    }
+  }
+}

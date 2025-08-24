@@ -15,6 +15,7 @@ import { RoleGuard } from '../../core/guards/router-protected/role.guard';
 import { AssignExerciseComponent } from './exercise-pages/assign-exercise/assign-exercise.component';
 import { MyAssignmentsComponent } from './exercise-pages/my-assignments/my-assignments.component';
 import { SubmisstionHistoryComponent } from './exercise-pages/submisstion-history/submisstion-history.component';
+import { CodeHistoryComponent } from './exercise-pages/code-history/code-history.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,11 @@ const routes: Routes = [
         path: 'quiz-history/submited',
         component: QuizHistoryComponent,
         data: { breadcrumb: 'Danh sách bài Quiz đã làm' },
+      },
+      {
+        path: 'code-history/submited',
+        component: CodeHistoryComponent,
+        data: { breadcrumb: 'Danh sách bài Code đã làm' },
       },
       {
         path: 'submissions-history',

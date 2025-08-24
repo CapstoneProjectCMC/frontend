@@ -230,8 +230,10 @@ export class ListExerciseComponent implements OnInit {
   }
 
   exerciseCreated() {
-    throw new Error('Method not implemented.');
+    this.pageIndex = 1;
+    this.fetchData();
   }
+
   onClose() {
     this.showModalGenerate = false;
   }

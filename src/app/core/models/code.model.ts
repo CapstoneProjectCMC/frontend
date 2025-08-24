@@ -143,3 +143,24 @@ export type AddNewCodingDetailsResponse = {
   timeUsedMs: number;
   memoryUsedKb: number;
 };
+
+export type MyCodeHistoryResponse = {
+  submissionId: string;
+  exerciseId: string;
+  exerciseTitle: string;
+  score: number;
+  totalPoints: number;
+  timeTakenSeconds: number;
+  language: string;
+  peakMemoryMb: number;
+  status: SubmissionStatus;
+  submittedAt: string;
+  passed: Boolean;
+};
+
+export enum SubmissionStatus {
+  SUBMITTED, // 0 – vừa nộp
+  PASSED, // 1 – đạt tối đa điểm
+  PARTIAL, // 2 – có điểm nhưng chưa max
+  FAILED, // 3 – 0 điểm
+}

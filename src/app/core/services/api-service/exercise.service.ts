@@ -22,6 +22,7 @@ import {
   UpdateOptionRequest,
   UpdateQuestionRequest,
 } from '../../models/exercise.model';
+import { MyCodeHistoryResponse } from '../../models/code.model';
 
 @Injectable({
   providedIn: 'root',
@@ -74,6 +75,12 @@ export class ExerciseService {
     return this.api.get<
       ApiResponse<IPaginationResponse<MyQuizHistoryResponse[]>>
     >(API_CONFIG.ENDPOINTS.GET.GET_HISTORY_QUIZ(page, size));
+  }
+
+  getMyCodeHistory(page: number, size: number) {
+    return this.api.get<
+      ApiResponse<IPaginationResponse<MyCodeHistoryResponse[]>>
+    >(API_CONFIG.ENDPOINTS.GET.GET_HISTORY_CODE(page, size));
   }
 
   getMySubmissionsHistory(page: number, size: number) {
