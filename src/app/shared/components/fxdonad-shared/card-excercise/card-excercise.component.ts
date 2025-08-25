@@ -105,11 +105,11 @@ export class CardExcerciseComponent {
   }
 
   scrollLeft() {
-    this.tagsScroll.nativeElement.scrollBy({ left: -150, behavior: 'smooth' });
+    this.tagsScroll.nativeElement.scrollBy({ left: -100, behavior: 'smooth' });
   }
 
   scrollRight() {
-    this.tagsScroll.nativeElement.scrollBy({ left: 150, behavior: 'smooth' });
+    this.tagsScroll.nativeElement.scrollBy({ left: 100, behavior: 'smooth' });
   }
 
   onTitleClick() {
