@@ -1,0 +1,17 @@
+{
+  "title": "Bài tập E2E Cypress",
+  "difficulty": "EASY",
+  "exerciseType": "QUIZ",
+  "cost": 0,
+  "visibility": true,
+  "freeForOrg": true,
+  "description": "Đây là bài tập được tạo tự động bằng Cypress",
+  "orgId": "org123",
+  "startTime": "2025-08-30T08:00",
+  "endTime": "2025-08-30T10:00",
+  "duration": 120,
+  "allowDiscussionId": "discussion456",
+  "resourceIds": "res1,res2",
+  "tags": "cypress,test",
+  "allowAiQuestion": true
+}

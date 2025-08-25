@@ -1,0 +1,22 @@
+[
+  {
+    "accountName": "",
+    "password": "",
+    "expectedMessage": "Vui lòng nhập đầy đủ tài khoản và mật khẩu!"
+  },
+  {
+    "accountName": "wronguser",
+    "password": "123456",
+    "expectedMessage": "Không tìm thấy người dùng!"
+  },
+  {
+    "accountName": "admin",
+    "password": "",
+    "expectedMessage": "Vui lòng nhập đầy đủ tài khoản và mật khẩu!"
+  },
+  {
+    "accountName": "",
+    "password": "admin123",
+    "expectedMessage": "Vui lòng nhập đầy đủ tài khoản và mật khẩu!"
+  }
+]
