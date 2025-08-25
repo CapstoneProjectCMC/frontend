@@ -39,41 +39,128 @@
       justify-content: flex-end; // không cần nhưng an toàn
     }
   }
-  .file-upload {
+  .metric {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; // căn trái
+    justify-content: flex-start; // căn trên
     gap: 8px;
     min-width: 0;
     margin-top: 40px;
-
-    .upload-label {
-      align-self: center;
-      width: 95%;
-      cursor: pointer;
-      align-self: flex-start;
-    }
-
-    .preview-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .preview-image {
-        max-height: 250px;
-        border-radius: 6px;
-        border: 1px solid #ddd;
-        object-fit: cover;
-      }
-
-      .file-info {
-        display: flex;
+    .link-section {
+      .link-header {
+        display: inline-flex;
         align-items: center;
         gap: 6px;
+        padding: 8px 12px;
+        background-color: #334eac; // màu nền nút
+        color: #fff; // chữ trắng
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
         font-size: 14px;
-        color: #555;
+        font-weight: 500;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+          background-color: #081f5c;
+        }
+
+        .add-link-btn {
+          background: transparent;
+          border: none;
+          color: inherit;
+          font-size: 16px;
+          font-weight: bold;
+          cursor: pointer;
+          padding: 0;
+        }
+      }
+
+      .single-link {
+        display: flex;
+        align-items: center;
+        background: var(--input-primary-color);
+        padding: 6px 8px;
+        border-radius: 4px;
+        margin-top: 8px;
+        max-width: 400px;
+
+        svg {
+          flex-shrink: 0;
+          color: var(--primary-color);
+        }
+
+        a {
+          flex: 1;
+          padding-left: 5px;
+          color: var(--primary-color);
+          text-decoration: none;
+
+          /* 👇 Cấu hình ẩn link dài */
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 280px; // chỉnh tùy theo bố cục
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        .remove-link {
+          background: var(--surface-color);
+          border: none;
+          border-radius: 20px;
+          color: rgb(202, 35, 35);
+          font-size: 16px;
+          cursor: pointer;
+          line-height: 1;
+          flex-shrink: 0;
+          margin-left: 8px;
+
+          &:hover {
+            background: var(--hover-color);
+            color: rgb(255, 83, 83);
+          }
+        }
+      }
+    }
+
+    .file-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      margin-top: 40px;
+
+      .upload-label {
+        align-self: center;
+        min-width: 100px;
+        cursor: pointer;
+        align-self: flex-start;
+      }
+
+      .preview-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .preview-image {
+          max-height: 250px;
+          border-radius: 6px;
+          border: 1px solid #ddd;
+          object-fit: cover;
+        }
+
+        .file-info {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 14px;
+          color: #555;
+        }
       }
     }
   }

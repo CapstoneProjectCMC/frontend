@@ -63,7 +63,7 @@
 
     <div class="list-resource-card-container">
       <div *ngIf="!isLoading && resources" class="list-resource-card">
-        <div *ngFor="let resource of resources">
+        <div *ngFor="let resource of fakeResourceCardList">
           <app-resource-card
             [resource]="resource"
             [onMain]="goToDetail"
