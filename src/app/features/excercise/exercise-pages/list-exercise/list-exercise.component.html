@@ -94,8 +94,13 @@
       [count]="8"
     ></app-skeleton-loading>
 
-    <div class="no-content" *ngIf="listExercise.length === 0 && !isLoading">
-      Không có dữ liệu
+    <div
+      *ngIf="listExercise.length === 0 && !isLoading"
+      class="no-data-container"
+    >
+      <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+      </ng-lottie>
+      <p>Không có dữ liệu</p>
     </div>
 
     <div *ngIf="isLoadingMore" class="loading-more">

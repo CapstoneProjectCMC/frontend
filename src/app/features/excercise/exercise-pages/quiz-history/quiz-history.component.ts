@@ -4,10 +4,12 @@ import { MyQuizHistoryResponse } from '../../../../core/models/exercise.model';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { Router } from '@angular/router';
+import { LottieComponent } from 'ngx-lottie';
+import { lottieOptions } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-quiz-history',
-  imports: [CommonModule, ScrollEndDirective],
+  imports: [CommonModule, ScrollEndDirective, LottieComponent],
   templateUrl: './quiz-history.component.html',
   styleUrl: './quiz-history.component.scss',
 })
@@ -19,6 +21,8 @@ export class QuizHistoryComponent {
 
   isLoadingInitial = true;
   isLoadingNextPage = false;
+
+  lottieOptions = lottieOptions;
 
   constructor(
     private exerciseService: ExerciseService,

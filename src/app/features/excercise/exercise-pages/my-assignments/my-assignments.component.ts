@@ -4,13 +4,15 @@ import { CommonModule } from '@angular/common';
 import { MyAssignExerciseResponse } from '../../../../core/models/exercise.model';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { Router } from '@angular/router';
+import { lottieOptions } from '../../../../core/constants/value.constant';
+import { LottieComponent } from 'ngx-lottie';
 // Giả sử bạn đã bổ sung exerciseName vào type
 
 @Component({
   selector: 'app-my-assignments',
   templateUrl: './my-assignments.component.html',
   styleUrls: ['./my-assignments.component.scss'],
-  imports: [CommonModule, ScrollEndDirective],
+  imports: [CommonModule, ScrollEndDirective, LottieComponent],
 })
 export class MyAssignmentsComponent implements OnInit {
   assignments: MyAssignExerciseResponse[] = [];
@@ -20,6 +22,8 @@ export class MyAssignmentsComponent implements OnInit {
 
   isLoadingInitial = true;
   isLoadingNextPage = false;
+
+  lottieOptions = lottieOptions;
 
   constructor(
     private exerciseService: ExerciseService,

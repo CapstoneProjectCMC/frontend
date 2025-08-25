@@ -31,6 +31,8 @@ import { sidebarExercises } from '../../../../core/router-manager/exercise-vetic
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { BtnType1Component } from '../../../../shared/components/fxdonad-shared/ui-verser-io/btn-type1/btn-type1.component';
 import { GenerateExerciseModalComponent } from '../../exercise-modal/generate-exercise/generate-exercise.component';
+import { LottieComponent } from 'ngx-lottie';
+import { lottieOptions } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-list-exercise',
@@ -45,12 +47,15 @@ import { GenerateExerciseModalComponent } from '../../exercise-modal/generate-ex
     ScrollEndDirective,
     BtnType1Component,
     GenerateExerciseModalComponent,
+    LottieComponent,
   ],
   templateUrl: './list-exercise.component.html',
   styleUrl: './list-exercise.component.scss',
 })
 export class ListExerciseComponent implements OnInit {
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+
+  lottieOptions = lottieOptions;
 
   pageIndex: number = 1;
   itemsPerPage: number = 16;

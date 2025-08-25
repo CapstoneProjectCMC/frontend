@@ -5,10 +5,17 @@ import { ExerciseService } from '../../../../core/services/api-service/exercise.
 import { Router } from '@angular/router';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { DurationFormatPipe } from '../../../../shared/pipes/duration-format.pipe';
+import { LottieComponent } from 'ngx-lottie';
+import { lottieOptions } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-submisstion-history',
-  imports: [CommonModule, DurationFormatPipe, ScrollEndDirective],
+  imports: [
+    CommonModule,
+    DurationFormatPipe,
+    ScrollEndDirective,
+    LottieComponent,
+  ],
   templateUrl: './submisstion-history.component.html',
   styleUrl: './submisstion-history.component.scss',
 })
@@ -19,6 +26,7 @@ export class SubmisstionHistoryComponent {
   totalPages = 1;
   isLoadingInitial = true;
   isLoadingNextPage = false;
+  lottieOptions = lottieOptions;
 
   constructor(
     private exerciseService: ExerciseService,
