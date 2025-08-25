@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  ViewChild,
+} from '@angular/core';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
 import { Router } from '@angular/router';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
@@ -33,6 +39,7 @@ export class CardExcerciseComponent {
   @Input() data!: CardExcercise;
   @Input() isDarkMode = false;
   @Input() exerciseId: string = '';
+  @ViewChild('tagsScroll') tagsScroll!: ElementRef<HTMLDivElement>;
 
   typeRoles = {
     admin: 'ROLE_ADMIN',
@@ -46,12 +53,17 @@ export class CardExcerciseComponent {
   difficultyStars = [1, 2, 3];
   difficultyLevel = 1;
 
+  showScrollButtons = false;
   constructor(private router: Router) {}
 
   ngOnInit() {
     this.role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
 
     this.setDifficultyLevel();
+  }
+
+  ngAfterViewInit() {
+    this.checkOverflow();
   }
 
   setDifficultyLevel() {
@@ -92,6 +104,14 @@ export class CardExcerciseComponent {
     console.log(`Tag clicked: ${tag}`);
   }
 
+  scrollLeft() {
+    this.tagsScroll.nativeElement.scrollBy({ left: -150, behavior: 'smooth' });
+  }
+
+  scrollRight() {
+    this.tagsScroll.nativeElement.scrollBy({ left: 150, behavior: 'smooth' });
+  }
+
   onTitleClick() {
     if (this.data.type === 'QUIZ') {
       this.router.navigate([
@@ -126,5 +146,16 @@ export class CardExcerciseComponent {
     // TODO: Thêm logic duyệt bài tập ở đây
     this.data.approval = status;
     console.log('Approval changed to', status, this.data);
+  }
+
+  // Khi resize window cũng check lại
+  @HostListener('window:resize')
+  onResize() {
+    this.checkOverflow();
+  }
+
+  checkOverflow() {
+    const el = this.tagsScroll.nativeElement;
+    this.showScrollButtons = el.scrollWidth > el.clientWidth;
   }
 }

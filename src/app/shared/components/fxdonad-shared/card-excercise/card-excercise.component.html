@@ -76,7 +76,15 @@
     </div>
 
     <div class="tags-container">
-      <div class="tags-scroll">
+      <button
+        class="scroll-btn left"
+        *ngIf="showScrollButtons"
+        (click)="scrollLeft()"
+      >
+        ‹
+      </button>
+
+      <div class="tags-scroll" #tagsScroll>
         <span
           class="tag"
           *ngFor="let tag of data.tags"
@@ -86,6 +94,15 @@
           #{{ tag }}
         </span>
       </div>
+
+      <button
+        class="scroll-btn right"
+        *ngIf="showScrollButtons"
+        (click)="scrollRight()"
+      >
+        ›
+      </button>
+
       <button
         class="save-btn"
         [class.saved]="isSaved"

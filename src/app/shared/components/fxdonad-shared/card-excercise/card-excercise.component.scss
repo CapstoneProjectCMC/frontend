@@ -155,15 +155,24 @@
     }
 
     .tags-container {
-      margin: 12px 0;
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      overflow: hidden;
+      gap: 8px;
+
       .tags-scroll {
         display: flex;
         gap: 8px;
         overflow-x: auto;
+        scroll-behavior: smooth;
+        flex: 1; /* chiếm toàn bộ chiều ngang còn lại */
+
+        /* Ẩn scrollbar */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
 
         .tag {
           background: var(--tags-color);
@@ -172,19 +181,54 @@
           font-size: 0.8rem;
           white-space: nowrap;
           transition: background 0.2s ease;
+          cursor: pointer;
           &:hover {
             background: #eeeeee;
           }
         }
       }
+
+      .scroll-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: var(--background-color);
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        z-index: 2;
+        padding: 4px 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--text-color);
+
+        &.left {
+          left: -5px;
+          height: 20px;
+          width: 20px;
+        }
+        &.right {
+          right: 40px; // chừa chỗ cho nút save
+          height: 20px;
+          width: 20px;
+        }
+
+        &:hover {
+          background-color: var(--background-color-secondary);
+          box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+        }
+      }
+
       .save-btn {
         background: none;
         border: none;
         font-size: 1.5rem;
         cursor: pointer;
         color: var(--text-color);
-        transition: color 0.2s ease;
-        margin-left: 12px;
+        transition: transform 0.2s ease, color 0.2s ease;
         &.saved {
           color: #ffd700;
         }
