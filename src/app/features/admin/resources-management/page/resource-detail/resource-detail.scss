@@ -1,19 +1,199 @@
 .resource-detail-container {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 16px;
 
-  h1 {
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-    color: #333;
+  .resource-detail-video {
+    flex: 3; // cột trái lớn hơn
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    app-video-player {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .resource-video-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #111;
+      }
+
+      .author-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .author {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+
+          .name {
+            font-weight: 500;
+            font-size: 14px;
+          }
+        }
+
+        .action {
+          display: flex;
+          gap: 12px;
+          margin-top: 10px;
+
+          div {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.25s ease-in-out;
+
+            span {
+              font-size: 14px;
+              font-weight: 500;
+              color: #333;
+            }
+
+            svg {
+              width: 20px;
+              height: 20px;
+              stroke: #555;
+              transition: stroke 0.2s ease;
+            }
+
+            &:hover {
+              background: #f3f4f6;
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+
+              span {
+                color: #1a4fff;
+              }
+
+              svg {
+                stroke: #1a4fff;
+              }
+            }
+
+            &:active {
+              transform: scale(0.96);
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+          }
+
+          .report {
+            background: #fff5f5;
+
+            &:hover {
+              background: #ffe1e1;
+
+              span,
+              svg {
+                color: #d92b2b;
+                stroke: #d92b2b;
+              }
+            }
+          }
+
+          .save {
+            background: #f5faff;
+
+            &:hover {
+              background: #e1ecff;
+
+              span,
+              svg {
+                color: #1a4fff;
+                stroke: #1a4fff;
+              }
+            }
+          }
+        }
+      }
+
+      .tag-description {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .resource-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+
+          .resource-tag {
+            font-size: 13px;
+            background: #f1f1f1;
+            padding: 4px 8px;
+            border-radius: 6px;
+            color: #333;
+          }
+        }
+
+        .resource-description {
+          font-size: 14px;
+          line-height: 1.5;
+          color: #444;
+        }
+      }
+
+      app-comment {
+        margin-top: 16px;
+      }
+    }
   }
 
-  .resource-info {
-    margin-top: 20px;
-    p {
-      font-size: 1rem;
-      color: #666;
+  .resource-detail-another-video {
+    flex: 1; // cột phải nhỏ hơn
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .input-title {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      padding-bottom: 8px;
+      z-index: 2;
+    }
+
+    .list-resource-card-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .list-resource-card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
     }
   }
 }

@@ -1,13 +1,26 @@
-import { Component } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  NgZone,
+  ViewChild,
+} from '@angular/core';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import {
   TextEditor,
   TextEditorConfig,
 } from '../../../../../shared/components/fxdonad-shared/text-editor/text-editor';
 import { HtmlToMdService } from '../../../../../shared/utils/HTMLtoMarkDown';
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
+import { Router } from '@angular/router';
+import { ResourceService } from '../../../../../core/services/api-service/resource.service';
+import { sendNotification } from '../../../../../shared/utils/notification';
+import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
+import { Store } from '@ngrx/store';
+import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
+import { decodeJWT } from '../../../../../shared/utils/stringProcess';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-resource-create',
@@ -19,49 +32,87 @@ import { NgIf } from '@angular/common';
     DropdownButtonComponent,
     ButtonComponent,
     NgIf,
+    FormsModule,
+    NgFor,
   ],
 })
 export class ResourceCreatePageComponent {
+  @ViewChild('linkInput') linkInput!: ElementRef<HTMLInputElement>;
   tag: { value: string; label: string }[] = [];
-  wherepost: { value: string; label: string }[] = [];
+  category: { value: string; label: string }[] = [];
   topics: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
-  constructor(private htmlToMd: HtmlToMdService) {
+  associatedResourceIds: string[] = [];
+  constructor(
+    private htmlToMd: HtmlToMdService,
+    private router: Router,
+    private resourceService: ResourceService,
+    private store: Store,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {
     this.tag = [
       { value: 'tag1', label: 'Tag 1' },
       { value: 'tag2', label: 'Tag 2' },
       { value: 'tag3', label: 'Tag 3' },
     ];
-    this.wherepost = [
-      { value: 'where1', label: 'Where 1' },
-      { value: 'where2', label: 'Where 2' },
-      { value: 'where3', label: 'Where 3' },
-    ];
-    this.topics = [
-      { value: 'topic1', label: 'Topic 1' },
-      { value: 'topic2', label: 'Topic 2' },
-      { value: 'topic3', label: 'Topic 3' },
+    this.category = [
+      { value: '0', label: 'Tệp ảnh' },
+      { value: '1', label: 'Tệp video' },
+      { value: '2', label: 'Tệp tài liệu' },
+      { value: '3', label: 'Tệp khác' },
     ];
   }
-  postTitle: string = '';
-  postTitleError: string | null = null;
+  thumbnail: string = '';
+  thumbnailError: string | null = null;
   handleInputChange(value: string | number): void {
-    this.postTitle = value.toString();
+    this.thumbnail = value.toString();
 
     // Emit changes if needed
-    console.log('Input changed:', this.postTitle);
+    console.log('Input changed:', this.thumbnail);
   }
   handleSelect(dropdownKey: string, selected: any): void {
-    // Reset toàn bộ các lựa chọn trước đó
-    this.selectedOptions = {};
-
-    // Lưu lại option vừa chọn
     this.selectedOptions[dropdownKey] = selected;
-
-    // this.router.navigate(['/', dropdownKey, selected.label]);
-
     console.log(this.selectedOptions);
+  }
+
+  // ===== Link cũ (oldImgesUrls) =====
+  newLink = '';
+  isAddingLink = false;
+
+  startAddLink() {
+    this.ngZone.run(() => {
+      this.isAddingLink = true;
+      this.cdr.detectChanges();
+      setTimeout(() => this.linkInput?.nativeElement?.focus());
+    });
+  }
+
+  addLink() {
+    const trimmed = this.newLink.trim();
+    if (trimmed) {
+      this.associatedResourceIds.push(trimmed);
+      this.newLink = '';
+      this.isAddingLink = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  removeLink(i: number) {
+    this.associatedResourceIds.splice(i, 1);
+  }
+  /////tag
+  tagInput: string = ''; // người dùng nhập tag thô
+  tags: string[] = []; // danh sách tag đã cắt ra
+
+  handleTagInputChange(value: string | number): void {
+    this.tagInput = value.toString();
+    this.tags = this.tagInput
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0); // loại bỏ tag rỗng
+    console.log('Danh sách tag:', this.tags);
   }
 
   toggleDropdown(id: string): void {
@@ -70,28 +121,83 @@ export class ResourceCreatePageComponent {
   }
   saveDraftPost(): void {
     // Logic to save the draft post
-    console.log('Draft post saved:', this.postTitle);
+    console.log('Draft post saved:', this.thumbnail);
   }
   createPost(): void {
+    // kiểm tra bắt buộc
+    if (!this.selectedFile) {
+      sendNotification(
+        this.store,
+        'Tạo tài nguyên',
+        'Vui lòng chọn file!',
+        'error'
+      );
+      return;
+    }
+
+    if (!this.selectedOptions['category']) {
+      sendNotification(
+        this.store,
+        'Tạo tài nguyên',
+        'Vui lòng chọn danh mục!',
+        'error'
+      );
+      return;
+    }
+    // Kiểm tra loại file theo MIME type hoặc phần mở rộng
+    const file = this.selectedFile;
+    let isTextbook = false;
+    let isLectureVideo = false;
+
+    if (file) {
+      const fileType = file.type; // ví dụ: "application/pdf", "video/mp4", "image/png"
+
+      // Nếu là file tài liệu (pdf, doc, docx, txt, ppt, pptx...)
+      if (
+        fileType.includes('pdf') ||
+        fileType.includes('msword') ||
+        fileType.includes('officedocument.wordprocessingml') ||
+        fileType.includes('presentation') ||
+        fileType.includes('text')
+      ) {
+        isTextbook = true;
+      }
+
+      // Nếu là file video (mp4, avi, mkv...)
+      if (fileType.startsWith('video/')) {
+        isLectureVideo = true;
+      }
+    }
+    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
     const postData = {
-      title: this.postTitle,
-      tags: this.selectedOptions['tag'] || [],
-      wherepost: this.selectedOptions['wherepost'] || null,
-      topic: this.selectedOptions['topic'] || null,
-      descriptionHtml: this.editorContent,
-      descriptionMarkdown: this.htmlToMd.convert(this.editorContent),
-      file: this.selectedFile
-        ? {
-            name: this.selectedFile.name,
-            type: this.selectedFile.type,
-            size: this.selectedFile.size,
-            preview: this.filePreview,
-          }
-        : null,
+      file: file, // có
+      category: Number(this.selectedOptions['category']?.value), // có
+      description: this.htmlToMd.convert(this.editorContent), // có
+      tags: this.tags,
+      isTextbook: isTextbook, //có
+      isLectureVideo: isLectureVideo, //có
+      orgId: undefined,
+      associatedResourceIds: [],
+      thumbnailUrl: '',
     };
+
+    this.resourceService.addResource(postData).subscribe({
+      next: (res) => {
+        sendNotification(this.store, 'Tạo tài nguyên', 'Thành công', 'success');
+        setTimeout(() => {
+          this.router.navigate(['/post-management/post-list']);
+          this.store.dispatch(clearLoading());
+        }, 300);
+      },
+      error: (err) => {
+        console.error(err);
+        this.store.dispatch(clearLoading());
+      },
+    });
 
     console.log('Dữ liệu bài viết:', postData);
   }
+
   cancelPost(): void {
     // Logic to cancel the post creation
     console.log('Post creation cancelled');

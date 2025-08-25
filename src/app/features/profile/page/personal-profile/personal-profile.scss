@@ -158,6 +158,48 @@
       }
     }
   }
+  .profile-popup-overlay {
+    position: fixed; // cố định toàn màn hình
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999; // cao hơn mọi thứ khác
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .profile-popup-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); // overlay mờ
+  }
+
+  .profile-popup-container {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 600px;
+    width: 90%;
+    z-index: 10000; // cao hơn backdrop
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.2s ease;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
 }
 @media (max-width: 900px) {
   .personal-profile {

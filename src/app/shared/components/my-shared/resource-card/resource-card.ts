@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { formatDate } from '../../../utils/stringProcess';
 import { resourceCardInfo } from '../../../../core/models/resource.model';
@@ -23,6 +23,19 @@ export class ResourceCardComponent {
   @Input() onSave?: () => void;
   @Input() onMain?: (resourceId: string) => void;
   @Input() popular?: number = 0;
+  @Input() variant: 'default' | 'horizontal' = 'default';
+  showPopup = false;
+
+  togglePopup() {
+    this.showPopup = !this.showPopup;
+  }
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.more-action') && !target.closest('.popup-menu')) {
+      this.showPopup = false;
+    }
+  }
 
   // Biến tạm để hiển thị duration/pages
 

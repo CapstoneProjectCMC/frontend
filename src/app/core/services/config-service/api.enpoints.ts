@@ -120,6 +120,7 @@ export const API_CONFIG = {
       GET_FILE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
       GET_RESOURCE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
       GET_MY_THREADS: '/ai/chat/threads',
+      GET_FILE_VIDEOS: '/file/api/FileDocument/videos',
       GET_THREAD_BY_ID: (threadId: string) => `/ai/chat/thread/${threadId}`,
     },
     POST: {

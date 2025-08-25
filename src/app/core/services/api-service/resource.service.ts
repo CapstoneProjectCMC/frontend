@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { googleScriptCheckPaid } from '../../../../environments/environment.secret';
 import { ApiMethod } from '../config-service/api.methods';
-import { ITransactionStatus } from '../../models/service-and-payment';
 import {
   ApiResponse,
   XuanIPaginationResponse,
@@ -25,25 +23,64 @@ export class ResourceService {
       }
     );
   }
+  getVideoResources() {
+    return this.api.get<ApiResponse<XuanIPaginationResponse<ResourceData[]>>>(
+      API_CONFIG.ENDPOINTS.GET.GET_FILE_VIDEOS
+    );
+  }
   getResourceById(id: string) {
     return this.api.get<ApiResponse<XuanIPaginationResponse<ResourceData>>>(
       API_CONFIG.ENDPOINTS.GET.GET_FILE_BY_ID(id)
     );
   }
-  addResource(
-    file: File,
-    category: number,
-    description: string,
-    tags: Tag[],
-    isLectureVideo: boolean,
-    isTextbook: boolean,
-    orgId: string
-  ) {
+  addResource(postData: {
+    file: File;
+    category: number;
+    description: string;
+    tags: string[];
+    isLectureVideo: boolean;
+    isTextbook: boolean;
+    orgId?: string;
+    associatedResourceIds?: string[];
+    thumbnailUrl?: string;
+  }) {
+    const formData = new FormData();
+
+    if (postData.file) {
+      formData.append('file', postData.file);
+    }
+
+    if (postData.category !== null) {
+      formData.append('category', postData.category.toString());
+    }
+
+    formData.append('description', postData.description || '');
+    formData.append('isLectureVideo', String(postData.isLectureVideo));
+    formData.append('isTextbook', String(postData.isTextbook));
+
+    if (postData.orgId) {
+      formData.append('orgId', postData.orgId);
+    }
+
+    if (postData.thumbnailUrl) {
+      formData.append('thumbnailUrl', postData.thumbnailUrl);
+    }
+
+    // Tags array
+    postData.tags?.forEach((tag, i) => formData.append(`tags[${i}]`, tag));
+
+    // Associated resources array
+    postData.associatedResourceIds?.forEach((id, i) =>
+      formData.append(`associatedResourceIds[${i}]`, id)
+    );
+
     return this.api.post<ApiResponse<XuanPresignedUrlResponse>>(
       API_CONFIG.ENDPOINTS.POST.ADD_FILE,
-      { file, category, description, tags, isLectureVideo, isTextbook, orgId }
+      formData,
+      true
     );
   }
+
   editResource(
     id: string,
     fileName: string,
