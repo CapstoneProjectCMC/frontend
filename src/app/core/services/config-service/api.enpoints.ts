@@ -122,6 +122,10 @@ export const API_CONFIG = {
       GET_MY_THREADS: '/ai/chat/threads',
       GET_FILE_VIDEOS: '/file/api/FileDocument/videos',
       GET_THREAD_BY_ID: (threadId: string) => `/ai/chat/thread/${threadId}`,
+      GET_MY_CONVERSATIONS: (page: number, size: number) =>
+        `/chat/conversations?page=${page}&size=${size}`,
+      GET_CHAT_MESSAGES: (page: number, size: number, conversationId: string) =>
+        `/chat/messages?page=${page}&size=${size}&conversationId=${conversationId}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -165,6 +169,8 @@ export const API_CONFIG = {
         `/ai/chat/thread/${threadId}/messages`,
       SEND_MESSAGE_IMG_TO_CHAT: (threadId: string) =>
         `/ai/chat/thread/${threadId}/messages-with-image`,
+      CREATE_CONVERSATION: '/chat/conversation',
+      CREATE_CHAT_MESSAGE: '/chat/message',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/${id}`,

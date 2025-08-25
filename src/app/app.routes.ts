@@ -104,6 +104,13 @@ export const routes: Routes = [
             (m) => m.ExerciseModule
           ),
       },
+      {
+        path: 'conversations',
+        loadChildren: () =>
+          import('./features/conversation-chat/conversation-chat.module').then(
+            (m) => m.ConversationChatModule
+          ),
+      },
 
       {
         path: 'profile',

@@ -1,0 +1,92 @@
+<div class="modal-overlay" [class.visible]="isModalVisible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">Tạo đoạn chat mới</h2>
+      <button class="close-btn" (click)="closeModal()">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="search-section">
+        <div class="search-bar">
+          <i class="fa fa-search search-icon"></i>
+          <input
+            #searchInput
+            type="text"
+            [(ngModel)]="query"
+            (ngModelChange)="onSearchChange()"
+            placeholder="Tìm kiếm người dùng..."
+          />
+        </div>
+        <div *ngIf="isLoading" class="loading-indicator">Đang tìm kiếm...</div>
+        <ul *ngIf="searchResults.length > 0 && !isLoading" class="user-list">
+          <li *ngFor="let user of searchResults" class="user-item">
+            <div class="user-info">
+              <img
+                [src]="user.avatarUrl || avatarUrlDefault"
+                alt="Avatar"
+                class="user-avatar"
+              />
+              <div class="user-details">
+                <span class="user-display-name">{{ user.displayName }}</span>
+                <span class="user-email">{{ user.email }}</span>
+              </div>
+            </div>
+            <button
+              class="add-btn"
+              [disabled]="isSelected(user)"
+              (click)="addParticipant(user)"
+            >
+              {{ isSelected(user) ? "Đã thêm" : "Thêm" }}
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="selected-participants-section">
+        <h3>
+          Người tham gia đã chọn
+          <span class="participant-count"
+            >({{ selectedParticipants.length }})</span
+          >
+        </h3>
+        <div *ngIf="selectedParticipants.length > 0" class="selected-list">
+          <div
+            *ngFor="let user of selectedParticipants"
+            class="selected-user-pill"
+          >
+            <img
+              [src]="user.avatarUrl || avatarUrlDefault"
+              alt="Avatar"
+              class="selected-avatar"
+            />
+            <span class="selected-name">{{ user.displayName }}</span>
+            <button class="remove-btn" (click)="removeParticipant(user)">
+              <i class="fa fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="isGroupChat()" class="group-name-input">
+          <input
+            type="text"
+            [(ngModel)]="groupName"
+            placeholder="Đặt tên nhóm..."
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeModal()">Hủy</button>
+      <button
+        class="btn btn-primary"
+        [disabled]="isCreateButtonDisabled()"
+        (click)="createChat()"
+      >
+        Tạo Chat
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,177 @@
+<div class="chat-container">
+  <aside class="conversations-panel">
+    <header class="panel-header">
+      <h2>Chats</h2>
+      <button
+        class="btn btn--icon"
+        aria-label="New chat"
+        (click)="openModalCreateNew()"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </button>
+    </header>
+
+    <div class="conversations-list">
+      <div *ngIf="loading" class="state-container">
+        <div class="loader"></div>
+      </div>
+
+      <div
+        *ngIf="error && !loading"
+        class="state-container state-container--error"
+      >
+        <p>{{ error }}</p>
+        <button
+          class="btn btn--icon"
+          (click)="fetchConversations()"
+          aria-label="Refresh conversations"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div
+        *ngIf="!loading && !error && conversations.length === 0"
+        class="state-container"
+      >
+        <p class="text-secondary">No conversations yet.</p>
+      </div>
+
+      <ul *ngIf="!loading && !error && conversations.length > 0">
+        <li
+          *ngFor="let convo of conversations"
+          class="conversation-item"
+          (click)="handleConversationSelect(convo)"
+          [class.selected]="selectedConversation?.id === convo.id"
+          tabindex="0"
+        >
+          <div class="avatar-container">
+            <img
+              class="avatar"
+              [src]="convo.conversationAvatar || avatarUrlDefault"
+              alt="User Avatar"
+            />
+            <!-- <span *ngIf="convo.unread > 0" class="unread-badge">{{
+              convo.unread
+            }}</span> -->
+          </div>
+          <div class="conversation-item__details">
+            <div class="details__header">
+              <span class="name">{{ convo.conversationName }}</span>
+              <span class="date">{{
+                convo.modifiedDate | date : "shortDate"
+              }}</span>
+            </div>
+            <!-- <p class="last-message">
+              {{ convo.lastMessage || "Start a conversation" }}
+            </p> -->
+          </div>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="chat-area">
+    <ng-container *ngIf="selectedConversation; else noConversationSelected">
+      <header class="panel-header chat-header">
+        <img
+          class="avatar avatar--small"
+          [src]="selectedConversation.conversationAvatar || avatarUrlDefault"
+          alt="Conversation Avatar"
+        />
+        <h3>{{ selectedConversation.conversationName }}</h3>
+      </header>
+
+      <div class="messages-container" #messageContainer>
+        <div
+          *ngFor="let msg of currentMessages"
+          class="message-row"
+          [class.me]="msg.me"
+        >
+          <img
+            *ngIf="!msg.me"
+            class="avatar avatar--tiny"
+            [src]="msg.sender.avatarUrl || avatarUrlDefault"
+            alt="Sender Avatar"
+          />
+          <div class="message-bubble" [ngClass]="{ failed: false }">
+            <p class="message-content">{{ msg.message }}</p>
+            <span class="message-timestamp">{{
+              msg.createdDate | date : "shortTime"
+            }}</span>
+          </div>
+        </div>
+      </div>
+
+      <form class="message-form" (ngSubmit)="handleSendMessage()">
+        <input
+          type="text"
+          class="message-input"
+          placeholder="Type a message"
+          [(ngModel)]="message"
+          name="message"
+          autocomplete="off"
+        />
+        <button
+          class="btn btn--icon btn--primary"
+          type="submit"
+          [disabled]="!message.trim()"
+          aria-label="Send message"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </form>
+    </ng-container>
+
+    <ng-template #noConversationSelected>
+      <div class="state-container state-container--full">
+        <h3 class="text-secondary">Select a conversation to start chatting</h3>
+      </div>
+    </ng-template>
+  </main>
+</div>
+
+<app-create-new-conversation
+  [isModalVisible]="isOpenCreateNewChat"
+  (modalClosed)="closeModalCreateNewConversation()"
+  (chatCreated)="createdNewConversation()"
+></app-create-new-conversation>
