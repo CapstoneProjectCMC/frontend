@@ -9,3 +9,9 @@ ng serve --host=0.0.0.0
   -D"sonar.sources=." `
   -D"sonar.host.url=http://localhost:5000" `
   -D"sonar.token=sqp_b3591e099cc39ec4dbe34e8a7942297327f1fd05"
+
+--Mở UI test Cypress--
+npx cypress open
+
+--Chạy headless (dùng CI/CD) Cypress--
+npx cypress run
