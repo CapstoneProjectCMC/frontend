@@ -4,6 +4,15 @@
   color: var(--text-color);
   max-height: calc(100vh - 200px);
   overflow: auto;
+  .no-data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    padding: 20px;
+  }
 }
 
 .page-title {

@@ -5,10 +5,12 @@ import { ExerciseService } from '../../../../core/services/api-service/exercise.
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { Router } from '@angular/router';
 import { MyCodeHistoryResponse } from '../../../../core/models/code.model';
+import { LottieComponent } from 'ngx-lottie';
+import { lottieOptions } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-code-history',
-  imports: [CommonModule, ScrollEndDirective],
+  imports: [CommonModule, ScrollEndDirective, LottieComponent],
   templateUrl: './code-history.component.html',
   styleUrl: './code-history.component.scss',
 })
@@ -20,6 +22,8 @@ export class CodeHistoryComponent {
 
   isLoadingInitial = true;
   isLoadingNextPage = false;
+
+  lottieOptions = lottieOptions;
 
   constructor(
     private exerciseService: ExerciseService,

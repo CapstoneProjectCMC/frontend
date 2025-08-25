@@ -1,26 +1,28 @@
 <div class="excercise-card-container">
   <div class="info-card" [class.border]="role !== typeRoles.admin">
-    <div class="card-header">
-      <h2 class="title" [title]="data.title" (click)="onTitleClick()">
-        {{ data.title | truncate : 30 }}
-      </h2>
-    </div>
-
-    <div class="metadata">
-      <div class="uploader-info">
-        <img
-          [src]="
-            data.uploader.avatar ||
-            'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50'
-          "
-          [alt]="data.uploader.name"
-          class="avatar"
-          (error)="handleImageError($event)"
-        />
-        <span class="username">{{ data.uploader.name }}</span>
+    <div class="title-header">
+      <div class="card-header">
+        <h2 class="title" [title]="data.title" (click)="onTitleClick()">
+          {{ data.title | truncate : 30 }}
+        </h2>
       </div>
-      <div class="timestamp" [title]="data.uploadTime | date : 'full'">
-        {{ getTimeAgo(data.uploadTime) }}
+
+      <div class="metadata">
+        <div class="uploader-info">
+          <img
+            [src]="
+              data.uploader.avatar ||
+              'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50'
+            "
+            [alt]="data.uploader.name"
+            class="avatar"
+            (error)="handleImageError($event)"
+          />
+          <span class="username">{{ data.uploader.name }}</span>
+        </div>
+        <div class="timestamp" [title]="data.uploadTime | date : 'full'">
+          {{ getTimeAgo(data.uploadTime) }}
+        </div>
       </div>
     </div>
 
@@ -29,7 +31,7 @@
         {{ data.description }}
       </p>
       <button
-        *ngIf="data.description.length > 100"
+        *ngIf="data.description.length > 300"
         (click)="toggleDescription()"
         class="read-more"
       >
@@ -76,7 +78,15 @@
     </div>
 
     <div class="tags-container">
-      <div class="tags-scroll">
+      <button
+        class="scroll-btn left"
+        *ngIf="showScrollButtons"
+        (click)="scrollLeft()"
+      >
+        ‹
+      </button>
+
+      <div class="tags-scroll" #tagsScroll>
         <span
           class="tag"
           *ngFor="let tag of data.tags"
@@ -86,6 +96,15 @@
           #{{ tag }}
         </span>
       </div>
+
+      <button
+        class="scroll-btn right"
+        *ngIf="showScrollButtons"
+        (click)="scrollRight()"
+      >
+        ›
+      </button>
+
       <button
         class="save-btn"
         [class.saved]="isSaved"

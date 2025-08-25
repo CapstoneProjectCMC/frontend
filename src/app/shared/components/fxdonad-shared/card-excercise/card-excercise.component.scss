@@ -7,6 +7,7 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   }
   min-width: 300px;
+  min-height: 260px;
 
   .info-card {
     min-width: 280px;
@@ -16,6 +17,9 @@
     transition: all 0.3s ease;
     width: 350px;
     border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     &.border {
       border-radius: 12px;
@@ -38,7 +42,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
       .uploader-info {
         display: flex;
         align-items: center;
@@ -66,24 +70,32 @@
 
     .description {
       position: relative;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      flex: 1;
 
       p {
         margin: 0;
         line-height: 1.4;
-        max-height: 2.2rem;
+        flex: calc(1 - 0.2);
         overflow: hidden;
         transition: max-height 0.3s ease;
         font-size: 0.8rem;
       }
       p.expanded {
-        max-height: 2.2rem;
+        max-height: 3.9rem;
+        min-height: 3.9rem;
         overflow: auto;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
       }
 
       .clamp-2-lines {
         display: -webkit-box;
         /* stylelint-disable-next-line property-no-unknown */
-        -webkit-line-clamp: 2; //tối đa 2 dòng, bị thừa thì sẽ ẩn đi
+        -webkit-line-clamp: 3; //tối đa 2 dòng, bị thừa thì sẽ ẩn đi
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -103,11 +115,12 @@
     }
 
     .difficulty {
-      margin: 16px 0;
+      margin: 8px 0;
       display: flex;
       align-items: center;
       gap: 12px;
       justify-content: space-between;
+      border-top: 1px solid var(--border-color);
       .part-difficulty {
         display: flex;
         display: flex;
@@ -155,15 +168,24 @@
     }
 
     .tags-container {
-      margin: 12px 0;
+      position: relative;
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      overflow: hidden;
+      gap: 8px;
+
       .tags-scroll {
         display: flex;
         gap: 8px;
         overflow-x: auto;
+        scroll-behavior: smooth;
+        flex: 1; /* chiếm toàn bộ chiều ngang còn lại */
+
+        /* Ẩn scrollbar */
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+          display: none;
+        }
 
         .tag {
           background: var(--tags-color);
@@ -172,19 +194,54 @@
           font-size: 0.8rem;
           white-space: nowrap;
           transition: background 0.2s ease;
+          cursor: pointer;
           &:hover {
             background: #eeeeee;
           }
         }
       }
+
+      .scroll-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: var(--background-color);
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.2rem;
+        z-index: 2;
+        padding: 4px 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: var(--text-color);
+
+        &.left {
+          left: -5px;
+          height: 20px;
+          width: 20px;
+        }
+        &.right {
+          right: 40px; // chừa chỗ cho nút save
+          height: 20px;
+          width: 20px;
+        }
+
+        &:hover {
+          background-color: var(--background-color-secondary);
+          box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+        }
+      }
+
       .save-btn {
         background: none;
         border: none;
         font-size: 1.5rem;
         cursor: pointer;
         color: var(--text-color);
-        transition: color 0.2s ease;
-        margin-left: 12px;
+        transition: transform 0.2s ease, color 0.2s ease;
         &.saved {
           color: #ffd700;
         }

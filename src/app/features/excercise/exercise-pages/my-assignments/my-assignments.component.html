@@ -19,6 +19,12 @@
     </div>
   </div>
 
+  <div *ngIf="assignments.length === 0" class="no-data-container">
+    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+    </ng-lottie>
+    <p>Không có dữ liệu</p>
+  </div>
+
   <ng-template #content>
     <div class="assignment-list" appScrollEnd (appScrollEnd)="loadNextPage()">
       <div

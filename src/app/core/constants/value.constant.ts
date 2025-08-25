@@ -28,4 +28,10 @@ export const slides = [
   },
 ];
 
+export const lottieOptions = {
+  path: 'assets/lottie-animation/nodata.json',
+  autoplay: true,
+  loop: true,
+};
+
 export const avatarUrlDefault: string = 'auth-assets/avatar_placeholder.png';
