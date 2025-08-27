@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor, NgIf, NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
@@ -6,12 +6,20 @@ import { InputComponent } from '../../../../../shared/components/fxdonad-shared/
 import { SkeletonLoadingComponent } from '../../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { TrendingItem } from '../../../../../shared/components/fxdonad-shared/trending/trending.component';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
-import { resourceCardInfo } from '../../../../../core/models/resource.model';
+import {
+  resourceCardInfo,
+  ResourceData,
+} from '../../../../../core/models/resource.model';
 import { ResourceCardComponent } from '../../../../../shared/components/my-shared/resource-card/resource-card';
 import { ResourceService } from '../../../../../core/services/api-service/resource.service';
 import { mapToResourceCardList } from '../../../../../shared/utils/mapData';
 import { Store } from '@ngrx/store';
-import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../../shared/store/loading-state/loading.action';
+import { sendNotification } from '../../../../../shared/utils/notification';
+import { ResourceEditPopupComponent } from '../../component/popup-update/resource-edit-popup.component';
 
 @Component({
   selector: 'app-resource-list',
@@ -20,16 +28,19 @@ import { clearLoading } from '../../../../../shared/store/loading-state/loading.
   standalone: true,
   imports: [
     InputComponent,
-    DropdownButtonComponent,
+    // DropdownButtonComponent,
     ButtonComponent,
     NgFor,
     NgIf,
     SkeletonLoadingComponent,
     ResourceCardComponent,
+    NgClass,
+    ResourceEditPopupComponent,
   ],
 })
 export class ResourceListComponent {
-  resources: resourceCardInfo[] = [];
+  resources: ResourceData[] = [];
+  resourcescard: resourceCardInfo[] = [];
   // fakeTags: TagInfo[] = [
   //   { name: 'React', level: 4, count: 49348 },
   //   { name: 'Vue', level: 3, count: 75 },
@@ -251,25 +262,117 @@ export class ResourceListComponent {
     ];
   }
   ngOnInit(): void {
-    this.isLoading = true;
-    this.resourceService
-      .getResource(this.pageIndex, this.itemsPerPage)
-      .subscribe({
-        next: (res) => {
-          this.resources = mapToResourceCardList(res.result.data);
-          if (this.resources.length < this.itemsPerPage) {
-            this.hasMore = false;
-          }
-          this.isLoading = false;
-          this.store.dispatch(clearLoading());
-        },
-        error: (err) => {
-          console.log(err);
-          this.isLoading = false;
-          this.store.dispatch(clearLoading());
-        },
-      });
+    this.getVideoResource();
   }
+  activeFetch: 'video' | 'document' = 'video'; // mặc định all (getVideoResource)
+  handleFetchType(type: 'video' | 'document') {
+    this.activeFetch = type;
+    if (type === 'video') {
+      this.getVideoResource();
+    } else if (type === 'document') {
+      this.getDocumentResource();
+    }
+  }
+
+  getVideoResource() {
+    this.isLoading = true;
+    this.resourceService.getVideoResources().subscribe({
+      next: (res) => {
+        this.resources = res.result;
+        if (this.resources && this.resources.length < this.itemsPerPage) {
+          this.hasMore = false;
+        }
+        this.isLoading = false;
+        this.store.dispatch(clearLoading());
+        this.resourcescard = mapToResourceCardList(this.resources);
+      },
+      error: (err) => {
+        console.log(err);
+        this.isLoading = false;
+        this.store.dispatch(clearLoading());
+      },
+    });
+  }
+  getDocumentResource() {
+    this.isLoading = true;
+    this.resourceService.getDocumentResources().subscribe({
+      next: (res) => {
+        this.resources = res.result;
+        if (this.resources && this.resources.length < this.itemsPerPage) {
+          this.hasMore = false;
+        }
+        this.isLoading = false;
+        this.store.dispatch(clearLoading());
+        this.resourcescard = mapToResourceCardList(this.resources);
+      },
+      error: (err) => {
+        console.log(err);
+        this.isLoading = false;
+        this.store.dispatch(clearLoading());
+      },
+    });
+  }
+  getDeleteHandler(resourceId: string): () => void {
+    return () => this.deleteResource(resourceId);
+  }
+  deleteResource(resourceId: string) {
+    this.store.dispatch(
+      setLoading({ isLoading: true, content: 'Đang xóa, xin chờ...' })
+    );
+
+    this.resourceService.deleteResourceById(resourceId).subscribe({
+      next: (res) => {
+        // Xoá resource trong danh sách hiện tại (vì API chỉ trả string, không trả lại list mới)
+        this.resources = this.resources.filter((r) => r.id !== resourceId);
+
+        // Kiểm tra còn item cho phân trang không
+        if (this.resources.length < this.itemsPerPage) {
+          this.hasMore = false;
+        }
+        // Vẫn map lại list để re-render UI
+        this.resourcescard = mapToResourceCardList(this.resources);
+        this.isLoading = false;
+        this.store.dispatch(clearLoading());
+
+        // Optional: Hiện thông báo xoá thành công
+        sendNotification(
+          this.store,
+          'Đã xóa tài nguyên',
+          'Thành công',
+          'success'
+        );
+      },
+      error: (err) => {
+        console.log(err);
+        this.isLoading = false;
+        this.store.dispatch(clearLoading());
+        sendNotification(
+          this.store,
+          'Xóa tài nguyên thất bại',
+          'Thất bại',
+          'error'
+        );
+        // Vẫn map lại list để re-render UI
+        this.resourcescard = mapToResourceCardList(this.resources);
+      },
+    });
+  }
+  selectedResourceId: string | null = null;
+
+  getEditHandler(resourceId: string): () => void {
+    return () => {
+      this.selectedResourceId = resourceId;
+    };
+  }
+
+  handlePopupClose() {
+    this.selectedResourceId = null;
+  }
+
+  handleResourceUpdated() {
+    this.getVideoResource(); // refresh lại list
+  }
+
   handleInputChange(value: string | number): void {
     this.resourcename = value.toString();
 

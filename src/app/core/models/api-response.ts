@@ -41,7 +41,7 @@ export interface XuanIPaginationResponse<T> {
   totalElements: number;
   hasPreviousPage: boolean;
   hasNextPage: boolean;
-  data: T;
+  datas: T;
 }
 export interface XuanPresignedUrlResponse {
   datas: {

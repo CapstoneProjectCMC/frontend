@@ -121,6 +121,7 @@ export const API_CONFIG = {
       GET_RESOURCE_BY_ID: (id: string) => `/file/api/FileDocument/${id}`,
       GET_MY_THREADS: '/ai/chat/threads',
       GET_FILE_VIDEOS: '/file/api/FileDocument/videos',
+      GET_FILE_DOCUMENTS: '/file/api/FileDocument/regular-files',
       GET_THREAD_BY_ID: (threadId: string) => `/ai/chat/thread/${threadId}`,
       GET_MY_CONVERSATIONS: (page: number, size: number) =>
         `/chat/conversations?page=${page}&size=${size}`,
@@ -174,7 +175,7 @@ export const API_CONFIG = {
       CREATE_CHAT_MESSAGE: '/chat/message',
     },
     PUT: {
-      EDIT_FILE: (id: string) => `/file/api/FileDocument/${id}`,
+      EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,
       DELETE_POST: (postId: string) => `/post/posts/deletePost/${postId}`,
     },
     PATCH: {

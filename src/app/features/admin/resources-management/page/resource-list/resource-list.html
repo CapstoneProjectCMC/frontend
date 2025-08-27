@@ -12,7 +12,23 @@
           [isSvg]="false"
           [icon]="'fa fa-search'"
         ></app-input>
-        <app-dropdown-button
+        <!-- Button chọn loại dữ liệu -->
+        <!-- Button chọn loại dữ liệu -->
+
+        <button
+          (click)="handleFetchType('video')"
+          [ngClass]="{ 'active': activeFetch === 'video' }"
+        >
+          Video
+        </button>
+
+        <button
+          (click)="handleFetchType('document')"
+          [ngClass]="{ 'active': activeFetch === 'document' }"
+        >
+          Tài liệu
+        </button>
+        <!-- <app-dropdown-button
           [label]="'Vai trò'"
           [options]="tag"
           [variant]="'secondary'"
@@ -47,7 +63,7 @@
           [isSearchable]="true"
           [minHeight]="true"
           [needIndexColor]="true"
-        ></app-dropdown-button>
+        ></app-dropdown-button> -->
       </div>
       <div class="resource-list-button">
         <app-button
@@ -63,11 +79,13 @@
 
     <div class="list-resource-card-container">
       <div *ngIf="!isLoading && resources" class="list-resource-card">
-        <div *ngFor="let resource of fakeResourceCardList">
+        <div *ngFor="let resource of resourcescard">
           <app-resource-card
             [resource]="resource"
             [onMain]="goToDetail"
             [showControls]="true"
+            [onEdit]="getEditHandler(resource.id)"
+            [onDelete]="getDeleteHandler(resource.id)"
           ></app-resource-card>
         </div>
       </div>
@@ -82,3 +100,9 @@
     </div>
   </div>
 </div>
+<app-resource-edit-popup
+  *ngIf="selectedResourceId"
+  [resourceId]="selectedResourceId"
+  (close)="handlePopupClose()"
+  (updated)="handleResourceUpdated()"
+></app-resource-edit-popup>

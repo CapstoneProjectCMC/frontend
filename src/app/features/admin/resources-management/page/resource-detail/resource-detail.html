@@ -1,73 +1,82 @@
 <div class="resource-detail-container">
-  <div class="resource-detail-video">
-    <app-video-player
-      [videoSrc]="'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8'"
-    ></app-video-player>
-    <div class="resource-video-info">
-      <div class="title">{{ resource.fileName }}</div>
-      <div class="author-action">
-        <div class="author">
-          <div class="avatar">
-            <!-- <img [src]="resource.author.avatar" alt="Avatar" /> -->
-            <img
-              [src]="'https://i.pinimg.com/736x/70/1f/e2/701fe2ef71df419a1758931abecfad67.jpg'"
-              alt="Avatar"
-            />
-          </div>
-          <!-- <div class="name">{{ resource.author.name }}</div> -->
-          <div class="name">Frieren</div>
-        </div>
-        <div class="action">
-          <div class="report">
-            <span>Báo cáo</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-flag-icon lucide-flag"
-            >
-              <path
-                d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"
+  <div
+    class="resource-detail-video"
+    [ngClass]="{
+      'video': !isDocument,
+      'document': isDocument
+    }"
+  >
+    <!-- Nếu là Document thì đưa Info lên trước -->
+    <ng-container *ngIf="isDocument">
+      <div class="resource-video-info">
+        <div class="title">{{ resource.fileName }}</div>
+        <div class="author-action">
+          <div class="author">
+            <div class="avatar">
+              <img
+                [src]="'https://i.pinimg.com/736x/70/1f/e2/701fe2ef71df419a1758931abecfad67.jpg'"
+                alt="Avatar"
               />
-            </svg>
+            </div>
+            <div class="name">Ẩn danh</div>
           </div>
-          <div class="save">
-            <span>Lưu</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-bookmark-icon lucide-bookmark"
-            >
-              <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
-            </svg>
+          <div class="action">
+            <div class="report">
+              <span>Báo cáo</span>
+              <!-- icon -->
+            </div>
+            <div class="save">
+              <span>Lưu</span>
+              <!-- icon -->
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tag-description">
-        <div class="resource-tags">
-          <span class="resource-tag" *ngFor="let tag of resource.tags"
-            >#{{ tag.name }}</span
-          >
+        <div class="tag-description">
+          <div class="resource-tags">
+            <span class="resource-tag" *ngFor="let tag of resource.tags">
+              #{{ tag.name }}
+            </span>
+          </div>
+          <div class="resource-description">{{ resource.description }}</div>
         </div>
-        <div class="resource-description">{{ resource.description }}</div>
       </div>
-      <app-comment></app-comment>
+    </ng-container>
+
+    <div class="resource-content">
+      <!-- Nếu là video -->
+      <ng-container *ngIf="!isDocument; else documentView">
+        <app-video-player [videoSrc]="resource.hlsUrl"></app-video-player>
+      </ng-container>
+
+      <!-- Nếu là document -->
+      <ng-template #documentView>
+        <div class="document-view">
+          <iframe
+            *ngIf="isDocument"
+            [src]="safeUrl"
+            width="100%"
+            height="600px"
+            frameborder="0"
+            (error)="onIframeError($event)"
+          ></iframe>
+          <!-- thumbnail, actions giữ nguyên -->
+        </div>
+      </ng-template>
     </div>
+
+    <!-- Nếu là Video thì info + comment vẫn nằm dưới như cũ -->
+    <ng-container *ngIf="!isDocument">
+      <div class="resource-video-info">
+        <!-- giữ nguyên phần info -->
+      </div>
+    </ng-container>
+
+    <!-- Comment luôn nằm dưới cùng cho cả video & document -->
+    <app-comment></app-comment>
   </div>
-  <div class="resource-detail-another-video">
+
+  <!-- Ẩn Other video nếu là Document -->
+  <div class="resource-detail-another-video" *ngIf="!isDocument">
     <div class="input-title">
       <app-input
         label="Tìm kiếm video khác"
@@ -91,13 +100,8 @@
           ></app-resource-card>
         </div>
       </div>
-
-      <div *ngIf="isLoading " class="list-resource-card">
-        <app-skeleton-loading
-          *ngIf="isLoading"
-          type="card"
-          [count]="8"
-        ></app-skeleton-loading>
+      <div *ngIf="isLoading" class="list-resource-card">
+        <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
       </div>
     </div>
   </div>

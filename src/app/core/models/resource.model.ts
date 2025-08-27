@@ -46,6 +46,7 @@ export interface ResourceData {
   orgId: string; // Guid
   duration: string; // TimeSpan
   hlsUrl: string;
+  createdAt: string;
 }
 //--------------Input episode local---------------------
 export interface IEpisodeLocal {

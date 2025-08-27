@@ -15,8 +15,8 @@ import * as pdfjsLib from 'pdfjs-dist';
 export class ResourceCardComponent {
   @Input() resource!: resourceCardInfo;
   @Input() showControls: boolean = true;
-  @Input() onEdit?: () => void;
-  @Input() onDelete?: () => void;
+  @Input() onEdit?: (resourceId: string) => void;
+  @Input() onDelete?: (resourceId: string) => void;
   @Input() onApprove?: () => void;
   @Input() onRejected?: () => void;
   @Input() onReport?: () => void;
@@ -88,11 +88,12 @@ export class ResourceCardComponent {
     this.onMain && this.onMain(this.resource?.['id']);
   }
   handleEdit() {
-    this.onEdit && this.onEdit();
+    this.onEdit && this.onEdit(this.resource.id);
   }
   handleDelete() {
-    this.onDelete && this.onDelete();
+    this.onDelete && this.onDelete(this.resource.id);
   }
+
   handleApprove() {
     this.onApprove && this.onApprove();
   }
