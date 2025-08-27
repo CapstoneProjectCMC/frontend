@@ -5,6 +5,7 @@ import { AuthLayoutComponent } from './layouts/layout-pages/auth-layout/auth-lay
 import { AppLayoutComponent } from './layouts/layout-pages/app-layout/app-layout.component';
 import { AdminLayoutComponent } from './layouts/layout-pages/admin-layout/admin-layout';
 import { RoleGuard } from './core/guards/router-protected/role.guard';
+import { ExerciseModule } from './features/excercise/exercise.module';
 
 export const routes: Routes = [
   //Để test
@@ -99,10 +100,11 @@ export const routes: Routes = [
       },
       {
         path: 'exercise',
-        loadChildren: () =>
-          import('./features/excercise/exercise.module').then(
-            (m) => m.ExerciseModule
-          ),
+        // loadChildren: () =>
+        //   import('./features/excercise/exercise.module').then(
+        //     (m) => m.ExerciseModule
+        //   ),
+        loadChildren: () => ExerciseModule,
       },
       {
         path: 'conversations',

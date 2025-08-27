@@ -12,6 +12,8 @@ import { CommonModule, NgIf } from '@angular/common';
 import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { sidebarData } from '../../../features/admin/menu-router.data';
 import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
+import { getNavHorizontalItems } from '../../../core/router-manager/horizontal-menu';
+import { decodeJWT } from '../../../shared/utils/stringProcess';
 
 @Component({
   selector: 'app-admin-layout',
@@ -30,7 +32,9 @@ import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadc
 })
 export class AdminLayoutComponent implements OnInit {
   visible = true;
-  menuItems = navStudentItems;
+  menuItems = getNavHorizontalItems(
+    decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope
+  );
   sidebarData = sidebarData;
   isCollapsed = true;
   constructor(private router: Router) {}

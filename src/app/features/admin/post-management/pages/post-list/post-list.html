@@ -78,9 +78,12 @@
 
     <div class="list-post-card-container">
       <!-- Hiển thị bài viết khi có dữ liệu và không đang tải -->
+      <!-- Đang để tạm hàm fetchPostList(), khi nào có loadnextpage sẽ thay thế -->
       <div
         *ngIf="!isLoading && posts && posts.length > 0"
         class="list-post-card"
+        appScrollEnd
+        (appScrollEnd)="fetchPostList()"
       >
         <div *ngFor="let post of posts">
           <app-post-card [post]="post" [onMain]="goToDetail"></app-post-card>

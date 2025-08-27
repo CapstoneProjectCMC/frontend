@@ -155,7 +155,7 @@ export class ApiMethod {
     return this.http.post<T>(url, formData, noHeader ? undefined : { headers }); // Thêm <T> vào http.post
   }
 
-  //Method Patch
+  //Method Post with form data
   postWithFormData<T>(
     endpoint: string,
     data?: Record<string, any>,

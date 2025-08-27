@@ -33,6 +33,8 @@ export class Login {
   userInfo: DecodedJwtPayload = {
     sub: '',
     permissions: [],
+    org_id: '',
+    org_role: '',
     scope: '',
     roles: [],
     iss: '',
@@ -43,6 +45,7 @@ export class Login {
     userId: '',
     jti: '',
     email: '',
+    username: '',
   };
 
   dataLogin = {

@@ -41,6 +41,8 @@ export interface ICreateUserRequest {
 export type DecodedJwtPayload = {
   sub: string; // Chủ thể (thường là email hoặc userId)
   permissions: string[]; // Danh sách quyền cụ thể (nếu có)
+  org_id: string;
+  org_role: string;
   scope: string; // Phạm vi token (ví dụ: ROLE_USER)
   roles: string[]; // Danh sách vai trò
   iss: string; // Bên phát hành token
@@ -51,6 +53,7 @@ export type DecodedJwtPayload = {
   userId: string; // UUID người dùng
   jti: string; // JWT ID - ID duy nhất cho token
   email: string; // Email người dùng
+  username: string;
 };
 
 export type DecodedJwt = {
