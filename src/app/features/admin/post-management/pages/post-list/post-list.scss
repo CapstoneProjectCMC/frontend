@@ -1,9 +1,7 @@
 .post-container {
   display: flex;
-  flex-direction: row;
   width: 100%;
   box-sizing: border-box;
-  flex: 1;
   overflow: hidden;
   min-height: 0;
 
@@ -16,7 +14,7 @@
     overflow: hidden;
     .post-list-control {
       display: flex;
-      flex-direction: row;
+
       .post-list-filter {
         display: flex;
         flex-wrap: wrap;
@@ -59,44 +57,19 @@
         }
       }
     }
-    .note-card {
-      width: 300px;
-      height: 52px;
-      background-color: oklch(from var(--card-excercize-bg) calc(l + 0.15) c h);
-      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
-      border-radius: 8px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: row;
-      .note-card-item {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        height: 32px;
-        width: 100px;
-        background-color: var(--surface-color);
-        border: 0px 9px 0px 9px;
-        gap: 3px;
-        .line {
-          width: 2px;
-          height: 32px;
-        }
-      }
-    }
+
     .list-post-card-container {
       display: flex;
       flex-direction: column;
       flex: 1;
-      overflow: hidden;
+      overflow: auto;
       .list-post-card {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
         gap: 24px;
         transition: all 0.3s ease;
         flex: 1;
-        max-height: calc(100vh - 322.5px);
+        max-height: calc(100vh - 250px);
         min-height: 0; // ✅ tránh overflow
         overflow-y: auto; // ✅ scroll tại đây
         // ==== Custom Scrollbar Start ====
@@ -149,15 +122,41 @@
   }
 
   .popular {
-    flex: 1 1 0;
-    max-width: 22vw;
     min-width: 250px;
-    width: 100%;
-    padding: 10px 0 10px 10px;
+    width: fit-content;
+    padding: 0 0 10px 10px;
     display: flex;
     flex-direction: column;
     gap: 16px;
-    align-items: stretch;
+    align-items: center;
+    max-height: calc(100vh - 250px);
+    overflow: auto;
+    .note-card {
+      width: 300px;
+      height: 52px;
+      background-color: oklch(from var(--card-excercize-bg) calc(l + 0.15) c h);
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      .note-card-item {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        width: 100px;
+        background-color: var(--surface-color);
+        border: 0px 9px 0px 9px;
+        gap: 3px;
+        .line {
+          width: 2px;
+          height: 32px;
+        }
+      }
+    }
 
     .popular-content,
     .popular-post {
@@ -169,6 +168,25 @@
       justify-content: center;
       // color: #888;
       // box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  @media (max-width: 1080px) {
+    flex-direction: column-reverse;
+    .popular {
+      flex-direction: row;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      .popular-content,
+      .popular-post {
+        flex: 1;
+      }
+      @media (max-width: 540px) {
+        flex-direction: column;
+        height: auto;
+        max-height: none;
+      }
     }
   }
 }

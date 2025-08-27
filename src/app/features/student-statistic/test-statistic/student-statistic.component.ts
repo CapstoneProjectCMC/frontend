@@ -25,7 +25,6 @@ export class StudentStatisticComponent {
     comment: 5,
     upvote: 12,
     downvote: 1,
-    status: 'rejected',
     public: true,
   };
   postCardDataApproved: PostCardInfo = {
@@ -41,7 +40,6 @@ export class StudentStatisticComponent {
     comment: 5,
     upvote: 12,
     downvote: 1,
-    status: 'approved',
     public: true,
   };
   postCardDataPending: PostCardInfo = {
@@ -57,7 +55,6 @@ export class StudentStatisticComponent {
     comment: 5,
     upvote: 12,
     downvote: 1,
-    status: 'pending',
     public: true,
   };
   handleEdit = () => {

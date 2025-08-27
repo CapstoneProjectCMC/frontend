@@ -218,6 +218,7 @@ export class PostCreatePageComponent {
       indent: true,
       outdent: true,
       clearFormat: true,
+      image: false,
     },
   };
 

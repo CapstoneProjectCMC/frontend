@@ -48,31 +48,14 @@
           [minHeight]="true"
           [needIndexColor]="true"
         ></app-dropdown-button>
-      </div>
-      <div class="post-list-button">
-        <app-button
-          (onClick)="handleAdd()"
-          [width]="'50px'"
-          [height]="'50px'"
-          variant="outline"
-        >
-          <span style="font-size: 24px">+</span>
-        </app-button>
-      </div>
-    </div>
-    <div class="note-card">
-      <div class="note-card-item">
-        <div class="line" style="background-color: #09d3ae"></div>
-        <span>Đã duyệt</span>
-      </div>
-
-      <div class="note-card-item">
-        <div class="line" style="background-color: #f5d905"></div>
-        <span>Chờ duyệt</span>
-      </div>
-      <div class="note-card-item">
-        <div class="line" style="background-color: #ff7a7c"></div>
-        <span>Đã từ chối</span>
+        <div class="post-list-button">
+          <app-btn-type1
+            thumb="+"
+            [thumbSize]="24"
+            description="Tạo bài viết"
+            (click)="handleAdd()"
+          ></app-btn-type1>
+        </div>
       </div>
     </div>
 
@@ -80,18 +63,18 @@
       <!-- Hiển thị bài viết khi có dữ liệu và không đang tải -->
       <!-- Đang để tạm hàm fetchPostList(), khi nào có loadnextpage sẽ thay thế -->
       <div
-        *ngIf="!isLoading && posts && posts.length > 0"
+        *ngIf="posts && posts.length > 0"
         class="list-post-card"
         appScrollEnd
-        (appScrollEnd)="fetchPostList()"
+        (appScrollEnd)="loadNextPage()"
       >
-        <div *ngFor="let post of posts">
-          <app-post-card [post]="post" [onMain]="goToDetail"></app-post-card>
+        <div *ngFor="let post of posts; trackBy: trackByPostId">
+          <app-post-card [post]="post"></app-post-card>
         </div>
       </div>
 
       <!-- Hiển thị skeleton loading khi đang tải -->
-      <div *ngIf="isLoading" class="list-post-card">
+      <div *ngIf="isLoadingInitial" class="list-post-card">
         <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
       </div>
 
@@ -119,7 +102,23 @@
     </div> -->
     </div>
   </div>
+
   <div class="popular">
+    <!-- <div class="note-card">
+      <div class="note-card-item">
+        <div class="line" style="background-color: #09d3ae"></div>
+        <span>Đã duyệt</span>
+      </div>
+
+      <div class="note-card-item">
+        <div class="line" style="background-color: #f5d905"></div>
+        <span>Chờ duyệt</span>
+      </div>
+      <div class="note-card-item">
+        <div class="line" style="background-color: #ff7a7c"></div>
+        <span>Đã từ chối</span>
+      </div>
+    </div> -->
     <div class="popular-content">
       <!-- <app-popular-content
           [numTags]="fakeTags.length"

@@ -9,9 +9,9 @@ export interface PostCardInfo {
   comment: number;
   upvote: number;
   downvote: number;
-  status: string;
   public: boolean;
 }
+
 export interface Tag {
   id: string;
   label: string;
@@ -143,7 +143,7 @@ export interface PostAccess {
 // Response chính của Post
 export type PostResponse = {
   postId: string;
-  user: PostUser;
+  user: PostUser | null;
   orgId: string;
   postType: 'Global' | 'Organization' | 'Group';
   title: string;
