@@ -92,3 +92,67 @@ export interface PostADD {
   status: PostStatus;
   fileDocument?: FileDocument;
 }
+
+export interface CreatePostRequest {
+  title: string;
+  orgId?: string;
+  content: string;
+  isPublic: boolean;
+  allowComment: boolean;
+  postType: 'Global' | 'Private' | 'Org';
+  oldImgesUrls?: string;
+  hashtag?: string;
+  status?: 'REJECTED' | 'APPROVED' | 'PENDING';
+  fileDocument?: {
+    file?: File;
+    category?: string;
+    description?: string;
+    tags?: string[];
+    isLectureVideo?: boolean;
+    isTextBook?: boolean;
+    orgId?: string;
+  };
+}
+
+//get post response
+// Thông tin user
+export interface PostUser {
+  userId: string;
+  username: string;
+  email: string;
+  displayName: string;
+  avatarUrl: string | null; // có thể null
+  active: boolean;
+  roles: Set<string>; // hoặc string[] nếu API trả ra dạng array
+}
+
+// Thông tin access
+export interface PostAccess {
+  createdBy: string;
+  createdAt: string; // Instant → dùng ISO string, khi cần thì parse thành Date
+  updatedBy: string;
+  updatedAt: string;
+  deletedBy?: string;
+  deletedAt?: string;
+  postAccessId: string;
+  userId: string;
+  isExcluded: boolean;
+  deleted: boolean;
+}
+
+// Response chính của Post
+export type PostResponse = {
+  postId: string;
+  user: PostUser;
+  orgId: string;
+  postType: 'Global' | 'Organization' | 'Group';
+  title: string;
+  content: string;
+  isPublic: boolean;
+  allowComment: boolean;
+  hashtag: string;
+  status: string; // có thể định nghĩa union type: 'REJECTED' | 'APPROVED' | 'PENDING'
+  imagesUrls: string[];
+  accesses: PostAccess[];
+  createdAt: string;
+};

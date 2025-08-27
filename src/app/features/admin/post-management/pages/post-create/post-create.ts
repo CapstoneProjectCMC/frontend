@@ -273,7 +273,7 @@ export class PostCreatePageComponent {
     // Debug nhanh
     console.log('Post type:', this.post.postType);
 
-    this.postService.addPost(this.post).subscribe({
+    this.postService.createPost(this.post).subscribe({
       next: (res) => {
         sendNotification(this.store, 'Tạo bài viết', 'Thành công', 'success');
         setTimeout(() => {

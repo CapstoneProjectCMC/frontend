@@ -162,8 +162,9 @@ export const API_CONFIG = {
         `/profile/social/follow/${targetUserId}`,
       GET_FILE: `/file/api/FileDocument/public`,
       ADD_FILE: `/file/api/FileDocument/add`,
-      ADD_POST: `/post/posts/createPost`,
-      GET_POST: `/post/posts/getAllAccessiblePosts`,
+      ADD_POST: `/post/add`,
+      GET_VISIBLE_POSTS: (page: number, size: number) =>
+        `/post/view?page=${page}&size=${size}`,
       CREATE_NEW_THREAD_CHATBOT: '/ai/chat/thread',
       SEND_MESSAGE_TO_CHAT: (threadId: string) =>
         `/ai/chat/thread/${threadId}/messages`,

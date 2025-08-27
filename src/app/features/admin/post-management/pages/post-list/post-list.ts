@@ -4,7 +4,11 @@ import { DropdownButtonComponent } from '../../../../../shared/components/fxdona
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
 import { PostCardComponent } from '../../../../../shared/components/my-shared/post-card/post-card';
 import { NgFor, NgIf } from '@angular/common';
-import { PostCardInfo, postData } from '../../../../../core/models/post.models';
+import {
+  PostCardInfo,
+  postData,
+  PostResponse,
+} from '../../../../../core/models/post.models';
 import { PaginationComponent } from '../../../../../shared/components/fxdonad-shared/pagination/pagination.component';
 import {
   PopularContentComponent,
@@ -22,6 +26,7 @@ import { Store } from '@ngrx/store';
 import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
 import { mapPostdatatoPostCardInfo } from '../../../../../shared/utils/mapData';
 import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
+import { ScrollEndDirective } from '../../../../../shared/directives/scroll-end.directive';
 
 @Component({
   selector: 'app-post-list',
@@ -39,6 +44,7 @@ import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
     SkeletonLoadingComponent,
     TrendingComponent,
     LottieComponent,
+    ScrollEndDirective,
   ],
   providers: [provideLottieOptions({ player: () => import('lottie-web') })],
 
@@ -193,7 +199,7 @@ export class PostListComponent {
     //   public: true,
     // },
   ];
-  postsraw!: postData[];
+  postsraw!: PostResponse[];
   // fakeTags: TagInfo[] = [
   //   { name: 'React', level: 4, count: 49348 },
   //   { name: 'Vue', level: 3, count: 75 },
@@ -245,6 +251,10 @@ export class PostListComponent {
 
   ngOnInit(): void {
     this.isLoading = true;
+    this.fetchPostList();
+  }
+
+  fetchPostList() {
     this.postservice.getPosts(this.pageIndex, this.itemsPerPage).subscribe({
       next: (res) => {
         this.postsraw = res.result.data;
@@ -262,11 +272,13 @@ export class PostListComponent {
       },
     });
   }
+
   handleInputChange(value: string | number): void {
     this.postname = value.toString();
 
     console.log('Input changed:', this.postname);
   }
+
   handleSelect(dropdownKey: string, selected: any): void {
     // Reset toàn bộ các lựa chọn trước đó
     this.selectedOptions = {};

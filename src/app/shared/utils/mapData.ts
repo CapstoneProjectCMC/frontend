@@ -10,6 +10,7 @@ import {
   Post,
   postData,
   PostCardInfo,
+  PostResponse,
 } from '../../core/models/post.models';
 import {
   ResourceData,
@@ -75,18 +76,18 @@ export function mapPostInfortoPost(post: PostADD): Post {
     status: post.status,
   };
 }
-export function mapPostdatatoPostCardInfo(post: postData): PostCardInfo {
+export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
   return {
     id: post.postId,
     avatar: post.imagesUrls[1],
-    author: post.createdBy,
+    author: post.user.displayName,
     title: post.title,
     time: post.createdAt,
     description: post.content,
-    tags: post.hashtag,
-    comment: post.comments.length,
-    upvote: post.reactions.upvote,
-    downvote: post.reactions.downvote,
+    tags: [post.hashtag],
+    comment: 0,
+    upvote: 0,
+    downvote: 0,
     status: post.status,
     public: post.isPublic,
   };

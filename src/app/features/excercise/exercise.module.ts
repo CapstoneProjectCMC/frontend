@@ -1,4 +1,3 @@
-// landing.module.ts
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ExerciseRoutingModule } from './exercise-routing.module';

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { TextEditorConfig } from '../../../shared/components/fxdonad-shared/text-editor/text-editor';
-import { DropdownButtonComponent } from '../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { DropdownOption } from '../../../core/models/data-handle';
+import { TextEditorConfig } from '../../../../shared/components/fxdonad-shared/text-editor/text-editor';
+import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
+import { DropdownOption } from '../../../../core/models/data-handle';
 import { FormsModule } from '@angular/forms';
-import { TextEditor } from '../../../shared/components/fxdonad-shared/text-editor/text-editor';
+import { TextEditor } from '../../../../shared/components/fxdonad-shared/text-editor/text-editor';
 
 @Component({
   selector: 'app-create-post',
