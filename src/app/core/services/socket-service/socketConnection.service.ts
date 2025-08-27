@@ -8,7 +8,21 @@ export class SocketConnectionService {
 
   connect(url: string): Socket {
     if (!this.sockets.has(url)) {
-      const socket = io(url, { transports: ['websocket'] });
+      const socket = io(url, {
+        transports: ['websocket'],
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 2000,
+        auth: {
+          token: localStorage.getItem('token'), // nếu cần
+        },
+      });
+
+      socket.on('connect', () => console.log(`✅ Connected to ${url}`));
+      socket.on('connect_error', (err) =>
+        console.error(`❌ Connect error to ${url}:`, err.message)
+      );
+
       this.sockets.set(url, socket);
     }
     return this.sockets.get(url)!;

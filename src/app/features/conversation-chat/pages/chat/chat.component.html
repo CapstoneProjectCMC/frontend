@@ -121,6 +121,10 @@
             alt="Sender Avatar"
           />
           <div class="message-bubble" [ngClass]="{ failed: false }">
+            <!-- Khi nào xử lý đoạn chat nhiều người thì mới cần hiện tên -->
+            <b class="message-username" *ngIf="!msg.me && false">
+              {{ msg.sender.displayName }}
+            </b>
             <p class="message-content">{{ msg.message }}</p>
             <span class="message-timestamp">{{
               msg.createdDate | date : "shortTime"

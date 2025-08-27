@@ -43,7 +43,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   //modal
   isOpenCreateNewChat = false;
 
-  port = CONVERSATION_CHAT_SOCKET;
+  port = `${CONVERSATION_CHAT_SOCKET}?token=${localStorage.getItem('token')}`;
   avatarUrlDefault = avatarUrlDefault;
 
   // --- Subscriptions ---
@@ -143,7 +143,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.chatService.createMessage(payload).subscribe({
       next: (res) => {
-        this.currentMessages.push(res.result);
         // Có thể thêm logic xử lý tin nhắn tạm (pending) ở đây
       },
       error: (err) => {

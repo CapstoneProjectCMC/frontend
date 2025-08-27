@@ -9,9 +9,13 @@ import { Error400Component } from './pages/error-400/error-400.component';
 import { OauthCallbackComponent } from './pages/oauth-callback/oauth-callback';
 
 const routes: Routes = [
-  { path: 'login', component: Login },
-  { path: 'register', component: Register },
-  { path: 'authenticate', component: OauthCallbackComponent },
+  { path: 'login', component: Login, title: 'Đăng nhập' },
+  { path: 'register', component: Register, title: 'Đăng ký' },
+  {
+    path: 'authenticate',
+    component: OauthCallbackComponent,
+    title: 'Xác thực',
+  },
   // có thể thêm forgot-password, reset-password,...
   { path: 'error-500', component: Error500Component },
   { path: 'error-400', component: Error400Component },
