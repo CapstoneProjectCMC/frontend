@@ -14,22 +14,27 @@ import { API_CONFIG } from '../config-service/api.enpoints';
 })
 export class ResourceService {
   constructor(private http: HttpClient, private api: ApiMethod) {}
-  getResource(PageSize: number, PageIndex: number) {
+  getResource(pageSize: number, pageIndex: number) {
     return this.api.post<ApiResponse<XuanIPaginationResponse<ResourceData[]>>>(
       API_CONFIG.ENDPOINTS.POST.GET_FILE,
       {
-        PageIndex,
-        PageSize,
+        pageIndex,
+        pageSize,
       }
     );
   }
   getVideoResources() {
-    return this.api.get<ApiResponse<XuanIPaginationResponse<ResourceData[]>>>(
+    return this.api.get<ApiResponse<ResourceData[]>>(
       API_CONFIG.ENDPOINTS.GET.GET_FILE_VIDEOS
     );
   }
+  getDocumentResources() {
+    return this.api.get<ApiResponse<ResourceData[]>>(
+      API_CONFIG.ENDPOINTS.GET.GET_FILE_DOCUMENTS
+    );
+  }
   getResourceById(id: string) {
-    return this.api.get<ApiResponse<XuanIPaginationResponse<ResourceData>>>(
+    return this.api.get<ApiResponse<ResourceData>>(
       API_CONFIG.ENDPOINTS.GET.GET_FILE_BY_ID(id)
     );
   }
@@ -83,58 +88,70 @@ export class ResourceService {
 
   editResource(
     id: string,
-    fileName: string,
-    isActive: boolean,
-    file: File,
-    category: number,
-    description: string,
-    tags: Tag[],
-    isLectureVideo: boolean,
-    isTextbook: boolean,
-    orgId: string
+    fileName?: string,
+    isActive?: boolean,
+    file?: File,
+    category?: number,
+    description?: string,
+    tags?: string[],
+    isLectureVideo?: boolean,
+    isTextbook?: boolean,
+    // orgId?: string,
+    thumbnailUrl?: string
   ) {
+    const formData = new FormData();
+
+    formData.append('id', id);
+
+    if (fileName !== undefined) {
+      formData.append('fileName', fileName);
+    }
+
+    if (isActive !== undefined) {
+      formData.append('isActive', String(isActive));
+    }
+
+    if (file !== undefined) {
+      formData.append('file', file);
+    }
+
+    if (category !== undefined) {
+      formData.append('category', String(category));
+    }
+
+    if (description !== undefined) {
+      formData.append('description', description);
+    }
+
+    if (tags !== undefined) {
+      tags.forEach((tag, i) => formData.append(`tags[${i}]`, tag));
+    }
+
+    if (isLectureVideo !== undefined) {
+      formData.append('isLectureVideo', String(isLectureVideo));
+    }
+
+    if (isTextbook !== undefined) {
+      formData.append('isTextbook', String(isTextbook));
+    }
+
+    // if (orgId !== undefined) {
+    //   formData.append('orgId', orgId);
+    // }
+    if (thumbnailUrl !== undefined) {
+      formData.append('thumbnailUrl', thumbnailUrl);
+    }
+
     return this.api.put<ApiResponse<XuanIPaginationResponse<ResourceData>>>(
       API_CONFIG.ENDPOINTS.PUT.EDIT_FILE(id),
-      {
-        id,
-        fileName,
-        isActive,
-        file,
-        category,
-        description,
-        tags,
-        isLectureVideo,
-        isTextbook,
-        orgId,
-      }
+      formData,
+      true
     );
   }
-  deleteResourceById(
-    id: string,
-    fileName: string,
-    isActive: boolean,
-    file: File,
-    category: number,
-    description: string,
-    tags: Tag[],
-    isLectureVideo: boolean,
-    isTextbook: boolean,
-    orgId: string
-  ) {
-    return this.api.deletehasbody<ApiResponse<XuanPresignedUrlResponse>>(
-      API_CONFIG.ENDPOINTS.DELETE.DELETE_FILE(id),
-      {
-        id,
-        fileName,
-        isActive,
-        file,
-        category,
-        description,
-        tags,
-        isLectureVideo,
-        isTextbook,
-        orgId,
-      }
+
+  deleteResourceById(id: string) {
+    return this.api.deletehasbody<ApiResponse<string>>(
+      API_CONFIG.ENDPOINTS.DELETE.DELETE_FILE(id)
     );
   }
 }

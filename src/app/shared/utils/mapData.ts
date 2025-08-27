@@ -115,17 +115,17 @@ export function mapToResourceCardList(
   return resources.map((resource) => ({
     id: resource.id,
     avatarAuthor:
-      'https://i.pinimg.com/736x/8b/8e/ff/8b8eff070443cf6103c8279a28673809.jpg',
+      'https://i.pinimg.com/1200x/b3/c2/77/b3c2779d6b6195793b72bf73e284b3e8.jpg',
     authorId: resource.id,
-    authorName: 'author',
+    authorName: 'Ẩn danh',
     duration: resource.duration,
     thumnailurl: resource.thumbnailUrl,
     progress: 5,
     title: resource.fileName,
-    time: new Date('2003-02-22'), // Sửa định dạng ngày cho đúng
+    time: new Date(resource.createdAt), // Sửa định dạng ngày cho đúng
     description: resource.description,
     tags: resource.tags,
-    status: resource.transcodingStatus,
+    status: 'accepted',
     public: true, // TODO: Thay giá trị cứng bằng logic động
   }));
 }

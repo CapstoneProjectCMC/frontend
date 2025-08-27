@@ -120,13 +120,13 @@ export class VideoPlayerComponent
     controls?.addEventListener('mouseenter', () =>
       clearTimeout(this.hideControlsTimeout)
     );
-    video.controls = true;
+    video.controls = false;
 
     document.addEventListener('fullscreenchange', () => {
       if (document.fullscreenElement === videoContainer) {
-        video.controls = true;
+        video.controls = false;
       } else {
-        video.controls = true;
+        video.controls = false;
       }
     });
     this.reloadSource(this.videoSrc);

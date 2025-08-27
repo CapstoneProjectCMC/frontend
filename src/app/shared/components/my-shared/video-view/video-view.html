@@ -1,10 +1,10 @@
 <div class="video-container" (mousemove)="onMouseMove($event)">
   <!-- Video element -->
-  <!-- <video #videoElement muted></video> -->
-  <video #videoElement></video>
+  <video #videoElement muted></video>
+  <!-- <video #videoElement></video> -->
 
   <div class="overlay-player-episode">
-    <!-- <button
+    <button
       *ngIf="!isPlaying"
       class="play-overlay-button"
       (click)="togglePlay()"
@@ -25,10 +25,10 @@
           d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"
         />
       </svg>
-    </button> -->
+    </button>
   </div>
 
-  <!-- <div class="custom-controls" (mousemove)="onMouseMove($event)">
+  <div class="custom-controls" (mousemove)="onMouseMove($event)">
     <button class="control-button" (click)="togglePlay()">
       <ng-container *ngIf="isPlaying; else playIcon">
         <svg
@@ -155,8 +155,8 @@
         <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
       </svg>
     </button>
-  </div> -->
+  </div>
 
-  <!-- Error message -->
+  <!--  Error message -->
   <!-- <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div> -->
 </div>
