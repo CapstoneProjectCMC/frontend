@@ -79,8 +79,8 @@ export function mapPostInfortoPost(post: PostADD): Post {
 export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
   return {
     id: post.postId,
-    avatar: post.imagesUrls[1],
-    author: post.user.displayName,
+    avatar: post.user?.avatarUrl || avatarUrlDefault,
+    author: post.user?.displayName || 'Ẩn danh',
     title: post.title,
     time: post.createdAt,
     description: post.content,
@@ -88,7 +88,6 @@ export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
     comment: 0,
     upvote: 0,
     downvote: 0,
-    status: post.status,
     public: post.isPublic,
   };
 }
