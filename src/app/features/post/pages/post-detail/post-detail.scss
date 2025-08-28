@@ -4,13 +4,7 @@
 
 :host {
   // Mapping theme màu vào các biến CSS Custom Properties
-  --primary-color: #334eac;
-  --accent-color: #081f5c;
-  --background-color: #f9fcff;
-  --surface-color: #ffffff;
-  --border-color: #d0e3ff;
-  --text-color: #18181b;
-  --text-muted-color: #555;
+
   --tags-bg-color: #e7f1ff;
   --code-bg-dark: #2d2d2d;
   --code-text-light: #f8f8f2;
@@ -29,7 +23,7 @@
   margin: 0 auto;
   padding: calc(var(--spacing-unit) * 3);
   background: var(--background-color);
-  height: 100%;
+  height: calc(100vh - 180px);
 
   // --- CỘT NỘI DUNG CHÍNH (BÊN TRÁI) ---
   .post-detail-content {
@@ -141,6 +135,7 @@
         &::after {
           opacity: 0;
         }
+        overflow: auto;
       }
 
       // Styling cho các thẻ HTML được render ra
@@ -176,7 +171,7 @@
         font-style: italic;
       }
     }
-
+    .toggle-comment-button,
     .expand-button {
       align-self: center;
       margin: var(--spacing-unit) 0;

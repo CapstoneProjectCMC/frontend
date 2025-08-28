@@ -173,18 +173,14 @@ export const API_CONFIG = {
       SEND_MESSAGE_IMG_TO_CHAT: (threadId: string) =>
         `/ai/chat/thread/${threadId}/messages-with-image`,
       CREATE_CONVERSATION: '/chat/conversation',
-      CREATE_GROUP_CONVERSATION: (groupName: string, topic: string | null) => {
-        let query = `chat/conversation/group?name=${groupName}`;
-        if (topic) query += `&topic=${topic}`;
-        return query;
-      },
+      CREATE_GROUP_CONVERSATION: '/chat/conversation/group',
       CREATE_CHAT_MESSAGE: '/chat/message',
       MARK_AS_READ: (conversationId: string) =>
         `/chat/conversation/${conversationId}/read`,
+      REACTION_POST: (postId: string) => `/post/${postId}/reaction/toggle`,
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,
-      DELETE_POST: (postId: string) => `/post/posts/deletePost/${postId}`,
     },
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
@@ -213,6 +209,7 @@ export const API_CONFIG = {
       DELETE_FILE: (id: string) => `/file/api/FileDocument/${id}`,
       DELETE_THREAD_CHATBOT: (threadId: string) =>
         `/ai/chat/thread/${threadId}`,
+      DELETE_POST: (postId: string) => `/post/${postId}`,
     },
   },
   HEADERS: {

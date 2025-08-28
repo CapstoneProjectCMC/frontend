@@ -155,7 +155,7 @@
     </div>
   </div>
   <div class="metric">
-    <div class="link-section">
+    <!-- <div class="link-section">
       <div class="link-header" (click)="startAddLink()">
         <span>Thêm link</span>
         <button type="button" class="add-link-btn">
@@ -163,7 +163,6 @@
         </button>
       </div>
 
-      <!-- Ô nhập link khi bấm + -->
       <div class="link-input" *ngIf="isAddingLink">
         <input
           #linkInput
@@ -174,7 +173,7 @@
         />
         <button type="button" (click)="addLink()">OK</button>
       </div>
-      <!-- Link duy nhất -->
+
       <div class="single-link" *ngIf="post.oldImgesUrls">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -199,7 +198,8 @@
           ×
         </button>
       </div>
-    </div>
+    </div> -->
+
     <div class="file-upload">
       <label class="upload-label">
         <input
@@ -209,6 +209,7 @@
           accept="image/*"
           hidden
         />
+
         <app-button [width]="'100%'" [variant]="'outline'">
           <svg
             xmlns="http://www.w3.org/2000/svg"

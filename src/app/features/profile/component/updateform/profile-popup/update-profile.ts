@@ -248,7 +248,8 @@ export class UpdateProfileComponent {
 
     const isLastNameChanged = this.lastName !== this.user.lastName;
 
-    const isDobChanged = this.originalDob.trim() !== this.user.dob.trim();
+    const isDobChanged =
+      (this.originalDob ?? '').trim() !== (this.user?.dob ?? '').trim();
 
     const isBioChanged = (this.bio || '') !== (this.user.bio || '');
 
@@ -279,7 +280,8 @@ export class UpdateProfileComponent {
     );
   }
 
-  /** Cập nhật profile */ updateProfile() {
+  /** Cập nhật profile */
+  updateProfile() {
     if (!this.hasProfileChanged() && !this.avatarFile && !this.backgroundFile) {
       sendNotification(this.store, 'Thông tin chưa thay đổi', '', 'error');
       return;
@@ -301,7 +303,7 @@ export class UpdateProfileComponent {
           this.bio || '',
           this.selectedGender === 'true',
           this.displayName,
-          Number(this.selectedEducation.value),
+          Number(this.selectedEducation?.value ?? 0),
           this.links,
           this.selectedCity || ''
         )
