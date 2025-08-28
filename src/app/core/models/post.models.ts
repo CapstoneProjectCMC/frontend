@@ -155,4 +155,7 @@ export type PostResponse = {
   imagesUrls: string[];
   accesses: PostAccess[];
   createdAt: string;
+  commentCount: number;
+  upvoteCount: number;
+  downvoteCount: number;
 };

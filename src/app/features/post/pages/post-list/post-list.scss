@@ -4,11 +4,13 @@
   box-sizing: border-box;
   overflow: hidden;
   min-height: 0;
+  margin: 12px 0 0 0;
 
   .post-list-container {
     flex: 1;
     display: flex;
     flex-direction: column;
+    padding: 4px;
     gap: 10px;
     min-width: 0;
     overflow: hidden;
@@ -69,7 +71,7 @@
         gap: 24px;
         transition: all 0.3s ease;
         flex: 1;
-        max-height: calc(100vh - 250px);
+        max-height: calc(100vh - 220px);
         min-height: 0; // ✅ tránh overflow
         overflow-y: auto; // ✅ scroll tại đây
         // ==== Custom Scrollbar Start ====
@@ -129,7 +131,7 @@
     flex-direction: column;
     gap: 16px;
     align-items: center;
-    max-height: calc(100vh - 250px);
+    max-height: calc(100vh - 160px);
     overflow: auto;
     .note-card {
       width: 300px;

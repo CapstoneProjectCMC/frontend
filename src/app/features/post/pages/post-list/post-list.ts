@@ -1,25 +1,25 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
-import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { PostCardComponent } from '../../../../../shared/components/my-shared/post-card/post-card';
+import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
+import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
+import { PostCardComponent } from '../../../../shared/components/my-shared/post-card/post-card';
 import { NgFor, NgIf } from '@angular/common';
 import {
   PostCardInfo,
   PostResponse,
-} from '../../../../../core/models/post.models';
-import { PopularPostComponent } from '../../component/popular-post/popular-post';
-import { SkeletonLoadingComponent } from '../../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
+} from '../../../../core/models/post.models';
+import { PopularPostComponent } from '../../../admin/post-management/component/popular-post/popular-post';
+import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
 import {
   TrendingComponent,
   TrendingItem,
-} from '../../../../../shared/components/fxdonad-shared/trending/trending.component';
-import { PostService } from '../../../../../core/services/api-service/post.service';
+} from '../../../../shared/components/fxdonad-shared/trending/trending.component';
+import { PostService } from '../../../../core/services/api-service/post.service';
 import { Store } from '@ngrx/store';
-import { mapPostdatatoPostCardInfo } from '../../../../../shared/utils/mapData';
+import { mapPostdatatoPostCardInfo } from '../../../../shared/utils/mapData';
 import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
-import { ScrollEndDirective } from '../../../../../shared/directives/scroll-end.directive';
-import { BtnType1Component } from '../../../../../shared/components/fxdonad-shared/ui-verser-io/btn-type1/btn-type1.component';
+import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
+import { BtnType1Component } from '../../../../shared/components/fxdonad-shared/ui-verser-io/btn-type1/btn-type1.component';
 
 @Component({
   selector: 'app-post-list',
@@ -105,7 +105,7 @@ export class PostListComponent {
       this.isLoadingNextPage = true;
     }
 
-    this.postservice.getPosts(this.pageIndex, this.size).subscribe({
+    this.postservice.getVisiblePosts(this.pageIndex, this.size).subscribe({
       next: (res) => {
         const newPostsRaw = res.result.data;
         this.totalPages = res.result.totalPages;
@@ -170,16 +170,14 @@ export class PostListComponent {
     // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
     this.activeDropdown = this.activeDropdown === id ? null : id;
   }
-  handleAdd = () => {
-    this.router.navigate(['/post-management/post-create']);
-  };
-  handlePageChange(page: number) {
-    console.log('chuyển trang');
-  }
 
-  goToDetail = (postId: string) => {
-    console.log('Navigating to post detail with ID:', postId);
-    this.router.navigate(['/post-management/post', postId]);
+  handleAdd = () => {
+    this.router.navigate(['/post-features/post-create']);
+  };
+
+  goToDetail = ($event: string) => {
+    console.log('Navigating to post detail with ID:', $event);
+    this.router.navigate(['/post-features/post-details', $event]);
   };
   // ...existing code...
 }

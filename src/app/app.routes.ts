@@ -113,7 +113,11 @@ export const routes: Routes = [
             (m) => m.ConversationChatModule
           ),
       },
-
+      {
+        path: 'post-features',
+        loadChildren: () =>
+          import('./features/post/post.module').then((m) => m.PostModule),
+      },
       {
         path: 'profile',
         loadChildren: () =>

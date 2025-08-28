@@ -1,9 +1,9 @@
 // auth-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PostListComponent } from './pages/post-list/post-list';
-import { PostDetailComponent } from './pages/post-detail/post-detail';
-import { PostCreatePageComponent } from './pages/post-create/post-create';
+import { PostListComponent } from '../../post/pages/post-list/post-list';
+import { PostDetailComponent } from '../../post/pages/post-detail/post-detail';
+import { PostCreatePageComponent } from '../../post/pages/post-create/post-create';
 
 const routes: Routes = [
   {
@@ -14,7 +14,7 @@ const routes: Routes = [
     title: 'Danh sách bài đăng',
   },
   {
-    path: 'post/:id',
+    path: 'post-details/:id',
     component: PostDetailComponent,
     data: { breadcrumb: 'Chi tiết bài đăng' },
     title: 'Chi tiết bài đăng',

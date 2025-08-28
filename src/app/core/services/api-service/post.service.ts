@@ -18,9 +18,15 @@ import {
 })
 export class PostService {
   constructor(private http: HttpClient, private api: ApiMethod) {}
-  getPosts(page: number, size: number) {
+  getVisiblePosts(page: number, size: number) {
     return this.api.get<ApiResponse<IPaginationResponse<PostResponse[]>>>(
       API_CONFIG.ENDPOINTS.POST.GET_VISIBLE_POSTS(page, size)
+    );
+  }
+
+  getPostDetails(id: string) {
+    return this.api.get<ApiResponse<PostResponse>>(
+      API_CONFIG.ENDPOINTS.GET.GET_POST_DETAILS(id)
     );
   }
 
