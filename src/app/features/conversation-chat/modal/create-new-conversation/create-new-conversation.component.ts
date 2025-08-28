@@ -162,7 +162,7 @@ export class CreateNewConversationComponent implements OnInit, OnDestroy {
     const participantIds = this.selectedParticipants.map((p) => p.userId);
 
     // luôn thêm user hiện tại
-    const allParticipants = [currentUserId, ...participantIds];
+    const allParticipants = [...participantIds];
 
     if (!this.isGroupChat()) {
       // 🟢 Tạo chat 1-1

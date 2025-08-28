@@ -25,6 +25,7 @@ export class PostDetailComponent {
   post: PostResponse | null = null;
   isLoading = true;
   error: string | null = null;
+  currentVote: 'upvote' | 'downvote' | null = null;
 
   // UI State
   isContentExpanded = false;
@@ -118,11 +119,52 @@ export class PostDetailComponent {
   }
 
   handleUpVote() {
-    // Xử lý sự kiện khi người dùng nhấn nút upvote
-    console.log('Upvote clicked');
+    if (!this.post?.postId) return;
+
+    this.postService.reactionPost(this.post.postId, 'upvote').subscribe({
+      next: () => {
+        if (!this.post) return;
+
+        if (this.currentVote === 'upvote') {
+          // 🔄 Bỏ upvote
+          this.post.upvoteCount = (this.post.upvoteCount ?? 0) - 1;
+          this.currentVote = null;
+        } else {
+          // Nếu trước đó đã downvote thì bỏ downvote trước
+          if (this.currentVote === 'downvote') {
+            this.post.downvoteCount = (this.post.downvoteCount ?? 0) - 1;
+          }
+          // ✅ Thêm upvote
+          this.post.upvoteCount = (this.post.upvoteCount ?? 0) + 1;
+          this.currentVote = 'upvote';
+        }
+      },
+      error: (err) => console.error(err),
+    });
   }
+
   handleDownVote() {
-    // Xử lý sự kiện khi người dùng nhấn nút downvote
-    console.log('Downvote clicked');
+    if (!this.post?.postId) return;
+
+    this.postService.reactionPost(this.post.postId, 'downvote').subscribe({
+      next: () => {
+        if (!this.post) return;
+
+        if (this.currentVote === 'downvote') {
+          // 🔄 Bỏ downvote
+          this.post.downvoteCount = (this.post.downvoteCount ?? 0) - 1;
+          this.currentVote = null;
+        } else {
+          // Nếu trước đó đã upvote thì bỏ upvote trước
+          if (this.currentVote === 'upvote') {
+            this.post.upvoteCount = (this.post.upvoteCount ?? 0) - 1;
+          }
+          // ✅ Thêm downvote
+          this.post.downvoteCount = (this.post.downvoteCount ?? 0) + 1;
+          this.currentVote = 'downvote';
+        }
+      },
+      error: (err) => console.error(err),
+    });
   }
 }

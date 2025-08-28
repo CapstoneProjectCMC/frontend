@@ -71,6 +71,9 @@
         <div *ngFor="let post of posts; trackBy: trackByPostId">
           <app-post-card
             [post]="post"
+            (delete)="openModalDelete(post.id)"
+            (upvote)="handleUpVote(post.id)"
+            (downvote)="handleDownVote(post.id)"
             (mainClick)="goToDetail($event)"
           ></app-post-card>
         </div>

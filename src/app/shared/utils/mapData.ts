@@ -60,8 +60,7 @@ export function mapCreateExerciseToCardUI(
 export function mapPostInfortoPost(post: PostADD): Post {
   return {
     id: '',
-    userId: post.orgId,
-    orgId: post.orgId,
+    orgId: post.orgId ?? '',
     title: post.title,
     content: post.content, // markdown format
     tags: post.fileDocument?.tags || [],
@@ -72,7 +71,6 @@ export function mapPostInfortoPost(post: PostADD): Post {
       down: 0,
       commentCount: 0,
     },
-    status: post.status,
   };
 }
 export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
@@ -162,7 +160,6 @@ export function mapToExerciseQuiz(ex: ExerciseCodeResponse): ExerciseQuiz {
 export function mapPostDetailsToStructurePostPage(post: PostResponse): Post {
   return {
     id: post.postId,
-    userId: post.user?.userId ?? '',
     orgId: post.orgId,
     title: post.title,
     content: post.content,
@@ -174,6 +171,5 @@ export function mapPostDetailsToStructurePostPage(post: PostResponse): Post {
       down: post.upvoteCount,
       commentCount: post.commentCount,
     },
-    status: post.status,
   };
 }

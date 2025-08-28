@@ -35,15 +35,22 @@ export class ChatService {
     participantIds: string[],
     fileAvatarGroup: File | null
   ) {
-    const conversationRequest = JSON.stringify({
-      type: 'GROUP',
-      participantIds,
-    });
+    // Ghép participantIds thành chuỗi cách nhau bằng dấu ,
+    const participantIdsStr = participantIds.join(',');
 
+    // Chuẩn bị dữ liệu text
+    const formDataData: Record<string, any> = {
+      name: groupName,
+      topic: topic || 'alo',
+      type: 'GROUP',
+      participantIds: participantIdsStr,
+    };
+
+    // Gọi API
     return this.api.postWithFormData<ApiResponse<null>>(
-      API_CONFIG.ENDPOINTS.POST.CREATE_GROUP_CONVERSATION(groupName, topic),
-      { conversationRequest },
-      fileAvatarGroup ? { fileAvatarGroup: fileAvatarGroup } : undefined
+      API_CONFIG.ENDPOINTS.POST.CREATE_GROUP_CONVERSATION,
+      formDataData,
+      fileAvatarGroup ? { fileAvatarGroup } : undefined
     );
   }
 

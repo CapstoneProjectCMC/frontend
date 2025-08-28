@@ -27,10 +27,7 @@ export class PostCardComponent {
   // Sử dụng @Output thay vì @Input functions
   @Output() mainClick = new EventEmitter<string>();
   @Output() edit = new EventEmitter<void>();
-  @Output() delete = new EventEmitter<void>();
-  @Output() approve = new EventEmitter<void>();
-  @Output() reject = new EventEmitter<void>(); // Đổi tên 'rejected' thành 'reject' cho nhất quán
-  @Output() summary = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<void>(); // Đổi tên 'rejected' thành 'reject' cho nhất quán
   @Output() upvote = new EventEmitter<void>();
   @Output() downvote = new EventEmitter<void>();
   @Output() comment = new EventEmitter<void>();
@@ -81,21 +78,6 @@ export class PostCardComponent {
   onCommentClick(event: MouseEvent): void {
     event.stopPropagation();
     this.comment.emit();
-  }
-
-  onSummaryClick(event: MouseEvent): void {
-    event.stopPropagation();
-    this.summary.emit();
-  }
-
-  onApproveClick(event: MouseEvent): void {
-    event.stopPropagation();
-    this.approve.emit();
-  }
-
-  onRejectClick(event: MouseEvent): void {
-    event.stopPropagation();
-    this.reject.emit();
   }
 
   trackByFn(index: number, tag: string): string {

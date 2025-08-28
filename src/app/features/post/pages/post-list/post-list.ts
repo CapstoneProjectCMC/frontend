@@ -20,6 +20,7 @@ import { mapPostdatatoPostCardInfo } from '../../../../shared/utils/mapData';
 import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { BtnType1Component } from '../../../../shared/components/fxdonad-shared/ui-verser-io/btn-type1/btn-type1.component';
+import { openModalNotification } from '../../../../shared/utils/notification';
 
 @Component({
   selector: 'app-post-list',
@@ -72,6 +73,9 @@ export class PostListComponent {
   totalPages = 1;
   isLoadingInitial = true;
   isLoadingNextPage = false;
+  // Quản lý trạng thái vote cho từng bài post
+  voteStates: { [postId: string]: 'upvote' | 'downvote' | null } = {};
+
   constructor(
     private router: Router,
     private postservice: PostService,
@@ -148,6 +152,59 @@ export class PostListComponent {
     return data.map((info) => mapPostdatatoPostCardInfo(info));
   }
 
+  //sai logic -- khi nào sửa lại sau
+  handleUpVote(id: string) {
+    this.postservice.reactionPost(id, 'upvote').subscribe({
+      next: () => {
+        const post = this.posts.find((p) => p.id === id);
+        if (!post) return;
+
+        const currentVote = this.voteStates[id] ?? null;
+
+        if (currentVote === 'upvote') {
+          // 🔄 Bỏ upvote
+          post.upvote = (post.upvote ?? 0) - 1;
+          this.voteStates[id] = null;
+        } else {
+          // Nếu trước đó đã downvote thì bỏ downvote
+          if (currentVote === 'downvote') {
+            post.downvote = (post.downvote ?? 0) - 1;
+          }
+          // ✅ Thêm upvote
+          post.upvote = (post.upvote ?? 0) + 1;
+          this.voteStates[id] = 'upvote';
+        }
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
+  handleDownVote(id: string) {
+    this.postservice.reactionPost(id, 'downvote').subscribe({
+      next: () => {
+        const post = this.posts.find((p) => p.id === id);
+        if (!post) return;
+
+        const currentVote = this.voteStates[id] ?? null;
+
+        if (currentVote === 'downvote') {
+          // 🔄 Bỏ downvote
+          post.downvote = (post.downvote ?? 0) - 1;
+          this.voteStates[id] = null;
+        } else {
+          // Nếu trước đó đã upvote thì bỏ upvote
+          if (currentVote === 'upvote') {
+            post.upvote = (post.upvote ?? 0) - 1;
+          }
+          // ✅ Thêm downvote
+          post.downvote = (post.downvote ?? 0) + 1;
+          this.voteStates[id] = 'downvote';
+        }
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
   handleInputChange(value: string | number): void {
     this.postname = value.toString();
 
@@ -169,6 +226,28 @@ export class PostListComponent {
   toggleDropdown(id: string): void {
     // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
     this.activeDropdown = this.activeDropdown === id ? null : id;
+  }
+
+  deletePost(id: string) {
+    this.postservice.deletePost(id).subscribe({
+      next: () => {
+        this.posts = this.posts.filter((a) => a.id !== id);
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
+  }
+
+  openModalDelete(id: string) {
+    openModalNotification(
+      this.store,
+      'Xác nhận xóa',
+      'Bạn có chắc chắn xóa bài viết này?',
+      'Đồng ý',
+      'Hủy',
+      () => this.deletePost(id)
+    );
   }
 
   handleAdd = () => {

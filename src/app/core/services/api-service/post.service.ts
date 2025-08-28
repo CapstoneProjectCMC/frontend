@@ -102,17 +102,25 @@ export class PostService {
     // Gom các field còn lại vào data
     const formDataData: Record<string, any> = {
       ...otherData,
-      ...(fileDocument
-        ? {
-            'fileDocument.category': fileDocument.category,
-            'fileDocument.description': fileDocument.description,
-            'fileDocument.tags': fileDocument.tags,
-            'fileDocument.isLectureVideo': fileDocument.isLectureVideo,
-            'fileDocument.isTextBook': fileDocument.isTextBook,
-            'fileDocument.orgId': fileDocument.orgId,
-          }
-        : {}),
     };
+
+    if (fileDocument) {
+      const fd: Record<string, any> = {
+        'fileDocument.category': fileDocument.category,
+        'fileDocument.description': fileDocument.description,
+        'fileDocument.tags': fileDocument.tags,
+        'fileDocument.isLectureVideo': fileDocument.isLectureVideo,
+        'fileDocument.isTextBook': fileDocument.isTextBook,
+        'fileDocument.orgId': fileDocument.orgId,
+      };
+
+      // Chỉ append field nào có giá trị khác undefined
+      for (const [key, value] of Object.entries(fd)) {
+        if (value !== undefined) {
+          formDataData[key] = value;
+        }
+      }
+    }
 
     // Gọi method postWithFormData
     return this.api.postWithFormData<ApiResponse<null>>(
@@ -122,10 +130,16 @@ export class PostService {
     );
   }
 
+  reactionPost(postId: string, reactionType: 'downvote' | 'upvote') {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.REACTION_POST(postId),
+      { reactionType }
+    );
+  }
+
   deletePost(id: string) {
-    return this.api.put<NhatApiResponeNoData>(
-      API_CONFIG.ENDPOINTS.PUT.DELETE_POST(id),
-      {}
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.DELETE_POST(id)
     );
   }
 }

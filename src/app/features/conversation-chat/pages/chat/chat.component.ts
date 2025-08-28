@@ -391,7 +391,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
   createdNewConversation() {
     console.log('đã tạo mới chat');
-    this.isOpenCreateNewChat = !this.isOpenCreateNewChat;
+    this.isOpenCreateNewChat = true;
     this.fetchConversations();
   }
 

@@ -10,6 +10,7 @@ import { buildImageUrl } from '../../../utils/BuildUrlFile';
 import { ICommentFilmResponse } from '../../../../core/models/comment.models';
 import { mockComments } from '../../../../core/fake-data/comment.data';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
+import { decodeJWT } from '../../../utils/stringProcess';
 
 @Component({
   selector: 'app-comment',
@@ -21,7 +22,7 @@ import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 export class CommentComponent implements OnInit {
   @Input() contentId: string = '';
   comments: ICommentFilmResponse[] = [];
-  userAvatar: string = avatarUrlDefault; // Avatar user hiện tại
+  userAvatar: string | null = null; // Avatar user hiện tại
   avatarDefault = avatarUrlDefault;
   role: string = '';
 
@@ -35,14 +36,22 @@ export class CommentComponent implements OnInit {
   authenticated = false;
 
   constructor(private cookiesService: CookieService, private store: Store) {
-    this.userAvatar = this.cookiesService.get('avatarUrl');
-    this.role = this.cookiesService.get('role');
-    console.log('Trạng thái:', this.authenticated);
+    this.userAvatar = sessionStorage.getItem('avatar-url') ?? '';
+    this.role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
   }
 
   ngOnInit(): void {
     // this.fetchComments(this.contentId, this.currentPage, this.pageSize);
     this.comments = mockComments;
+    const decoded = decodeJWT(localStorage.getItem('token') ?? '');
+
+    if (decoded?.expiresAt) {
+      const expiresAt = new Date(decoded.expiresAt); // nếu expiresAt là string
+
+      this.authenticated = expiresAt > new Date();
+    } else {
+      this.authenticated = false;
+    }
   }
 
   get totalCommentsCount(): number {
@@ -61,12 +70,12 @@ export class CommentComponent implements OnInit {
     }
   }
 
-  buildImgAvatarUrl(url: string, size: 'small' | 'tiny' | 'original'): string {
-    if (!url || url.trim() === '' || url === 'null') {
-      return this.avatarDefault;
-    }
-    return buildImageUrl(url, size);
-  }
+  // buildImgAvatarUrl(url: string, size: 'small' | 'tiny' | 'original'): string {
+  //   if (!url || url.trim() === '' || url === 'null') {
+  //     return this.avatarDefault;
+  //   }
+  //   return buildImageUrl(url, size);
+  // }
 
   isLastComment(commentId: string): boolean {
     const lastComment = this.comments[this.comments.length - 1]; // Lấy comment cuối cùng trong danh sách
@@ -105,7 +114,7 @@ export class CommentComponent implements OnInit {
         username: 'Bạn',
         email: this.cookiesService.get('email'),
         role: this.cookiesService.get('role'),
-        avatarUrl: this.userAvatar,
+        avatarUrl: this.userAvatar || avatarUrlDefault,
         backgroundUrl: '/assets/bg-default.png',
       },
       replies: [], // Mảng chứa các reply, hiện tại để trống
@@ -137,7 +146,7 @@ export class CommentComponent implements OnInit {
           username: 'Bạn',
           email: this.cookiesService.get('email'),
           role: this.cookiesService.get('role'),
-          avatarUrl: this.userAvatar,
+          avatarUrl: this.userAvatar || avatarUrlDefault,
           backgroundUrl: '/assets/bg-default.png',
         },
       });

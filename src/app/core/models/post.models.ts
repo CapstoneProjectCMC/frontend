@@ -26,15 +26,14 @@ export interface Metrics {
 
 export interface Post {
   id: string;
-  userId: string;
   orgId: string;
   title: string;
   content: string; // markdown format
   tags: string[];
   field: string[]; // list of URLs to images, documents, videos, etc.
   metrics: Metrics;
-  status: string;
 }
+
 export interface postData {
   createdBy: string;
   createdAt: string;
@@ -53,7 +52,6 @@ export interface postData {
   isPublic: boolean;
   allowComment: boolean;
   hashtag: string[];
-  status: 'REJECTED' | 'APPROVED' | 'PENDING';
   imagesUrls: string[];
   //mai nhật gửi
   comments: {
@@ -68,7 +66,6 @@ export interface postData {
   deleted: boolean;
 }
 export type PostType = 'Global' | 'Private' | 'Org';
-export type PostStatus = 'REJECTED' | 'APPROVED' | 'PENDING';
 export interface FileDocument {
   file?: File;
   category?: string; // BE mong muốn STRING
@@ -80,17 +77,15 @@ export interface FileDocument {
 }
 
 export interface PostADD {
-  postId?: string; // BE có field này -> optional
   title: string;
-  orgId: string;
+  orgId?: string;
   content: string;
-  isPublic: boolean; // sẽ tính từ postType ở component
-  allowComment: boolean;
-  postType: PostType;
-  oldImgesUrls: string; // CHUẨN THEO BE (lưu ý đánh vần!)
+  isPublic?: boolean; // sẽ tính từ postType ở component
+  allowComment?: boolean;
+  postType?: PostType;
+  fileUrls: string; // CHUẨN THEO BE (lưu ý đánh vần!)
   hashtag: string; // nếu muốn gửi dạng mảng
-  status: PostStatus;
-  fileDocument?: FileDocument;
+  fileDocument?: FileDocument | null;
 }
 
 export interface CreatePostRequest {
@@ -99,10 +94,9 @@ export interface CreatePostRequest {
   content: string;
   isPublic: boolean;
   allowComment: boolean;
-  postType: 'Global' | 'Private' | 'Org';
-  oldImgesUrls?: string;
+  postType: PostType;
   hashtag?: string;
-  status?: 'REJECTED' | 'APPROVED' | 'PENDING';
+
   fileDocument?: {
     file?: File;
     category?: string;
@@ -151,7 +145,6 @@ export type PostResponse = {
   isPublic: boolean;
   allowComment: boolean;
   hashtag: string;
-  status: string; // có thể định nghĩa union type: 'REJECTED' | 'APPROVED' | 'PENDING'
   imagesUrls: string[];
   accesses: PostAccess[];
   createdAt: string;

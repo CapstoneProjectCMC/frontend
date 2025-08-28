@@ -17,7 +17,11 @@ import {
 } from '../../../../shared/components/fxdonad-shared/text-editor/text-editor';
 
 import { HtmlToMdService } from '../../../../shared/utils/HTMLtoMarkDown';
-import { Post, PostADD } from '../../../../core/models/post.models';
+import {
+  CreatePostRequest,
+  Post,
+  PostADD,
+} from '../../../../core/models/post.models';
 import { mapPostInfortoPost } from '../../../../shared/utils/mapData';
 import { PostService } from '../../../../core/services/api-service/post.service';
 import { sendNotification } from '../../../../shared/utils/notification';
@@ -45,24 +49,14 @@ export class PostCreatePageComponent {
   @ViewChild('linkInput') linkInput!: ElementRef<HTMLInputElement>;
 
   post: PostADD = {
-    postId: '', // BE có field này -> để trống
     title: '',
-    orgId: '',
     content: '',
-    isPublic: false, // sẽ set theo postType ở createPost()
-    allowComment: false,
+    isPublic: true, // sẽ tính từ postType ở component
+    allowComment: true,
     postType: 'Global',
-    oldImgesUrls: '', // ĐÚNG CHÍNH TẢ THEO BE
-    hashtag: '',
-    status: 'PENDING',
-    fileDocument: {
-      category: 'image', // STRING, BE yêu cầu
-      description: '',
-      tags: [],
-      orgId: '',
-      isLectureVideo: false,
-      isTextBook: false,
-    },
+    fileUrls: '', // CHUẨN THEO BE (lưu ý đánh vần!)
+    hashtag: '', // nếu muốn gửi dạng mảng
+    fileDocument: null,
   };
 
   tag: { value: string; label: string }[] = [
@@ -141,7 +135,7 @@ export class PostCreatePageComponent {
   addLink() {
     const trimmed = this.newLink.trim();
     if (trimmed) {
-      this.post.oldImgesUrls = trimmed; // gán trực tiếp string
+      this.post.fileUrls = trimmed; // gán trực tiếp string
       this.newLink = '';
       this.isAddingLink = false;
       this.cdr.detectChanges();
@@ -149,7 +143,7 @@ export class PostCreatePageComponent {
   }
 
   removeLink() {
-    this.post.oldImgesUrls = '';
+    this.post.fileUrls = '';
   }
 
   // ===== Input handlers =====
@@ -272,9 +266,26 @@ export class PostCreatePageComponent {
     );
 
     // Debug nhanh
-    console.log('Post type:', this.post.postType);
+    const payload: CreatePostRequest = {
+      title: this.post.title,
+      content: this.post.content,
+      isPublic: this.post.isPublic,
+      allowComment: this.post.allowComment ?? false,
+      postType: this.post.postType ?? 'Global',
+      hashtag: this.post.hashtag,
+      fileDocument: {
+        file: this.post.fileDocument?.file,
 
-    this.postService.createPost(this.post).subscribe({
+        description: this.post.fileDocument?.description,
+
+        isLectureVideo:
+          this.post.fileDocument?.file?.type?.startsWith('video/') ?? false,
+        isTextBook:
+          this.post.fileDocument?.file?.type?.startsWith('image/') ?? false,
+      },
+    };
+
+    this.postService.createPost(payload).subscribe({
       next: (res) => {
         sendNotification(this.store, 'Tạo bài viết', 'Thành công', 'success');
         setTimeout(() => {
