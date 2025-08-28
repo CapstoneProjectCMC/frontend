@@ -1,0 +1,363 @@
+// --- THEME MÀU ---
+// Giả định các biến màu SCSS đã được định nghĩa ở global
+// Nếu không, bạn cần định nghĩa chúng ở đây, ví dụ: $blue-334eac: #334eac;
+
+:host {
+  // Mapping theme màu vào các biến CSS Custom Properties
+  --primary-color: #334eac;
+  --accent-color: #081f5c;
+  --background-color: #f9fcff;
+  --surface-color: #ffffff;
+  --border-color: #d0e3ff;
+  --text-color: #18181b;
+  --text-muted-color: #555;
+  --tags-bg-color: #e7f1ff;
+  --code-bg-dark: #2d2d2d;
+  --code-text-light: #f8f8f2;
+  --error-color: #ff3b30;
+
+  // Spacing & Radius
+  --spacing-unit: 8px;
+  --border-radius: 12px;
+}
+
+// --- BỐ CỤC CHÍNH ---
+
+.post-detail-container {
+  display: flex;
+  gap: calc(var(--spacing-unit) * 4);
+  margin: 0 auto;
+  padding: calc(var(--spacing-unit) * 3);
+  background: var(--background-color);
+  height: 100%;
+
+  // --- CỘT NỘI DUNG CHÍNH (BÊN TRÁI) ---
+  .post-detail-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; // Quan trọng để flexbox hoạt động đúng
+    max-height: calc(100vh - 120px); // Chiều cao tối đa trước khi cuộn
+    overflow-y: auto;
+    padding-right: calc(var(--spacing-unit) * 2);
+
+    .post-title {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--accent-color);
+      margin: 0 0 calc(var(--spacing-unit) * 2) 0;
+      line-height: 1.2;
+    }
+
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: calc(var(--spacing-unit) * 3);
+      padding-bottom: calc(var(--spacing-unit) * 2);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .post-author {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--spacing-unit) * 1.5);
+
+      img {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--border-color);
+      }
+      .author-info {
+        display: flex;
+        flex-direction: column;
+      }
+      .author-name {
+        font-weight: 600;
+        color: var(--text-color);
+      }
+      .post-time {
+        font-size: 0.8rem;
+        color: var(--text-muted-color);
+      }
+    }
+
+    .post-votes {
+      display: flex;
+      gap: var(--spacing-unit);
+
+      .vote-button {
+        display: inline-flex;
+        align-items: center;
+        gap: calc(var(--spacing-unit) / 2);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: var(--spacing-unit);
+        border-radius: var(--spacing-unit);
+        color: var(--text-muted-color);
+        transition: background-color 0.2s ease, color 0.2s ease;
+
+        &:hover {
+          background-color: var(--tags-bg-color);
+          color: var(--primary-color);
+        }
+        span {
+          font-weight: 500;
+        }
+        i {
+          font-size: 1.1rem;
+        }
+      }
+    }
+
+    // --- NỘI DUNG MARKDOWN ---
+    .markdown-body {
+      max-height: 500px;
+      overflow: hidden;
+      position: relative;
+      transition: max-height 0.6s ease-in-out;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--background-color)
+        );
+        pointer-events: none;
+        transition: opacity 0.6s ease-in-out;
+      }
+
+      &.is-expanded {
+        max-height: 10000px; // Đủ lớn để hiển thị toàn bộ
+        &::after {
+          opacity: 0;
+        }
+      }
+
+      // Styling cho các thẻ HTML được render ra
+      h1,
+      h2,
+      h3 {
+        color: var(--accent-color);
+        margin: 2em 0 0.75em;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 0.25em;
+      }
+      p {
+        line-height: 1.7;
+        margin-bottom: 1em;
+      }
+      pre {
+        background: var(--code-bg-dark);
+        color: var(--code-text-light);
+        border-radius: var(--spacing-unit);
+        padding: calc(var(--spacing-unit) * 2);
+        overflow-x: auto;
+        code {
+          background: none;
+          color: inherit;
+          padding: 0;
+        }
+      }
+      blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1.5em;
+        margin: 1.5em 0;
+        color: var(--text-muted-color);
+        font-style: italic;
+      }
+    }
+
+    .expand-button {
+      align-self: center;
+      margin: var(--spacing-unit) 0;
+      font-weight: 600;
+      color: var(--primary-color);
+      cursor: pointer;
+      background: var(--tags-bg-color);
+      border: 1px solid var(--border-color);
+      padding: var(--spacing-unit) calc(var(--spacing-unit) * 2);
+      border-radius: 99px;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: var(--border-color);
+      }
+    }
+
+    // --- TAGS & BÌNH LUẬN ---
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-unit);
+      margin-top: calc(var(--spacing-unit) * 3);
+      padding-top: calc(var(--spacing-unit) * 2);
+      border-top: 1px solid var(--border-color);
+
+      .tag {
+        background: var(--tags-bg-color);
+        color: var(--primary-color);
+        font-weight: 500;
+        font-size: 0.8rem;
+        padding: calc(var(--spacing-unit) / 2) var(--spacing-unit);
+        border-radius: 99px;
+      }
+    }
+
+    .comment-section {
+      margin-top: calc(var(--spacing-unit) * 2);
+      .toggle-comment-button {
+        // ... style giống .expand-button
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-unit);
+      }
+      .comment-container {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.6s ease-in-out;
+        &.is-visible {
+          max-height: 3000px; // Đủ lớn cho các bình luận
+          margin-top: var(--spacing-unit);
+        }
+      }
+    }
+  }
+
+  // --- CỘT MỤC LỤC (BÊN PHẢI) ---
+  .post-sidebar {
+    width: 300px;
+    flex-shrink: 0;
+
+    .sidebar-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      margin: 0 0 var(--spacing-unit) 0;
+      padding-bottom: var(--spacing-unit);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .toc-list {
+      list-style: none;
+      padding-left: 0;
+      position: sticky;
+      top: 20px;
+
+      a {
+        display: block;
+        padding: var(--spacing-unit) 0 var(--spacing-unit) var(--spacing-unit);
+        color: var(--text-muted-color);
+        font-size: 0.9rem;
+        text-decoration: none;
+        border-left: 2px solid var(--border-color);
+        transition: all 0.2s ease;
+
+        &:hover {
+          color: var(--primary-color);
+          background-color: var(--tags-bg-color);
+          border-left-color: var(--primary-color);
+        }
+      }
+      .level-2 {
+        margin-left: calc(var(--spacing-unit) * 2);
+      }
+      .level-3 {
+        margin-left: calc(var(--spacing-unit) * 4);
+      }
+    }
+    .no-toc {
+      font-size: 0.9rem;
+      color: var(--text-muted-color);
+    }
+  }
+}
+
+// --- Trạng Thái Loading (Skeleton) ---
+.skeleton-loader {
+  .skeleton-line,
+  .skeleton-circle {
+    background-color: var(--skeleton-base-color);
+    animation: pulse 1.5s infinite ease-in-out;
+  }
+
+  .skeleton-line {
+    border-radius: 4px;
+    &.title {
+      height: 2.5rem;
+      width: 70%;
+      margin-bottom: 1rem;
+    }
+    &.text {
+      height: 1rem;
+      width: 100%;
+      margin-bottom: 0.75rem;
+    }
+    &.short {
+      width: 40%;
+    }
+    &.extra-short {
+      width: 30%;
+    }
+    &.long {
+      width: 80%;
+    }
+    &.toc {
+      height: 1.2rem;
+      margin-bottom: 1rem;
+    }
+  }
+  .skeleton-circle {
+    border-radius: 50%;
+    &.avatar {
+      width: 48px;
+      height: 48px;
+    }
+  }
+  .post-author {
+    align-items: center;
+  }
+  .post-basic-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background-color: var(--skeleton-base-color);
+  }
+  50% {
+    background-color: var(--skeleton-highlight-color);
+  }
+  100% {
+    background-color: var(--skeleton-base-color);
+  }
+}
+
+// --- Trạng Thái Lỗi ---
+.error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 2rem;
+  text-align: center;
+  gap: 1rem;
+
+  h2 {
+    font-size: 1.5rem;
+    color: var(--color-danger, #dc3545);
+  }
+}

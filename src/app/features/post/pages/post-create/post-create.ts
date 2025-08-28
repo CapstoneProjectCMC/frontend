@@ -8,25 +8,25 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
-import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
+import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
+import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
+import { ButtonComponent } from '../../../../shared/components/my-shared/button/button.component';
 import {
   TextEditor,
   TextEditorConfig,
-} from '../../../../../shared/components/fxdonad-shared/text-editor/text-editor';
+} from '../../../../shared/components/fxdonad-shared/text-editor/text-editor';
 
-import { HtmlToMdService } from '../../../../../shared/utils/HTMLtoMarkDown';
-import { Post, PostADD } from '../../../../../core/models/post.models';
-import { mapPostInfortoPost } from '../../../../../shared/utils/mapData';
-import { PostService } from '../../../../../core/services/api-service/post.service';
-import { sendNotification } from '../../../../../shared/utils/notification';
+import { HtmlToMdService } from '../../../../shared/utils/HTMLtoMarkDown';
+import { Post, PostADD } from '../../../../core/models/post.models';
+import { mapPostInfortoPost } from '../../../../shared/utils/mapData';
+import { PostService } from '../../../../core/services/api-service/post.service';
+import { sendNotification } from '../../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import {
   clearLoading,
   setLoading,
-} from '../../../../../shared/store/loading-state/loading.action';
+} from '../../../../shared/store/loading-state/loading.action';
 
 @Component({
   selector: 'app-post-create',

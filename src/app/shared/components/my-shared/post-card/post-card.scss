@@ -42,7 +42,7 @@
     box-shadow var(--transition-speed) ease;
 
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
   }
 
@@ -198,19 +198,19 @@
       height: 18px;
     }
 
-    // Modifiers
-    &--danger {
-      color: var(--color-error);
-      &:hover {
-        background-color: lighten($color: #dc3545, $amount: 40%);
-      }
-    }
-    &--success {
-      color: var(--color-success);
-      &:hover {
-        background-color: lighten($color: #28a745, $amount: 45%);
-      }
-    }
+    // // Modifiers
+    // &--danger {
+    //   color: var(--color-error);
+    //   &:hover {
+    //     background-color: lighten($color: #dc3545, $amount: 40%);
+    //   }
+    // }
+    // &--success {
+    //   color: var(--color-success);
+    //   &:hover {
+    //     background-color: lighten($color: #28a745, $amount: 45%);
+    //   }
+    // }
   }
 
   &__controls {

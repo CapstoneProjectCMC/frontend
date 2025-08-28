@@ -15,10 +15,13 @@ import { FormsModule } from '@angular/forms';
 import { CONVERSATION_CHAT_SOCKET } from '../../../../core/services/socket-service/port-socket';
 import {
   Conversation,
+  ConversationEvent,
   Message,
+  MessageReadEvent,
 } from '../../../../core/models/conversation-chat.model';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 import { CreateNewConversationComponent } from '../../modal/create-new-conversation/create-new-conversation.component';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
 
 @Component({
   selector: 'app-chat',
@@ -48,6 +51,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // --- Subscriptions ---
   private messageSubscription!: Subscription;
+  private messageReadSubscription!: Subscription;
 
   // --- DOM References ---
   @ViewChild('messageContainer') private messageContainerRef!: ElementRef;
@@ -117,6 +121,39 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
               new Date(a.createdDate).getTime() -
               new Date(b.createdDate).getTime()
           );
+
+          // ✅ logic check "seen" khi load lần đầu
+          const myId = decodeJWT(localStorage.getItem('token') ?? '')?.payload
+            .userId;
+          const lastMsg = sortedMessages[sortedMessages.length - 1];
+
+          if (lastMsg?.read === true && lastMsg.sender?.userId !== myId) {
+            // 1. Tìm tin nhắn cuối cùng mà chính mình (myId) gửi
+            let lastMyMessage: Message | undefined;
+            for (let i = sortedMessages.length - 1; i >= 0; i--) {
+              if (sortedMessages[i].sender?.userId === myId) {
+                lastMyMessage = sortedMessages[i];
+                break;
+              }
+            }
+
+            // 2. Gắn avatar của người đọc vào tin nhắn cuối cùng của tôi
+
+            //khi nào cập nhật tin nhắn của mình được Reader đọc (đặt thuộc tính read = true thì cập nhật) còn bây giờ chưa có và read là trạng thái mình đã đọc tin nhắn hay chưa
+            // if (lastMyMessage) {
+            //   if (!lastMyMessage.readBy) lastMyMessage.readBy = [];
+            //   // giả sử API có trả về lastMsg.reader (hoặc field tương tự)
+            //   if (lastMsg.reader && lastMsg.reader.userId !== myId) {
+            //     const already = lastMyMessage.readBy.some(
+            //       (u) => u.userId === lastMsg.reader.userId
+            //     );
+            //     if (!already) {
+            //       lastMyMessage.readBy.push(lastMsg.reader);
+            //     }
+            //   }
+            // }
+          }
+
           this.messagesMap[conversationId] = sortedMessages;
           this.updateCurrentMessages(conversationId);
         },
@@ -125,12 +162,45 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
+  private markMessagesAsRead(conversationId: string): void {
+    const conversationMessages = this.messagesMap[conversationId] || [];
+    if (!conversationMessages.length) return;
+
+    // lấy thời gian message cuối cùng
+    const lastMessage = conversationMessages[conversationMessages.length - 1];
+    const readAt = lastMessage.createdDate;
+
+    const payload = {
+      messageId: undefined,
+      upToTime: readAt,
+    };
+
+    this.chatService.markAsRead(conversationId, payload).subscribe({
+      next: () => {
+        const convoIndex = this.conversations.findIndex(
+          (c) => c.id === conversationId
+        );
+        if (convoIndex > -1) {
+          this.conversations[convoIndex].unreadCount = 0;
+        }
+        // cập nhật trạng thái read cho local message
+        this.messagesMap[conversationId] = conversationMessages.map((m) => ({
+          ...m,
+          read: true,
+        }));
+        if (this.selectedConversation?.id === conversationId) {
+          this.updateCurrentMessages(conversationId);
+        }
+      },
+      error: (err) => console.error('Failed to mark messages as read:', err),
+    });
+  }
+
   // --- Event Handlers ---
   handleConversationSelect(conversation: Conversation): void {
     this.selectedConversation = conversation;
-    // Đánh dấu đã đọc
-    // conversation.unread = 0;
     this.fetchMessages(conversation.id);
+    this.markMessagesAsRead(conversation.id); // 👈 đánh dấu đọc khi click vào
   }
 
   handleSendMessage(): void {
@@ -157,62 +227,140 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   // --- Socket Integration ---
   private setupSocketListeners(): void {
-    // Bạn cần sửa lại SocketService để có thể lấy token hoặc kết nối lại
-    // Ví dụ: this.socketService.connect(token);
-    // Hiện tại SocketService khởi tạo kết nối trong constructor, nên ta chỉ cần lắng nghe sự kiện
-
     this.socketService.connect(this.port);
 
     this.messageSubscription = this.socketService
-      .on<string>(this.port, 'message')
-      .subscribe((rawMessage: string) => {
-        console.log('New message received:', rawMessage);
+      .on<string>(this.port, 'message_created')
+      .subscribe((raw: string) => {
         try {
-          const message: Message = JSON.parse(rawMessage);
-          this.handleIncomingMessage(message);
+          const event: ConversationEvent = JSON.parse(raw);
+          this.handleIncomingEvent(event);
         } catch (error) {
-          console.error('Could not parse incoming message:', error);
+          console.error('Could not parse incoming socket event:', error);
+        }
+      });
+
+    this.messageSubscription = this.socketService
+      .on<string>(this.port, 'message_read')
+      .subscribe((raw: string) => {
+        try {
+          const event: MessageReadEvent = JSON.parse(raw);
+          this.handleIncomingReadEvent(event);
+        } catch (error) {
+          console.error('Could not parse incoming socket event:', error);
         }
       });
   }
 
-  private handleIncomingMessage(message: Message): void {
-    const conversationId = message.conversationId;
+  private handleIncomingReadEvent(event: MessageReadEvent): void {
+    const { conversation, data } = event;
+    const conversationId = conversation.id;
+    const lastReadAt = new Date(data.lastReadAt).getTime();
 
-    // Cập nhật danh sách tin nhắn
+    const messages = this.messagesMap[conversationId];
+    if (!messages) return;
+
+    const myId = decodeJWT(localStorage.getItem('token') ?? '')?.payload.userId;
+    const readerId = data.reader.userId;
+
+    // chỉ quan tâm nếu người đọc KHÁC mình
+    if (readerId === myId) return;
+
+    // 1. Xóa dấu "seen" cũ của reader trên toàn bộ messages trong hội thoại này
+    messages.forEach((msg) => {
+      if (msg.readBy) {
+        msg.readBy = msg.readBy.filter((u) => u.userId !== readerId);
+      }
+    });
+
+    // 2. Tìm tin nhắn CUỐI CÙNG mà chính mình (myId) là sender,
+    //    và đã được gửi trước hoặc bằng thời điểm lastReadAt
+    let lastMyMessage: Message | undefined;
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const msg = messages[i];
+      const msgTime = new Date(msg.createdDate).getTime();
+      if (msg.sender?.userId === myId && msgTime <= lastReadAt) {
+        lastMyMessage = msg;
+        break;
+      }
+    }
+
+    // 3. Gắn avatar của reader vào tin nhắn cuối cùng của tôi
+    if (lastMyMessage) {
+      if (!lastMyMessage.readBy) lastMyMessage.readBy = [];
+      const already = lastMyMessage.readBy.some((u) => u.userId === readerId);
+      if (!already) {
+        lastMyMessage.readBy.push(data.reader);
+      }
+    }
+
+    // 4. Cập nhật lại UI nếu đang mở đúng hội thoại
+    if (this.selectedConversation?.id === conversationId) {
+      this.updateCurrentMessages(conversationId);
+      this.cdr.detectChanges();
+    }
+  }
+
+  private handleIncomingEvent(event: ConversationEvent): void {
+    switch (event.type) {
+      case 'message_created':
+        this.handleIncomingMessage(event.conversation, event.message);
+        break;
+      default:
+        console.warn('Unhandled event type:', event.type);
+    }
+  }
+
+  private handleIncomingMessage(
+    conversation: ConversationEvent['conversation'],
+    message: Message
+  ): void {
+    const conversationId = conversation.id;
+
+    // --- cập nhật danh sách tin nhắn ---
     const existingMessages = this.messagesMap[conversationId] || [];
-    const messageExists = existingMessages.some((msg) => msg.id === message.id);
+    const messageExists = existingMessages.some((m) => m.id === message.id);
 
     if (!messageExists) {
       this.messagesMap[conversationId] = [...existingMessages, message].sort(
         (a, b) =>
           new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime()
       );
+
       if (this.selectedConversation?.id === conversationId) {
         this.updateCurrentMessages(conversationId);
+        this.markMessagesAsRead(conversationId); // 👈 mark read nếu đang mở
       }
     }
 
-    // Cập nhật danh sách hội thoại
+    // --- cập nhật danh sách hội thoại ---
     const convoIndex = this.conversations.findIndex(
       (c) => c.id === conversationId
     );
     if (convoIndex > -1) {
-      const updatedConvo = {
-        ...this.conversations[convoIndex],
-        lastMessage: message.message,
+      const old = this.conversations[convoIndex];
+      const updatedConvo: Conversation = {
+        ...old,
+        // lastMessage: message.message,
         modifiedDate: message.createdDate,
-        // unread:
-        //   this.selectedConversation?.id === conversationId
-        //     ? 0
-        //     : (this.conversations[convoIndex].unread || 0) + 1,
+        unreadCount:
+          this.selectedConversation?.id === conversationId
+            ? 0
+            : (old.unreadCount ?? 0) + 1,
       };
-      // Đưa hội thoại vừa cập nhật lên đầu
       this.conversations.splice(convoIndex, 1);
       this.conversations.unshift(updatedConvo);
+    } else {
+      // Nếu chưa có conversation trong list → thêm mới
+      this.conversations.unshift({
+        ...conversation,
+        lastMessage: message.message,
+        modifiedDate: message.createdDate,
+        unreadCount: this.selectedConversation?.id === conversationId ? 0 : 1,
+      } as Conversation);
     }
 
-    this.cdr.detectChanges(); // Báo cho Angular biết có thay đổi
+    this.cdr.detectChanges();
   }
 
   // --- UI Utilities ---

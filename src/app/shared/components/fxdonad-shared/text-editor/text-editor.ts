@@ -7,6 +7,7 @@ import {
   ViewChild,
   AfterViewInit,
   OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -75,6 +76,7 @@ export class TextEditor implements AfterViewInit, OnDestroy {
   @ViewChild('imageInput') imageInputRef!: ElementRef<HTMLInputElement>;
 
   private observer: MutationObserver | null = null;
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     this.initializeEditor();
@@ -107,6 +109,7 @@ export class TextEditor implements AfterViewInit, OnDestroy {
           this.value = content;
           this.valueChange.emit(content);
           this.onChange.emit(content);
+          this.cdr.detectChanges();
         }
       });
 

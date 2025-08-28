@@ -1,0 +1,12 @@
+<div class="main-post-container-layout">
+  <app-main-sidebar
+    *ngIf="showSidebar"
+    [sidebarItems]="sidebarData"
+    [isCollapsed]="isSidebarCollapsed"
+  >
+  </app-main-sidebar>
+
+  <div class="content-post-container">
+    <router-outlet />
+  </div>
+</div>

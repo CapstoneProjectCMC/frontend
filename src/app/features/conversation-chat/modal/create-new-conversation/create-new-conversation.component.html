@@ -69,11 +69,36 @@
         </div>
 
         <div *ngIf="isGroupChat()" class="group-name-input">
+          <!-- Ô nhập tên nhóm -->
           <input
             type="text"
             [(ngModel)]="groupName"
             placeholder="Đặt tên nhóm..."
           />
+
+          <!-- Avatar Preview + nút chọn file -->
+          <div class="avatar-upload">
+            <label class="avatar-label">
+              <img
+                *ngIf="fileAvatarPreview; else defaultAvatar"
+                [src]="fileAvatarPreview"
+                alt="Group Avatar"
+                class="avatar-preview"
+              />
+              <ng-template #defaultAvatar>
+                <div class="avatar-placeholder">+</div>
+              </ng-template>
+              <input
+                type="file"
+                accept="image/png, image/jpeg"
+                (change)="onFileSelected($event)"
+                hidden
+              />
+            </label>
+            <span class="avatar-text">{{
+              fileAvatarName ?? "Chọn ảnh nhom"
+            }}</span>
+          </div>
         </div>
       </div>
     </div>

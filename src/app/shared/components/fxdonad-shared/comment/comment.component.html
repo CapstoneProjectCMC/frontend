@@ -4,11 +4,7 @@
 
   <!-- Ô nhập bình luận -->
   <div class="comment-input" *ngIf="authenticated">
-    <img
-      [src]="buildImgAvatarUrl(userAvatar, 'small')"
-      alt="User Avatar"
-      class="avatar"
-    />
+    <img [src]="userAvatar" alt="User Avatar" class="avatar" />
     <input [(ngModel)]="newComment" placeholder="Viết bình luận..." />
     <button (click)="submitComment()">Gửi</button>
   </div>
@@ -22,10 +18,7 @@
     >
       <!-- Thông tin bình luận -->
       <div class="comment-header">
-        <img
-          [src]="buildImgAvatarUrl(comment.user.avatarUrl, 'tiny')"
-          class="avatar"
-        />
+        <img [src]="comment.user.avatarUrl" class="avatar" />
         <div
           class="line-connect"
           [class.opened]="!!showReplies[comment.id]"
@@ -52,10 +45,7 @@
         *ngIf="authenticated"
       >
         <div class="line-connect"></div>
-        <img
-          [src]="buildImgAvatarUrl(userAvatar, 'tiny')"
-          class="avatar small"
-        />
+        <img [src]="userAvatar" class="avatar small" />
         <input [(ngModel)]="replyMap[comment.id]" placeholder="Phản hồi..." />
         <button (click)="submitReplyComment(comment.id)">Gửi</button>
       </div>
@@ -69,10 +59,7 @@
           ></div>
           <div class="line-border-connect-replies"></div>
           <div class="comment-header-replies">
-            <img
-              [src]="buildImgAvatarUrl(reply.user.avatarUrl, 'small')"
-              class="avatar"
-            />
+            <img [src]="reply.user.avatarUrl" class="avatar" />
             <div class="replies-info">
               <div class="user-replies">
                 <strong>{{ reply.user.username }}</strong>

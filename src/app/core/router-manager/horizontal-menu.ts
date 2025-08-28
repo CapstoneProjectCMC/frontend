@@ -7,7 +7,7 @@ export function getNavHorizontalItems(role: string): SidebarItem[] {
   return [
     {
       id: 'post',
-      path: '/post-management/post-list',
+      path: '/post-features/post-list',
       label: 'Bài viết',
       icon: 'fas fa-newspaper',
     },

@@ -127,6 +127,7 @@ export const API_CONFIG = {
         `/chat/conversations?page=${page}&size=${size}`,
       GET_CHAT_MESSAGES: (page: number, size: number, conversationId: string) =>
         `/chat/messages?page=${page}&size=${size}&conversationId=${conversationId}`,
+      GET_POST_DETAILS: (postId: string) => `/post/${postId}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -172,7 +173,14 @@ export const API_CONFIG = {
       SEND_MESSAGE_IMG_TO_CHAT: (threadId: string) =>
         `/ai/chat/thread/${threadId}/messages-with-image`,
       CREATE_CONVERSATION: '/chat/conversation',
+      CREATE_GROUP_CONVERSATION: (groupName: string, topic: string | null) => {
+        let query = `chat/conversation/group?name=${groupName}`;
+        if (topic) query += `&topic=${topic}`;
+        return query;
+      },
       CREATE_CHAT_MESSAGE: '/chat/message',
+      MARK_AS_READ: (conversationId: string) =>
+        `/chat/conversation/${conversationId}/read`,
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,

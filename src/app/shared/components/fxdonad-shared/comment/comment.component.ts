@@ -19,9 +19,9 @@ import { avatarUrlDefault } from '../../../../core/constants/value.constant';
   styleUrls: ['./comment.component.scss'],
 })
 export class CommentComponent implements OnInit {
-  @Input() animeId: string = '';
+  @Input() contentId: string = '';
   comments: ICommentFilmResponse[] = [];
-  userAvatar: string = ''; // Avatar user hiện tại
+  userAvatar: string = avatarUrlDefault; // Avatar user hiện tại
   avatarDefault = avatarUrlDefault;
   role: string = '';
 
@@ -41,7 +41,7 @@ export class CommentComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.fetchComments(this.animeId, this.currentPage, this.pageSize);
+    // this.fetchComments(this.contentId, this.currentPage, this.pageSize);
     this.comments = mockComments;
   }
 
@@ -53,11 +53,11 @@ export class CommentComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['animeId'] && !changes['animeId'].firstChange) {
-      // Khi animeId thay đổi, reset trang và gọi fetch comment mới
+    if (changes['contentId'] && !changes['contentId'].firstChange) {
+      // Khi contentId thay đổi, reset trang và gọi fetch comment mới
       this.currentPage = 0;
       this.comments = []; // reset danh sách comment (nếu cần)
-      this.fetchComments(this.animeId, this.currentPage, this.pageSize);
+      this.fetchComments(this.contentId, this.currentPage, this.pageSize);
     }
   }
 
@@ -149,7 +149,7 @@ export class CommentComponent implements OnInit {
     if (!this.newComment.trim()) return;
 
     const data = {
-      animeId: this.animeId,
+      contentId: this.contentId,
       content: this.newComment,
     };
     // this.commentsService.createComment(data).subscribe({
@@ -175,7 +175,7 @@ export class CommentComponent implements OnInit {
     const comment = this.comments.find((c) => c.id === commentId);
     if (comment) {
       const data = {
-        animeId: this.animeId,
+        contentId: this.contentId,
         parentId: commentId,
         content: this.replyMap[commentId], // DÙNG replyMap[commentId] thay vì comment.content
       };
@@ -267,7 +267,7 @@ export class CommentComponent implements OnInit {
 
   loadMore() {
     this.currentPage++;
-    this.fetchComments(this.animeId, this.currentPage, this.pageSize);
+    this.fetchComments(this.contentId, this.currentPage, this.pageSize);
   }
 
   // Toggle hiển thị phản hồi

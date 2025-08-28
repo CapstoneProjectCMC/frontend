@@ -22,16 +22,44 @@ export class ChatService {
     );
   }
 
-  createConversation(type: string, participantIds: string[]) {
+  createConversation(participantIds: string[]) {
     return this.api.post<ApiResponse<Conversation>>(
       API_CONFIG.ENDPOINTS.POST.CREATE_CONVERSATION,
-      { type, participantIds }
+      { type: 'DIRECT', participantIds }
+    );
+  }
+
+  createGroupConversation(
+    groupName: string,
+    topic: string | null,
+    participantIds: string[],
+    fileAvatarGroup: File | null
+  ) {
+    const conversationRequest = JSON.stringify({
+      type: 'GROUP',
+      participantIds,
+    });
+
+    return this.api.postWithFormData<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.CREATE_GROUP_CONVERSATION(groupName, topic),
+      { conversationRequest },
+      fileAvatarGroup ? { fileAvatarGroup: fileAvatarGroup } : undefined
     );
   }
 
   createMessage(payload: { conversationId: string; message: string }) {
     return this.api.post<ApiResponse<Message>>(
       API_CONFIG.ENDPOINTS.POST.CREATE_CHAT_MESSAGE,
+      payload
+    );
+  }
+
+  markAsRead(
+    conversationId: string,
+    payload: { upToMessageId?: string; upToTime: string }
+  ) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.MARK_AS_READ(conversationId),
       payload
     );
   }

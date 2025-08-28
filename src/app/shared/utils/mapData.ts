@@ -7,10 +7,9 @@ import {
 } from '../../core/models/exercise.model';
 import {
   PostADD,
-  Post,
-  postData,
   PostCardInfo,
   PostResponse,
+  Post,
 } from '../../core/models/post.models';
 import {
   ResourceData,
@@ -85,9 +84,9 @@ export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
     time: post.createdAt,
     description: post.content,
     tags: [post.hashtag],
-    comment: 0,
-    upvote: 0,
-    downvote: 0,
+    comment: post.commentCount,
+    upvote: post.upvoteCount,
+    downvote: post.downvoteCount,
     public: post.isPublic,
   };
 }
@@ -157,5 +156,24 @@ export function mapToExerciseQuiz(ex: ExerciseCodeResponse): ExerciseQuiz {
     updatedAt: '',
     deletedBy: '',
     deletedAt: '',
+  };
+}
+
+export function mapPostDetailsToStructurePostPage(post: PostResponse): Post {
+  return {
+    id: post.postId,
+    userId: post.user?.userId ?? '',
+    orgId: post.orgId,
+    title: post.title,
+    content: post.content,
+    tags: post.hashtag.split(',').map((item) => item.trim()),
+    field: post.imagesUrls,
+    metrics: {
+      view: 0,
+      up: post.upvoteCount,
+      down: post.upvoteCount,
+      commentCount: post.commentCount,
+    },
+    status: post.status,
   };
 }
