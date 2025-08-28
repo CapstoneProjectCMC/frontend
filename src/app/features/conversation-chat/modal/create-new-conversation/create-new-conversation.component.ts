@@ -18,7 +18,10 @@ import {
 import { ChatService } from '../../../../core/services/api-service/chat-conversation.service';
 import { UserService } from '../../../../core/services/api-service/user.service';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
-import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import {
+  decodeJWT,
+  truncateString,
+} from '../../../../shared/utils/stringProcess';
 
 @Component({
   selector: 'app-create-new-conversation',
@@ -40,6 +43,9 @@ export class CreateNewConversationComponent implements OnInit, OnDestroy {
   selectedParticipants: SearchUserProfileResponse[] = [];
   groupName = '';
   avatarUrlDefault = avatarUrlDefault;
+  fileAvatarGroup: File | null = null;
+  fileAvatarPreview: string | null = null;
+  fileAvatarName: string | null = null;
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -131,32 +137,68 @@ export class CreateNewConversationComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  onFileSelected(event: any): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.fileAvatarGroup = input.files[0];
+      this.fileAvatarName = truncateString(this.fileAvatarGroup.name, 10);
+
+      // Tạo preview URL
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fileAvatarPreview = reader.result as string;
+      };
+      reader.readAsDataURL(this.fileAvatarGroup);
+    }
+  }
+
   createChat(): void {
     if (this.isCreateButtonDisabled()) {
       return;
     }
 
+    const currentUserId = decodeJWT(localStorage.getItem('token') ?? '')
+      ?.payload.userId;
     const participantIds = this.selectedParticipants.map((p) => p.userId);
-    // Thêm id của user hiện tại vào danh sách
-    const allParticipants = [
-      // thay bằng id của user hiện tại
-      ...participantIds,
-    ];
 
-    const type = this.isGroupChat() ? 'GROUP' : 'DIRECT';
+    // luôn thêm user hiện tại
+    const allParticipants = [currentUserId, ...participantIds];
 
-    this.chatService
-      .createConversation(type, allParticipants)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: (res) => {
-          this.chatCreated.emit(res.result);
-          this.closeModal();
-        },
-        error: (err) => {
-          console.error('Create conversation failed', err);
-        },
-      });
+    if (!this.isGroupChat()) {
+      // 🟢 Tạo chat 1-1
+      this.chatService
+        .createConversation(allParticipants)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res) => {
+            this.chatCreated.emit(res.result);
+            this.closeModal();
+          },
+          error: (err) => {
+            console.error('Create conversation failed', err);
+          },
+        });
+    } else {
+      // 🟢 Tạo chat nhóm
+
+      this.chatService
+        .createGroupConversation(
+          this.groupName,
+          null,
+          allParticipants,
+          this.fileAvatarGroup
+        )
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: (res) => {
+            this.chatCreated.emit(res.result);
+            this.closeModal();
+          },
+          error: (err) => {
+            console.error('Create group conversation failed', err);
+          },
+        });
+    }
   }
 
   closeModal(): void {

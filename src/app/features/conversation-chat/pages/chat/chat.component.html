@@ -77,15 +77,18 @@
               [src]="convo.conversationAvatar || avatarUrlDefault"
               alt="User Avatar"
             />
-            <!-- <span *ngIf="convo.unread > 0" class="unread-badge">{{
-              convo.unread
-            }}</span> -->
+
+            <div *ngIf="convo.unreadCount > 0" class="unread-wrapper">
+              <span class="unread-badge">{{ convo.unreadCount }}</span>
+              <span class="unread-ping"></span>
+            </div>
           </div>
+
           <div class="conversation-item__details">
             <div class="details__header">
               <span class="name">{{ convo.conversationName }}</span>
               <span class="date">{{
-                convo.modifiedDate | date : "shortDate"
+                convo.modifiedDate | date : "mediumDate"
               }}</span>
             </div>
             <!-- <p class="last-message">
@@ -129,6 +132,15 @@
             <span class="message-timestamp">{{
               msg.createdDate | date : "shortTime"
             }}</span>
+            <!-- hiển thị avatar tiny -->
+            <div class="read-by" *ngIf="msg.readBy?.length">
+              <img
+                *ngFor="let user of msg.readBy"
+                [src]="user.avatarUrl || avatarUrlDefault"
+                class="tiny-avatar"
+                [title]="user.displayName"
+              />
+            </div>
           </div>
         </div>
       </div>

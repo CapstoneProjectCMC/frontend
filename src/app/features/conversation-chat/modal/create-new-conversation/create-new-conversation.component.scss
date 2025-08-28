@@ -198,12 +198,50 @@
   }
   .group-name-input {
     margin-top: 24px;
-    input {
+
+    input[type="text"] {
       width: 100%;
       padding: 12px;
       border: 1px solid #ddd;
       border-radius: 8px;
       box-sizing: border-box;
+      margin-bottom: 16px;
+    }
+
+    .avatar-upload {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .avatar-label {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .avatar-preview,
+      .avatar-placeholder {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ddd;
+      }
+
+      .avatar-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #999;
+        background-color: #f0f0f0;
+      }
+
+      .avatar-text {
+        font-size: 14px;
+        color: #555;
+      }
     }
   }
 }

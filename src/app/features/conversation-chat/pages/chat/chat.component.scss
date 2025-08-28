@@ -83,10 +83,18 @@
   flex-shrink: 0;
 }
 
-.unread-badge {
+.unread-wrapper {
   position: absolute;
-  top: -2px;
-  right: -2px;
+  top: -4px;
+  right: -4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unread-badge {
+  position: relative;
+  z-index: 2;
   background-color: #f44336;
   color: white;
   border-radius: 50%;
@@ -98,6 +106,32 @@
   align-items: center;
   justify-content: center;
   border: 2px solid var(--background-color);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.unread-ping {
+  position: absolute;
+  z-index: 1;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: rgba(244, 67, 54, 0.4);
+  animation: ping-wave 1.5s infinite ease-out;
+}
+
+@keyframes ping-wave {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
 }
 
 /* --- Danh sách cuộc trò chuyện --- */
@@ -189,6 +223,20 @@
   border-radius: 18px;
   background-color: var(--other-message-bg);
   word-wrap: break-word;
+  .read-by {
+    display: flex;
+    gap: 4px;
+    margin-top: 2px;
+
+    .tiny-avatar {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid #fff;
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    }
+  }
 
   .message-content {
     margin: 0;
