@@ -33,6 +33,7 @@ import { BtnType1Component } from '../../../../shared/components/fxdonad-shared/
 import { GenerateExerciseModalComponent } from '../../exercise-modal/generate-exercise/generate-exercise.component';
 import { LottieComponent } from 'ngx-lottie';
 import { lottieOptions } from '../../../../core/constants/value.constant';
+import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleActions';
 
 @Component({
   selector: 'app-list-exercise',
@@ -82,6 +83,8 @@ export class ListExerciseComponent implements OnInit {
   listExercise: CardExcercise[] = [];
   tags: { value: string; label: string }[] = [];
   difficultyLevel: { value: string; label: string }[] = [];
+
+  isActionActive = activeForAdminAndTeacher();
 
   constructor(
     private store: Store,

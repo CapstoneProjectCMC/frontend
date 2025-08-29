@@ -32,6 +32,9 @@ import {
 } from '../../../../shared/store/loading-state/loading.action';
 import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/tooltip';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
+import { getUserRoles } from '../../../../shared/utils/userInfo';
+import { activeForMyContent } from '../../../../shared/utils/authenRoleActions';
+import { isAvailabelTime } from '../../../../shared/utils/availableTime';
 
 @Component({
   selector: 'app-exercise-details',
@@ -147,6 +150,13 @@ export class ExerciseDetailsComponent implements OnInit {
   difficultyStars = [1, 2, 3];
   difficultyLevel = 1;
 
+  roles = getUserRoles();
+  isActionActive = false;
+  nowDate = new Date();
+  expirationDate: Date | null = null;
+  availabelDate: Date | null = null;
+  canStartDoing = false;
+
   constructor(
     private route: ActivatedRoute,
     private exerciseService: ExerciseService,
@@ -173,8 +183,23 @@ export class ExerciseDetailsComponent implements OnInit {
             if (res.result.user) {
               this.authorName = res.result.user.displayName;
               this.avatarUrl = res.result.user.avatarUrl;
+              this.availabelDate = res.result.startTime
+                ? new Date(res.result.startTime)
+                : null;
+              this.expirationDate = res.result.endTime
+                ? new Date(res.result.endTime)
+                : null;
             }
             this.setDifficultyLevel();
+            this.isActionActive = activeForMyContent(
+              res.result.user?.username ?? '',
+              res.result.user?.email ?? '',
+              this.roles.includes('ADMIN')
+            );
+            this.canStartDoing = isAvailabelTime(
+              this.availabelDate,
+              this.expirationDate
+            );
           }
         },
         error: (err) => {

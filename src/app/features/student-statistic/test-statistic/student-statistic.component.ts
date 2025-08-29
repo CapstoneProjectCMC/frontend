@@ -17,6 +17,8 @@ export class StudentStatisticComponent {
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
+    accountName: '',
+    email: '',
     title: 'Làm thế nào để tối ưu hóa hiệu suất của thuật toán cây nhị phân',
     time: '2025-07-20T10:00:00',
     description:
@@ -33,6 +35,8 @@ export class StudentStatisticComponent {
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
+    accountName: '',
+    email: '',
     title: 'Làm thế nào để tối ưu hóa hiệu suất của thuật toán cây nhị phân',
     time: '2025-07-20T10:00:00',
     description:
@@ -49,6 +53,8 @@ export class StudentStatisticComponent {
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
+    accountName: '',
+    email: '',
     title: 'Làm thế nào để tối ưu hóa hiệu suất của thuật toán cây nhị phân',
     time: '2025-07-20T10:00:00',
     description:

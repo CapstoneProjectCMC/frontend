@@ -66,6 +66,7 @@
     </div>
     <div class="post-card__actions">
       <button
+        *ngIf="active"
         type="button"
         class="post-card__button"
         (click)="onDeleteClick($event)"

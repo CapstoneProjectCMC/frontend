@@ -82,6 +82,8 @@ export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
     id: post.postId,
     avatar: post.user?.avatarUrl || avatarUrlDefault,
     author: post.user?.displayName || 'Ẩn danh',
+    accountName: post.user?.username || '',
+    email: post.user?.email || '',
     title: post.title,
     time: post.createdAt,
     description: post.content,
