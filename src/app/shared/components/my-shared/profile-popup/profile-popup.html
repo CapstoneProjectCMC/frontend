@@ -52,6 +52,10 @@
         <span class="detail-infor-value">{{user.gender?"Nữ":"Nam"}}</span>
       </div>
       <div class="detail-infor-item">
+        <span class="detail-infor-label">Quyền hạn: </span>
+        <span class="detail-infor-value">{{user.roles.join(', ')}}</span>
+      </div>
+      <div class="detail-infor-item">
         <span class="detail-infor-label">Ngày sinh: </span>
         <span class="detail-infor-value">{{user.dob}}</span>
       </div>

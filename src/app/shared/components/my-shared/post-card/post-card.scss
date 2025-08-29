@@ -198,6 +198,10 @@
       height: 18px;
     }
 
+    &.no-cursor {
+      cursor: auto;
+    }
+
     // // Modifiers
     // &--danger {
     //   color: var(--color-error);

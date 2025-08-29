@@ -1,4 +1,5 @@
 import { DecodedJwtPayload } from '../../core/models/data-handle';
+import { decodeJWT } from './stringProcess';
 // Hàm lấy userInfo từ localStorage
 export function getUserInfoFromLocalStorage(): DecodedJwtPayload | null {
   const userInfoString = localStorage.getItem('userInfo');
@@ -36,5 +37,16 @@ export function getUserInfoFromCookies(
   } catch (e) {
     console.error('Error parsing userInfo from cookies:', e);
     return null;
+  }
+}
+
+export function checkAuthenticated(): boolean {
+  const decoded = decodeJWT(localStorage.getItem('token') ?? '');
+
+  if (decoded?.expiresAt) {
+    const expiresAt = new Date(decoded.expiresAt); // nếu expiresAt là string
+    return expiresAt > new Date();
+  } else {
+    return false;
   }
 }

@@ -26,6 +26,7 @@ export class StudentStatisticComponent {
     upvote: 12,
     downvote: 1,
     public: true,
+    allowComment: false,
   };
   postCardDataApproved: PostCardInfo = {
     id: '2',
@@ -41,6 +42,7 @@ export class StudentStatisticComponent {
     upvote: 12,
     downvote: 1,
     public: true,
+    allowComment: false,
   };
   postCardDataPending: PostCardInfo = {
     id: '1',
@@ -56,6 +58,7 @@ export class StudentStatisticComponent {
     upvote: 12,
     downvote: 1,
     public: true,
+    allowComment: false,
   };
   handleEdit = () => {
     console.log('Edit clicked');

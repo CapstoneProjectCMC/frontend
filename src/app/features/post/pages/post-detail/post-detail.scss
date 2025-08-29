@@ -27,7 +27,7 @@
 
   // --- CỘT NỘI DUNG CHÍNH (BÊN TRÁI) ---
   .post-detail-content {
-    flex: 1;
+    flex: 4;
     display: flex;
     flex-direction: column;
     min-width: 0; // Quan trọng để flexbox hoạt động đúng
@@ -230,7 +230,7 @@
 
   // --- CỘT MỤC LỤC (BÊN PHẢI) ---
   .post-sidebar {
-    width: 300px;
+    flex: 1;
     flex-shrink: 0;
 
     .sidebar-title {
@@ -272,6 +272,15 @@
     .no-toc {
       font-size: 0.9rem;
       color: var(--text-muted-color);
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+    max-height: none;
+    height: auto;
+    .post-detail-content {
+      max-height: none;
     }
   }
 }

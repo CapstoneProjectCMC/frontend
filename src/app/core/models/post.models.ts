@@ -10,6 +10,7 @@ export interface PostCardInfo {
   upvote: number;
   downvote: number;
   public: boolean;
+  allowComment: boolean;
 }
 
 export interface Tag {
