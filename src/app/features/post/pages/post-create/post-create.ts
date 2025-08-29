@@ -1,9 +1,8 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgIf, Location, CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  NgZone,
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -32,6 +31,13 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 
+export interface Draft {
+  id: string; // ID duy nhất cho mỗi bản nháp
+  title: string;
+  timestamp: number; // Ngày giờ lưu (dạng timestamp)
+  data: any; // Dữ liệu của post và editor
+}
+
 @Component({
   selector: 'app-post-create',
   templateUrl: './post-create.html',
@@ -43,10 +49,14 @@ import {
     ButtonComponent,
     FormsModule,
     NgIf,
+    CommonModule,
   ],
 })
 export class PostCreatePageComponent {
   @ViewChild('linkInput') linkInput!: ElementRef<HTMLInputElement>;
+
+  drafts: Draft[] = [];
+  selectedDraftId: string | null = null;
 
   post: PostADD = {
     title: '',
@@ -66,9 +76,9 @@ export class PostCreatePageComponent {
   ];
 
   wherepost: { value: string; label: string }[] = [
-    { value: '550e8400-e29b-41d4-a716-446655440000', label: 'Where 1' },
-    { value: '550e8400-e29b-41d4-a716-446655440000', label: 'Where 2' },
-    { value: '550e8400-e29b-41d4-a716-446655440000', label: 'Where 3' },
+    { value: '0', label: 'Where 1' },
+    { value: '1', label: 'Where 2' },
+    { value: '2', label: 'Where 3' },
   ];
 
   topics: { value: string; label: string }[] = [
@@ -83,7 +93,7 @@ export class PostCreatePageComponent {
   constructor(
     private htmlToMd: HtmlToMdService,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone,
+    private location: Location,
     private postService: PostService,
     private store: Store,
     private router: Router
@@ -93,57 +103,54 @@ export class PostCreatePageComponent {
   selectedFile: File | null = null;
   filePreview: string | null = null;
   isImageFile: boolean = false;
+  isVideoFile: boolean = false;
+
+  ngOnInit(): void {
+    this.loadAllDrafts();
+  }
 
   onFileSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
+
+      // Reset tất cả các cờ
+      this.selectedFile = null;
+      this.filePreview = null;
+      this.isImageFile = false;
+      this.isVideoFile = false;
+
       if (file.type.startsWith('image/')) {
         this.selectedFile = file;
         this.isImageFile = true;
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          if (e.target?.result) this.filePreview = e.target.result as string;
-        };
-        reader.readAsDataURL(file);
+      } else if (file.type.startsWith('video/')) {
+        this.selectedFile = file;
+        this.isVideoFile = true;
       } else {
-        this.selectedFile = null;
-        this.filePreview = null;
-        this.isImageFile = false;
+        // Nếu không phải ảnh hoặc video, không làm gì cả
+        return;
       }
+
+      // Đọc file để tạo URL xem trước
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          this.filePreview = e.target.result as string;
+          // Kích hoạt phát hiện thay đổi để cập nhật UI
+          this.cdr.detectChanges();
+        }
+      };
+      reader.readAsDataURL(file);
     }
   }
 
-  removeImage() {
+  removeFile() {
+    // Đổi tên từ removeImage thành removeFile
     this.selectedFile = null;
     this.filePreview = null;
-  }
-
-  // ===== Link cũ (oldImgesUrls) =====
-  newLink = '';
-  isAddingLink = false;
-
-  startAddLink() {
-    this.ngZone.run(() => {
-      this.isAddingLink = true;
-      this.cdr.detectChanges();
-      setTimeout(() => this.linkInput?.nativeElement?.focus());
-    });
-  }
-
-  addLink() {
-    const trimmed = this.newLink.trim();
-    if (trimmed) {
-      this.post.fileUrls = trimmed; // gán trực tiếp string
-      this.newLink = '';
-      this.isAddingLink = false;
-      this.cdr.detectChanges();
-    }
-  }
-
-  removeLink() {
-    this.post.fileUrls = '';
+    this.isImageFile = false;
+    this.isVideoFile = false;
+    this.post.fileDocument = null; // Xóa luôn mô tả khi remove file
   }
 
   // ===== Input handlers =====
@@ -188,9 +195,6 @@ export class PostCreatePageComponent {
 
   // ===== Text editor =====
   editorContent: string = '';
-  readonlyContent: string =
-    '<h2>This is a readonly text editor</h2><p>You cannot edit this content.</p><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>';
-  minimalContent: string = '';
 
   editorConfig: TextEditorConfig = {
     placeholder: 'Nhập nội dung của bạn ở đây...',
@@ -216,36 +220,74 @@ export class PostCreatePageComponent {
     },
   };
 
-  readonlyConfig: TextEditorConfig = {
-    placeholder: 'Readonly content',
-    height: '200px',
-    readonly: true,
-    toolbar: {},
-  };
-
-  minimalConfig: TextEditorConfig = {
-    placeholder: 'Minimal toolbar editor...',
-    height: '200px',
-    readonly: false,
-    toolbar: { bold: true, italic: true, bulletList: true, numberedList: true },
-  };
-
-  onContentChange(content: string) {}
+  onContentChange(content: string) {
+    this.editorContent = content;
+  }
   onEditorFocus() {}
   onEditorBlur() {}
   clearContent() {
     this.editorContent = '';
   }
-  toggleReadonly() {
-    setTimeout(() => {
-      this.editorConfig.readonly = !this.editorConfig.readonly;
-      this.editorConfig = { ...this.editorConfig };
-    });
-  }
 
   // ===== Submit =====
   saveDraftPost(): void {
-    console.log('Draft post saved:', this.post.title);
+    // Tạo một bản nháp mới
+    const newDraft: Draft = {
+      id: Date.now().toString(), // Tạo ID duy nhất từ timestamp
+      title: this.post.title || `Bản nháp lúc ${new Date().toLocaleString()}`,
+      timestamp: Date.now(),
+      data: {
+        postState: this.post,
+        editorHTML: this.editorContent,
+      },
+    };
+
+    // Thêm bản nháp mới vào danh sách
+    this.drafts.unshift(newDraft); // Thêm vào đầu mảng để bản nháp mới nhất ở trên
+    this.saveDraftsToLocalStorage();
+
+    sendNotification(
+      this.store,
+      'Đã lưu nháp',
+      'Bản nháp của bạn đã được lưu',
+      'success'
+    );
+  }
+
+  loadAllDrafts(): void {
+    const draftsJson = localStorage.getItem('postDrafts');
+    if (draftsJson) {
+      try {
+        this.drafts = JSON.parse(draftsJson);
+        // Sắp xếp theo ngày giờ mới nhất
+        this.drafts.sort((a, b) => b.timestamp - a.timestamp);
+      } catch (e) {
+        console.error('Lỗi khi tải bản nháp:', e);
+        this.drafts = [];
+        localStorage.removeItem('postDrafts');
+      }
+    }
+  }
+
+  // Hàm helper để cập nhật UI của dropdowns
+  updateSelectedOptionsFromDraft(): void {
+    if (this.post.hashtag) {
+      const selectedTopic = this.topics.find(
+        (t) => t.value === this.post.hashtag
+      );
+      if (selectedTopic) this.selectedOptions['hashtag'] = selectedTopic;
+    }
+    if (this.post.orgId) {
+      const selectedWhere = this.wherepost.find(
+        (w) => w.value === this.post.orgId
+      );
+      if (selectedWhere) this.selectedOptions['wherepost'] = selectedWhere;
+    }
+    // Lưu ý: Phần tag multi-select phức tạp hơn, nếu cần sẽ xử lý riêng
+  }
+
+  private saveDraftsToLocalStorage(): void {
+    localStorage.setItem('postDrafts', JSON.stringify(this.drafts));
   }
 
   createPost(): void {
@@ -275,19 +317,16 @@ export class PostCreatePageComponent {
       hashtag: this.post.hashtag,
       fileDocument: {
         file: this.post.fileDocument?.file,
-
         description: this.post.fileDocument?.description,
-
-        isLectureVideo:
-          this.post.fileDocument?.file?.type?.startsWith('video/') ?? false,
-        isTextBook:
-          this.post.fileDocument?.file?.type?.startsWith('image/') ?? false,
+        isLectureVideo: this.isVideoFile, // Sử dụng cờ isVideoFile
+        isTextBook: this.isImageFile, // Sử dụng cờ isImageFile
       },
     };
 
     this.postService.createPost(payload).subscribe({
       next: (res) => {
         sendNotification(this.store, 'Tạo bài viết', 'Thành công', 'success');
+        localStorage.removeItem('postDraft');
         setTimeout(() => {
           this.router.navigate(['/post-management/post-list']);
           this.store.dispatch(clearLoading());
@@ -300,8 +339,63 @@ export class PostCreatePageComponent {
     });
   }
 
+  restoreDraft(draft: Draft): void {
+    this.selectedDraftId = draft.id;
+    const draftData = draft.data;
+    this.post = { ...draftData.postState };
+    this.editorContent = draftData.editorHTML;
+    this.updateSelectedOptionsFromDraft(); // Hàm này vẫn giữ nguyên
+
+    // Khôi phục file preview nếu có
+    if (this.post.fileDocument?.file) {
+      // Lưu ý: file trong localStorage chỉ là chuỗi, không phải object File.
+      // Bạn cần xử lý trường hợp này, ví dụ: lưu base64 hoặc chỉ lưu URL
+    }
+
+    sendNotification(
+      this.store,
+      'Khôi phục bản nháp',
+      `Đã khôi phục bản nháp: "${draft.title}"`,
+      'info'
+    );
+  }
+
+  deleteDraft(draftId: string): void {
+    this.drafts = this.drafts.filter((d) => d.id !== draftId);
+    this.saveDraftsToLocalStorage();
+    if (this.selectedDraftId === draftId) {
+      this.selectedDraftId = null;
+      this.clearCurrentPost(); // Tùy chọn: xóa hết dữ liệu hiện tại khi xóa bản nháp đang chọn
+    }
+    sendNotification(
+      this.store,
+      'Xóa bản nháp',
+      'Bản nháp đã được xóa',
+      'warning'
+    );
+  }
+
+  clearCurrentPost(): void {
+    this.post = {
+      title: '',
+      content: '',
+      isPublic: true,
+      allowComment: true,
+      postType: 'Global',
+      fileUrls: '',
+      hashtag: '',
+      fileDocument: null,
+    };
+    this.editorContent = '';
+    this.selectedFile = null;
+    this.filePreview = null;
+    this.isImageFile = false;
+    this.isVideoFile = false;
+    this.selectedOptions = {};
+  }
+
   cancelPost(): void {
-    console.log('Post creation cancelled');
+    this.location.back();
   }
 
   mapCreateExerciseToCardDataUI(data: PostADD): Post {

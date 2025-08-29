@@ -63,7 +63,7 @@ export class CardExcerciseComponent {
   }
 
   ngAfterViewInit() {
-    this.checkOverflow();
+    setTimeout(() => this.checkOverflow(), 0);
   }
 
   setDifficultyLevel() {

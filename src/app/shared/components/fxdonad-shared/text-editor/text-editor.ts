@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   OnDestroy,
   ChangeDetectorRef,
+  SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -75,6 +76,7 @@ export class TextEditor implements AfterViewInit, OnDestroy {
   @ViewChild('editor') editorRef!: ElementRef<HTMLDivElement>;
   @ViewChild('imageInput') imageInputRef!: ElementRef<HTMLInputElement>;
 
+  private editorInstance: any;
   private observer: MutationObserver | null = null;
   constructor(private cdr: ChangeDetectorRef) {}
 
@@ -86,6 +88,12 @@ export class TextEditor implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     if (this.observer) {
       this.observer.disconnect();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['value'] && this.editorRef?.nativeElement) {
+      this.editorRef.nativeElement.innerHTML = this.value || '';
     }
   }
 
@@ -109,7 +117,7 @@ export class TextEditor implements AfterViewInit, OnDestroy {
           this.value = content;
           this.valueChange.emit(content);
           this.onChange.emit(content);
-          this.cdr.detectChanges();
+          this.cdr.markForCheck();
         }
       });
 

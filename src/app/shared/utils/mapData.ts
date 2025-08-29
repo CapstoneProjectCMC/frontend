@@ -171,7 +171,7 @@ export function mapPostDetailsToStructurePostPage(post: PostResponse): Post {
     title: post.title,
     content: post.content,
     tags: post.hashtag.split(',').map((item) => item.trim()),
-    field: post.imagesUrls,
+    field: post.fileUrls,
     metrics: {
       view: 0,
       up: post.upvoteCount,
