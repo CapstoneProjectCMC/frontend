@@ -152,56 +152,92 @@ export class PostListComponent {
     return data.map((info) => mapPostdatatoPostCardInfo(info));
   }
 
-  //sai logic -- khi nào sửa lại sau
+  // thêm field quản lý loading theo post
+  pendingVote: { [postId: string]: boolean } = {};
+
   handleUpVote(id: string) {
+    if (this.pendingVote[id]) return; // chặn spam
+    const post = this.posts.find((p) => p.id === id);
+    if (!post) return;
+
+    const prevVote = this.voteStates[id] ?? null;
+    this.pendingVote[id] = true;
+
+    // ✅ Optimistic update
+    if (prevVote === 'upvote') {
+      post.upvote = Math.max((post.upvote ?? 0) - 1, 0);
+      this.voteStates[id] = null;
+    } else {
+      if (prevVote === 'downvote') {
+        post.downvote = Math.max((post.downvote ?? 0) - 1, 0);
+      }
+      post.upvote = (post.upvote ?? 0) + 1;
+      this.voteStates[id] = 'upvote';
+    }
+
+    // Gửi request
     this.postservice.reactionPost(id, 'upvote').subscribe({
       next: () => {
-        const post = this.posts.find((p) => p.id === id);
-        if (!post) return;
-
-        const currentVote = this.voteStates[id] ?? null;
-
-        if (currentVote === 'upvote') {
-          // 🔄 Bỏ upvote
-          post.upvote = (post.upvote ?? 0) - 1;
-          this.voteStates[id] = null;
-        } else {
-          // Nếu trước đó đã downvote thì bỏ downvote
-          if (currentVote === 'downvote') {
-            post.downvote = (post.downvote ?? 0) - 1;
-          }
-          // ✅ Thêm upvote
-          post.upvote = (post.upvote ?? 0) + 1;
-          this.voteStates[id] = 'upvote';
-        }
+        this.pendingVote[id] = false; // ✅ OK, giữ state hiện tại
       },
-      error: (err) => console.error(err),
+      error: () => {
+        // ❌ Rollback
+        if (prevVote === 'upvote') {
+          post.upvote = (post.upvote ?? 0) + 1;
+        } else {
+          if (prevVote === 'downvote') {
+            post.downvote = (post.downvote ?? 0) + 1;
+            post.upvote = Math.max((post.upvote ?? 0) - 1, 0);
+          } else {
+            post.upvote = Math.max((post.upvote ?? 0) - 1, 0);
+          }
+        }
+        this.voteStates[id] = prevVote;
+        this.pendingVote[id] = false;
+      },
     });
   }
 
   handleDownVote(id: string) {
+    if (this.pendingVote[id]) return;
+    const post = this.posts.find((p) => p.id === id);
+    if (!post) return;
+
+    const prevVote = this.voteStates[id] ?? null;
+    this.pendingVote[id] = true;
+
+    // ✅ Optimistic update
+    if (prevVote === 'downvote') {
+      post.downvote = Math.max((post.downvote ?? 0) - 1, 0);
+      this.voteStates[id] = null;
+    } else {
+      if (prevVote === 'upvote') {
+        post.upvote = Math.max((post.upvote ?? 0) - 1, 0);
+      }
+      post.downvote = (post.downvote ?? 0) + 1;
+      this.voteStates[id] = 'downvote';
+    }
+
+    // Gửi request
     this.postservice.reactionPost(id, 'downvote').subscribe({
       next: () => {
-        const post = this.posts.find((p) => p.id === id);
-        if (!post) return;
-
-        const currentVote = this.voteStates[id] ?? null;
-
-        if (currentVote === 'downvote') {
-          // 🔄 Bỏ downvote
-          post.downvote = (post.downvote ?? 0) - 1;
-          this.voteStates[id] = null;
-        } else {
-          // Nếu trước đó đã upvote thì bỏ upvote
-          if (currentVote === 'upvote') {
-            post.upvote = (post.upvote ?? 0) - 1;
-          }
-          // ✅ Thêm downvote
-          post.downvote = (post.downvote ?? 0) + 1;
-          this.voteStates[id] = 'downvote';
-        }
+        this.pendingVote[id] = false;
       },
-      error: (err) => console.error(err),
+      error: () => {
+        // ❌ Rollback
+        if (prevVote === 'downvote') {
+          post.downvote = (post.downvote ?? 0) + 1;
+        } else {
+          if (prevVote === 'upvote') {
+            post.upvote = (post.upvote ?? 0) + 1;
+            post.downvote = Math.max((post.downvote ?? 0) - 1, 0);
+          } else {
+            post.downvote = Math.max((post.downvote ?? 0) - 1, 0);
+          }
+        }
+        this.voteStates[id] = prevVote;
+        this.pendingVote[id] = false;
+      },
     });
   }
 

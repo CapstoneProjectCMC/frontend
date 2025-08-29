@@ -63,11 +63,20 @@
             {{ exercise.visibility ? "Tất cả" : "Chỉ định" }}
           </span>
         </div>
-        <div class="time-info">
+        <div class="time-info" title="Thời gian bắt đầu và kết thúc">
           <i class="fa-regular fa-clock"></i>
           <span *ngIf="exercise.startTime">
-            {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} -
-            {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}
+            {{
+              exercise.startTime
+                ? (exercise.startTime | date : "dd/MM/yyyy HH:mm")
+                : "Có thể bắt đầu"
+            }}
+            -
+            {{
+              exercise.endTime
+                ? (exercise.endTime | date : "dd/MM/yyyy HH:mm")
+                : "Chưa có hạn"
+            }}
           </span>
         </div>
       </div>
@@ -163,7 +172,7 @@
         <i class="fa-solid fa-arrow-left"></i>
       </button>
 
-      <div class="admin-actions">
+      <div class="admin-actions" *ngIf="isActionActive">
         <div class="dropdown">
           <button
             class="btn btn-warning dropdown-toggle"
@@ -199,6 +208,7 @@
       </div>
 
       <button
+        *ngIf="canStartDoing"
         class="btn btn-primary"
         (click)="confirmCoding()"
         title="Bắt đầu làm bài"

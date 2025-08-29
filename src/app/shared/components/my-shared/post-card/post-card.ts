@@ -10,6 +10,12 @@ import { PostCardInfo } from '../../../../core/models/post.models';
 import { SanitizeHtmlPipe } from '../../../pipes/sanitizeHtml.pipe';
 import { NormalizeHtmlPipe } from '../../../pipes/normalize-html.pip';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
+import {
+  getUserEmail,
+  getUserName,
+  getUserRoles,
+} from '../../../utils/userInfo';
+import { activeForMyContent } from '../../../utils/authenRoleActions';
 
 @Component({
   selector: 'app-post-card',
@@ -33,6 +39,17 @@ export class PostCardComponent {
   @Output() comment = new EventEmitter<void>();
   @Output() report = new EventEmitter<void>();
   @Output() save = new EventEmitter<void>();
+
+  roles = getUserRoles();
+  active = false;
+
+  ngOnInit() {
+    this.active = activeForMyContent(
+      this.post.accountName,
+      this.post.email,
+      this.roles.includes('ADMIN')
+    );
+  }
 
   get popularityClass(): string {
     switch (this.popular) {

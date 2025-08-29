@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  background-color: #d9d9d9;
+  background-color: var(--background-color-secondary);
   width: 100%;
   padding: 20px;
   max-height: 100vh;
@@ -30,7 +30,7 @@
     input {
       flex: 1;
       padding: 8px;
-      border: 1px solid #ccc;
+      border: 1px solid var(--border-color);
       border-radius: 5px;
       height: 25px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
@@ -38,7 +38,7 @@
     }
 
     button {
-      background: #5d5757;
+      background: var(--button-color);
       color: white;
       border: none;
       padding: 12px 16px;
@@ -48,7 +48,7 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
 
       &:hover {
-        background: #323232;
+        background: oklch(from var(--button-color) calc(l * 1.2) c h);
       }
     }
   }
@@ -58,7 +58,7 @@
     border-radius: 12px;
     overflow-y: auto;
     overflow-x: hidden;
-    background-color: #ffffff;
+    background-color: var(--background-color);
     width: 100%;
     word-break: break-word; // Đảm bảo từ dài bị ngắt đúng cách
     .comment-item {
@@ -78,7 +78,7 @@
           top: 40px; /* Giúp line-connect tự động kéo dài */
           height: 0;
           opacity: 0;
-          border-left: 2px black solid;
+          border-left: 2px var(--border-color) solid;
           &.opened {
             height: calc(100% - 40px);
             opacity: 1;
@@ -128,7 +128,7 @@
           left: 20px; /* Điều chỉnh khoảng cách với comment chính */
           top: 0;
           bottom: 0; /* Giúp line-connect tự động kéo dài */
-          border-left: 2px black solid;
+          border-left: 2px var(--border-color) solid;
         }
 
         // Ẩn ban đầu
@@ -157,14 +157,14 @@
         }
 
         button {
-          background: #4b4b4b;
+          background: var(--button-color);
           color: white;
           padding: 5px 10px;
           border-radius: 5px;
           cursor: pointer;
 
           &:hover {
-            background: #3d3d3d;
+            background: oklch(from var(--button-color) calc(l * 1.2) c h);
           }
         }
       }
@@ -189,8 +189,8 @@
             top: 0;
             bottom: 0; /* Giúp line-connect tự động kéo dài */
             width: 27px;
-            border-left: 2px black solid;
-            border-bottom: 1px black solid;
+            border-left: 2px var(--border-color) solid;
+            border-bottom: 1px var(--border-color) solid;
             border-bottom-left-radius: 25px;
             height: 30px;
           }

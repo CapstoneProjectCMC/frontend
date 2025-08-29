@@ -128,6 +128,13 @@ export const API_CONFIG = {
       GET_CHAT_MESSAGES: (page: number, size: number, conversationId: string) =>
         `/chat/messages?page=${page}&size=${size}&conversationId=${conversationId}`,
       GET_POST_DETAILS: (postId: string) => `/post/${postId}`,
+      GET_COMMENT_BY_POST_ID: (
+        postId: string,
+        page: number,
+        size: number,
+        replySize: number
+      ) =>
+        `/post/${postId}/comments?page=${page}&size=${size}&replySize=${replySize}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -178,6 +185,9 @@ export const API_CONFIG = {
       MARK_AS_READ: (conversationId: string) =>
         `/chat/conversation/${conversationId}/read`,
       REACTION_POST: (postId: string) => `/post/${postId}/reaction/toggle`,
+      ADD_COMMENT_POST: (postId: string) => `/post/${postId}/comment`,
+      ADD_REPLY_COMMENT_POST: (postId: string, commentId: string) =>
+        `/post/${postId}/comment/${commentId}`,
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,
@@ -210,6 +220,7 @@ export const API_CONFIG = {
       DELETE_THREAD_CHATBOT: (threadId: string) =>
         `/ai/chat/thread/${threadId}`,
       DELETE_POST: (postId: string) => `/post/${postId}`,
+      DELETE_COMMENT_POST: (commentId: string) => `/post/comment/${commentId}`,
     },
   },
   HEADERS: {

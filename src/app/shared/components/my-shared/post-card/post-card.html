@@ -52,11 +52,13 @@
         <i class="fa-regular fa-thumbs-down"></i>
         <span>{{ post.downvote }}</span>
       </button>
+
       <button
         type="button"
-        class="post-card__button"
+        class="post-card__button no-cursor"
         (click)="onCommentClick($event)"
         title="Bình luận"
+        *ngIf="post.allowComment"
       >
         <i class="fa-regular fa-comment"></i>
         <span>{{ post.comment }}</span>
@@ -64,6 +66,7 @@
     </div>
     <div class="post-card__actions">
       <button
+        *ngIf="active"
         type="button"
         class="post-card__button"
         (click)="onDeleteClick($event)"

@@ -167,4 +167,10 @@ export class PostDetailComponent {
       error: (err) => console.error(err),
     });
   }
+
+  countComment() {
+    if (this.post?.commentCount) {
+      this.post.commentCount++;
+    }
+  }
 }

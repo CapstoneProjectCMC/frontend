@@ -1,6 +1,10 @@
 import { avatarUrlDefault } from '../../core/constants/value.constant';
 import { ExerciseCodeResponse } from '../../core/models/code.model';
 import {
+  CommentResponse,
+  ICommentFilmResponse,
+} from '../../core/models/comment.models';
+import {
   CreateExerciseRequest,
   ExerciseItem,
   ExerciseQuiz,
@@ -78,6 +82,8 @@ export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
     id: post.postId,
     avatar: post.user?.avatarUrl || avatarUrlDefault,
     author: post.user?.displayName || 'Ẩn danh',
+    accountName: post.user?.username || '',
+    email: post.user?.email || '',
     title: post.title,
     time: post.createdAt,
     description: post.content,
@@ -86,6 +92,7 @@ export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
     upvote: post.upvoteCount,
     downvote: post.downvoteCount,
     public: post.isPublic,
+    allowComment: post.allowComment,
   };
 }
 export function maptoReourseCard(resourse: ResourceData): resourceCardInfo {
@@ -172,4 +179,32 @@ export function mapPostDetailsToStructurePostPage(post: PostResponse): Post {
       commentCount: post.commentCount,
     },
   };
+}
+
+export function mapCommentToFilmResponse(
+  comment: CommentResponse
+): ICommentFilmResponse {
+  return {
+    id: comment.commentId,
+    parentId: comment.parentCommentId ?? null,
+    content: comment.content,
+    isDeactivated: false, // default vì trong Comment không có field này
+    createdAt: new Date().toISOString(), // hoặc gán giá trị mặc định
+    updatedAt: new Date().toISOString(), // tùy use case
+    user: {
+      id: comment.user.userId,
+      username: comment.user.username,
+      email: comment.user.email, // optional
+      role: comment.user.roles?.[0], // tạm lấy role đầu tiên (nếu có)
+      avatarUrl: comment.user.avatarUrl,
+      backgroundUrl: undefined, // default vì không có trong User
+    },
+    replies: comment.replies?.map(mapCommentToFilmResponse) ?? [],
+  };
+}
+
+export function mapCommentsToFilmResponses(
+  comments: CommentResponse[]
+): ICommentFilmResponse[] {
+  return comments.map(mapCommentToFilmResponse);
 }

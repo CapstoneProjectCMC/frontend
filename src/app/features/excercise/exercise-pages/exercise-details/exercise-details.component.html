@@ -18,7 +18,7 @@
             <span>{{ authorName ? authorName : "Ẩn danh" }}</span>
           </div>
         </div>
-        <div class="actions">
+        <div class="actions" *ngIf="isActionActive">
           <button class="icon-btn" title="Sửa" (click)="openUpdateExercise()">
             <i class="fa fa-edit"></i>
           </button>
@@ -120,8 +120,17 @@
       <div class="time-info">
         <i class="fa-regular fa-clock"></i>
         <span *ngIf="exercise.startTime">
-          {{ exercise.startTime | date : "dd/MM/yyyy HH:mm" }} -
-          {{ exercise.endTime | date : "dd/MM/yyyy HH:mm" }}
+          {{
+            exercise.startTime
+              ? (exercise.startTime | date : "dd/MM/yyyy HH:mm")
+              : "Có thể làm"
+          }}
+          -
+          {{
+            exercise.endTime
+              ? (exercise.endTime | date : "dd/MM/yyyy HH:mm")
+              : "Chưa đặt hạn"
+          }}
         </span>
       </div>
 
@@ -140,7 +149,11 @@
       </div>
 
       <div class="btn-container">
-        <button class="btn main" *ngIf="hasQuestions" (click)="doingQuiz()">
+        <button
+          class="btn main"
+          *ngIf="hasQuestions && canStartDoing"
+          (click)="doingQuiz()"
+        >
           <i class="fa fa-play"></i> Bắt đầu
         </button>
         <button class="btn other" (click)="goBack()">
@@ -148,7 +161,7 @@
         </button>
         <button
           class="btn other"
-          *ngIf="hasQuestions"
+          *ngIf="hasQuestions && isActionActive"
           (click)="openAssignExercise()"
         >
           <i class="fa-solid fa-business-time"></i> Giao bài tập

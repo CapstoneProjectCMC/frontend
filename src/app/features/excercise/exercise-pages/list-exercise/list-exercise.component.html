@@ -59,7 +59,7 @@
         </app-dropdown-button>
       </div>
 
-      <div class="create-exercise-btn">
+      <div *ngIf="isActionActive" class="create-exercise-btn">
         <app-btn-type1
           thumb="+"
           [thumbSize]="24"

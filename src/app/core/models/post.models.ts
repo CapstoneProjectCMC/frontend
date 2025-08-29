@@ -2,6 +2,8 @@ export interface PostCardInfo {
   id: string;
   avatar: string;
   author: string;
+  accountName: string;
+  email: string;
   title: string;
   time: string;
   description: string;
@@ -10,6 +12,7 @@ export interface PostCardInfo {
   upvote: number;
   downvote: number;
   public: boolean;
+  allowComment: boolean;
 }
 
 export interface Tag {

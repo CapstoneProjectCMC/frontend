@@ -25,6 +25,9 @@ import { UpdateExerciseComponent } from '../../exercise-modal/update-exercise/up
 import { ExerciseQuiz } from '../../../../core/models/exercise.model';
 import { mapToExerciseQuiz } from '../../../../shared/utils/mapData';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
+import { getUserRoles } from '../../../../shared/utils/userInfo';
+import { activeForMyContent } from '../../../../shared/utils/authenRoleActions';
+import { isAvailabelTime } from '../../../../shared/utils/availableTime';
 
 @Component({
   selector: 'app-exercise-code-details',
@@ -84,7 +87,7 @@ export class ExerciseCodeDetailsComponent {
   };
 
   exerciseId: string = '';
-  role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
+  roles = getUserRoles();
 
   // Modal state
   isUpdateModalVisible: boolean = false;
@@ -95,11 +98,17 @@ export class ExerciseCodeDetailsComponent {
   avatarUrl: string = '';
   avatarUrlDefault: string = avatarUrlDefault;
 
+  //phân quyền
+  isActionActive = false;
+  nowDate = new Date();
+  expirationDate: Date | null = null;
+  availabelDate: Date | null = null;
+  canStartDoing = false;
+
   constructor(
     private codingService: CodingService,
     private route: ActivatedRoute,
     private router: Router,
-    private profileService: ProfileService,
     private exerciseService: ExerciseService,
     private store: Store
   ) {}
@@ -136,6 +145,21 @@ export class ExerciseCodeDetailsComponent {
             this.authorRoles = Array.from(res.result.user.roles).join(', ');
             this.avatarUrl = res.result.user.avatarUrl ?? avatarUrlDefault;
           }
+          this.isActionActive = activeForMyContent(
+            res.result.user?.username ?? '',
+            res.result.user?.email ?? '',
+            this.roles.includes('ADMIN')
+          );
+          this.availabelDate = res.result.startTime
+            ? new Date(res.result.startTime)
+            : null;
+          this.expirationDate = res.result.endTime
+            ? new Date(res.result.endTime)
+            : null;
+          this.canStartDoing = isAvailabelTime(
+            this.availabelDate,
+            this.expirationDate
+          );
           this.exerciseBasic = mapToExerciseQuiz(res.result);
         },
         error: (err) => {
@@ -161,7 +185,10 @@ export class ExerciseCodeDetailsComponent {
 
   // Lọc và trả về chỉ các test case là mẫu (sample = true)
   getSampleTestCases(): TestCaseResponse[] {
-    if (this.exercise?.codingDetail?.testCases && this.role === 'ROLE_USER') {
+    if (
+      this.exercise?.codingDetail?.testCases &&
+      this.roles.includes('STUDENT')
+    ) {
       return this.exercise.codingDetail.testCases.filter((tc) => tc.sample);
     } else if (this.exercise?.codingDetail?.testCases) {
       return this.exercise.codingDetail.testCases;
