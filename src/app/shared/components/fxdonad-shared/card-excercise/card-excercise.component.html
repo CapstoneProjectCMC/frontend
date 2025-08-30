@@ -1,8 +1,8 @@
-<div class="excercise-card-container">
+<div class="excercise-card-container" (click)="onTitleClick()">
   <div class="info-card" [class.border]="role !== typeRoles.admin">
     <div class="title-header">
       <div class="card-header">
-        <h2 class="title" [title]="data.title" (click)="onTitleClick()">
+        <h2 class="title" [title]="data.title">
           {{ data.title | truncate : 30 }}
         </h2>
       </div>
@@ -32,7 +32,7 @@
       </p>
       <button
         *ngIf="data.description.length > 300"
-        (click)="toggleDescription()"
+        (click)="toggleDescription($event)"
         class="read-more"
       >
         {{ isExpanded ? "Read Less" : "Read More" }}
@@ -90,7 +90,6 @@
         <span
           class="tag"
           *ngFor="let tag of data.tags"
-          (click)="onTagClick(tag)"
           [attr.aria-label]="'Tag: ' + tag"
         >
           #{{ tag }}
@@ -108,7 +107,7 @@
       <button
         class="save-btn"
         [class.saved]="isSaved"
-        (click)="toggleSave()"
+        (click)="toggleSave($event)"
         aria-label="Save item"
         title="Lưu bài tập này"
       >
@@ -142,7 +141,7 @@
   </div>
 
   <!-- Phần này không sử dụng nữa, đã tạm ẩn -->
-  <div
+  <!-- <div
     class="admin-actions"
     [class.accepted]="data.approval === 'accepted'"
     [class.pending]="data.approval === 'pending'"
@@ -172,5 +171,5 @@
         Từ chối
       </button>
     </ng-container>
-  </div>
+  </div> -->
 </div>

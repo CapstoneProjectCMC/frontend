@@ -112,7 +112,7 @@ export class ChangePasswordComponent {
 
     // Simulate API call
     this.authService
-      .changePassword(this.oldPassword, this.newPassword)
+      .changePassword(this.newPassword, this.oldPassword)
       .subscribe({
         next: () => {
           this.isLoading = false;

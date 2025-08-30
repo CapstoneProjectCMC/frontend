@@ -91,16 +91,18 @@ export class CardExcerciseComponent {
     });
   }
 
-  toggleDescription() {
+  toggleDescription(event: MouseEvent) {
+    event.stopPropagation(); // ❌ chặn nổi bọt
     this.isExpanded = !this.isExpanded;
   }
 
-  toggleStatus() {
-    this.data.status =
-      this.data.status === 'completed' ? 'pending' : 'completed';
-  }
+  // toggleStatus() {
+  //   this.data.status =
+  //     this.data.status === 'completed' ? 'pending' : 'completed';
+  // }
 
-  toggleSave() {
+  toggleSave(event: MouseEvent) {
+    event.stopPropagation(); // ❌ chặn nổi bọt
     if (!this.isSaved) {
       this.exerciseService.saveExercise(this.exerciseId).subscribe({
         next: () => {
@@ -122,10 +124,6 @@ export class CardExcerciseComponent {
         },
       });
     }
-  }
-
-  onTagClick(tag: string) {
-    console.log(`Tag clicked: ${tag}`);
   }
 
   scrollLeft() {
@@ -154,22 +152,6 @@ export class CardExcerciseComponent {
     const img = event.target as HTMLImageElement;
     img.src =
       'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50';
-  }
-
-  onEdit() {
-    // TODO: Thêm logic chỉnh sửa bài tập ở đây
-    console.log('Edit exercise', this.data);
-  }
-
-  onDelete() {
-    // TODO: Thêm logic xóa bài tập ở đây
-    console.log('Delete exercise', this.data);
-  }
-
-  onApprove(status: 'accepted' | 'rejected') {
-    // TODO: Thêm logic duyệt bài tập ở đây
-    this.data.approval = status;
-    console.log('Approval changed to', status, this.data);
   }
 
   // Khi resize window cũng check lại

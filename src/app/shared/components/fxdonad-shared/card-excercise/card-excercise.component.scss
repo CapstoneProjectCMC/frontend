@@ -33,10 +33,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      &:hover {
-        text-decoration: underline;
-        cursor: pointer;
-      }
     }
 
     .metadata {
@@ -195,10 +191,6 @@
           font-size: 0.8rem;
           white-space: nowrap;
           transition: background 0.2s ease;
-          cursor: pointer;
-          &:hover {
-            background: #eeeeee;
-          }
         }
       }
 

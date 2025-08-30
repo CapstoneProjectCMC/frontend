@@ -7,10 +7,16 @@ import { Router } from '@angular/router';
 import { MyCodeHistoryResponse } from '../../../../core/models/code.model';
 import { LottieComponent } from 'ngx-lottie';
 import { lottieOptions } from '../../../../core/constants/value.constant';
+import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 
 @Component({
   selector: 'app-code-history',
-  imports: [CommonModule, ScrollEndDirective, LottieComponent],
+  imports: [
+    CommonModule,
+    ScrollEndDirective,
+    LottieComponent,
+    SkeletonLoadingComponent,
+  ],
   templateUrl: './code-history.component.html',
   styleUrl: './code-history.component.scss',
 })

@@ -59,8 +59,8 @@ export class AuthService {
     return this.api.patch<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.PATCH.CHANGE_MY_PASSWORD,
       {
-        newPassword,
         oldPassword,
+        newPassword,
       }
     );
   }
