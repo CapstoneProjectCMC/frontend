@@ -87,6 +87,14 @@ export class PostDetailComponent {
       ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  isImage(fileUrl: string): boolean {
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(fileUrl);
+  }
+
+  isVideo(fileUrl: string): boolean {
+    return /\.(mp4|webm|ogg)$/i.test(fileUrl);
+  }
+
   //hàm lấy tiêu đề từ markdown và tạo danh sách mục lục
   generateTOC(markdown: string) {
     const lines = markdown.split('\n');

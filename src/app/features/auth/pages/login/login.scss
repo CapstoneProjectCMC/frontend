@@ -155,7 +155,6 @@
             cursor: pointer;
             color: #888;
             font-size: 18px;
-            z-index: 2;
           }
         }
 
@@ -235,6 +234,7 @@
               font-size: 14px;
               color: var(--title-text);
               text-decoration: underline;
+              cursor: pointer;
             }
           }
         }

@@ -14,12 +14,14 @@ import {
   clearLoading,
   setLoading,
 } from '../../../store/loading-state/loading.action';
+import { ChangePasswordComponent } from '../../../../features/auth/components/modal/change-password/change-password.component';
 
 @Component({
   selector: 'app-profile-menu',
   templateUrl: './profile-menu.component.html',
   styleUrls: ['./profile-menu.component.scss'],
   standalone: true,
+  imports: [ChangePasswordComponent],
 })
 export class ProfileMenuComponent {
   @Input() isVisible: boolean = false;
@@ -27,6 +29,9 @@ export class ProfileMenuComponent {
 
   status = '';
   loading = false;
+
+  isOpenChangePassword = false;
+
   constructor(
     private elementRef: ElementRef,
     private authService: AuthService,
@@ -45,7 +50,20 @@ export class ProfileMenuComponent {
   }
   goToProfile = () => {
     this.router.navigate(['/profile/personal-profile']);
+    this.isVisible = false;
+    this.closeMenu.emit();
   };
+
+  openChangePasswordModal() {
+    this.isOpenChangePassword = !this.isOpenChangePassword;
+    this.isVisible = false;
+  }
+
+  onCloseModal($event: boolean) {
+    this.isOpenChangePassword = $event;
+    this.closeMenu.emit();
+  }
+
   onLogout() {
     this.store.dispatch(
       setLoading({ isLoading: true, content: 'Đang đăng xuất, xin chờ...' })
@@ -54,8 +72,6 @@ export class ProfileMenuComponent {
       next: (res) => {
         this.store.dispatch(clearLoading());
         this.status = res.status;
-        sendNotification(this.store, 'Thông báo', res.message, 'success');
-
         this.router.navigate(['/auth/identity/login']);
       },
       error: (err) => {

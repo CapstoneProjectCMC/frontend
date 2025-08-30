@@ -135,11 +135,15 @@ export const API_CONFIG = {
         replySize: number
       ) =>
         `/post/${postId}/comments?page=${page}&size=${size}&replySize=${replySize}`,
+      GET_SAVE_EXERCISE: (page: number, size: number) =>
+        `/profile/exercises/saved?page=${page}&size=${size}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
       REGISTER: '/identity/auth/register',
       LOGOUT: '/identity/auth/logout',
+      REQUEST_FORGOT_PASSWORD: '/identity/auth/forgot-password/request',
+      RESET_PASSWORD: `/identity/auth/forgot-password/reset`,
       REFRESH_TOKEN: '/identity/auth/refresh',
       VERIFYOTP: '/identity/auth/verify-otp',
       SENDOTP: '/identity/auth/send-otp',
@@ -165,6 +169,8 @@ export const API_CONFIG = {
       ADD_TEST_CASE: (exerciseId: string) =>
         `/submission/coding/${exerciseId}/test-case`,
       SUBMITQUIZ: (quizId: string) => `/quiz/${quizId}/submit`,
+      SAVE_EXERCISE: (exerciseId: string) =>
+        `/profile/exercise/${exerciseId}/save`,
       UPLOAD_AVATAR: `/profile/user/my-profile/avatar`,
       UPLOAD_BACKGROUND: `/profile/user/my-profile/background`,
       FOLLOWUSER: (targetUserId: string) =>
@@ -207,6 +213,7 @@ export const API_CONFIG = {
       UPDATE_CODING_DETAILS: (exerciseId: string) =>
         `/submission/coding/exercise/${exerciseId}/coding-detail`,
       RENAME_THREAD: (threadId: string) => `/ai/chat/thread/${threadId}`,
+      CHANGE_MY_PASSWORD: `/identity/user/password`,
     },
     DELETE: {
       DELETE_QUESTION: (exerciseId: string, questionId: string) =>
@@ -221,6 +228,8 @@ export const API_CONFIG = {
         `/ai/chat/thread/${threadId}`,
       DELETE_POST: (postId: string) => `/post/${postId}`,
       DELETE_COMMENT_POST: (commentId: string) => `/post/comment/${commentId}`,
+      UNSAVE_EXERCISE: (exerciseId: string) =>
+        `/profile/exercise/${exerciseId}/save`,
     },
   },
   HEADERS: {

@@ -148,7 +148,7 @@ export type PostResponse = {
   isPublic: boolean;
   allowComment: boolean;
   hashtag: string;
-  imagesUrls: string[];
+  fileUrls: string[];
   accesses: PostAccess[];
   createdAt: string;
   commentCount: number;

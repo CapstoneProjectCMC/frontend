@@ -64,7 +64,7 @@ export class UpdateProfileComponent {
     loop: true,
   };
   /** Các danh sách chọn */
-  education: { value: string; label: string }[] = [];
+  education: { value: number; label: string }[] = [];
   gender: { value: string; label: string }[] = [];
 
   /** Biến chứa dữ liệu người dùng đã chọn/nhập */
@@ -104,21 +104,16 @@ export class UpdateProfileComponent {
     console.log('data ở đây', this.user);
     // dữ liệu dropdown mẫu
     this.education = [
-      { value: '1', label: 'lớp 1' },
-      { value: '2', label: 'lớp 2' },
-      { value: '3', label: 'lớp 3' },
-      { value: '4', label: 'lớp 4' },
-      { value: '5', label: 'lớp 5' },
-      { value: '6', label: 'lớp 6' },
-      { value: '7', label: 'lớp 7' },
-      { value: '8', label: 'lớp 8' },
-      { value: '9', label: 'lớp 9' },
-      { value: '10', label: 'lớp 10' },
-      { value: '11', label: 'lớp 11' },
-      { value: '12', label: 'lớp 12' },
-      { value: '13', label: 'Đại học' },
-      { value: '14', label: 'Cao đẳng' },
-      { value: '15', label: 'Khác' },
+      { value: 0, label: 'Không tiết lộ' },
+      { value: 1, label: 'Tiểu học' },
+      { value: 2, label: 'Trung học cơ sở' },
+      { value: 3, label: 'Trung học phổ thông' },
+      { value: 4, label: 'Trung cấp' },
+      { value: 5, label: 'Cao đẳng' },
+      { value: 6, label: 'Đại học' },
+      { value: 7, label: 'Cao học / Thạc sĩ' },
+      { value: 8, label: 'Tiến sĩ' },
+      { value: 9, label: 'Khác' },
     ];
 
     this.gender = [
@@ -166,9 +161,9 @@ export class UpdateProfileComponent {
       this.links = [...(this.user.links || [])];
       this.selectedCity = this.user.city || '';
 
-      const eduStr = this.user.education?.toString();
+      const edu = this.user.education;
       this.selectedEducation =
-        this.education.find((g) => g.value === eduStr) || null;
+        this.education.find((g) => g.value === edu) || null;
     } else {
       this.hasError = true;
     }

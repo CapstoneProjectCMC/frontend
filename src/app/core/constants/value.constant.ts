@@ -34,4 +34,10 @@ export const lottieOptions = {
   loop: true,
 };
 
+export const lottieOptions2 = {
+  path: 'assets/lottie-animation/nodata-box.json',
+  autoplay: true,
+  loop: true,
+};
+
 export const avatarUrlDefault: string = 'auth-assets/avatar_placeholder.png';

@@ -6,31 +6,36 @@
 
     <div class="exercise-info">
       <div class="header">
-        <img
-          class="avatar"
-          [src]="avatarUrl ? avatarUrl : avatarUrlDefault"
-          alt="Avatar"
-        />
-        <div class="info-main">
-          <h2>{{ exercise.title }}</h2>
-          <div class="author">
-            <i class="fa fa-user"></i>
-            <span>{{ authorName ? authorName : "Ẩn danh" }}</span>
+        <div class="meta">
+          <img
+            class="avatar"
+            [src]="avatarUrl ? avatarUrl : avatarUrlDefault"
+            alt="Avatar"
+          />
+          <div class="info-main">
+            <h2>{{ exercise.title }}</h2>
+            <div class="author">
+              <i class="fa fa-user"></i>
+              <span>{{ authorName ? authorName : "Ẩn danh" }}</span>
+            </div>
           </div>
         </div>
         <div class="actions" *ngIf="isActionActive">
-          <button class="icon-btn" title="Sửa" (click)="openUpdateExercise()">
-            <i class="fa fa-edit"></i>
-          </button>
-          <button class="icon-btn" title="Xóa" (click)="openConfirmDelete()">
-            <i class="fa fa-trash"></i>
-          </button>
           <button
             class="icon-btn"
             title="Thêm câu hỏi"
             (click)="openAddNewQuestion()"
           >
             <i class="fa fa-plus"></i>
+            Thêm câu hỏi mới
+          </button>
+          <button class="icon-btn" title="Sửa" (click)="openUpdateExercise()">
+            <i class="fa fa-edit"></i>
+            Sửa
+          </button>
+          <button class="icon-btn" title="Xóa" (click)="openConfirmDelete()">
+            <i class="fa fa-trash"></i>
+            Xóa bài tập
           </button>
         </div>
       </div>

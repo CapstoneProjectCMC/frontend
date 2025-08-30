@@ -294,3 +294,15 @@ export type AssignedStudentsListResponse = {
   completedAt: string;
   passed: boolean;
 };
+
+export type ExerciseSave = {
+  id: string;
+  saveAt: string; // Instant thường được backend trả về ISO date string
+  exercise: {
+    id: string;
+    exerciseId: string;
+    title: string;
+    type: 'CODING' | 'QUIZ';
+    difficulty: 0 | 1 | 2; // 0: EASY, 1: MEDIUM, 2: HARD
+  };
+};

@@ -24,37 +24,42 @@
       min-width: 260px;
       .header {
         display: flex;
-        align-items: center;
+        flex-direction: column;
         gap: 14px;
-        .avatar {
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          border: 1.5px solid #eee;
-          object-fit: cover;
-        }
-        .info-main {
-          flex: 1;
-          h2 {
-            margin: 0 0 2px 0;
-            font-size: 1.25rem;
-            font-weight: 600;
-            line-height: 1.2;
+        .meta {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid #eee;
+            object-fit: cover;
           }
-          .author {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--text-muted-color);
-            font-size: 13px;
-            i {
-              font-size: 14px;
+          .info-main {
+            flex: 1;
+            h2 {
+              margin: 0 0 2px 0;
+              font-size: 1.25rem;
+              font-weight: 600;
+              line-height: 1.2;
+            }
+            .author {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              color: var(--text-muted-color);
+              font-size: 13px;
+              i {
+                font-size: 14px;
+              }
             }
           }
         }
         .actions {
           display: flex;
-          flex-direction: column;
           gap: 6px;
           .icon-btn {
             background: none;
@@ -106,7 +111,6 @@
           margin-right: 2px;
         }
         .tag {
-          background: var(--tags-color);
           color: var(--primary-color);
           border-radius: 4px;
           padding: 2px 7px;

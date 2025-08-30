@@ -40,21 +40,45 @@
         </div>
       </div>
 
-      <div
+      <div class="post-media" *ngIf="post.fileUrls?.length">
+        <ng-container *ngFor="let file of post.fileUrls">
+          <!-- Ảnh -->
+          <img
+            *ngIf="isImage(file)"
+            [src]="file"
+            alt="Hình ảnh trong bài viết"
+            class="post-image"
+          />
+
+          <!-- Video -->
+          <video
+            *ngIf="isVideo(file)"
+            [src]="file"
+            controls
+            class="post-video"
+          ></video>
+        </ng-container>
+      </div>
+
+      <div class="markdown-body">
+        <markdown [data]="post.content"></markdown>
+      </div>
+
+      <!-- <div
         *ngIf="!isCommentVisible"
         class="markdown-body"
         [class.is-expanded]="isContentExpanded "
       >
         <markdown [data]="post.content"></markdown>
-      </div>
+      </div> -->
 
-      <button
+      <!-- <button
         *ngIf="!isCommentVisible"
         class="expand-button"
         (click)="toggleContentExpand()"
       >
         {{ isContentExpanded ? 'Thu gọn' : 'Xem thêm nội dung' }}
-      </button>
+      </button> -->
 
       <div class="post-tags" *ngIf="post.hashtag && !isCommentVisible">
         <span *ngFor="let tag of post.hashtag.split(',')" class="tag"

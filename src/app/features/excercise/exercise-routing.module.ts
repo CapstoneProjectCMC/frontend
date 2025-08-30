@@ -16,6 +16,7 @@ import { AssignExerciseComponent } from './exercise-pages/assign-exercise/assign
 import { MyAssignmentsComponent } from './exercise-pages/my-assignments/my-assignments.component';
 import { SubmisstionHistoryComponent } from './exercise-pages/submisstion-history/submisstion-history.component';
 import { CodeHistoryComponent } from './exercise-pages/code-history/code-history.component';
+import { SavedExercisesComponent } from './exercise-pages/saved-exercises/saved-exercises.component';
 
 const routes: Routes = [
   {
@@ -101,6 +102,13 @@ const routes: Routes = [
           roles: ['ROLE_TEACHER', 'ROLE_ADMIN'],
         },
         canActivate: [RoleGuard],
+      },
+      {
+        path: 'saved-exercises',
+        component: SavedExercisesComponent,
+        data: {
+          breadcrumb: 'Bài tập đã lưu',
+        },
       },
       {
         path: '**',

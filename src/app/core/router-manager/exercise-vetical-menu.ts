@@ -18,7 +18,7 @@ export function sidebarExercises(role: string): SidebarItem[] {
       id: 'saved-exercises',
       path: '/exercise/exercise-layout/submissions-history',
       label: 'Bài tập đã làm',
-      icon: 'fas fa-bookmark',
+      icon: 'fas fa-circle-check',
       allowParentLink: true,
       children: [
         {
@@ -34,6 +34,12 @@ export function sidebarExercises(role: string): SidebarItem[] {
           icon: 'fas fa-question-circle',
         },
       ],
+    },
+    {
+      id: 'exercise',
+      path: '/exercise/exercise-layout/saved-exercises',
+      label: 'Bài tập đã lưu',
+      icon: 'fas fa-bookmark',
     },
   ];
 }

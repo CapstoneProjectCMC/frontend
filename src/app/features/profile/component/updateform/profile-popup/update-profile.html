@@ -99,8 +99,7 @@
       <div class="dropdown">
         <span class="dropdown-title">Trình độ học vấn</span>
         <app-dropdown-button
-          *ngIf="selectedEducation"
-          [label]="selectedEducation.label"
+          [label]="'Trình độ học vấn'"
           [options]="education"
           [variant]="'secondary'"
           [size]="'small'"
@@ -112,8 +111,8 @@
           [isOpen]="activeDropdown === 'education'"
           (toggle)="toggleDropdown('education')"
           [isDisplaySelectedOpptionLabels]="true"
-          [isButtonControl]="true"
-          [isSearchable]="true"
+          [isButtonControl]="false"
+          [isSearchable]="false"
           [minHeight]="true"
           [needIndexColor]="true"
         ></app-dropdown-button>
@@ -125,7 +124,7 @@
           <span class="dropdown-title">Giới tính</span>
           <app-dropdown-button
             *ngIf="selectedGender"
-            [label]="selectedGender.label"
+            [label]="'Giới tính'"
             [options]="gender"
             [variant]="'secondary'"
             [size]="'small'"
@@ -137,8 +136,8 @@
             [isOpen]="activeDropdown === 'gender'"
             (toggle)="toggleDropdown('gender')"
             [isDisplaySelectedOpptionLabels]="true"
-            [isButtonControl]="true"
-            [isSearchable]="true"
+            [isButtonControl]="false"
+            [isSearchable]="false"
             [minHeight]="true"
             [needIndexColor]="true"
           ></app-dropdown-button>
@@ -157,7 +156,7 @@
       <div class="dropdown">
         <span class="dropdown-title">Thành phố</span>
         <app-dropdown-button
-          [label]="this.user.city ? this.user.city : 'Chọn thành phố'"
+          [label]="'Chọn thành phố'"
           [options]="cities"
           [variant]="'secondary'"
           [size]="'small'"

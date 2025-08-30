@@ -4,6 +4,7 @@ import { ApiMethod } from '../config-service/api.methods';
 import { API_CONFIG } from '../config-service/api.enpoints';
 import { ApiResponse, loginResponse } from '../../models/api-response';
 import { ICreateUserRequest, LoginData } from '../../models/data-handle';
+import { RequestForgotPasswordResponse } from '../../models/user.models';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,40 @@ export class AuthService {
     return this.api.post<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.LOGOUT,
       null
+    );
+  }
+
+  requestForgotPassword(email: string) {
+    return this.api.post<ApiResponse<RequestForgotPasswordResponse>>(
+      API_CONFIG.ENDPOINTS.POST.REQUEST_FORGOT_PASSWORD,
+      { email },
+      true
+    );
+  }
+
+  confirmResetPasswordWithOtp(
+    email: string,
+    otp: number | null,
+    newPassword: string
+  ) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.RESET_PASSWORD,
+      {
+        email,
+        otp,
+        newPassword,
+      },
+      true
+    );
+  }
+
+  changePassword(newPassword: string, oldPassword: string) {
+    return this.api.patch<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PATCH.CHANGE_MY_PASSWORD,
+      {
+        newPassword,
+        oldPassword,
+      }
     );
   }
 
