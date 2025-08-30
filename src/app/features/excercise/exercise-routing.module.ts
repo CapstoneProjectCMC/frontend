@@ -39,6 +39,8 @@ const routes: Routes = [
         path: 'code-submission/:id',
         component: CodeSubmissionComponent,
         data: { breadcrumb: 'Làm bài code' },
+        canDeactivate: [ConfirmExitGuard],
+        runGuardsAndResolvers: 'always',
       },
       {
         path: 'exercise-code-details/add-new/:id',

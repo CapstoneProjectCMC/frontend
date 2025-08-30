@@ -126,11 +126,13 @@ export class CardExcerciseComponent {
     }
   }
 
-  scrollLeft() {
+  scrollLeft(event: MouseEvent) {
+    event.stopPropagation();
     this.tagsScroll.nativeElement.scrollBy({ left: -100, behavior: 'smooth' });
   }
 
-  scrollRight() {
+  scrollRight(event: MouseEvent) {
+    event.stopPropagation();
     this.tagsScroll.nativeElement.scrollBy({ left: 100, behavior: 'smooth' });
   }
 

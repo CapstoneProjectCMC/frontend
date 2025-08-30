@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription, interval } from 'rxjs';
+import { Observable, Subscription, interval, of } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { PaymentService } from '../../../../core/services/api-service/payment.service';
@@ -15,6 +15,8 @@ import {
   formatTime,
   numberToVietnameseWords,
 } from '../../validate/qr-payment.utils';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { ModalNoticeService } from '../../../../shared/store/modal-notice-state/modal-notice.service';
 
 @Component({
   selector: 'app-qr-payment',
@@ -33,8 +35,8 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
   transactionSuccess: boolean = false;
   error: string = '';
   loading: boolean = false;
-  countdown: number = 10; // Thời gian đếm ngược ban đầu
-  resetCountDown: number = 10;
+  countdown: number = 120; // Thời gian đếm ngược ban đầu
+  resetCountDown: number = 120;
   userId: string = '';
   paymentHash: string = ''; // Mã hash duy nhất cho mỗi lần thanh toán
   matchedTransaction: any = null; // Lưu giao dịch phù hợp khi thanh toán thành công
@@ -54,10 +56,27 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
   public formatTime = formatTime;
   amountInWords: string = '';
 
-  constructor(private paymentService: PaymentService, private store: Store) {}
+  constructor(
+    private paymentService: PaymentService,
+    private store: Store,
+    private modalNoticeService: ModalNoticeService
+  ) {}
+
+  canDeactivate(): Observable<boolean> {
+    if (!this.amount) return of(true);
+
+    return this.modalNoticeService.confirm(
+      'Xác nhận thoát',
+      'Bạn có chắc chắn thoát giao dịch? Tiến trình có thể gây lỗi',
+      'Đồng ý',
+      'Hủy'
+    );
+  }
 
   ngOnInit(): void {
-    this.userId = localStorage.getItem('token') ?? '';
+    this.userId = decodeJWT(
+      localStorage.getItem('token') ?? ''
+    )?.payload.userId;
     // Khởi tạo thời gian đếm ngược
     this.countdown = this.resetCountDown;
     this.reloadCurrentGP();

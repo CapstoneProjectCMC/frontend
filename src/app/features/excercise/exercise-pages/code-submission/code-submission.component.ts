@@ -22,6 +22,9 @@ import {
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { openModalNotification } from '../../../../shared/utils/notification';
 import { SocketService } from '../../../../core/services/socket-service/socket.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { ModalNoticeService } from '../../../../shared/store/modal-notice-state/modal-notice.service';
+import { of } from 'rxjs/internal/observable/of';
 
 @Component({
   selector: 'app-code-submission',
@@ -117,9 +120,24 @@ export class CodeSubmissionComponent {
     private router: Router,
     private renderer: Renderer2, // Inject Renderer2
     private socketService: SocketService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private modalNoticeService: ModalNoticeService
   ) {
     this.exerciseId = this.route.snapshot.paramMap.get('id') ?? '';
+  }
+
+  canDeactivate(): Observable<boolean> {
+    if (!this.codeEditorComponent.getCode()) return of(true);
+    if (this.codeEditorComponent.getCode()) {
+      return this.modalNoticeService.confirm(
+        'Xác nhận thoát',
+        'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.',
+        'Đồng ý',
+        'Hủy'
+      );
+    } else {
+      return of(true);
+    }
   }
 
   ngOnInit() {
