@@ -13,6 +13,7 @@ import {
   MessageInfo,
 } from '../../../../core/models/chatbot.model';
 import { map } from 'rxjs/internal/operators/map';
+import { ModalNoticeService } from '../../../../shared/store/modal-notice-state/modal-notice.service';
 
 @Component({
   selector: 'app-quiz-submission',
@@ -50,7 +51,8 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private exerciseService: ExerciseService,
-    private chatbotService: ChatbotService
+    private chatbotService: ChatbotService,
+    private modalNoticeService: ModalNoticeService
   ) {
     // Initialize fake chat data
     this.fetchListThreads();
@@ -59,10 +61,12 @@ export class QuizSubmissionComponent implements OnInit, OnDestroy {
   canDeactivate(): Observable<boolean> {
     if (!this.quizStarted) return of(true);
     if (this.hasQuizDataChanges) {
-      const confirmResult = window.confirm(
-        'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.'
+      return this.modalNoticeService.confirm(
+        'Xác nhận thoát',
+        'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.',
+        'Đồng ý',
+        'Hủy'
       );
-      return of(confirmResult);
     } else {
       return of(true);
     }

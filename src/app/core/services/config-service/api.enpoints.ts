@@ -137,6 +137,11 @@ export const API_CONFIG = {
         `/post/${postId}/comments?page=${page}&size=${size}&replySize=${replySize}`,
       GET_SAVE_EXERCISE: (page: number, size: number) =>
         `/profile/exercises/saved?page=${page}&size=${size}`,
+      GET_MY_WALLET: '/payment/payments/wallet',
+      GET_HISTORY_PURCHASE: (page: number, size: number) =>
+        `/payment/payments/purchase-history?page=${page}&size=${size}`,
+      GET_TRANSACTION_HISTORY: (page: number, size: number) =>
+        `/payment/payments/history?page=${page}&size=${size}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -194,6 +199,8 @@ export const API_CONFIG = {
       ADD_COMMENT_POST: (postId: string) => `/post/${postId}/comment`,
       ADD_REPLY_COMMENT_POST: (postId: string, commentId: string) =>
         `/post/${postId}/comment/${commentId}`,
+      TOPUP: '/payment/payments/topup',
+      PURCHASE: '/payment/payments/purchase',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,

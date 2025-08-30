@@ -81,7 +81,7 @@
       <button
         class="scroll-btn left"
         *ngIf="showScrollButtons"
-        (click)="scrollLeft()"
+        (click)="scrollLeft($event)"
       >
         ‹
       </button>
@@ -99,7 +99,7 @@
       <button
         class="scroll-btn right"
         *ngIf="showScrollButtons"
-        (click)="scrollRight()"
+        (click)="scrollRight($event)"
       >
         ›
       </button>
