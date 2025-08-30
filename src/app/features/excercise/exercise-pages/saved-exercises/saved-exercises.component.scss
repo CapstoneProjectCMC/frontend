@@ -1,0 +1,122 @@
+.saved-container {
+  padding: 1.5rem 0 0 0;
+  height: calc(100vh - 160px);
+  overflow-y: auto;
+
+  h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    margin-top: 0px;
+  }
+
+  .no-data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+    text-align: center;
+    padding: 20px;
+    p {
+      opacity: 0.7;
+    }
+  }
+
+  .exercise-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .exercise-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .info {
+      flex: 1;
+      h3 {
+        font-size: 1.1rem;
+        margin: 0.2rem 0;
+      }
+      .type {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.6rem;
+        border-radius: 8px;
+        text-transform: uppercase;
+        font-weight: 600;
+        &.coding {
+          background: #e3f2fd;
+          color: #1565c0;
+        }
+        &.quiz {
+          background: #f3e5f5;
+          color: #6a1b9a;
+        }
+      }
+      .difficulty {
+        font-size: 0.9rem;
+        margin: 0.3rem 0;
+        .level-0 {
+          color: green;
+        }
+        .level-1 {
+          color: orange;
+        }
+        .level-2 {
+          color: red;
+        }
+      }
+      small {
+        color: #888;
+      }
+    }
+
+    .unsave-btn {
+      background: none;
+      border: none;
+      color: #e53935;
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+      &:hover {
+        color: #b71c1c;
+      }
+      i {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .loading {
+    text-align: center;
+    margin: 1rem 0;
+    .spinner {
+      border: 4px solid #eee;
+      border-top: 4px solid #1565c0;
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      animation: spin 0.8s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

@@ -72,3 +72,8 @@ export type SearchUserProfileResponse = {
   backgroundUrl: string | null;
   createdAt: string; // ISO datetime từ backend
 };
+
+export type RequestForgotPasswordResponse = {
+  email: string;
+  message: string;
+};

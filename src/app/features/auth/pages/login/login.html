@@ -101,7 +101,7 @@
             Duy trì đăng nhập
           </label>
           <div class="forgot">
-            <a href="#">Quên mật khẩu?</a>
+            <a (click)="openForgotPassModal()">Quên mật khẩu?</a>
           </div>
         </div>
         <button type="submit" (click)="onLogin()">Đăng nhập</button>
@@ -130,3 +130,8 @@
   [visible]="isLoading"
   [message]="'Đang đăng nhập, xin chờ...'"
 ></app-loading-overlay>
+
+<app-forgot-password-modal
+  [isVisible]="isOpenForgotModal"
+  (close)="onCloseForgotModal()"
+></app-forgot-password-modal>

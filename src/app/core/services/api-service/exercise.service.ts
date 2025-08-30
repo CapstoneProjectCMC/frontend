@@ -9,6 +9,7 @@ import {
   ExerciseItem,
   ExercisePreview,
   ExerciseQuiz,
+  ExerciseSave,
   IExerciseAnswerRequest,
   IExerciseResultResponse,
   MyAssignExerciseResponse,
@@ -56,6 +57,25 @@ export class ExerciseService {
   ) {
     return this.api.get<ApiResponse<IPaginationResponse<ExerciseItem[]>>>(
       API_CONFIG.ENDPOINTS.GET.GET_ALL_EXERCISE(page, size, sort, asc)
+    );
+  }
+
+  saveExercise(exerciseId: string) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.SAVE_EXERCISE(exerciseId),
+      {}
+    );
+  }
+
+  unSaveExercise(exerciseId: string) {
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.UNSAVE_EXERCISE(exerciseId)
+    );
+  }
+
+  getSavedExercises(page: number, size: number) {
+    return this.api.get<ApiResponse<IPaginationResponse<ExerciseSave[]>>>(
+      API_CONFIG.ENDPOINTS.GET.GET_SAVE_EXERCISE(page, size)
     );
   }
 

@@ -200,7 +200,7 @@
             top: 0;
             bottom: 0; /* Giúp line-connect tự động kéo dài */
             width: 2px;
-            border-left: 2px black solid;
+            border-left: 2px var(--border-color) solid;
           }
           .comment-header-replies {
             display: flex;

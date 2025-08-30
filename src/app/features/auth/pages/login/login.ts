@@ -14,10 +14,17 @@ import { DecodedJwtPayload } from '../../../../core/models/data-handle';
 import { CookieService } from 'ngx-cookie-service';
 import { validateLogin } from '../../validation/login-validation';
 import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/tooltip';
+import { ForgotPasswordModalComponent } from '../../components/modal/forgot-password-modal/forgot-password-modal.component';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, LoadingOverlayComponent, Tooltip],
+  imports: [
+    CommonModule,
+    FormsModule,
+    LoadingOverlayComponent,
+    Tooltip,
+    ForgotPasswordModalComponent,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
@@ -29,6 +36,7 @@ export class Login {
   slides = slides;
 
   showPassword = false;
+  isOpenForgotModal = false;
 
   userInfo: DecodedJwtPayload = {
     sub: '',
@@ -162,6 +170,14 @@ export class Login {
       prompt: 'select_account consent',
     });
     window.location.href = `${OAuthConfig.google.authUri}?${params.toString()}`;
+  }
+
+  openForgotPassModal() {
+    this.isOpenForgotModal = !this.isOpenForgotModal;
+  }
+
+  onCloseForgotModal() {
+    this.isOpenForgotModal = false;
   }
 
   saveUserInfoToSession(userInfo: DecodedJwtPayload) {

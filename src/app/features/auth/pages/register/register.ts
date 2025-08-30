@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { ICreateUserRequest } from '../../../../core/models/data-handle';
 import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-shared/loading-overlay/loading-overlay.component';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { OtpModalComponent } from '../../components/otp-modal/otp-modal.component';
+import { OtpModalComponent } from '../../components/modal/otp-modal/otp-modal.component';
 import { CommonModule } from '@angular/common';
 import { truncateString } from '../../../../shared/utils/stringProcess';
 import {
@@ -53,10 +53,18 @@ export class Register {
   };
   focused: { [key: string]: boolean } = {};
 
-  educationOptions = Array.from({ length: 12 }, (_, i) => ({
-    value: i + 1,
-    label: `Lớp ${i + 1}`,
-  }));
+  educationOptions = [
+    { value: 0, label: 'Không tiết lộ' },
+    { value: 1, label: 'Tiểu học' }, // Lớp 1 - 5
+    { value: 2, label: 'Trung học cơ sở' }, // Lớp 6 - 9
+    { value: 3, label: 'Trung học phổ thông' }, // Lớp 10 - 12
+    { value: 4, label: 'Trung cấp' },
+    { value: 5, label: 'Cao đẳng' },
+    { value: 6, label: 'Đại học' },
+    { value: 7, label: 'Cao học / Thạc sĩ' },
+    { value: 8, label: 'Tiến sĩ' },
+    { value: 9, label: 'Khác' },
+  ];
 
   constructor(
     private store: Store,

@@ -25,8 +25,8 @@
       </svg>
     </div>
     Đổi ảnh đại diện
-  </button>
-  <button class="profile-menu-btn">
+  </button> -->
+  <button class="profile-menu-btn" (click)="openChangePasswordModal()">
     <div class="icon">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,7 @@
       </svg>
     </div>
     Đổi mật khẩu
-  </button> -->
+  </button>
   <button class="profile-menu-btn" (click)="goToProfile()">
     <div class="icon">
       <svg
@@ -91,3 +91,8 @@
     Đăng xuất
   </button>
 </div>
+
+<app-change-password
+  [isVisibleModal]="isOpenChangePassword"
+  (onCloseModal)="onCloseModal($event)"
+></app-change-password>

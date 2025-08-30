@@ -1,0 +1,43 @@
+<div class="saved-container" appScrollEnd (appScrollEnd)="loadExercises()">
+  <h2>Bài tập đã lưu</h2>
+
+  <!-- Empty state -->
+  <div *ngIf="exercises.length === 0" class="no-data-container">
+    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+    </ng-lottie>
+    <p>Chưa lưu bài tập nào</p>
+  </div>
+
+  <!-- List -->
+  <div class="exercise-list">
+    <div class="exercise-card" *ngFor="let ex of exercises" [@fadeInOut]>
+      <div class="info">
+        <span class="type" [ngClass]="ex.exercise.type.toLowerCase()">
+          {{ ex.exercise.type }}
+        </span>
+        <h3>{{ ex.exercise.title }}</h3>
+        <p class="difficulty">
+          Độ khó:
+          <span [ngClass]="'level-' + ex.exercise.difficulty">
+            {{
+              ex.exercise.difficulty === 0
+                ? "Dễ"
+                : ex.exercise.difficulty === 1
+                ? "Trung bình"
+                : "Khó"
+            }}
+          </span>
+        </p>
+        <small>Lưu lúc {{ ex.saveAt | date : "short" }}</small>
+      </div>
+      <button class="unsave-btn" (click)="onUnsave(ex)">
+        <i class="fa fa-heart"></i> Bỏ lưu
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading spinner -->
+  <div class="loading" *ngIf="isLoading">
+    <div class="spinner"></div>
+  </div>
+</div>

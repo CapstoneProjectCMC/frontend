@@ -36,12 +36,6 @@ export class OauthCallbackComponent {
             next: (res) => {
               this.isLoading = false;
               if (res.code === 20000) {
-                sendNotification(
-                  this.store,
-                  res.status,
-                  'Đăng nhập Google thành công',
-                  'success'
-                );
                 this.router.navigate(['/exercise/exercise-layout/list']);
                 localStorage.setItem('token', res.result.accessToken);
               } else {
@@ -60,7 +54,7 @@ export class OauthCallbackComponent {
       } else {
         this.isLoading = false;
         sendNotification(this.store, 'Thất bại', 'Lỗi không xác định', 'error');
-        this.router.navigate(['/auth/login']);
+        this.router.navigate(['/auth/identity/login']);
       }
     });
   }

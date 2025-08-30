@@ -27,6 +27,25 @@ export class ProfilePopupComponent {
   formatDate(time: Date) {
     return formatDate(time);
   }
+  educationOptions = [
+    { value: 0, label: 'Không tiết lộ' },
+    { value: 1, label: 'Tiểu học' },
+    { value: 2, label: 'Trung học cơ sở' },
+    { value: 3, label: 'Trung học phổ thông' },
+    { value: 4, label: 'Trung cấp' },
+    { value: 5, label: 'Cao đẳng' },
+    { value: 6, label: 'Đại học' },
+    { value: 7, label: 'Cao học / Thạc sĩ' },
+    { value: 8, label: 'Tiến sĩ' },
+    { value: 9, label: 'Khác' },
+  ];
+
+  getEducationLabel(value: number): string {
+    return (
+      this.educationOptions.find((opt) => opt.value === value)?.label ||
+      'Không xác định'
+    );
+  }
   toggleFollowPopup() {
     this.showFollowPopup = !this.showFollowPopup;
   }

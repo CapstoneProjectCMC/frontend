@@ -291,7 +291,6 @@ export class PostListComponent {
   };
 
   goToDetail = ($event: string) => {
-    console.log('Navigating to post detail with ID:', $event);
     this.router.navigate(['/post-features/post-details', $event]);
   };
   // ...existing code...

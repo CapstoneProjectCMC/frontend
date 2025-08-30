@@ -12,6 +12,7 @@ import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 import { parseISO } from 'date-fns/parseISO';
 import { vi } from 'date-fns/locale/vi';
 import { decodeJWT } from '../../../utils/stringProcess';
+import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 
 export interface CardExcercise {
   id: string;
@@ -54,7 +55,10 @@ export class CardExcerciseComponent {
   difficultyLevel = 1;
 
   showScrollButtons = false;
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private exerciseService: ExerciseService
+  ) {}
 
   ngOnInit() {
     this.role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
@@ -97,7 +101,27 @@ export class CardExcerciseComponent {
   }
 
   toggleSave() {
-    this.isSaved = !this.isSaved;
+    if (!this.isSaved) {
+      this.exerciseService.saveExercise(this.exerciseId).subscribe({
+        next: () => {
+          this.isSaved = true;
+        },
+        error(err) {
+          return;
+        },
+      });
+    }
+
+    if (this.isSaved) {
+      this.exerciseService.unSaveExercise(this.exerciseId).subscribe({
+        next: () => {
+          this.isSaved = false;
+        },
+        error(err) {
+          return;
+        },
+      });
+    }
   }
 
   onTagClick(tag: string) {

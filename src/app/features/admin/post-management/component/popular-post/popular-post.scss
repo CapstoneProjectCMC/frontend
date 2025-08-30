@@ -1,93 +1,95 @@
 .popular-content-container {
-  width: 95%;
-  min-width: 282px;
+  width: 100%;
   box-sizing: border-box;
-  height: auto;
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 1rem; /* Thay đổi padding từ px sang rem để dễ quản lý */
   background-color: oklch(from var(--card-excercize-bg) calc(l + 0.15) c h);
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  .content {
-    display: flex;
-    flex-direction: column;
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-  }
-  .line {
-    width: 90%;
-    height: 2px;
-    opacity: 0.2;
-    background-color: oklch(from var(--text-color) calc(l + 0.15) c h);
-  }
-  .posts {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 10px;
-    .post {
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      background-color: oklch(from var(--card-excercize-bg) calc(l + 0.1) c h);
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      .post-name {
-        font-size: 16px;
-        font-weight: bold;
-        color: var(--primary-color);
-        width: 50px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-      .post-inf {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 5px;
-        font-size: 14px;
-        color: var(--text-gray-color);
-        .post-author {
-          font-style: italic;
-          color: var(--text-color);
-        }
-      }
-    }
-  }
-  .popular-post-button {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s linear;
-    margin-top: 10px;
-    .button-add {
-      width: 50px;
-      height: 50px;
-      background-color: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      align-self: center;
-      border-radius: 8px;
-      border: 1px solid var(--primary-color);
+  overflow: hidden; /* Quan trọng: Ngăn chặn tràn ngang */
+}
 
-      svg {
-        padding-left: 5px;
-        stroke: var(--primary-color);
-        transition: stroke 0.2s;
-      }
-      &:hover {
-        background-color: var(--button-color-hover);
-        svg {
-          stroke: #fff;
-        }
-      }
-    }
+/* Các phần khác vẫn giữ nguyên */
+.content .title {
+  font-size: 1.25rem; /* ~20px */
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.line {
+  width: 100%; /* Sửa 90% thành 100% để đồng nhất */
+  height: 2px;
+  opacity: 0.2;
+  background-color: oklch(from var(--text-color) calc(l + 0.15) c h);
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  padding: 0.75rem;
+  background-color: oklch(from var(--card-excercize-bg) calc(l + 0.1) c h);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
   }
+}
+
+.post-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.post-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  white-space: normal; /* Cho phép xuống dòng */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+  -webkit-box-orient: vertical;
+}
+
+.post-inf {
+  display: flex;
+  flex-direction: column; /* Đổi thành column để giải quyết vấn đề tràn ngang */
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: var(--text-gray-color);
+  line-height: 1.4; /* Tăng khoảng cách dòng */
+}
+
+.post-author {
+  font-style: italic;
+  color: var(--text-color);
+  margin-bottom: 0.25rem; /* Thêm khoảng cách với dòng dưới */
+}
+
+.post-details {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem; /* Thêm khoảng cách giữa các phần tử */
+}
+
+.dot {
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--text-gray-color);
+}
+
+.popular-post-button {
+  margin-top: 1.5rem; /* Tăng khoảng cách với danh sách post */
 }
