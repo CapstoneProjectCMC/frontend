@@ -6,11 +6,18 @@ import { ExerciseSave } from '../../../../core/models/exercise.model';
 import { LottieComponent } from 'ngx-lottie';
 import { lottieOptions2 } from '../../../../core/constants/value.constant';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-saved-exercises',
   standalone: true,
-  imports: [CommonModule, ScrollEndDirective, LottieComponent],
+  imports: [
+    CommonModule,
+    ScrollEndDirective,
+    LottieComponent,
+    SkeletonLoadingComponent,
+  ],
   templateUrl: './saved-exercises.component.html',
   styleUrls: ['./saved-exercises.component.scss'],
   animations: [
@@ -39,7 +46,10 @@ export class SavedExercisesComponent implements OnInit {
   isLoading = false;
   lottieOptions = lottieOptions2;
 
-  constructor(private exerciseService: ExerciseService) {}
+  constructor(
+    private exerciseService: ExerciseService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadExercises();
@@ -64,7 +74,8 @@ export class SavedExercisesComponent implements OnInit {
     });
   }
 
-  onUnsave(exercise: ExerciseSave): void {
+  onUnsave(exercise: ExerciseSave, event: MouseEvent): void {
+    event.stopPropagation();
     this.exerciseService
       .unSaveExercise(exercise.exercise.exerciseId)
       .subscribe({
@@ -74,5 +85,16 @@ export class SavedExercisesComponent implements OnInit {
           );
         },
       });
+  }
+
+  goToExercise(id: string, type: 'CODING' | 'QUIZ') {
+    if (type === 'QUIZ') {
+      this.router.navigate(['/exercise/exercise-layout/exercise-details/', id]);
+    } else {
+      this.router.navigate([
+        '/exercise/exercise-layout/exercise-code-details/',
+        id,
+      ]);
+    }
   }
 }

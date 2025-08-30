@@ -93,7 +93,10 @@ export class TextEditor implements AfterViewInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['value'] && this.editorRef?.nativeElement) {
-      this.editorRef.nativeElement.innerHTML = this.value || '';
+      const editorEl = this.editorRef.nativeElement;
+      if (this.value !== editorEl.innerHTML) {
+        editorEl.innerHTML = this.value || '';
+      }
     }
   }
 
@@ -125,8 +128,6 @@ export class TextEditor implements AfterViewInit, OnDestroy {
         childList: true,
         subtree: true,
         characterData: true,
-        attributes: true,
-        attributeFilter: ['style', 'class'],
       });
     }
   }

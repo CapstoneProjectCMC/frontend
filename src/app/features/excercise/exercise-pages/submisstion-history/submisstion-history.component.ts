@@ -7,6 +7,7 @@ import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.dir
 import { DurationFormatPipe } from '../../../../shared/pipes/duration-format.pipe';
 import { LottieComponent } from 'ngx-lottie';
 import { lottieOptions } from '../../../../core/constants/value.constant';
+import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 
 @Component({
   selector: 'app-submisstion-history',
@@ -15,6 +16,7 @@ import { lottieOptions } from '../../../../core/constants/value.constant';
     DurationFormatPipe,
     ScrollEndDirective,
     LottieComponent,
+    SkeletonLoadingComponent,
   ],
   templateUrl: './submisstion-history.component.html',
   styleUrl: './submisstion-history.component.scss',
@@ -75,7 +77,7 @@ export class SubmisstionHistoryComponent {
     }
   }
 
-  goToQuizDetails(id: string, type: 'CODING' | 'QUIZ') {
+  goToExerciseDetails(id: string, type: 'CODING' | 'QUIZ') {
     if (type === 'QUIZ') {
       this.router.navigate(['/exercise/exercise-layout/exercise-details/', id]);
     } else {

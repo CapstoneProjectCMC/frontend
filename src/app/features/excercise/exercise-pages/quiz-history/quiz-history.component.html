@@ -1,7 +1,7 @@
 <div class="history-container" appScrollEnd (appScrollEnd)="loadNextPage()">
   <h2 class="page-title">📘 Lịch sử nộp bài Quiz</h2>
 
-  <div class="history-list" *ngIf="submissions">
+  <div class="history-list" *ngIf="submissions && !isLoadingInitial">
     <div
       class="history-card"
       *ngFor="let item of submissions"
@@ -47,11 +47,17 @@
   </div>
 
   <div
-    *ngIf="!submissions || submissions.length === 0"
+    *ngIf="(!submissions || submissions.length === 0) && !isLoadingInitial"
     class="no-data-container"
   >
     <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
     </ng-lottie>
     <p>Không có dữ liệu</p>
   </div>
+
+  <app-skeleton-loading
+    *ngIf="isLoadingInitial"
+    type="list"
+    [count]="8"
+  ></app-skeleton-loading>
 </div>

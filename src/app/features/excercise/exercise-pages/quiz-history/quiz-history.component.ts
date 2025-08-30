@@ -6,10 +6,16 @@ import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.dir
 import { Router } from '@angular/router';
 import { LottieComponent } from 'ngx-lottie';
 import { lottieOptions } from '../../../../core/constants/value.constant';
+import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 
 @Component({
   selector: 'app-quiz-history',
-  imports: [CommonModule, ScrollEndDirective, LottieComponent],
+  imports: [
+    CommonModule,
+    ScrollEndDirective,
+    LottieComponent,
+    SkeletonLoadingComponent,
+  ],
   templateUrl: './quiz-history.component.html',
   styleUrl: './quiz-history.component.scss',
 })
