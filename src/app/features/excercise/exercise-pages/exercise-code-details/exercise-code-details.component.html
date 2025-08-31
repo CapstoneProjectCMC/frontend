@@ -65,7 +65,7 @@
         </div>
         <div class="time-info" title="Thời gian bắt đầu và kết thúc">
           <i class="fa-regular fa-clock"></i>
-          <span *ngIf="exercise.startTime">
+          <span>
             {{
               exercise.startTime
                 ? (exercise.startTime | date : "dd/MM/yyyy HH:mm")
@@ -77,6 +77,12 @@
                 ? (exercise.endTime | date : "dd/MM/yyyy HH:mm")
                 : "Chưa có hạn"
             }}
+          </span>
+        </div>
+        <div class="time-info" title="Giá bài tập">
+          <i class="fa-solid fa-money-bill-1-wave"></i>
+          <span>
+            {{ exercise.cost }}
           </span>
         </div>
       </div>
@@ -131,7 +137,7 @@
       <ul class="info-list">
         <li>
           <span><i class="fa fa-clock"></i> Giới hạn thời gian</span>
-          <strong>{{ exercise.codingDetail.timeLimit }}s</strong>
+          <strong>{{ exercise.codingDetail.timeLimit }}ms</strong>
         </li>
         <li>
           <span><i class="fa fa-memory"></i> Giới hạn bộ nhớ</span>

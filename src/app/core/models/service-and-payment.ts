@@ -21,19 +21,23 @@ export interface IDepositGPData {
 }
 
 //topup request
-export type TransactionRequest = {
+
+export type TopUpTransactionRequest = {
   transactionId: string;
-  referenceId: string | null;
+  referenceId?: string | null;
   amount: number;
   currency: string;
-
-  itemId: string | null;
-  itemType: 'COURSE' | 'SUBSCRIPTION' | null;
-  itemPrice: number | null;
-  itemName: string | null;
 };
 
-export interface TransactionResponse extends TransactionRequest {
+//purchase request
+export interface IPurChaseTransactionRequest extends TopUpTransactionRequest {
+  itemId?: string | null;
+  itemType?: 'COURSE' | 'SUBSCRIPTION' | null;
+  itemPrice?: number | null;
+  itemName?: string | null;
+}
+
+export interface ITransactionResponse extends IPurChaseTransactionRequest {
   status: string;
   paidAt: string;
   balanceAfter: number;

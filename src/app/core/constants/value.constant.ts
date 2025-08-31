@@ -28,6 +28,74 @@ export const slides = [
   },
 ];
 
+export const tagsData = [
+  // Môn học
+  { value: 'math', label: 'Toán' },
+  { value: 'physics', label: 'Vật lý' },
+  { value: 'chemistry', label: 'Hóa học' },
+  { value: 'biology', label: 'Sinh học' },
+  { value: 'english', label: 'Tiếng Anh' },
+  { value: 'literature', label: 'Văn học' },
+  { value: 'history', label: 'Lịch sử' },
+  { value: 'geography', label: 'Địa lý' },
+
+  // Lập trình & Thuật toán
+  { value: 'algorithm', label: 'Thuật toán' },
+  { value: 'data-structure', label: 'Cấu trúc dữ liệu' },
+  { value: 'sorting', label: 'Sắp xếp' },
+  { value: 'searching', label: 'Tìm kiếm' },
+  { value: 'dynamic-programming', label: 'Quy hoạch động' },
+  { value: 'recursion', label: 'Đệ quy' },
+  { value: 'graph', label: 'Đồ thị' },
+  { value: 'tree', label: 'Cây' },
+  { value: 'linked-list', label: 'Danh sách liên kết' },
+  { value: 'stack', label: 'Ngăn xếp' },
+  { value: 'queue', label: 'Hàng đợi' },
+
+  // Bài tập & Quiz
+  { value: 'exercise', label: 'Bài tập' },
+  { value: 'quiz', label: 'Quiz' },
+  { value: 'practice', label: 'Thực hành' },
+  { value: 'challenge', label: 'Thử thách' },
+  { value: 'problem-solving', label: 'Giải quyết vấn đề' },
+
+  // Lỗi & Solution
+  { value: 'bug', label: 'Lỗi' },
+  { value: 'debug', label: 'Gỡ lỗi' },
+  { value: 'solution', label: 'Giải pháp' },
+  { value: 'optimization', label: 'Tối ưu hóa' },
+  { value: 'troubleshooting', label: 'Khắc phục sự cố' },
+
+  // Mức độ
+  { value: 'easy', label: 'Dễ dàng' },
+  { value: 'medium', label: 'Trung bình' },
+  { value: 'hard', label: 'Khó' },
+  { value: 'expert', label: 'Chuyên gia' },
+
+  // Loại bài tập
+  { value: 'multiple-choice', label: 'Trắc nghiệm' },
+  { value: 'coding', label: 'Lập trình' },
+  { value: 'essay', label: 'Tự luận' },
+  { value: 'project', label: 'Dự án' },
+  { value: 'homework', label: 'Bài về nhà' },
+
+  // Ngôn ngữ lập trình
+  { value: 'python', label: 'Python' },
+  { value: 'java', label: 'Java' },
+  { value: 'c', label: 'C' },
+  { value: 'cpp', label: 'C++' },
+  { value: 'javascript', label: 'JavaScript' },
+  { value: 'typescript', label: 'TypeScript' },
+
+  // Khác
+  { value: 'debugging-tips', label: 'Mẹo gỡ lỗi' },
+  { value: 'common-mistakes', label: 'Sai lầm thường gặp' },
+  { value: 'best-practice', label: 'Thực hành tốt' },
+  { value: 'algorithm-analysis', label: 'Phân tích thuật toán' },
+  { value: 'time-complexity', label: 'Độ phức tạp thời gian' },
+  { value: 'space-complexity', label: 'Độ phức tạp bộ nhớ' },
+];
+
 export const lottieOptions = {
   path: 'assets/lottie-animation/nodata.json',
   autoplay: true,

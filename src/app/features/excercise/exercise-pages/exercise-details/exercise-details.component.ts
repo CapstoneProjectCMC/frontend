@@ -157,6 +157,8 @@ export class ExerciseDetailsComponent implements OnInit {
   availabelDate: Date | null = null;
   canStartDoing = false;
 
+  isMainDropdownOpen: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private exerciseService: ExerciseService,
@@ -239,6 +241,25 @@ export class ExerciseDetailsComponent implements OnInit {
         this.difficultyLevel = 3;
         break;
     }
+  }
+
+  // Hàm mới để mở/đóng dropdown chính
+  toggleMainDropdown() {
+    this.isMainDropdownOpen = !this.isMainDropdownOpen;
+  }
+
+  // Đổi tên hàm cũ cho rõ ràng hơn
+  toggleQuestionDropdown(index: number) {
+    if (this.openDropdownIndex === index) {
+      this.openDropdownIndex = null;
+    } else {
+      this.openDropdownIndex = index;
+    }
+  }
+
+  // Đổi tên hàm cũ cho rõ ràng hơn
+  closeQuestionDropdown() {
+    this.openDropdownIndex = null;
   }
 
   openAddNewQuestion() {
@@ -420,6 +441,10 @@ export class ExerciseDetailsComponent implements OnInit {
     });
   }
 
+  cancelDelete() {
+    this.opentDeleteConfirm = null;
+  }
+
   doingQuiz() {
     // Lưu thông tin truy cập vào session storage
     if (this.exerciseId) {
@@ -475,14 +500,25 @@ export class ExerciseDetailsComponent implements OnInit {
     return String.fromCharCode(65 + index);
   }
 
+  // Hàm để đóng dropdown khi click ra ngoài
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
+
+    // Đóng dropdown của câu hỏi nếu click ra ngoài
     if (
       !target.closest('.edit-icon-btn') &&
       !target.closest('.edit-dropdown')
     ) {
-      this.closeDropdown();
+      this.closeQuestionDropdown();
+    }
+
+    // Đóng dropdown chính nếu click ra ngoài
+    if (
+      !target.closest('.edit-dropdown-toggle') &&
+      !target.closest('.edit-dropdown')
+    ) {
+      this.isMainDropdownOpen = false;
     }
   }
 }

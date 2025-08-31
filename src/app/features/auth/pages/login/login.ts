@@ -122,7 +122,7 @@ export class Login {
         localStorage.setItem('refreshToken', res.result.refreshToken);
         sessionStorage.removeItem('avatar-url');
 
-        this.router.navigate(['/exercise/exercise-layout/list']);
+        this.router.navigate(['/post-features/post-list']);
       },
       error: (err) => {
         console.log(err);

@@ -11,6 +11,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import TurndownService from 'turndown';
+import { marked } from 'marked';
 
 export interface TextEditorConfig {
   placeholder?: string;
@@ -78,6 +80,9 @@ export class TextEditor implements AfterViewInit, OnDestroy {
 
   private editorInstance: any;
   private observer: MutationObserver | null = null;
+  private turndown = new TurndownService();
+  private internalChange = false;
+
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
@@ -93,9 +98,16 @@ export class TextEditor implements AfterViewInit, OnDestroy {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['value'] && this.editorRef?.nativeElement) {
+      // Nếu thay đổi đến từ chính editor thì bỏ qua
+      if (this.internalChange) {
+        this.internalChange = false;
+        return;
+      }
+
       const editorEl = this.editorRef.nativeElement;
-      if (this.value !== editorEl.innerHTML) {
-        editorEl.innerHTML = this.value || '';
+      const html = this.value ? marked.parse(this.value, { async: false }) : '';
+      if (editorEl.innerHTML !== html) {
+        editorEl.innerHTML = html || '';
       }
     }
   }
@@ -104,7 +116,10 @@ export class TextEditor implements AfterViewInit, OnDestroy {
     if (this.editorRef && this.editorRef.nativeElement) {
       const editor = this.editorRef.nativeElement;
       editor.contentEditable = (!this.config.readonly).toString();
-      editor.innerHTML = this.value || '';
+
+      const html = this.value ? marked.parse(this.value, { async: false }) : '';
+
+      editor.innerHTML = html || '';
 
       if (this.config.placeholder && !this.value) {
         editor.setAttribute('data-placeholder', this.config.placeholder);
@@ -115,11 +130,14 @@ export class TextEditor implements AfterViewInit, OnDestroy {
   private setupMutationObserver() {
     if (this.editorRef && this.editorRef.nativeElement) {
       this.observer = new MutationObserver(() => {
-        const content = this.editorRef.nativeElement.innerHTML;
-        if (content !== this.value) {
-          this.value = content;
-          this.valueChange.emit(content);
-          this.onChange.emit(content);
+        const html = this.editorRef.nativeElement.innerHTML;
+        const markdown = this.turndown.turndown(html);
+
+        if (markdown !== this.value) {
+          this.internalChange = true;
+          this.value = markdown;
+          this.valueChange.emit(markdown);
+          this.onChange.emit(markdown);
           this.cdr.markForCheck();
         }
       });

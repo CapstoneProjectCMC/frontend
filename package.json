@@ -42,8 +42,10 @@
     "apexcharts": "^4.7.0",
     "codemirror": "^6.0.1",
     "date-fns": "^4.1.0",
+    "github-markdown-css": "^5.8.1",
+    "highlight.js": "^11.11.1",
     "hls.js": "^1.6.10",
-    "marked": "^16.1.1",
+    "marked": "^16.2.1",
     "ng-apexcharts": "^1.11.0",
     "ngx-cookie-service": "^19.1.2",
     "ngx-lottie": "^20.0.0",
@@ -53,6 +55,7 @@
     "socket.io-client": "^4.8.1",
     "sub-vn": "^0.0.2",
     "tslib": "^2.3.0",
+    "turndown": "^7.2.1",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

@@ -5,10 +5,12 @@ import { Router } from '@angular/router';
 import { formatDate } from '../../../utils/stringProcess';
 import { ButtonComponent } from '../button/button.component';
 import {
+  DEFAULT_BG,
   follow,
   SearchUserProfileResponse,
 } from '../../../../core/models/user.models';
 import { FollowPopup } from './follow-popup/follow-popup.';
+import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-profile-popup',
@@ -24,6 +26,9 @@ export class ProfilePopupComponent {
   @Input() variant: 'personal' | 'other' | 'popup' = 'popup';
   @Input() onClickEdit?: () => void;
   showFollowPopup = false;
+  avatarDefault = avatarUrlDefault;
+  backgroundDefault = DEFAULT_BG;
+
   formatDate(time: Date) {
     return formatDate(time);
   }

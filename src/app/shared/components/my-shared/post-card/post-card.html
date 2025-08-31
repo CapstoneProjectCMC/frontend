@@ -1,11 +1,13 @@
 <div class="post-card" (click)="onMainClick()">
   <div class="post-card__status-bar"></div>
-  <h2 class="post-card__title">{{ post.title | truncate :40}}</h2>
+  <h2 class="post-card__title">{{ post.title | truncate :35}}</h2>
 
   <header class="post-card__header">
     <img class="post-card__avatar" [src]="post.avatar" alt="Author's avatar" />
     <div class="post-card__meta">
-      <span class="post-card__author">{{ post.author }}</span>
+      <span class="post-card__author" [title]="post.author"
+        >{{ post.author | truncate : 15}}</span
+      >
       <span class="post-card__time">
         {{ formatTime(post.time) }} - {{ post.public ? 'Công khai' : 'Nội bộ' }}
       </span>
@@ -18,10 +20,9 @@
   </header>
 
   <main class="post-card__body">
-    <div
-      class="post-card-description"
-      [innerHTML]="post.description | normalizeHtml | sanitizeHtml"
-    ></div>
+    <div class="post-card-description markdown-body">
+      <markdown [data]="post.description"></markdown>
+    </div>
 
     <div class="post-card__tags" *ngIf="post.tags?.length">
       <span

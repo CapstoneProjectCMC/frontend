@@ -1,0 +1,220 @@
+// Giả định các biến màu đã được định nghĩa trong :root hoặc một file global
+// Nếu chưa, bạn có thể đặt đoạn code .theme-light {} của bạn vào file styles.scss global.
+
+:host {
+  display: block;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.history-container {
+  background-color: var(--background-color);
+  padding: 24px 32px;
+  max-height: calc(100vh - 180px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.history-header {
+  margin-bottom: 24px;
+  h1 {
+    color: var(--accent-color);
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+  p {
+    color: var(--text-muted-color);
+    font-size: 16px;
+    margin: 0;
+  }
+}
+
+// Table Styles
+.table-wrapper {
+  max-height: 55vh;
+  overflow-x: auto; // Đảm bảo bảng không bị vỡ layout trên mobile
+}
+
+.transaction-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th,
+  td {
+    padding: 16px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+  }
+
+  thead tr {
+    background-color: var(--background-color-secondary);
+    th {
+      color: var(--title-text);
+      font-weight: 600;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease-in-out;
+    &:hover {
+      background-color: var(--primary-color-lightest);
+    }
+  }
+
+  .font-monospace {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 14px;
+  }
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+}
+
+.amount {
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+// Status Badge
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+
+  &.status--success {
+    background-color: rgba(var(--success-color), 0.1);
+    color: var(--success-color);
+  }
+  &.status--pending {
+    background-color: rgba(var(--warning-color), 0.1);
+    color: var(--warning-color);
+  }
+  &.status--failed {
+    background-color: rgba(var(--error-color-rgb), 0.1);
+    color: var(--error-color);
+  }
+  &.status--default {
+    background-color: var(--tags-color);
+    color: var(--text-muted-color);
+  }
+}
+
+// Pagination
+.pagination-container {
+  display: flex;
+  flex: 1;
+  justify-content: left;
+  align-items: end;
+  margin-top: 24px;
+  &.hidden {
+    opacity: 0;
+  }
+}
+
+// Loading & Empty/Error States
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  border-radius: 12px;
+  color: var(--accent-color);
+}
+
+.empty-state,
+.error-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted-color);
+  font-size: 18px;
+}
+
+.spinner {
+  border: 4px solid var(--primary-color-lighter);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive for Mobile
+@media (max-width: 768px) {
+  .history-container {
+    padding: 16px;
+  }
+  .history-header {
+    h1 {
+      font-size: 22px;
+    }
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .transaction-table {
+    thead {
+      display: none; // Ẩn header của bảng trên mobile
+    }
+    tr {
+      display: block;
+      margin-bottom: 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 8px;
+    }
+    td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dotted var(--border-color);
+      padding: 12px 8px;
+
+      &::before {
+        content: attr(data-label); // Sử dụng data-label làm nhãn
+        font-weight: 600;
+        color: var(--title-text);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+}

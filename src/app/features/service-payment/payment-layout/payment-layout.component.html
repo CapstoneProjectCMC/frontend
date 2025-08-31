@@ -1,12 +1,11 @@
-<div class="main-exercise-container-layout">
+<div class="main-payment-container-layout">
   <app-main-sidebar
     *ngIf="showSidebar"
     [sidebarItems]="sidebarData"
     [isCollapsed]="isSidebarCollapsed"
   >
   </app-main-sidebar>
-
-  <div class="content-exercise-container">
+  <div class="content-payment-container">
     <router-outlet />
   </div>
 </div>

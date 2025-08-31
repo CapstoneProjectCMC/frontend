@@ -7,22 +7,19 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { PostCardInfo } from '../../../../core/models/post.models';
-import { SanitizeHtmlPipe } from '../../../pipes/sanitizeHtml.pipe';
-import { NormalizeHtmlPipe } from '../../../pipes/normalize-html.pip';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
-import {
-  getUserEmail,
-  getUserName,
-  getUserRoles,
-} from '../../../utils/userInfo';
+import { getUserRoles } from '../../../utils/userInfo';
 import { activeForMyContent } from '../../../utils/authenRoleActions';
+import { MarkdownModule, MarkdownService } from 'ngx-markdown';
+
+import hljs from 'highlight.js';
 
 @Component({
   selector: 'app-post-card',
   templateUrl: './post-card.html',
   styleUrls: ['./post-card.scss'],
   standalone: true,
-  imports: [CommonModule, SanitizeHtmlPipe, NormalizeHtmlPipe, TruncatePipe],
+  imports: [CommonModule, TruncatePipe, MarkdownModule],
   changeDetection: ChangeDetectionStrategy.OnPush, // Tối ưu hiệu suất
 })
 export class PostCardComponent {
@@ -43,7 +40,20 @@ export class PostCardComponent {
   roles = getUserRoles();
   active = false;
 
+  constructor(private markdownService: MarkdownService) {}
+
   ngOnInit() {
+    this.markdownService.renderer.code = ({ text, lang, escaped }) => {
+      if (lang && hljs.getLanguage(lang)) {
+        return `<pre><code class="hljs">${
+          hljs.highlight(text, { language: lang, ignoreIllegals: true }).value
+        }</code></pre>`;
+      }
+      return `<pre><code class="hljs">${
+        hljs.highlightAuto(text).value
+      }</code></pre>`;
+    };
+
     this.active = activeForMyContent(
       this.post.accountName,
       this.post.email,

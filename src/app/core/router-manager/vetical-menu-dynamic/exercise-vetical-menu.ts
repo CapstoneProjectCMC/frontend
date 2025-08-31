@@ -1,13 +1,13 @@
-import { SidebarItem } from '../models/data-handle';
+import { SidebarItem } from '../../models/data-handle';
 
 export function sidebarExercises(role: string): SidebarItem[] {
   return [
-    {
-      id: 'exam',
-      path: 'exercise/exam-list',
-      label: 'Bài thi',
-      icon: 'fas fa-file-alt',
-    },
+    // {
+    //   id: 'exam',
+    //   path: 'exercise/exam-list',
+    //   label: 'Bài thi',
+    //   icon: 'fas fa-file-alt',
+    // },
     {
       id: 'exercise',
       path: '/exercise/exercise-layout/my-assign-list',

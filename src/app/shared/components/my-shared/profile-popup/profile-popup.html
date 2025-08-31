@@ -1,7 +1,7 @@
 <div class="profile-popup" [ngClass]="variant">
   <div class="avt-bg">
-    <img [src]="user.backgroundUrl" alt="" class="bg" />
-    <img [src]="user.avatarUrl" alt="" class="avt" />
+    <img [src]="user.backgroundUrl || backgroundDefault" alt="" class="bg" />
+    <img [src]="user.avatarUrl || avatarDefault" alt="" class="avt" />
   </div>
   <div class="general-infor">
     <span class="display-name">{{user.displayName}}</span>
