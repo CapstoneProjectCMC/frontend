@@ -187,7 +187,7 @@ export class ExerciseCodeDetailsComponent {
   getSampleTestCases(): TestCaseResponse[] {
     if (
       this.exercise?.codingDetail?.testCases &&
-      this.roles.includes('STUDENT')
+      (!this.roles.includes('ADMIN') || !this.isActionActive)
     ) {
       return this.exercise.codingDetail.testCases.filter((tc) => tc.sample);
     } else if (this.exercise?.codingDetail?.testCases) {

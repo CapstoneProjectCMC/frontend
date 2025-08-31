@@ -4,6 +4,8 @@
 
   .exercise-details-content {
     display: flex;
+    justify-content: center;
+    width: 100%;
     gap: 32px;
     padding: 12px;
     background: var(--surface-color);
@@ -15,6 +17,7 @@
     .exercise-info {
       display: flex;
       flex-direction: column;
+      width: 100%;
       gap: 16px;
       background: var(--surface-color);
       border-radius: 12px;
@@ -24,7 +27,9 @@
       min-width: 260px;
       .header {
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
+        justify-content: space-between;
+        align-items: start;
         gap: 14px;
         .meta {
           display: flex;
@@ -60,18 +65,108 @@
         }
         .actions {
           display: flex;
-          gap: 6px;
-          .icon-btn {
+          flex-direction: column;
+          align-items: end;
+          gap: 4px; /* Tăng khoảng cách để tách biệt các nút */
+
+          .delete {
+            display: flex;
             background: none;
+            color: oklch(
+              from var(--danger-color, #d32f2f) calc(l * 0.8) c h
+            ); /* Màu đỏ cảnh báo */
             border: none;
-            padding: 4px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 17px;
-            color: var(--primary-color);
-            transition: background 0.18s;
+            padding: 8px 16px;
+            border-radius: 8px;
+            gap: 8px;
+            transition: background 0.2s;
+            i {
+              font-size: 16px;
+            }
             &:hover {
-              background: var(--tags-color);
+              background: var(--danger-color, #d32f2f);
+              color: #fff;
+            }
+          }
+
+          .dropdown-wrapper {
+            position: relative;
+
+            .edit-dropdown-toggle {
+              background: none;
+              border: none;
+              color: var(--primary-color);
+              padding: 8px 16px;
+              border-radius: 8px;
+              font-weight: 500;
+              transition: all 0.2s;
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              cursor: pointer;
+              i {
+                font-size: 16px;
+              }
+              &:hover {
+                background: oklch(from var(--primary-color) calc(l - 0.1) c h);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                color: var(--reverse-color-text);
+              }
+            }
+
+            .edit-dropdown {
+              position: absolute;
+              top: 130%; // nằm ngay dưới nút mở dropdown
+              right: 0;
+              background: #fff;
+              border-radius: 8px;
+              box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+              padding: 6px 0;
+              min-width: 180px;
+              z-index: 1100;
+              animation: fadeIn 0.2s ease;
+
+              ul {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+
+                li {
+                  padding: 10px 14px;
+                  font-size: 14px;
+                  color: #333;
+                  cursor: pointer;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  transition: background 0.2s, color 0.2s;
+
+                  i {
+                    font-size: 16px;
+                    color: #555;
+                  }
+
+                  &:hover {
+                    background: #f4f6f8;
+                    color: #0077ff;
+
+                    i {
+                      color: #0077ff;
+                    }
+                  }
+                }
+              }
+            }
+
+            @keyframes fadeIn {
+              from {
+                opacity: 0;
+                transform: translateY(-4px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
             }
           }
         }
@@ -210,34 +305,104 @@
 
           .question-header {
             display: flex;
-            justify-content: space-between;
+            flex: 1;
             align-items: center;
-            margin-bottom: 4px;
-            .question-index {
-              font-weight: 600;
-              color: var(--primary-color);
+            justify-content: flex-end; // đẩy toàn bộ control về bên phải
+
+            .btn-control {
+              display: flex;
+              flex: 1;
+              position: relative;
             }
-            .edit-icon-btn {
+            .edit-dropdown-toggle {
+              margin-left: auto; // ép nó dạt về bên phải
+              /* Đổi kiểu dáng nút thành icon 3 chấm */
               background: none;
               border: none;
               cursor: pointer;
               font-size: 18px;
-              padding: 2px 6px;
+              padding: 4px 8px;
               border-radius: 4px;
-              transition: background 0.2s;
+              color: var(--text-muted-color);
               &:hover {
                 background: var(--tags-color);
+                color: var(--primary-color);
+              }
+            }
+
+            .edit-dropdown {
+              /* Giữ nguyên kiểu dáng dropdown, chỉ thêm style cho nút delete */
+
+              li.delete-option {
+                color: var(--danger-color, #d32f2f);
+                &:hover {
+                  background: #ffebee;
+                  color: var(--danger-color, #d32f2f);
+                }
               }
             }
           }
-          .question-title {
-            font-weight: 500;
-            font-size: 16px;
-            color: var(--text-dark-gray-color);
-          }
-          .question-content {
-            font-size: 15px;
-            color: var(--text-color);
+          .confirm-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+
+            .confirm-modal {
+              background: #fff;
+              padding: 20px 24px;
+              border-radius: 10px;
+              max-width: 400px;
+              width: 90%;
+              text-align: center;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+              animation: fadeInScale 0.25s ease;
+
+              p {
+                font-size: 16px;
+                margin-bottom: 20px;
+                color: #333;
+              }
+
+              .confirm-buttons {
+                display: flex;
+                justify-content: center;
+                gap: 12px;
+
+                button {
+                  padding: 8px 16px;
+                  border: none;
+                  border-radius: 6px;
+                  font-size: 14px;
+                  cursor: pointer;
+                  transition: all 0.2s;
+
+                  &:first-child {
+                    background: #e74c3c;
+                    color: #fff;
+
+                    &:hover {
+                      background: #c0392b;
+                    }
+                  }
+
+                  &:last-child {
+                    background: #bdc3c7;
+                    color: #2c3e50;
+
+                    &:hover {
+                      background: #95a5a6;
+                    }
+                  }
+                }
+              }
+            }
           }
           .question-options {
             display: flex;
@@ -268,21 +433,15 @@
               }
             }
           }
-          .type-quiz {
-            margin-top: 8px;
-            font-size: 14px;
-            color: var(--text-muted-color);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            .type-label {
-              background: var(--tags-color);
-              color: var(--primary-color);
-              border-radius: 4px;
-              padding: 2px 8px;
-              font-size: 13px;
-              font-weight: 500;
-              margin-left: 4px;
+
+          @keyframes fadeInScale {
+            from {
+              opacity: 0;
+              transform: scale(0.9);
+            }
+            to {
+              opacity: 1;
+              transform: scale(1);
             }
           }
         }

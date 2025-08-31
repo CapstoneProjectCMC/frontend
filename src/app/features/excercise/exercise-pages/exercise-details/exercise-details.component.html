@@ -21,21 +21,33 @@
           </div>
         </div>
         <div class="actions" *ngIf="isActionActive">
+          <div class="dropdown-wrapper">
+            <button
+              class="icon-btn edit-dropdown-toggle"
+              (click)="toggleMainDropdown()"
+            >
+              <i class="fa fa-edit"></i>
+              <span>Sửa bài tập</span>
+            </button>
+            <div class="edit-dropdown" *ngIf="isMainDropdownOpen">
+              <ul>
+                <li (click)="openUpdateExercise(); toggleMainDropdown()">
+                  <i class="fa fa-info-circle"></i> Sửa thông tin
+                </li>
+                <li (click)="openAddNewQuestion(); toggleMainDropdown()">
+                  <i class="fa fa-plus-circle"></i> Thêm câu hỏi
+                </li>
+              </ul>
+            </div>
+          </div>
+
           <button
-            class="icon-btn"
-            title="Thêm câu hỏi"
-            (click)="openAddNewQuestion()"
+            class="icon-btn delete"
+            title="Xóa bài tập"
+            (click)="openConfirmDelete()"
           >
-            <i class="fa fa-plus"></i>
-            Thêm câu hỏi mới
-          </button>
-          <button class="icon-btn" title="Sửa" (click)="openUpdateExercise()">
-            <i class="fa fa-edit"></i>
-            Sửa
-          </button>
-          <button class="icon-btn" title="Xóa" (click)="openConfirmDelete()">
             <i class="fa fa-trash"></i>
-            Xóa bài tập
+            <span>Xóa bài tập</span>
           </button>
         </div>
       </div>
@@ -124,7 +136,7 @@
 
       <div class="time-info">
         <i class="fa-regular fa-clock"></i>
-        <span *ngIf="exercise.startTime">
+        <span>
           {{
             exercise.startTime
               ? (exercise.startTime | date : "dd/MM/yyyy HH:mm")
@@ -175,77 +187,55 @@
     </div>
 
     <!-- Vế phải: Danh sách câu hỏi -->
-    <div class="exercise-questions">
+    <div class="exercise-questions" *ngIf="isActionActive">
       <div class="questions-list">
         <div
           *ngFor="let q of exercise.quizDetail?.questions; let i = index"
           class="question-item"
         >
           <div class="question-header">
-            <span class="question-index">Câu {{ i + 1 }}</span>
-            <div class="type-quiz">
-              Loại:
-              <span class="type-label">
-                {{
-                  q.type === "MULTI_CHOICE"
-                    ? "Nhiều lựa chọn"
-                    : q.type === "SINGLE_CHOICE"
-                    ? "Một lựa chọn"
-                    : q.type === "FILL_BLANK"
-                    ? "Điền chỗ trống"
-                    : q.type
-                }}
-              </span>
-            </div>
             <div class="btn-control">
               <button
-                class="edit-icon-btn"
-                title="Chỉnh sửa"
-                (click)="toggleDropdown(i)"
+                class="icon-btn edit-dropdown-toggle"
+                (click)="toggleQuestionDropdown(i); $event.stopPropagation()"
+                *ngIf="isActionActive"
               >
-                <span><i class="fa fa-edit"></i></span>
+                <i class="fa fa-ellipsis-h"></i>
               </button>
-              <button
-                class="edit-icon-btn"
-                title="Xóa câu hỏi"
-                (click)="toggleConfirmDelete(i)"
+
+              <div
+                class="edit-dropdown"
+                *ngIf="openDropdownIndex === i"
+                [@dropdownAnimation]
               >
-                <span><i class="fa fa-trash"></i></span>
-              </button>
+                <ul>
+                  <li (click)="onEditQuestion(i, q)">
+                    <i class="fa fa-pen"></i> Sửa câu hỏi
+                  </li>
+                  <li (click)="onAddOption(i, q.id)">
+                    <i class="fa fa-plus-circle"></i> Thêm đáp án
+                  </li>
+                  <li class="delete-option" (click)="toggleConfirmDelete(i)">
+                    <i class="fa fa-trash"></i> Xóa câu hỏi
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div
-              class="edit-dropdown"
-              *ngIf="openDropdownIndex === i"
-              [@dropdownAnimation]
-            >
-              <ul>
-                <li
-                  *ngIf="exercise.quizDetail?.questions?.[i]"
-                  (click)="onEditQuestion(i, exercise.quizDetail?.questions?.[i])"
-                >
-                  <i class="fa fa-pen"></i> Sửa câu hỏi
-                </li>
-                <li
-                  *ngIf="exercise.quizDetail?.questions?.[i]"
-                  (click)="onAddOption(i, exercise.quizDetail?.questions?.[i]?.id)"
-                >
-                  <i class="fa fa-plus"></i> Thêm đáp án
-                </li>
-              </ul>
-            </div>
-            <div
-              class="edit-dropdown"
-              *ngIf="opentDeleteConfirm === i"
-              [@dropdownAnimation]
-            >
-              <ul>
-                <li
-                  *ngIf="exercise.quizDetail?.questions?.[i] as question"
-                  (click)="onDeleteQuestion(exercise.id, question.id)"
-                >
-                  <i class="fa fa-check"></i> Xác nhận xóa
-                </li>
-              </ul>
+          </div>
+
+          <div
+            *ngIf="opentDeleteConfirm === i"
+            class="confirm-modal-overlay"
+            (click)="cancelDelete()"
+          >
+            <div class="confirm-modal" (click)="$event.stopPropagation()">
+              <p>Bạn có chắc chắn muốn xóa câu hỏi này?</p>
+              <div class="confirm-buttons">
+                <button (click)="onDeleteQuestion(exercise.id, q.id)">
+                  Xác nhận
+                </button>
+                <button (click)="cancelDelete()">Hủy</button>
+              </div>
             </div>
           </div>
           <div class="question-title">{{ q.text }}</div>

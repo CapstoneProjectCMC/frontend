@@ -4,7 +4,7 @@
     <h2>Nạp điểm tiêu dùng</h2>
     <div class="payment-amount">
       <label for="amountInput"
-        >Nhập mức nạp <small>(Tối thiểu 2,000VNĐ)</small></label
+        >Nhập mức nạp <small>(Số tiền chẵn và tối thiểu 2,000VNĐ)</small></label
       >
       <div class="input-group">
         <input
@@ -14,7 +14,7 @@
           (input)="onAmountChange($event)"
           [value]="amount"
           [disabled]="loading"
-          max="100000000"
+          max="20000000"
         />
         <div>VNĐ</div>
         <!-- Hiển thị giá trị quy đổi GP -->
