@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import {
   PreloadAllModules,
   provideRouter,
@@ -14,7 +18,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { errorInterceptor } from './core/interceptors/handle/error.interceptor';
 import { loadingReducer } from './shared/store/loading-state/loading.reduce';
 import { modalNoticeReducer } from './shared/store/modal-notice-state/modal-notice.reducer';
-import { provideMarkdown } from 'ngx-markdown';
+import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
 import { provideLottieOptions } from 'ngx-lottie';
 import { variableReducer } from './shared/store/variable-state/variable.reducer';
 
@@ -36,5 +40,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideMarkdown(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
+    importProvidersFrom(MarkdownModule.forRoot()),
   ],
 };

@@ -18,10 +18,9 @@
   </header>
 
   <main class="post-card__body">
-    <div
-      class="post-card-description"
-      [innerHTML]="post.description | normalizeHtml | sanitizeHtml"
-    ></div>
+    <div class="post-card-description markdown-body">
+      <markdown [data]="post.description"></markdown>
+    </div>
 
     <div class="post-card__tags" *ngIf="post.tags?.length">
       <span

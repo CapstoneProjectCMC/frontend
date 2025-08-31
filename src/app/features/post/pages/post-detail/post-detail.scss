@@ -23,17 +23,15 @@
   margin: 0 auto;
   padding: calc(var(--spacing-unit) * 3);
   background: var(--background-color);
-  // height: calc(100vh - 180px);
+  scroll-behavior: smooth;
 
   // --- CỘT NỘI DUNG CHÍNH (BÊN TRÁI) ---
   .post-detail-content {
     flex: 4;
     display: flex;
     flex-direction: column;
-
-    // max-height: calc(100vh - 120px); // Chiều cao tối đa trước khi cuộn
-    // overflow-y: auto;
     padding-right: calc(var(--spacing-unit) * 2);
+    scroll-behavior: smooth;
 
     .post-title {
       font-size: 2.25rem;
@@ -60,7 +58,7 @@
 
       .post-image,
       .post-video {
-        max-width: 100%;
+        max-width: 60vw;
         border-radius: var(--border-radius);
         object-fit: contain;
       }
@@ -127,34 +125,12 @@
 
     // --- NỘI DUNG MARKDOWN ---
     .markdown-body {
-      // max-height: 500px;
-      // overflow: hidden;
-      // position: relative;
-      // transition: max-height 0.6s ease-in-out;
-
-      // &::after {
-      //   content: "";
-      //   position: absolute;
-      //   bottom: 0;
-      //   left: 0;
-      //   width: 100%;
-      //   height: 100px;
-      //   background: linear-gradient(
-      //     to bottom,
-      //     transparent,
-      //     var(--background-color)
-      //   );
-      //   pointer-events: none;
-      //   transition: opacity 0.6s ease-in-out;
-      // }
-
-      // &.is-expanded {
-      //   max-height: 10000px; // Đủ lớn để hiển thị toàn bộ
-      //   &::after {
-      //     opacity: 0;
-      //   }
-      //   overflow: auto;
-      // }
+      max-width: 60vw;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      text-wrap: wrap;
+      overflow-x: auto;
 
       // Styling cho các thẻ HTML được render ra
       h1,

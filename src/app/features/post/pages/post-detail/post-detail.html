@@ -60,25 +60,9 @@
         </ng-container>
       </div>
 
-      <div class="markdown-body">
+      <div class="post-detail-content">
         <markdown [data]="post.content"></markdown>
       </div>
-
-      <!-- <div
-        *ngIf="!isCommentVisible"
-        class="markdown-body"
-        [class.is-expanded]="isContentExpanded "
-      >
-        <markdown [data]="post.content"></markdown>
-      </div> -->
-
-      <!-- <button
-        *ngIf="!isCommentVisible"
-        class="expand-button"
-        (click)="toggleContentExpand()"
-      >
-        {{ isContentExpanded ? 'Thu gọn' : 'Xem thêm nội dung' }}
-      </button> -->
 
       <div class="post-tags" *ngIf="post.hashtag && !isCommentVisible">
         <span *ngFor="let tag of post.hashtag.split(',')" class="tag"
