@@ -11,15 +11,10 @@ import {
   ExerciseItem,
 } from '../../../../core/models/exercise.model';
 import { Store } from '@ngrx/store';
-import {
-  mapCreateExerciseToCardUI,
-  mapExerciseResToCardUI,
-} from '../../../../shared/utils/mapData';
+import { mapExerciseResToCardUI } from '../../../../shared/utils/mapData';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { SidebarItem } from '../../../../core/models/data-handle';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
-import { Router } from '@angular/router';
 import { ExerciseModalComponent } from '../../exercise-modal/create-new-exercise/exercise-modal.component';
 import { sendNotification } from '../../../../shared/utils/notification';
 import {
@@ -27,12 +22,14 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
-import { sidebarExercises } from '../../../../core/router-manager/exercise-vetical-menu';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { BtnType1Component } from '../../../../shared/components/fxdonad-shared/ui-verser-io/btn-type1/btn-type1.component';
 import { GenerateExerciseModalComponent } from '../../exercise-modal/generate-exercise/generate-exercise.component';
 import { LottieComponent } from 'ngx-lottie';
-import { lottieOptions } from '../../../../core/constants/value.constant';
+import {
+  lottieOptions,
+  tagsData,
+} from '../../../../core/constants/value.constant';
 import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleActions';
 
 @Component({
@@ -79,45 +76,24 @@ export class ListExerciseComponent implements OnInit {
   activeDropdown: string | null = null;
   errorSearch = '';
 
-  sidebarData: SidebarItem[] = [];
   listExercise: CardExcercise[] = [];
   tags: { value: string; label: string }[] = [];
   difficultyLevel: { value: string; label: string }[] = [];
 
   isActionActive = activeForAdminAndTeacher();
 
-  constructor(
-    private store: Store,
-    private exerciseService: ExerciseService,
-    private router: Router
-  ) {
-    this.tags = [
-      { value: 'math', label: 'toán' },
-      { value: 'easy', label: 'dễ dàng' },
-      { value: 'tag1', label: '1' },
-      { value: 'tag2', label: '2' },
-      { value: 'tag3', label: '3' },
-      { value: 'tag4', label: '4' },
-      { value: 'tag5', label: '5' },
-      { value: 'tag6', label: '6' },
-    ];
+  constructor(private store: Store, private exerciseService: ExerciseService) {
+    this.tags = tagsData;
     this.difficultyLevel = [
       { value: '0', label: 'Dễ' },
       { value: '1', label: 'Trung bình' },
       { value: '2', label: 'Khó' },
     ];
     const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
-    this.sidebarData = sidebarExercises(role);
   }
 
   private mapExerciseResToCardDataUI(data: ExerciseItem[]): CardExcercise[] {
     return data.map((info) => mapExerciseResToCardUI(info));
-  }
-
-  private mapCreateExerciseToCardDataUI(
-    data: CreateExerciseRequest
-  ): CardExcercise {
-    return mapCreateExerciseToCardUI(data);
   }
 
   ngOnInit(): void {

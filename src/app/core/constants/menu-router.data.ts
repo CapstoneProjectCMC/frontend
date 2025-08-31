@@ -253,7 +253,7 @@ export const navStudentItems: SidebarItem[] = [
   {
     id: 'payment',
     path: '/service-and-payment/payment',
-    label: 'Nạp điểm',
+    label: 'Thanh toán',
     icon: 'fas fa-credit-card',
   },
   {

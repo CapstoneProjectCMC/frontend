@@ -7,7 +7,7 @@
         [disabled]="!canPressStart"
         (click)="pageIndex(1)"
       >
-        &laquo;&laquo;
+        <i class="fa-solid fa-angles-left"></i>
       </button>
 
       <button
@@ -16,7 +16,7 @@
         [disabled]="!canPressStart"
         (click)="pageIndex(currentPageIndex - 1)"
       >
-        &laquo;
+        <i class="fa-solid fa-angle-left"></i>
       </button>
 
       <div class="page-number">
@@ -40,7 +40,7 @@
         [disabled]="!canPressEnd"
         (click)="pageIndex(currentPageIndex + 1)"
       >
-        &raquo;
+        <i class="fa-solid fa-angle-right"></i>
       </button>
 
       <button
@@ -49,7 +49,7 @@
         [disabled]="!canPressEnd"
         (click)="pageIndex(totalPages)"
       >
-        &raquo;&raquo;
+        <i class="fa-solid fa-angles-right"></i>
       </button>
     </div>
   </div>

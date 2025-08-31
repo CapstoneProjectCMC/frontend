@@ -48,6 +48,7 @@ export function getNavHorizontalItems(role: string): SidebarItem[] {
       path: '/statistics',
       label: 'Thống kê',
       icon: 'fas fa-chart-bar',
+      isVisible: !auth_lv2.includes(role),
     },
     {
       id: 'management',
@@ -59,15 +60,15 @@ export function getNavHorizontalItems(role: string): SidebarItem[] {
     {
       id: 'payment',
       path: '/service-and-payment/payment',
-      label: 'Nạp điểm',
+      label: 'Thanh toán',
       icon: 'fas fa-credit-card',
-      isVisible: !auth_lv2.includes(role),
     },
     {
       id: 'organization ',
       path: '/organization/list',
       label: 'Tổ chức',
       icon: 'fa-solid fa-building-user',
+      isVisible: !auth_lv2.includes(role),
     },
   ];
 }

@@ -56,7 +56,8 @@ export const API_CONFIG = {
         completed?: boolean
       ) => {
         let query = `/submission/assignments/${excerciseId}?page=${page}&size=${size}`;
-        if (completed === false) query += `&completed=${completed}`;
+        if (completed === false || completed === true)
+          query += `&completed=${completed}`;
         return query;
       },
 
@@ -137,11 +138,11 @@ export const API_CONFIG = {
         `/post/${postId}/comments?page=${page}&size=${size}&replySize=${replySize}`,
       GET_SAVE_EXERCISE: (page: number, size: number) =>
         `/profile/exercises/saved?page=${page}&size=${size}`,
-      GET_MY_WALLET: '/payment/payments/wallet',
+      GET_MY_WALLET: '/payment/wallet',
       GET_HISTORY_PURCHASE: (page: number, size: number) =>
-        `/payment/payments/purchase-history?page=${page}&size=${size}`,
+        `/payment/purchase-history?page=${page}&size=${size}`,
       GET_TRANSACTION_HISTORY: (page: number, size: number) =>
-        `/payment/payments/history?page=${page}&size=${size}`,
+        `/payment/history?page=${page}&size=${size}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -199,8 +200,8 @@ export const API_CONFIG = {
       ADD_COMMENT_POST: (postId: string) => `/post/${postId}/comment`,
       ADD_REPLY_COMMENT_POST: (postId: string, commentId: string) =>
         `/post/${postId}/comment/${commentId}`,
-      TOPUP: '/payment/payments/topup',
-      PURCHASE: '/payment/payments/purchase',
+      TOPUP: '/payment/topup',
+      PURCHASE: '/payment/purchase',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,

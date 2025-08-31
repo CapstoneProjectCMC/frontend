@@ -8,7 +8,10 @@ import {
   sendNotification,
 } from '../../../../shared/utils/notification';
 import { FormatViewPipe } from '../../../../shared/pipes/format-view.pipe';
-import { IDepositGPData } from '../../../../core/models/service-and-payment';
+import {
+  IDepositGPData,
+  TopUpTransactionRequest,
+} from '../../../../core/models/service-and-payment';
 import {
   generateUniqueHash,
   convertToGP,
@@ -79,12 +82,23 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
     )?.payload.userId;
     // Khởi tạo thời gian đếm ngược
     this.countdown = this.resetCountDown;
-    this.reloadCurrentGP();
+    this.fetchCurrentMoney();
   }
 
   ngOnDestroy(): void {
     this.transactionCheckSubscription?.unsubscribe();
     this.countdownInterval?.unsubscribe();
+  }
+
+  fetchCurrentMoney() {
+    this.paymentService.getMyWallet().subscribe({
+      next: (res) => {
+        this.currentGp = res.result.balance;
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
   }
 
   paymentFailed() {
@@ -106,10 +120,6 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
         'Hủy'
       );
     }
-  }
-
-  reloadCurrentGP() {
-    console.log('đã cập nhật tiền');
   }
 
   // Hàm chuyển số sang chữ tiếng Việt
@@ -274,20 +284,14 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
           this.loading = false;
 
           // Tạo đối tượng data sau khi đã có giao dịch phù hợp
-          const data: IDepositGPData = {
-            amount: Number(this.amount) / 1000,
-            currency: 'GP',
-            transactionCode: matched['Mã GD'].toString(),
-            counterpartBankCode: matched['Mã tham chiếu'],
+          const data: TopUpTransactionRequest = {
+            amount: Number(this.amount),
+            currency: 'VNĐ',
+            transactionId: matched['Mã GD'].toString(),
+            referenceId: matched['Mã tham chiếu'],
           };
+          this.depositMoney(data);
 
-          //Thực hiện call API nạp tiền vào tài khoản tại đây
-          sendNotification(
-            this.store,
-            'Đã thanh toán',
-            'Thanh toán thành công, đang yêu cầu nạp tiền vào tài khoản',
-            'success'
-          );
           this.qrUrl = this.qrUrlPlaceHolder;
         }
         // Không đặt this.loading = false ở đây để giữ hiệu ứng loading khi countdown đang chạy
@@ -297,6 +301,24 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.transactionCheckSubscription?.unsubscribe();
         this.countdownInterval?.unsubscribe();
+      },
+    });
+  }
+
+  depositMoney(data: TopUpTransactionRequest) {
+    this.paymentService.requestTopUp(data).subscribe({
+      next: (res) => {
+        //Thực hiện call API nạp tiền vào tài khoản tại đây
+        this.currentGp = res.result.balanceAfter;
+        sendNotification(
+          this.store,
+          'Đã thanh toán',
+          'Thanh toán thành công',
+          'success'
+        );
+      },
+      error(err) {
+        console.log(err);
       },
     });
   }

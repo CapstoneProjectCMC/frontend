@@ -1,4 +1,4 @@
-import { SidebarItem } from '../models/data-handle';
+import { SidebarItem } from '../../models/data-handle';
 
 export function sidebarPosts(role: string): SidebarItem[] {
   return [

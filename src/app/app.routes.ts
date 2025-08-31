@@ -131,8 +131,6 @@ export const routes: Routes = [
           import('./features/service-payment/service-and-payment.module').then(
             (m) => m.ServiceAndPaymentModule
           ),
-        data: { roles: ['ROLE_ADMIN'] },
-        canActivate: [RoleGuard],
       },
       {
         path: 'organization',
@@ -140,6 +138,8 @@ export const routes: Routes = [
           import('./features/organization/organization.module').then(
             (m) => m.OrganizationModule
           ),
+        data: { roles: ['ROLE_ADMIN'] },
+        canActivate: [RoleGuard],
       },
     ],
   },

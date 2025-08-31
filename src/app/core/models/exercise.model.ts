@@ -136,6 +136,7 @@ export type PatchUpdateExerciseRequest = {
   description: String;
   difficulty: DifficultyLevel;
   cost: number;
+  orgId: string;
   freeForOrg: boolean;
   startTime: string;
   endTime: string;

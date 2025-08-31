@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { googleScriptCheckPaid } from '../../../../environments/environment.secret';
 import { ApiMethod } from '../config-service/api.methods';
 import {
+  IPurChaseTransactionRequest,
   ITransactionStatus,
   PurchaseHistoryResponse,
+  TopUpTransactionRequest,
   TransactionHistoryResponse,
-  TransactionRequest,
-  TransactionResponse,
+  ITransactionResponse,
   WalletResponse,
 } from '../../models/service-and-payment';
 import { ApiResponse, IPaginationResponse } from '../../models/api-response';
@@ -23,15 +24,15 @@ export class PaymentService {
     return this.http.get<ITransactionStatus>(googleScriptCheckPaid);
   }
 
-  requestTopUp(data: TransactionRequest) {
-    return this.api.post<ApiResponse<TransactionResponse>>(
+  requestTopUp(data: TopUpTransactionRequest) {
+    return this.api.post<ApiResponse<ITransactionResponse>>(
       API_CONFIG.ENDPOINTS.POST.TOPUP,
       data
     );
   }
 
-  purchaseItem(data: TransactionRequest) {
-    return this.api.post<ApiResponse<TransactionResponse | null>>(
+  purchaseItem(data: IPurChaseTransactionRequest) {
+    return this.api.post<ApiResponse<ITransactionResponse | null>>(
       API_CONFIG.ENDPOINTS.POST.PURCHASE,
       data
     );

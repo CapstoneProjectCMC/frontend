@@ -17,10 +17,6 @@
           max="20000000"
         />
         <div>VNĐ</div>
-        <!-- Hiển thị giá trị quy đổi GP -->
-        <span class="convert-result">
-          = {{ convertToGP(amount) | formatView }} Điểm
-        </span>
       </div>
       <div class="amount-in-words" *ngIf="amountInWords">
         <em>{{ amountInWords }}</em>
@@ -78,17 +74,13 @@
           <span>{{ amount || 0 | formatView }} VNĐ</span>
         </div>
         <div>
-          <label>Giá trị chuyển đổi:</label>
-          <span>{{ convertToGP(amount) | formatView }} Điểm</span>
-        </div>
-        <div>
           <label>Loại giao dịch:</label>
-          <span>Nạp điểm</span>
+          <span>Nạp tiền</span>
         </div>
         <div>
           <label>Số dư hiện tại:</label>
           <!-- Dữ liệu này tuỳ logic của bạn -->
-          <span>{{ currentGp | formatView }} Điểm</span>
+          <span>{{ currentGp | formatView }} VNĐ</span>
         </div>
       </div>
     </div>

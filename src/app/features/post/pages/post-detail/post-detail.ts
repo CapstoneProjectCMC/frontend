@@ -43,6 +43,7 @@ export class PostDetailComponent {
     private postService: PostService,
     private markdownService: MarkdownService
   ) {
+    //chưa hoạt động đúng
     marked.use({
       renderer: {
         heading: ({ tokens, depth }) => {
@@ -92,7 +93,7 @@ export class PostDetailComponent {
       }</code></pre>`;
     };
 
-    // Load post data như bạn đã viết
+    // Load post data
     this.route.paramMap
       .pipe(
         tap(() => {
@@ -202,13 +203,6 @@ export class PostDetailComponent {
       .replace(/\s+/g, '-') // khoảng trắng → -
       .replace(/-+/g, '-') // gộp ---
       .replace(/^-+|-+$/g, ''); // bỏ - đầu/cuối
-  }
-
-  // Helper: chuyển HTML -> plain text để slug luôn đúng
-  private htmlToText(html: string): string {
-    const div = document.createElement('div');
-    div.innerHTML = html;
-    return div.textContent || div.innerText || '';
   }
 
   formatTime(time: string | Date): string {
