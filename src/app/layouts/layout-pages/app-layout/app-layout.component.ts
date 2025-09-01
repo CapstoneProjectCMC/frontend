@@ -33,6 +33,7 @@ export class AppLayoutComponent implements OnInit {
   visible = true;
   menuItems: SidebarItem[] | [] = [];
   showFooter = false;
+  initialLoadDataChatbot = false; //Biến này để gán cờ gọi dữ liệu rồi mới load chatbot
 
   // Chat data
   chatContexts: IContextThreadResponse[] = [];
@@ -84,6 +85,7 @@ export class AppLayoutComponent implements OnInit {
           this.currentContextId = this.chatContexts[0].id;
           this.fetchContextOfThreadById(this.currentContextId);
         }
+        this.initialLoadDataChatbot = true;
       },
       error: (err) => {
         console.log(err);

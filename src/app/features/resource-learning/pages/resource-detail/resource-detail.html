@@ -37,29 +37,48 @@
               #{{ tag.name }}
             </span>
           </div>
-          <div class="resource-description">{{ resource.description }}</div>
+          <div class="resource-detail-content">
+            <markdown [data]="resource.description"></markdown>
+          </div>
         </div>
       </div>
     </ng-container>
 
     <div class="resource-content">
       <!-- Nếu là video -->
-      <ng-container *ngIf="!isDocument; else documentView">
-        <app-video-player [videoSrc]="resource.hlsUrl"></app-video-player>
+      <ng-container
+        *ngIf="!isDocument && !isImage && resource?.hlsUrl; else otherView"
+      >
+        <app-video-player
+          [videoSrc]="resource?.hlsUrl || ''"
+        ></app-video-player>
       </ng-container>
 
-      <!-- Nếu là document -->
-      <ng-template #documentView>
-        <div class="document-view">
+      <ng-template #otherView>
+        <!-- Nếu là document -->
+        <div *ngIf="isDocument" class="document-view">
           <iframe
-            *ngIf="isDocument"
             [src]="safeUrl"
             width="100%"
             height="600px"
             frameborder="0"
             (error)="onIframeError($event)"
           ></iframe>
-          <!-- thumbnail, actions giữ nguyên -->
+          <div class="resource-detail-content">
+            <markdown [data]="resource.description"></markdown>
+          </div>
+        </div>
+
+        <!-- Nếu là image -->
+        <div *ngIf="isImage" class="image-view">
+          <img
+            [src]="resource.url"
+            [alt]="resource.fileName"
+            class="resource-image"
+          />
+          <div class="resource-detail-content">
+            <markdown [data]="resource.description"></markdown>
+          </div>
         </div>
       </ng-template>
     </div>
@@ -70,9 +89,6 @@
         <!-- giữ nguyên phần info -->
       </div>
     </ng-container>
-
-    <!-- Comment luôn nằm dưới cùng cho cả video & document -->
-    <app-comment></app-comment>
   </div>
 
   <!-- Ẩn Other video nếu là Document -->
@@ -90,13 +106,12 @@
       ></app-input>
     </div>
     <div class="list-resource-card-container">
-      <div *ngIf="!isLoading && listResourceCard" class="list-resource-card">
-        <div *ngFor="let resource of listResourceCard">
+      <div *ngIf="!isLoading && listResource" class="list-resource-card">
+        <div *ngFor="let resource of listResource">
           <app-resource-card
             [resource]="resource"
-            [onMain]="goToDetail"
-            [showControls]="false"
-            [variant]="'horizontal'"
+            [showControls]="true"
+            (main)="goToDetail($event)"
           ></app-resource-card>
         </div>
       </div>

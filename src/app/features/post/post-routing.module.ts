@@ -14,7 +14,6 @@ const routes: Routes = [
         path: 'post-list',
         component: PostListComponent,
         data: { breadcrumb: 'Danh sách bài đăng' },
-        children: [],
         title: 'Danh sách bài đăng',
       },
       {

@@ -1,3 +1,5 @@
+import { UserBasicInfo } from './exercise.model';
+
 export interface resourceCardInfo {
   id: string;
   avatarAuthor: string;
@@ -58,3 +60,35 @@ export interface IEpisodeLocal {
 export interface ILocalData {
   localData: IEpisodeLocal[];
 }
+
+//--------------------updated structure type---------------
+export type MediaResource = {
+  id: string;
+  fileName: string;
+  fileType: string;
+  size: number;
+  url: string;
+  checksum: string;
+  category: number;
+  isActive: boolean;
+  description: string;
+  thumbnailUrl: string;
+  transcodingStatus: string;
+  associatedResourceIds: string[];
+  tags: {
+    id: string;
+    name: string;
+  }[];
+  isLectureVideo: boolean;
+  isTextbook: boolean;
+  viewCount: number | null;
+  rating: number | null;
+  orgId: string | null;
+  duration: number | null;
+  hlsUrl: string | null;
+  createdAt: string; // ISO date
+  createdBy: string;
+  organizationId: string | null;
+  organizationRole: string;
+  userProfile: UserBasicInfo;
+};

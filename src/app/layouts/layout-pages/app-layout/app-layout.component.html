@@ -5,6 +5,7 @@
   <div class="main-content-app-container">
     <router-outlet />
     <app-box-chat-ai
+      *ngIf="initialLoadDataChatbot"
       [chatContexts]="chatContexts"
       [currentContextId]="currentContextId"
       [isLoading]="isLoading"

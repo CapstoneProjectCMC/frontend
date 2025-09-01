@@ -94,7 +94,6 @@ export class BoxChatAiComponent
 
   constructor(
     private renderer: Renderer2,
-    private elementRef: ElementRef,
     private chatbotService: ChatbotService
   ) {}
 
@@ -139,12 +138,13 @@ export class BoxChatAiComponent
   }
 
   scrollToBottom(): void {
-    try {
-      this.chatContainer.nativeElement.scrollTop =
-        this.chatContainer.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error('Error scrolling to bottom:', err);
-    }
+    if (this.isExpanded)
+      try {
+        this.chatContainer.nativeElement.scrollTop =
+          this.chatContainer.nativeElement.scrollHeight;
+      } catch (err) {
+        console.error('Error scrolling to bottom:', err);
+      }
   }
 
   getCurrentContext(): IContextThreadResponse | undefined {

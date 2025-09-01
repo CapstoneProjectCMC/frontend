@@ -1,114 +1,99 @@
-import { NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { formatDate } from '../../../utils/stringProcess';
-import { resourceCardInfo } from '../../../../core/models/resource.model';
-import * as pdfjsLib from 'pdfjs-dist';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MediaResource } from '../../../../core/models/resource.model';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-resource-card',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './resource-card.html',
   styleUrls: ['./resource-card.scss'],
-  standalone: true,
-  imports: [NgIf, NgFor, NgClass, NgStyle],
 })
-export class ResourceCardComponent {
-  @Input() resource!: resourceCardInfo;
-  @Input() showControls: boolean = true;
-  @Input() onEdit?: (resourceId: string) => void;
-  @Input() onDelete?: (resourceId: string) => void;
-  @Input() onApprove?: () => void;
-  @Input() onRejected?: () => void;
-  @Input() onReport?: () => void;
-  @Input() onSave?: () => void;
-  @Input() onMain?: (resourceId: string) => void;
-  @Input() popular?: number = 0;
-  @Input() variant: 'default' | 'horizontal' = 'default';
-  showPopup = false;
+export class ResourceCardComponent implements OnChanges {
+  @Input() showControls = false;
+  @Input() resource!: MediaResource;
 
-  togglePopup() {
-    this.showPopup = !this.showPopup;
-  }
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: Event) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.more-action') && !target.closest('.popup-menu')) {
-      this.showPopup = false;
+  @Output() main = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<string>();
+  @Output() delete = new EventEmitter<string>();
+
+  safeUrl!: SafeResourceUrl;
+
+  constructor(private sanitizer: DomSanitizer) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['resource'] && this.resource?.url) {
+      this.setSafeUrl(this.resource.url);
     }
   }
 
-  // Biến tạm để hiển thị duration/pages
+  private setSafeUrl(url: string) {
+    this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+  }
 
-  // ngOnInit() {
-  //   this.extractFileInfo();
-  // }
+  onCardClick() {
+    this.main.emit(this.resource.id);
+  }
 
-  // // ==== Xử lý file ====
-  // async extractFileInfo() {
-  //   const file = this.resource?.fileResource;
-  //   if (!file) return;
+  onEditClick(event: Event) {
+    event.stopPropagation();
+    this.edit.emit(this.resource.id);
+  }
 
-  //   if (file.type.startsWith('video/') || file.type.startsWith('audio/')) {
-  //     const seconds = await this.extractVideoDuration(file);
-  //     this.fileInfoLabel = this.formatDuration(seconds); // ví dụ: "03:25"
-  //   } else if (file.type === 'application/pdf') {
-  //     const pages = await this.extractPdfPageCount(file);
-  //     this.fileInfoLabel = `${pages} trang`;
-  //   } else {
-  //     this.fileInfoLabel = '';
-  //   }
-  // }
+  onDeleteClick(event: Event) {
+    event.stopPropagation();
+    this.delete.emit(this.resource.id);
+  }
 
-  extractVideoDuration(file: File): Promise<number> {
-    return new Promise((resolve) => {
-      const video = document.createElement('video');
-      video.preload = 'metadata';
-      video.onloadedmetadata = () => {
-        resolve(video.duration);
-        URL.revokeObjectURL(video.src);
-      };
-      video.src = URL.createObjectURL(file);
+  isFileType(type: string): boolean {
+    if (!this.resource?.fileType) return false;
+    switch (type) {
+      case 'video':
+        return this.resource.fileType.startsWith('video');
+      case 'image':
+        return this.resource.fileType.startsWith('image');
+      case 'document':
+        return (
+          this.resource.fileType.includes('pdf') ||
+          this.resource.fileType.includes('word') ||
+          this.resource.fileType.includes('application')
+        );
+      default:
+        return false;
+    }
+  }
+
+  isSpecificDocumentType(): boolean {
+    const specificTypes = [
+      'application/pdf',
+      'application/vnd.ms-word',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    ];
+    return specificTypes.includes(this.resource?.fileType ?? '');
+  }
+
+  formatDuration(seconds: number): string {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.floor(seconds % 60);
+    return `${minutes < 10 ? '0' + minutes : minutes}:${
+      remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds
+    }`;
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('vi-VN', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
     });
-  }
-
-  async extractPdfPageCount(file: File): Promise<number> {
-    const pdfData = await file.arrayBuffer();
-    const pdf = await pdfjsLib.getDocument({ data: pdfData }).promise;
-    return pdf.numPages;
-  }
-
-  formatDuration(seconds: number) {
-    const m = Math.floor(seconds / 60);
-    const s = Math.floor(seconds % 60);
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
-  }
-
-  // ==== Các handler có sẵn ====
-  handleMain() {
-    this.onMain && this.onMain(this.resource?.['id']);
-  }
-  handleEdit() {
-    this.onEdit && this.onEdit(this.resource.id);
-  }
-  handleDelete() {
-    this.onDelete && this.onDelete(this.resource.id);
-  }
-
-  handleApprove() {
-    this.onApprove && this.onApprove();
-  }
-
-  handleRejected() {
-    this.onRejected && this.onRejected();
-  }
-
-  handleReport() {
-    this.onReport && this.onReport();
-  }
-  handleSave() {
-    this.onSave && this.onSave();
-  }
-  formatDate(time: Date) {
-    return formatDate(time);
   }
 }

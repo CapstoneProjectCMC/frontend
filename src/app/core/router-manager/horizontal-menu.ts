@@ -19,7 +19,7 @@ export function getNavHorizontalItems(role: string): SidebarItem[] {
     },
     {
       id: 'resource',
-      path: '/resource-management/resource-list',
+      path: '/resource-learning/list-resource',
       label: 'Kho tài liệu',
       icon: 'fas fa-book',
     },

@@ -141,6 +141,56 @@ frontend/
 ├── cấu hình & tài liệu   # angular.json, package.json, README.md, ...
 ```
 
+## Design Patterns Áp Dụng Trong Dự Án
+
+Dự án Angular này áp dụng nhiều **design pattern chuẩn** để đảm bảo code rõ ràng, maintainable và dễ mở rộng. Tổng quan:
+
+---
+
+### 1. Module Pattern
+- Chia dự án theo **feature module** (`auth`, `dashboard`, `organization`, `post`, `profile`, ...).
+- Mỗi module chứa component, service và routing riêng, giúp tổ chức code gọn gàng.
+
+### 2. Singleton Pattern
+- Các service trong `core/services` được cung cấp thông qua Angular DI (`providedIn: 'root'`), đảm bảo **chỉ tồn tại 1 instance duy nhất** trong ứng dụng.
+
+### 3. Observer Pattern
+- Sử dụng **RxJS Observables/Subjects** để quản lý luồng dữ liệu và state.
+- Áp dụng trong **NgRx store**, HTTP requests, và các event giữa component.
+
+### 4. Interceptor Pattern
+- Các HTTP interceptor trong `core/interceptors` quản lý request/response chung: **logging, error handling, authentication token**.
+
+### 5. Strategy Pattern
+- **Guards** (`AuthGuard`, `RoleGuard`) áp dụng strategy để quyết định quyền truy cập.
+- **Environments** (`dev`, `staging`, `prod`) chọn cấu hình phù hợp theo môi trường.
+
+### 6. Facade Pattern
+- **Router Manager** gom logic routing vào 1 chỗ.
+- **NgRx Facade** (nếu sử dụng) để tách component khỏi chi tiết state management.
+
+### 7. Template Pattern
+- Các **layout** (`header`, `sidebar`, `footer`) định nghĩa khung sẵn, feature module nhúng nội dung vào khu vực content.
+
+### 8. Smart & Dumb Components (Container/Presenter)
+- Component **Smart** xử lý logic, data fetching, và state.
+- Component **Dumb** nhận `@Input()` và emit `@Output()`, chỉ chịu trách nhiệm hiển thị.
+
+### 9. Decorator Pattern
+- Angular decorators: `@Component`, `@Directive`, `@Pipe`, `@Injectable`.
+- Cho phép mở rộng chức năng mà không sửa code gốc.
+
+### 10. DTO Pattern
+- Các **model** trong `core/models` quản lý dữ liệu giữa API và component, đảm bảo type safety.
+
+---
+
+**Lợi ích:**  
+- Code dễ maintain, tái sử dụng cao.  
+- Tách biệt rõ ràng giữa logic và UI.  
+- Chuẩn hóa cách tổ chức dự án theo Angular best practices.  
+
+
 ### Minh họa luồng hoạt động
 
 ```mermaid
