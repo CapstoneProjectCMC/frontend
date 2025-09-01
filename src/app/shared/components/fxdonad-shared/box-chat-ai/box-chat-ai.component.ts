@@ -73,7 +73,7 @@ export class BoxChatAiComponent
   newMessage: string = '';
   newContext: ThreadInfoResponse | null = null;
   file: File | null = null;
-  isExpanded: boolean = true;
+  isExpanded: boolean = false;
   showContextList: boolean = false;
   shouldScrollToBottom: boolean = true;
   isCreatingNewThread: boolean = false;
@@ -314,6 +314,7 @@ export class BoxChatAiComponent
 
   toggleContextList(): void {
     this.showContextList = !this.showContextList;
+    this.isExpanded = true;
   }
 
   getMessageTime(timestamp: Date): string {

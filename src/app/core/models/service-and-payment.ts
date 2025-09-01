@@ -32,7 +32,7 @@ export type TopUpTransactionRequest = {
 //purchase request
 export interface IPurChaseTransactionRequest extends TopUpTransactionRequest {
   itemId?: string | null;
-  itemType?: 'COURSE' | 'SUBSCRIPTION' | null;
+  itemType?: 'COURSE' | 'SUBSCRIPTION' | string | null;
   itemPrice?: number | null;
   itemName?: string | null;
 }

@@ -1,7 +1,5 @@
 .chat-box {
-  min-width: 300px;
-  max-width: 500px;
-  height: 100%;
+  max-width: fit-content;
   display: flex;
   flex-direction: column;
   background-color: var(--background-color);
@@ -11,12 +9,25 @@
   position: relative;
   border-radius: 12px;
 
-  &.expanded {
-    height: 100%;
+  &:not(.expanded) {
+    // sau 3s mới mờ dần
+    transition: opacity 0.3s ease 3s;
+    opacity: 0.3;
+    height: 48px;
+
+    // nếu hover thì sáng lên lại ngay
+    &:hover {
+      opacity: 1;
+      transition: opacity 0.2s ease; // bỏ delay khi hover
+    }
   }
 
-  &:not(.expanded) {
-    height: 48px;
+  &.expanded {
+    height: calc(100vh - 150px);
+    opacity: 1;
+    transition: all 0.3s ease; // không delay
+    min-width: 300px;
+    max-width: 500px;
   }
 
   &.resizing {

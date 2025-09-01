@@ -215,6 +215,11 @@
   .name {
     font-weight: 500;
     color: var(--text-primary);
+    p {
+      margin: 0;
+      font-size: 12px;
+      font-weight: 400;
+    }
   }
 
   .date {

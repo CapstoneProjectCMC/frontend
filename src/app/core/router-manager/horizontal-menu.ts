@@ -25,23 +25,9 @@ export function getNavHorizontalItems(role: string): SidebarItem[] {
     },
     {
       id: 'message',
-      path: 'conversations',
+      path: 'conversations/chat',
       label: 'Tin nhắn',
       icon: 'fas fa-comments',
-      children: [
-        {
-          id: 'org',
-          path: 'conversations/chat',
-          label: 'Cộng đồng',
-          icon: 'fas fa-users',
-        },
-        {
-          id: 'private',
-          path: '/message/private',
-          label: 'Nội bộ',
-          icon: 'fas fa-user-friends',
-        },
-      ],
     },
     {
       id: 'statistics',

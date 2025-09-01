@@ -86,7 +86,12 @@
 
           <div class="conversation-item__details">
             <div class="details__header">
-              <span class="name">{{ convo.conversationName }}</span>
+              <span class="name" [title]="convo.conversationName"
+                >{{ convo.conversationName | truncate : 9 }}
+                <p>
+                  {{convo.type === "GROUP" ? `(Nhóm - ${convo.myRole.toLocaleLowerCase()})` : ``}}
+                </p>
+              </span>
               <span class="date">{{
                 convo.modifiedDate | date : "mediumDate"
               }}</span>

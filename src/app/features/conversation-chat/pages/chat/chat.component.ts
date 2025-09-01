@@ -31,6 +31,7 @@ import {
 import { Store } from '@ngrx/store';
 import { getUserId } from '../../../../shared/utils/userInfo';
 import { SetRoleForUserComponent } from '../../modal/set-role-for-user/set-role-for-user.component';
+import { TruncatePipe } from '../../../../shared/pipes/format-view.pipe';
 
 @Component({
   selector: 'app-chat',
@@ -42,6 +43,7 @@ import { SetRoleForUserComponent } from '../../modal/set-role-for-user/set-role-
     CreateNewConversationComponent,
     ClickOutsideDirective,
     SetRoleForUserComponent,
+    TruncatePipe,
   ],
   animations: [
     trigger('dropdownAnimation', [

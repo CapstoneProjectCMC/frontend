@@ -8,18 +8,9 @@
     (quizStateChanged)="onQuizStateChanged($event)"
   ></app-quiz>
 
-  <app-box-chat-ai
-    *ngIf="allowChatbot"
-    [chatContexts]="chatContexts"
-    [currentContextId]="currentContextId"
-    [isLoading]="isLoading"
-    [initialWidth]="currentChatWidth"
-    [minWidth]="'300px'"
-    [maxWidth]="'500px'"
-    [position]="'right'"
-    (sendMessage)="handleSendMessage($event)"
-    (createNewChat)="handleCreateNewChat($event)"
-    (selectContext)="handleSelectContext($event)"
-    (deleteContext)="handleDeleteContext($event)"
-  ></app-box-chat-ai>
+  <div *ngIf="!startDoing" class="no-data-container">
+    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+    </ng-lottie>
+    <p>Đang load nội dung, xin chờ...</p>
+  </div>
 </div>

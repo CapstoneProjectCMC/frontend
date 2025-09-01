@@ -4,6 +4,19 @@
   </app-menu-layout>
   <div class="main-content-app-container">
     <router-outlet />
+    <app-box-chat-ai
+      [chatContexts]="chatContexts"
+      [currentContextId]="currentContextId"
+      [isLoading]="isLoading"
+      [initialWidth]="currentChatWidth"
+      [minWidth]="'300px'"
+      [maxWidth]="'500px'"
+      [position]="'right'"
+      (sendMessage)="handleSendMessage($event)"
+      (createNewChat)="handleCreateNewChat($event)"
+      (selectContext)="handleSelectContext($event)"
+      (deleteContext)="handleDeleteContext($event)"
+    ></app-box-chat-ai>
   </div>
   <app-footer *ngIf="showFooter"></app-footer>
 </div>

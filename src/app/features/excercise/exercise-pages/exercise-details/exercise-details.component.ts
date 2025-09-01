@@ -37,6 +37,8 @@ import { activeForMyContent } from '../../../../shared/utils/authenRoleActions';
 import { isAvailabelTime } from '../../../../shared/utils/availableTime';
 import { PaymentService } from '../../../../core/services/api-service/payment.service';
 import { IPurChaseTransactionRequest } from '../../../../core/models/service-and-payment';
+import { v4 as uuidv4 } from 'uuid';
+import { FormatViewPipe } from '../../../../shared/pipes/format-view.pipe';
 
 @Component({
   selector: 'app-exercise-details',
@@ -48,6 +50,7 @@ import { IPurChaseTransactionRequest } from '../../../../core/models/service-and
     UpdateExerciseComponent,
     UpdateQuestionOptionComponent,
     Tooltip,
+    FormatViewPipe,
   ],
   templateUrl: './exercise-details.component.html',
   styleUrls: ['./exercise-details.component.scss'],
@@ -179,13 +182,32 @@ export class ExerciseDetailsComponent implements OnInit {
     }
   }
 
-  payForExercise(item: IPurChaseTransactionRequest) {
+  payForExercise() {
+    const item: IPurChaseTransactionRequest = {
+      transactionId: uuidv4(),
+      referenceId: uuidv4(),
+      currency: 'VNĐ',
+      itemId: this.exerciseId,
+      itemType: this.exercise.exerciseType,
+      itemPrice: this.exercise.cost,
+      itemName: this.exercise.title,
+    };
+
     this.paymentService.purchaseItem(item).subscribe({
       next: (res) => {
         //todo tomorrow
         this.isBought = true;
+        sendNotification(
+          this.store,
+          'Thanh toán thành công',
+          'Bạn có thể bắt đầu làm bài tập này',
+          'success'
+        );
       },
-      error(err) {
+      error: (err) => {
+        if (err.code === 4059103) {
+          this.isBought = true;
+        }
         console.log(err);
       },
     });
@@ -271,6 +293,49 @@ export class ExerciseDetailsComponent implements OnInit {
     } else {
       this.openDropdownIndex = index;
     }
+  }
+
+  openRequestBuyExercise() {
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Xin chờ...' })
+      );
+    });
+    this.paymentService.getMyWallet().subscribe({
+      next: (res) => {
+        if (res.result.balance - this.exercise.cost < 0) {
+          openModalNotification(
+            this.store,
+            'Số dư không đủ',
+            `Số dư tài khoản của bạn là ${
+              res.result.balance
+            }VNĐ hiện không đủ, còn thiếu ${
+              this.exercise.cost - res.result.balance
+            }VNĐ, bạn có muốn nạp thêm ?`,
+            'Đồng ý',
+            'hủy',
+            () => this.router.navigate(['/service-and-payment/payment'])
+          );
+        } else {
+          openModalNotification(
+            this.store,
+            'Mua bài tập',
+            `Bạn chắc chắn mua bài tập này? 
+          Số dư sau thanh toán: ${(
+            res.result.balance - this.exercise.cost
+          ).toLocaleString()}VNĐ`,
+            'Đồng ý',
+            'hủy',
+            () => this.payForExercise()
+          );
+        }
+
+        this.store.dispatch(clearLoading());
+      },
+      error: (err) => {
+        this.store.dispatch(clearLoading());
+      },
+    });
   }
 
   // Đổi tên hàm cũ cho rõ ràng hơn

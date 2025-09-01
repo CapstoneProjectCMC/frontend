@@ -10,7 +10,7 @@
   <div class="resize-handle" #resizeHandle></div>
 
   <div class="chat-header">
-    <div class="header-left">
+    <div class="header-left" *ngIf="isExpanded">
       <button
         #contextButtonRef
         class="context-button"
@@ -45,9 +45,11 @@
         class="new-chat-button"
         (click)="createNewChatContext()"
         title="Tạo cuộc trò chuyện mới"
+        *ngIf="isExpanded"
       >
         <i class="fas fa-plus"></i>
       </button>
+      <h3 *ngIf="!isExpanded">AI chatbot</h3>
       <button
         class="toggle-button"
         (click)="toggleExpand()"

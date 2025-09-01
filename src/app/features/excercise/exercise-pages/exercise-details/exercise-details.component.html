@@ -162,11 +162,18 @@
         >
         <span title="Giá"
           ><i class="fa-solid fa-cart-shopping"></i
-          >{{ exercise.cost }} VNĐ</span
+          >{{ exercise.cost | formatView }} VNĐ</span
         >
       </div>
 
       <div class="btn-container">
+        <button
+          class="btn main"
+          *ngIf="!isBought"
+          (click)="openRequestBuyExercise()"
+        >
+          <i class="fa-solid fa-cart-plus"></i> Mua bài tập
+        </button>
         <button
           class="btn main"
           *ngIf="
