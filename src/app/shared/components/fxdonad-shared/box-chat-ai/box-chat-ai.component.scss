@@ -1,3 +1,16 @@
+:host {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 70vw;
+  display: flex;
+  justify-content: end;
+  z-index: 3;
+
+  // Host mặc định click xuyên qua
+  pointer-events: none;
+}
+
 .chat-box {
   max-width: fit-content;
   display: flex;
@@ -8,7 +21,7 @@
   transition: all 0.3s ease;
   position: relative;
   border-radius: 12px;
-
+  pointer-events: auto; // chỉ cho phép thao tác trong vùng chat-box
   &:not(.expanded) {
     // sau 3s mới mờ dần
     transition: opacity 0.3s ease 3s;
