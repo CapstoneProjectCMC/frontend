@@ -241,6 +241,35 @@ export class PostListComponent {
     });
   }
 
+  handleToggleSave(postId: string) {
+    const post = this.posts.find((p) => p.id === postId);
+    if (!post) return;
+
+    // Nếu đang lưu thì gọi unSave
+    if (post.isSaved) {
+      this.postservice.unSavePost(postId).subscribe({
+        next: () => {
+          post.isSaved = false; // ✅ cập nhật lại trạng thái
+          console.log(`Unsave thành công post: ${postId}`);
+        },
+        error: (err) => {
+          console.error('Unsave thất bại', err);
+        },
+      });
+    } else {
+      // Nếu chưa lưu thì gọi save
+      this.postservice.savePost(postId).subscribe({
+        next: () => {
+          post.isSaved = true;
+          console.log(`Save thành công post: ${postId}`);
+        },
+        error: (err) => {
+          console.error('Save thất bại', err);
+        },
+      });
+    }
+  }
+
   handleInputChange(value: string | number): void {
     this.postname = value.toString();
 

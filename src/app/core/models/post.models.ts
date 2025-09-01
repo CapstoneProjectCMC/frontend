@@ -13,6 +13,7 @@ export interface PostCardInfo {
   downvote: number;
   public: boolean;
   allowComment: boolean;
+  isSaved?: boolean;
 }
 
 export interface Tag {
@@ -164,3 +165,13 @@ export interface PostDataCreateRequest {
   isLectureVideo: boolean;
   isTextbook: boolean;
 }
+
+export type SavedPostResponse = {
+  id: string;
+  saveAt: string;
+  post: {
+    id: string;
+    postId: string;
+    title: string;
+  };
+};

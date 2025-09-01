@@ -1,0 +1,22 @@
+<div class="saved-posts-container" appScrollEnd (appScrollEnd)="onScrollEnd()">
+  <div
+    class="saved-post-card"
+    *ngFor="let item of savedPosts"
+    (click)="navigateToDetails(item.post.postId)"
+  >
+    <div class="card-content">
+      <h3 class="post-title">{{ item.post.title }}</h3>
+      <p class="save-date">Đã lưu: {{ item.saveAt | date : "short" }}</p>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="!loading" class="no-data-container">
+    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+    </ng-lottie>
+    <p>Không có dữ liệu</p>
+  </div>
+</div>

@@ -129,6 +129,8 @@ export const API_CONFIG = {
       GET_CHAT_MESSAGES: (page: number, size: number, conversationId: string) =>
         `/chat/messages?page=${page}&size=${size}&conversationId=${conversationId}`,
       GET_POST_DETAILS: (postId: string) => `/post/${postId}`,
+      GET_SAVED_POSTS: (page: number, size: number) =>
+        `/profile/posts/saved?page=${page}&size=${size}`,
       GET_COMMENT_BY_POST_ID: (
         postId: string,
         page: number,
@@ -202,6 +204,7 @@ export const API_CONFIG = {
       SET_ROLE_FOR_USER_CHAT: (groupId: string) =>
         `/chat/conversation/group/${groupId}/role`,
       REACTION_POST: (postId: string) => `/post/${postId}/reaction/toggle`,
+      SAVE_POST: (postId: string) => `/profile/post/${postId}/save`,
       ADD_COMMENT_POST: (postId: string) => `/post/${postId}/comment`,
       ADD_REPLY_COMMENT_POST: (postId: string, commentId: string) =>
         `/post/${postId}/comment/${commentId}`,
@@ -242,6 +245,7 @@ export const API_CONFIG = {
       DELETE_GROUP_CHAT: (groupId: string) =>
         `/chat/conversation/group/${groupId}`,
       DELETE_POST: (postId: string) => `/post/${postId}`,
+      UNSAVE_POST: (postId: string) => `/profile/post/${postId}/save`,
       DELETE_COMMENT_POST: (commentId: string) => `/post/comment/${commentId}`,
       UNSAVE_EXERCISE: (exerciseId: string) =>
         `/profile/exercise/${exerciseId}/save`,

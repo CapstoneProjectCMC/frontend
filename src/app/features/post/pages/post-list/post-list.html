@@ -75,6 +75,7 @@
             (upvote)="handleUpVote(post.id)"
             (downvote)="handleDownVote(post.id)"
             (mainClick)="goToDetail($event)"
+            (save)="handleToggleSave(post.id)"
           ></app-post-card>
         </div>
       </div>
@@ -96,40 +97,11 @@
         </ng-lottie>
         <p>Không có dữ liệu</p>
       </div>
-
-      <!-- Phân trang (bỏ chú thích nếu cần) -->
-      <!-- <div class="list-post-pagination">
-      <app-pagination
-        [totalData]="posts.length"
-        [amountDataPerPage]="10"
-        [currentPageIndex]="1"
-        (onPageChange)="handlePageChange($event)"
-      ></app-pagination>
-    </div> -->
     </div>
   </div>
 
   <div class="popular">
-    <!-- <div class="note-card">
-      <div class="note-card-item">
-        <div class="line" style="background-color: #09d3ae"></div>
-        <span>Đã duyệt</span>
-      </div>
-
-      <div class="note-card-item">
-        <div class="line" style="background-color: #f5d905"></div>
-        <span>Chờ duyệt</span>
-      </div>
-      <div class="note-card-item">
-        <div class="line" style="background-color: #ff7a7c"></div>
-        <span>Đã từ chối</span>
-      </div>
-    </div> -->
     <div class="popular-content">
-      <!-- <app-popular-content
-          [numTags]="fakeTags.length"
-          [tags]="fakeTags"
-        ></app-popular-content> -->
       <app-trending
         [items]="trendingData"
         title="Popular Technologies"
