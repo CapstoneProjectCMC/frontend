@@ -5,21 +5,21 @@ import {
   NgZone,
   ViewChild,
 } from '@angular/core';
-import { DropdownButtonComponent } from '../../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
-import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
+import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
+import { ButtonComponent } from '../../../../shared/components/my-shared/button/button.component';
 import {
   TextEditor,
   TextEditorConfig,
-} from '../../../../../shared/components/fxdonad-shared/text-editor/text-editor';
-import { HtmlToMdService } from '../../../../../shared/utils/HTMLtoMarkDown';
+} from '../../../../shared/components/fxdonad-shared/text-editor/text-editor';
+import { HtmlToMdService } from '../../../../shared/utils/HTMLtoMarkDown';
 import { NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { ResourceService } from '../../../../../core/services/api-service/resource.service';
-import { sendNotification } from '../../../../../shared/utils/notification';
-import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
+import { ResourceService } from '../../../../core/services/api-service/resource.service';
+import { sendNotification } from '../../../../shared/utils/notification';
+import { clearLoading } from '../../../../shared/store/loading-state/loading.action';
 import { Store } from '@ngrx/store';
-import { InputComponent } from '../../../../../shared/components/fxdonad-shared/input/input';
-import { decodeJWT } from '../../../../../shared/utils/stringProcess';
+import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { FormsModule } from '@angular/forms';
 
 @Component({

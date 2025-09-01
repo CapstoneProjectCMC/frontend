@@ -1,9 +1,9 @@
 // auth-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ResourceListComponent } from './page/resource-list/resource-list';
-import { ResourceCreatePageComponent } from './page/resource-create/resource-create';
-import { ResourceDetail } from './page/resource-detail/resource-detail';
+import { ResourceListComponent } from '../../resource-learning/pages/resource-list/resource-list';
+import { ResourceCreatePageComponent } from '../../resource-learning/pages/resource-create/resource-create';
+import { ResourceDetail } from '../../resource-learning/pages/resource-detail/resource-detail';
 
 const routes: Routes = [
   {

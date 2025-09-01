@@ -6,7 +6,7 @@ import {
   XuanIPaginationResponse,
   XuanPresignedUrlResponse,
 } from '../../models/api-response';
-import { ResourceData, Tag } from '../../models/resource.model';
+import { MediaResource, ResourceData, Tag } from '../../models/resource.model';
 import { API_CONFIG } from '../config-service/api.enpoints';
 
 @Injectable({
@@ -14,15 +14,29 @@ import { API_CONFIG } from '../config-service/api.enpoints';
 })
 export class ResourceService {
   constructor(private http: HttpClient, private api: ApiMethod) {}
-  getResource(pageSize: number, pageIndex: number) {
+
+  //lỗi thời
+  getAllResource(pageSize: number, pageIndex: number) {
     return this.api.post<ApiResponse<XuanIPaginationResponse<ResourceData[]>>>(
-      API_CONFIG.ENDPOINTS.POST.GET_FILE,
+      API_CONFIG.ENDPOINTS.POST.GET_ALL_FILE_RESOURCE,
       {
         pageIndex,
         pageSize,
       }
     );
   }
+
+  //bản cập nhật
+  getAllResourceLearning(pageSize: number, pageIndex: number) {
+    return this.api.post<ApiResponse<XuanIPaginationResponse<MediaResource[]>>>(
+      API_CONFIG.ENDPOINTS.POST.GET_ALL_FILE_RESOURCE,
+      {
+        pageIndex,
+        pageSize,
+      }
+    );
+  }
+
   getVideoResources() {
     return this.api.get<ApiResponse<ResourceData[]>>(
       API_CONFIG.ENDPOINTS.GET.GET_FILE_VIDEOS
@@ -34,7 +48,7 @@ export class ResourceService {
     );
   }
   getResourceById(id: string) {
-    return this.api.get<ApiResponse<ResourceData>>(
+    return this.api.get<ApiResponse<MediaResource>>(
       API_CONFIG.ENDPOINTS.GET.GET_FILE_BY_ID(id)
     );
   }

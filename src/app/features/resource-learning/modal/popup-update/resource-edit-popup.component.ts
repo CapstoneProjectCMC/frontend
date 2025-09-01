@@ -1,21 +1,23 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ResourceService } from '../../../../../core/services/api-service/resource.service';
+import { ResourceService } from '../../../../core/services/api-service/resource.service';
 import {
   ResourceData,
   Tag,
   FileCategory,
-} from '../../../../../core/models/resource.model';
-import { sendNotification } from '../../../../../shared/utils/notification';
+  MediaResource,
+} from '../../../../core/models/resource.model';
+import { sendNotification } from '../../../../shared/utils/notification';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
-import { decodeJWT } from '../../../../../shared/utils/stringProcess';
+import { clearLoading } from '../../../../shared/store/loading-state/loading.action';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { TruncatePipe } from '../../../../shared/pipes/format-view.pipe';
 @Component({
   selector: 'app-resource-edit-popup',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TruncatePipe],
   templateUrl: './resource-edit-popup.component.html',
   styleUrls: ['./resource-edit-popup.component.scss'],
 })
@@ -24,7 +26,7 @@ export class ResourceEditPopupComponent {
   @Output() close = new EventEmitter<void>();
   @Output() updated = new EventEmitter<void>();
 
-  resource?: ResourceData;
+  resource?: MediaResource;
   isLoading = false;
   errorMessage = '';
   selectedFile?: File;
@@ -47,7 +49,7 @@ export class ResourceEditPopupComponent {
     this.isLoading = true;
     this.resourceService.getResourceById(id).subscribe({
       next: (res) => {
-        this.resource = res.result as ResourceData;
+        this.resource = res.result;
         this.tagInput =
           this.resource?.tags?.map((t) => t.name).join(', ') || '';
         this.tags = this.resource?.tags?.map((t) => t.name) || [];
@@ -129,7 +131,7 @@ export class ResourceEditPopupComponent {
         this.selectedFile, // nếu có chọn file thì gửi kèm
         this.resource.category,
         this.resource.description,
-        this.tags, // 👈 chỉ gửi string[]
+        this.tags,
         this.resource.isLectureVideo,
         this.resource.isTextbook,
         // this.resource.orgId,

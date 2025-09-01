@@ -1,0 +1,56 @@
+<div class="resource-container">
+  <div class="resource-list-container">
+    <div class="resource-list-control">
+      <div class="resource-list-filter">
+        <app-input
+          placeholder="Nhập tên..."
+          [value]="resourcename"
+          (valueChange)="handleInputChange($event)"
+          [required]="false"
+          [minLength]="3"
+          [variant]="'primary'"
+          [isSvg]="false"
+          [icon]="'fa fa-search'"
+        ></app-input>
+      </div>
+      <div class="resource-list-button">
+        <app-button
+          (onClick)="handleAdd()"
+          [width]="'50px'"
+          [height]="'50px'"
+          variant="outline"
+        >
+          <span style="font-size: 24px">+</span>
+        </app-button>
+      </div>
+    </div>
+
+    <div class="list-resource-card-container">
+      <div *ngIf="!isLoading && resources" class="list-resource-card">
+        <div *ngFor="let resource of resources">
+          <app-resource-card
+            [resource]="resource"
+            [showControls]="true"
+            (main)="goToDetail($event)"
+            (edit)="selectedResourceId = $event"
+            (delete)="deleteResource($event)"
+          ></app-resource-card>
+        </div>
+      </div>
+
+      <div *ngIf="isLoading " class="list-resource-card">
+        <app-skeleton-loading
+          *ngIf="isLoading"
+          type="card"
+          [count]="8"
+        ></app-skeleton-loading>
+      </div>
+    </div>
+  </div>
+</div>
+<app-resource-edit-popup
+  *ngIf="selectedResourceId"
+  [resourceId]="selectedResourceId"
+  (close)="handlePopupClose()"
+  (updated)="handleResourceUpdated()"
+></app-resource-edit-popup>

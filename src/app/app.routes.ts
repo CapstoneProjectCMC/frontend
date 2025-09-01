@@ -5,7 +5,7 @@ import { AuthLayoutComponent } from './layouts/layout-pages/auth-layout/auth-lay
 import { AppLayoutComponent } from './layouts/layout-pages/app-layout/app-layout.component';
 import { AdminLayoutComponent } from './layouts/layout-pages/admin-layout/admin-layout';
 import { RoleGuard } from './core/guards/router-protected/role.guard';
-import { ExerciseModule } from './features/excercise/exercise.module';
+import { PostModule } from './features/post/post.module';
 
 export const routes: Routes = [
   //Để test
@@ -86,6 +86,7 @@ export const routes: Routes = [
     ],
   },
 
+  //Load app chính
   {
     path: '',
     component: AppLayoutComponent,
@@ -100,11 +101,10 @@ export const routes: Routes = [
       },
       {
         path: 'exercise',
-        // loadChildren: () =>
-        //   import('./features/excercise/exercise.module').then(
-        //     (m) => m.ExerciseModule
-        //   ),
-        loadChildren: () => ExerciseModule,
+        loadChildren: () =>
+          import('./features/excercise/exercise.module').then(
+            (m) => m.ExerciseModule
+          ),
       },
       {
         path: 'conversations',
@@ -115,8 +115,14 @@ export const routes: Routes = [
       },
       {
         path: 'post-features',
+        loadChildren: () => PostModule, //Load đầu tiên k dùng lazyload
+      },
+      {
+        path: 'resource-learning',
         loadChildren: () =>
-          import('./features/post/post.module').then((m) => m.PostModule),
+          import('./features/resource-learning/resource-learning.module').then(
+            (m) => m.ResourceLearningModule
+          ),
       },
       {
         path: 'profile',

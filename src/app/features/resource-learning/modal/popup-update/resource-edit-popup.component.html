@@ -7,7 +7,7 @@
 
     <div class="popup-body" *ngIf="!isLoading && resource">
       <label>File hiện tại:</label>
-      <div class="readonly-field">{{ resource.fileName }}</div>
+      <div class="readonly-field">{{ resource.fileName | truncate : 40 }}</div>
 
       <label>Thumbnail URL:</label>
       <input [(ngModel)]="resource.thumbnailUrl" type="text" />
@@ -27,6 +27,7 @@
       <input
         [ngModel]="tagInput"
         (ngModelChange)="handleTagInputChange($event)"
+        class="tags-input"
       />
 
       <label>Chế độ hiển thị:</label>
