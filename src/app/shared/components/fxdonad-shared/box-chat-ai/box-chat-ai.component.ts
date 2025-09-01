@@ -94,7 +94,6 @@ export class BoxChatAiComponent
 
   constructor(
     private renderer: Renderer2,
-    private elementRef: ElementRef,
     private chatbotService: ChatbotService
   ) {}
 

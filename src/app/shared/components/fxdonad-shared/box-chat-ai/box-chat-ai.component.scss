@@ -554,10 +554,6 @@
 // Media Queries
 @media (max-width: 768px) {
   .chat-box {
-    width: 100%;
-    max-width: none;
-    border-radius: 0;
-
     .resize-handle {
       display: none;
     }
@@ -567,11 +563,14 @@
 @media (max-width: 480px) {
   .chat-box {
     .chat-header {
-      padding: 10px;
-
       .header-left {
         .chat-title {
           font-size: 14px;
+        }
+      }
+      .header-right {
+        h3 {
+          margin: 0;
         }
       }
     }

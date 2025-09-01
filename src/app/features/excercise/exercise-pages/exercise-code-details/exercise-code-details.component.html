@@ -214,13 +214,22 @@
       </div>
 
       <button
-        *ngIf="canStartDoing"
+        *ngIf="canStartDoing && (exercise.cost <= 0 ? true : isBought)"
         class="btn btn-primary"
         (click)="confirmCoding()"
         title="Bắt đầu làm bài"
       >
         <i class="fa-solid fa-play"></i>
         <span>Bắt đầu làm</span>
+      </button>
+      <button
+        *ngIf="!isBought && exercise.cost > 0"
+        class="btn btn-primary"
+        (click)="openRequestBuyExercise()"
+        title="Mua bài tập này"
+      >
+        <i class="fa-solid fa-cart-plus"></i>
+        <span>Mua bài tập</span>
       </button>
     </div>
   </aside>

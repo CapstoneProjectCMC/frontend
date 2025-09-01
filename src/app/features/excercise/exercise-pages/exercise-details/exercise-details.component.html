@@ -169,7 +169,7 @@
       <div class="btn-container">
         <button
           class="btn main"
-          *ngIf="!isBought"
+          *ngIf="!isBought && exercise.cost > 0"
           (click)="openRequestBuyExercise()"
         >
           <i class="fa-solid fa-cart-plus"></i> Mua bài tập

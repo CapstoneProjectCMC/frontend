@@ -66,10 +66,10 @@ export class PurchaseHistoryComponent implements OnInit {
    */
   mapItemType(itemType: string): { icon: string; text: string } {
     switch (itemType.toUpperCase()) {
-      case 'COURSE':
-        return { icon: '🎓', text: 'Khóa học' };
-      case 'EXERCISE':
-        return { icon: '📚', text: 'Bài tập' };
+      case 'QUIZ':
+        return { icon: '📚', text: 'Bài tập trắc nghiệm' };
+      case 'CODING':
+        return { icon: '📝', text: 'Bài tập viết mã' };
 
       default:
         return { icon: '📦', text: 'Khác' };
