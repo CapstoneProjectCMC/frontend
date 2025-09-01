@@ -147,6 +147,7 @@ export function mapToExerciseQuiz(ex: ExerciseCodeResponse): ExerciseQuiz {
     cost: ex.cost,
     freeForOrg: ex.freeForOrg,
     visibility: ex.visibility,
+    purchased: ex.purchased,
     startTime: ex.startTime,
     endTime: ex.endTime,
     duration: ex.duration,

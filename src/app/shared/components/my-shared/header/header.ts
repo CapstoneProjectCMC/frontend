@@ -3,23 +3,27 @@ import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ProfileMenuComponent } from './profile-menu.component';
-
 import { decodeJWT } from '../../../utils/stringProcess';
-
 import { ToggleSwitch } from '../../fxdonad-shared/toggle-switch/toggle-switch';
 import { ThemeService } from '../../../../styles/theme-service/theme.service';
-import { ProvinceService } from '../../../../core/services/api-service/province.service';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
 import { Observable } from 'rxjs';
 import { selectVariable } from '../../../store/variable-state/variable.selectors';
 import { resetVariable } from '../../../store/variable-state/variable.actions';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
+import { SetPasswordModalComponent } from '../../../../features/auth/components/modal/set-password-modal/set-password-modal.component';
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   standalone: true,
-  imports: [NgIf, ProfileMenuComponent, ToggleSwitch],
+  imports: [
+    NgIf,
+    ProfileMenuComponent,
+    ToggleSwitch,
+    SetPasswordModalComponent,
+  ],
 })
 export class HeaderComponent {
   needReloadAvatar$: Observable<boolean>;
@@ -33,6 +37,8 @@ export class HeaderComponent {
   role: string = '';
   avatarUrl: string = '';
   avatarDefault = avatarUrlDefault;
+  setPassword = false;
+  needCreateNewPass = false;
 
   constructor(
     private router: Router,
@@ -135,5 +141,9 @@ export class HeaderComponent {
     setTimeout(() => {
       this.showProfileMenu = false;
     }, 300);
+  }
+
+  openSetPassword($event: boolean) {
+    this.setPassword = $event;
   }
 }

@@ -26,6 +26,7 @@ export class ErrorHandlerService {
             cancelText: 'Hủy',
             onConfirm: () => {
               this.router.navigate(['/auth/identity/login']);
+              localStorage.removeItem('token');
             },
             onCancel: () => {
               sendNotification(this.store, errorStatus, errorMessage, 'error');

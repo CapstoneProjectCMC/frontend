@@ -57,6 +57,7 @@ export class ExerciseCodeDetailsComponent {
     active: false,
     cost: 0,
     freeForOrg: false,
+    purchased: false,
     visibility: false,
     startTime: '',
     endTime: '',

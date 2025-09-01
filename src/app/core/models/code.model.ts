@@ -36,6 +36,7 @@ export type ExerciseCodeResponse = {
   endTime: string; // ISO datetime
   duration: number; // minutes
   allowDiscussionId: string;
+  purchased: boolean;
   resourceIds: string[];
   tags: string[];
   allowAiQuestion: boolean;

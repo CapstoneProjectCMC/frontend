@@ -25,6 +25,7 @@ export type loginResponse = {
   authenticated: boolean;
   enabled: boolean;
   active: boolean;
+  needPasswordSetup: boolean;
 };
 
 export interface IPaginationResponse<T> {
