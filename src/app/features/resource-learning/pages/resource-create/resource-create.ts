@@ -26,22 +26,13 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-resource-create',
   templateUrl: './resource-create.html',
   styleUrls: ['./resource-create.scss'],
-  imports: [
-    InputComponent,
-    TextEditor,
-    DropdownButtonComponent,
-    ButtonComponent,
-    NgIf,
-    FormsModule,
-    NgFor,
-  ],
+  imports: [InputComponent, TextEditor, ButtonComponent, NgIf, FormsModule],
 })
 export class ResourceCreatePageComponent {
   @ViewChild('linkInput') linkInput!: ElementRef<HTMLInputElement>;
   tag: { value: string; label: string }[] = [];
   category: { value: string; label: string }[] = [];
   topics: { value: string; label: string }[] = [];
-  selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
   associatedResourceIds: string[] = [];
   constructor(
@@ -71,10 +62,6 @@ export class ResourceCreatePageComponent {
 
     // Emit changes if needed
     console.log('Input changed:', this.thumbnail);
-  }
-  handleSelect(dropdownKey: string, selected: any): void {
-    this.selectedOptions[dropdownKey] = selected;
-    console.log(this.selectedOptions);
   }
 
   // ===== Link cũ (oldImgesUrls) =====
@@ -124,7 +111,6 @@ export class ResourceCreatePageComponent {
     console.log('Draft post saved:', this.thumbnail);
   }
   createPost(): void {
-    // kiểm tra bắt buộc
     if (!this.selectedFile) {
       sendNotification(
         this.store,
@@ -135,24 +121,12 @@ export class ResourceCreatePageComponent {
       return;
     }
 
-    if (!this.selectedOptions['category']) {
-      sendNotification(
-        this.store,
-        'Tạo tài nguyên',
-        'Vui lòng chọn danh mục!',
-        'error'
-      );
-      return;
-    }
-    // Kiểm tra loại file theo MIME type hoặc phần mở rộng
     const file = this.selectedFile;
     let isTextbook = false;
     let isLectureVideo = false;
 
     if (file) {
-      const fileType = file.type; // ví dụ: "application/pdf", "video/mp4", "image/png"
-
-      // Nếu là file tài liệu (pdf, doc, docx, txt, ppt, pptx...)
+      const fileType = file.type;
       if (
         fileType.includes('pdf') ||
         fileType.includes('msword') ||
@@ -162,30 +136,24 @@ export class ResourceCreatePageComponent {
       ) {
         isTextbook = true;
       }
-
-      // Nếu là file video (mp4, avi, mkv...)
       if (fileType.startsWith('video/')) {
         isLectureVideo = true;
       }
     }
-    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
+
     const postData = {
-      file: file, // có
-      category: Number(this.selectedOptions['category']?.value), // có
-      description: this.htmlToMd.convert(this.editorContent), // có
+      file,
+      description: this.htmlToMd.convert(this.editorContent),
       tags: this.tags,
-      isTextbook: isTextbook, //có
-      isLectureVideo: isLectureVideo, //có
-      orgId: undefined,
-      associatedResourceIds: [],
-      thumbnailUrl: '',
+      isTextbook,
+      isLectureVideo,
     };
 
     this.resourceService.addResource(postData).subscribe({
       next: (res) => {
         sendNotification(this.store, 'Tạo tài nguyên', 'Thành công', 'success');
         setTimeout(() => {
-          this.router.navigate(['/post-management/post-list']);
+          this.router.navigate(['/resource-learning/list-resource']);
           this.store.dispatch(clearLoading());
         }, 300);
       },
@@ -194,8 +162,6 @@ export class ResourceCreatePageComponent {
         this.store.dispatch(clearLoading());
       },
     });
-
-    console.log('Dữ liệu bài viết:', postData);
   }
 
   cancelPost(): void {
@@ -203,9 +169,6 @@ export class ResourceCreatePageComponent {
     console.log('Post creation cancelled');
   }
   editorContent: string = '';
-  readonlyContent: string =
-    '<h2>This is a readonly text editor</h2><p>You cannot edit this content.</p><ul><li>Item 1</li><li>Item 2</li><li>Item 3</li></ul>';
-  minimalContent: string = '';
 
   editorConfig: TextEditorConfig = {
     placeholder: 'Nhập nội dung của bạn ở đây...',
@@ -230,24 +193,6 @@ export class ResourceCreatePageComponent {
     },
   };
 
-  readonlyConfig: TextEditorConfig = {
-    placeholder: 'Readonly content',
-    height: '200px',
-    readonly: true,
-    toolbar: {},
-  };
-
-  minimalConfig: TextEditorConfig = {
-    placeholder: 'Minimal toolbar editor...',
-    height: '200px',
-    readonly: false,
-    toolbar: {
-      bold: true,
-      italic: true,
-      bulletList: true,
-      numberedList: true,
-    },
-  };
   selectedFile: File | null = null;
   filePreview: string | null = null;
   isImageFile: boolean = false;
@@ -271,14 +216,6 @@ export class ResourceCreatePageComponent {
 
   onContentChange(content: string) {
     console.log('Content changed:', content);
-  }
-
-  onEditorFocus() {
-    console.log('Editor focused');
-  }
-
-  onEditorBlur() {
-    console.log('Editor blurred');
   }
 
   clearContent() {

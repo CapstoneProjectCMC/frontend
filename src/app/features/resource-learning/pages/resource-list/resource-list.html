@@ -26,7 +26,12 @@
     </div>
 
     <div class="list-resource-card-container">
-      <div *ngIf="!isLoading && resources" class="list-resource-card">
+      <div
+        *ngIf="!isLoading && resources"
+        class="list-resource-card"
+        appScrollEnd
+        (appScrollEnd)="loadNextPage()"
+      >
         <div *ngFor="let resource of resources">
           <app-resource-card
             [resource]="resource"

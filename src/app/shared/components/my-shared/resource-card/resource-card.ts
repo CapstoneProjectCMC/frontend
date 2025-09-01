@@ -9,6 +9,8 @@ import {
 import { CommonModule } from '@angular/common';
 import { MediaResource } from '../../../../core/models/resource.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { activeForMyContent } from '../../../utils/authenRoleActions';
+import { getUserRoles } from '../../../utils/userInfo';
 
 @Component({
   selector: 'app-resource-card',
@@ -26,12 +28,35 @@ export class ResourceCardComponent implements OnChanges {
   @Output() delete = new EventEmitter<string>();
 
   safeUrl!: SafeResourceUrl;
+  roles = getUserRoles();
+
+  isActionActive = false;
 
   constructor(private sanitizer: DomSanitizer) {}
+  ngOnInit(): void {
+    if (this.resource?.userProfile) {
+      this.isActionActive = activeForMyContent(
+        this.resource.userProfile.username,
+        this.resource.userProfile.email,
+        this.roles.includes('ADMIN')
+      );
+    }
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['resource'] && this.resource?.url) {
-      this.setSafeUrl(this.resource.url);
+    if (changes['resource'] && this.resource) {
+      if (this.resource.url) {
+        this.setSafeUrl(this.resource.url);
+      }
+
+      // Cập nhật lại quyền khi resource thay đổi
+      if (this.resource.userProfile) {
+        this.isActionActive = activeForMyContent(
+          this.resource.userProfile.username,
+          this.resource.userProfile.email,
+          this.roles.includes('ADMIN')
+        );
+      }
     }
   }
 

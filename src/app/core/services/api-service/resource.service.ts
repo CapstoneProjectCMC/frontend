@@ -8,6 +8,7 @@ import {
 } from '../../models/api-response';
 import { MediaResource, ResourceData, Tag } from '../../models/resource.model';
 import { API_CONFIG } from '../config-service/api.enpoints';
+import { PostDataCreateRequest } from '../../models/post.models';
 
 @Injectable({
   providedIn: 'root',
@@ -52,51 +53,25 @@ export class ResourceService {
       API_CONFIG.ENDPOINTS.GET.GET_FILE_BY_ID(id)
     );
   }
-  addResource(postData: {
-    file: File;
-    category: number;
-    description: string;
-    tags: string[];
-    isLectureVideo: boolean;
-    isTextbook: boolean;
-    orgId?: string;
-    associatedResourceIds?: string[];
-    thumbnailUrl?: string;
-  }) {
-    const formData = new FormData();
 
-    if (postData.file) {
-      formData.append('file', postData.file);
-    }
+  addResource(postData: PostDataCreateRequest) {
+    const { file, description, tags, isLectureVideo, isTextbook } = postData;
 
-    if (postData.category !== null) {
-      formData.append('category', postData.category.toString());
-    }
+    // data: phần dữ liệu thông thường (không phải file)
+    const data: Record<string, any> = {
+      description,
+      tags: JSON.stringify(tags), // stringify array để backend parse
+      isLectureVideo: String(isLectureVideo),
+      isTextbook: String(isTextbook),
+    };
 
-    formData.append('description', postData.description || '');
-    formData.append('isLectureVideo', String(postData.isLectureVideo));
-    formData.append('isTextbook', String(postData.isTextbook));
+    // files: phần file
+    const files: File = file;
 
-    if (postData.orgId) {
-      formData.append('orgId', postData.orgId);
-    }
-
-    if (postData.thumbnailUrl) {
-      formData.append('thumbnailUrl', postData.thumbnailUrl);
-    }
-
-    // Tags array
-    postData.tags?.forEach((tag, i) => formData.append(`tags[${i}]`, tag));
-
-    // Associated resources array
-    postData.associatedResourceIds?.forEach((id, i) =>
-      formData.append(`associatedResourceIds[${i}]`, id)
-    );
-
-    return this.api.post<ApiResponse<XuanPresignedUrlResponse>>(
+    return this.api.postWithFormData<ApiResponse<XuanPresignedUrlResponse>>(
       API_CONFIG.ENDPOINTS.POST.ADD_FILE,
-      formData,
-      true
+      data,
+      files
     );
   }
 

@@ -17,6 +17,7 @@ import {
 } from '../../../../shared/store/loading-state/loading.action';
 import { sendNotification } from '../../../../shared/utils/notification';
 import { ResourceEditPopupComponent } from '../../modal/popup-update/resource-edit-popup.component';
+import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 
 @Component({
   selector: 'app-resource-list',
@@ -32,6 +33,7 @@ import { ResourceEditPopupComponent } from '../../modal/popup-update/resource-ed
     SkeletonLoadingComponent,
     ResourceCardComponent,
     ResourceEditPopupComponent,
+    ScrollEndDirective,
   ],
 })
 export class ResourceListComponent {
@@ -54,7 +56,7 @@ export class ResourceListComponent {
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
   pageIndex: number = 1;
-  itemsPerPage: number = 8;
+  itemsPerPage: number = 6;
   selectedResourceId: string | null = null;
 
   constructor(
@@ -83,17 +85,41 @@ export class ResourceListComponent {
   }
 
   // ================== Fetch ==================
-  fetchDataResource() {
+  // ================== Fetch ==================
+  fetchDataResource(append: boolean = false) {
+    this.isLoadingMore = append;
+    this.isLoading = !append;
+
     this.resourceService
       .getAllResourceLearning(this.itemsPerPage, this.pageIndex)
       .subscribe({
         next: (res) => {
-          this.resources = res.result.data;
+          const newData = res.result.data;
+          const { currentPage, totalPages } = res.result;
+
+          // Gán data
+          this.resources = append ? [...this.resources, ...newData] : newData;
+
+          // Kiểm tra còn trang tiếp theo không
+          this.hasMore = currentPage < totalPages;
+
+          this.isLoading = false;
+          this.isLoadingMore = false;
         },
-        error(err) {
-          console.log(err);
+        error: (err) => {
+          console.error(err);
+          this.isLoading = false;
+          this.isLoadingMore = false;
         },
       });
+  }
+
+  // ================== Load Next Page ==================
+  loadNextPage() {
+    if (this.isLoadingMore || !this.hasMore) return;
+
+    this.pageIndex++;
+    this.fetchDataResource(true); // append thêm dữ liệu
   }
 
   // ================== Delete ==================

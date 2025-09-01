@@ -49,9 +49,7 @@
       <ng-container
         *ngIf="!isDocument && !isImage && resource?.hlsUrl; else otherView"
       >
-        <app-video-player
-          [videoSrc]="resource?.hlsUrl || ''"
-        ></app-video-player>
+        <app-video-player [videoSrc]="resource.hlsUrl || ''"></app-video-player>
       </ng-container>
 
       <ng-template #otherView>
