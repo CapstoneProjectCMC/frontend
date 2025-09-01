@@ -50,7 +50,10 @@
   </div>
 
   <div
-    *ngIf="(!submissions || submissions.length === 0) && !isLoadingInitial"
+    *ngIf="
+      (!submissions || submissions.length === 0) &&
+      !isLoadingInitial && !isLoadingNextPage
+    "
     class="no-data-container"
   >
     <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">

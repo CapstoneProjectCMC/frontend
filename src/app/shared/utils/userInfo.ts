@@ -33,6 +33,16 @@ export function getUserRoles(): string[] {
   return roles;
 }
 
+export function getUserId(): string {
+  const token = localStorage.getItem('token');
+  let roles = [];
+  if (token) {
+    roles = decodeJWT(token)?.payload.userId;
+  }
+
+  return roles;
+}
+
 export function getUserName(): string {
   const token = localStorage.getItem('token');
   let username = '';

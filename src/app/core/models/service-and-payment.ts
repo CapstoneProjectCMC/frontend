@@ -25,14 +25,14 @@ export interface IDepositGPData {
 export type TopUpTransactionRequest = {
   transactionId: string;
   referenceId?: string | null;
-  amount: number;
+  amount?: number;
   currency: string;
 };
 
 //purchase request
 export interface IPurChaseTransactionRequest extends TopUpTransactionRequest {
   itemId?: string | null;
-  itemType?: 'COURSE' | 'SUBSCRIPTION' | null;
+  itemType?: 'COURSE' | 'SUBSCRIPTION' | string | null;
   itemPrice?: number | null;
   itemName?: string | null;
 }

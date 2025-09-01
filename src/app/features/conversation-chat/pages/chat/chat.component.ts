@@ -22,12 +22,46 @@ import {
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 import { CreateNewConversationComponent } from '../../modal/create-new-conversation/create-new-conversation.component';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { ClickOutsideDirective } from '../../../../shared/directives/click-outside.directive';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../../shared/utils/notification';
+import { Store } from '@ngrx/store';
+import { getUserId } from '../../../../shared/utils/userInfo';
+import { SetRoleForUserComponent } from '../../modal/set-role-for-user/set-role-for-user.component';
+import { TruncatePipe } from '../../../../shared/pipes/format-view.pipe';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
-  imports: [CommonModule, FormsModule, CreateNewConversationComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CreateNewConversationComponent,
+    ClickOutsideDirective,
+    SetRoleForUserComponent,
+    TruncatePipe,
+  ],
+  animations: [
+    trigger('dropdownAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-10px)' }),
+        animate(
+          '200ms ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+      transition(':leave', [
+        animate(
+          '150ms ease-in',
+          style({ opacity: 0, transform: 'translateY(-10px)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   // --- State Properties ---
@@ -45,13 +79,15 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   //modal
   isOpenCreateNewChat = false;
+  isOpenOptionConversation: string | null = null;
+  openModalSetRole = false;
 
   port = `${CONVERSATION_CHAT_SOCKET}?token=${localStorage.getItem('token')}`;
   avatarUrlDefault = avatarUrlDefault;
+  userId = getUserId();
 
   // --- Subscriptions ---
   private messageSubscription!: Subscription;
-  private messageReadSubscription!: Subscription;
 
   // --- DOM References ---
   @ViewChild('messageContainer') private messageContainerRef!: ElementRef;
@@ -60,7 +96,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   constructor(
     private chatService: ChatService,
     private socketService: SocketConnectionService,
-    private cdr: ChangeDetectorRef // Để thông báo cho Angular về các thay đổi
+    private cdr: ChangeDetectorRef, // Để thông báo cho Angular về các thay đổi
+    private store: Store
   ) {}
 
   // --- Lifecycle Hooks ---
@@ -223,6 +260,101 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.message = '';
     this.needsScrollToBottom = true;
+  }
+
+  deleteGroupChat(groupId: string) {
+    this.chatService.deleteGroup(groupId).subscribe({
+      next: () => {
+        const newConversation = this.conversations.filter(
+          (a) => a.id !== groupId
+        );
+        if (newConversation) {
+          this.conversations = newConversation;
+          this.fetchMessages(this.conversations[0].id);
+        } else {
+          this.currentMessages = [];
+        }
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
+  }
+
+  leaveGroup(groupId: string) {
+    if (
+      this.conversations.filter((a) => a.id === groupId)[0].ownerId ===
+      this.userId
+    ) {
+      openModalNotification(
+        this.store,
+        '❌Không thể rời!',
+        'Bạn cần chuyển quyền sở hữu nhóm trước khi rời đi',
+        'Đồng ý',
+        'Hủy',
+        () => this.openModalSetRoleForUser()
+      );
+      return;
+    }
+
+    this.chatService.leaveGroup(groupId).subscribe({
+      next: () => {
+        const newConversation = this.conversations.filter(
+          (a) => a.id !== groupId
+        );
+        if (newConversation) {
+          this.conversations = newConversation;
+          this.fetchMessages(this.conversations[0].id);
+        } else {
+          this.currentMessages = [];
+        }
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
+  }
+
+  setRoleForUser(
+    groupId: string,
+    userId: string,
+    role: 'ADMIN' | 'MEMBER' | 'OWNER'
+  ) {
+    this.chatService.setRole(groupId, userId, role).subscribe({
+      next: () => {
+        sendNotification(
+          this.store,
+          'Đã cấp quyền',
+          'Đã cập nhật quyền cho người dùng chỉ định',
+          'success'
+        );
+        this.fetchConversations();
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
+  }
+
+  openModalSetRoleForUser() {
+    this.openModalSetRole = true;
+  }
+
+  onRoleUpdated(event: { userId: string; role: 'ADMIN' | 'MEMBER' | 'OWNER' }) {
+    if (!this.selectedConversation) return;
+    this.setRoleForUser(this.selectedConversation.id, event.userId, event.role);
+  }
+
+  openOptionDropdownCoversation(convoId: string) {
+    if (this.isOpenOptionConversation === convoId) {
+      this.isOpenOptionConversation = null; // đóng nếu đang mở
+    } else {
+      this.isOpenOptionConversation = convoId; // mở dropdown cho conversation cụ thể
+    }
+  }
+
+  closeOptionDropdownCoversation() {
+    this.isOpenOptionConversation = null;
   }
 
   // --- Socket Integration ---

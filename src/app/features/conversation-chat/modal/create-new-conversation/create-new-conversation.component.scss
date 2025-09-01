@@ -280,5 +280,9 @@
         cursor: not-allowed;
       }
     }
+    &.loading {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
   }
 }

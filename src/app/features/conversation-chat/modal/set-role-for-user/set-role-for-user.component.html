@@ -1,0 +1,72 @@
+<div class="modal-backdrop" *ngIf="isModalVisible" (click)="close()"></div>
+
+<div class="modal animated" *ngIf="isModalVisible">
+  <header class="modal-header">
+    <h3>Cập nhật quyền hạn</h3>
+
+    <button class="btn-close" (click)="close()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-x"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </header>
+
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="userSelect">Chọn thành viên:</label>
+      <select id="userSelect" [(ngModel)]="selectedUserId" class="form-control">
+        <option *ngFor="let member of members" [value]="member.userId">
+          {{ member.displayName }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Custom dropdown -->
+    <div
+      class="custom-select"
+      [class.open]="isOpen"
+      (click)="toggleDropdown()"
+      clickOutside
+      (clickOutside)="closeDropdown()"
+    >
+      <div class="selected">
+        <i class="fa-solid" [ngClass]="roleIcons[selectedRole || 'MEMBER']"></i>
+        {{ selectedRole || "Chọn vai trò" }}
+      </div>
+      <ul *ngIf="isOpen">
+        <li (click)="selectRole('OWNER')">
+          <i class="fa-solid fa-crown"></i> Chủ nhóm
+        </li>
+        <li (click)="selectRole('ADMIN')">
+          <i class="fa-solid fa-user-shield"></i> Quản trị viên
+        </li>
+        <li (click)="selectRole('MEMBER')">
+          <i class="fa-solid fa-user-tie"></i> Thành viên
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <footer class="modal-footer">
+    <button class="btn btn--secondary" (click)="close()">Hủy</button>
+    <button
+      class="btn btn--primary"
+      (click)="confirm()"
+      [disabled]="!selectedUserId || !selectedRole"
+    >
+      Lưu thay đổi
+    </button>
+  </footer>
+</div>

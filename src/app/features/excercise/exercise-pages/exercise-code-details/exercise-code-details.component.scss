@@ -304,6 +304,12 @@
             transform: translateY(0);
             pointer-events: auto;
           }
+
+          @media (max-width: 1080px) {
+            .dropdown-menu {
+              left: 0;
+            }
+          }
         }
       }
 

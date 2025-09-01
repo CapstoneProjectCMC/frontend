@@ -1,7 +1,7 @@
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { openNoticeModal } from '../../../shared/store/modal-notice-state/modal-notice.actions';
-import { sendNotification } from '../../../shared/utils/notification';
+import { ErrorHandlerService } from './error-handler.service';
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -35,6 +35,7 @@ const shouldIgnoreErrorNotification = (url: string): boolean => {
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const store = inject(Store);
   const router = inject(Router);
+  const errorHandler = inject(ErrorHandlerService);
   const authService = inject(AuthService);
   const refreshToken = localStorage.getItem('refreshToken');
 
@@ -90,31 +91,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       // Hiển thị thông báo nếu không nằm trong danh sách bỏ qua
       if (!shouldSkip) {
-        if (errorCode === 4018801 && !refreshToken) {
-          store.dispatch(
-            openNoticeModal({
-              payload: {
-                title: 'Hết hạn đăng nhập',
-                message: 'Để tiếp tục sử dụng yêu cầu đăng nhập lại!',
-                confirmText: 'Đồng ý',
-                cancelText: 'Hủy',
-                onConfirm: () => {
-                  router.navigate(['/auth/identity/login']);
-                },
-                onCancel: () => {
-                  sendNotification(store, errorStatus, errorMessage, 'error');
-                },
-              },
-            })
-          );
-        } else {
-          sendNotification(
-            store,
-            errorStatus === '0' ? 'Lỗi kết nối!' : errorStatus,
-            errorMessage,
-            'error'
-          );
-        }
+        errorHandler.handle(errorCode, errorStatus, errorMessage, refreshToken);
       }
 
       return throwError(() => ({

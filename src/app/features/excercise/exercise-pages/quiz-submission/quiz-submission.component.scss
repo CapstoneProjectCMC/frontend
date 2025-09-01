@@ -9,28 +9,22 @@
   gap: 12px;
   padding: 12px 0 12px 0;
 
+  .no-data-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100vw;
+    text-align: center;
+    padding: 20px;
+  }
+
   app-quiz {
     flex: 1;
     min-width: 0;
     overflow-y: auto;
     box-sizing: border-box;
-
-    &.compact-view {
-      // Styles for when the quiz needs to be more compact
-      // due to the chat taking up more space
-      .question-container {
-        padding: 10px;
-      }
-
-      .option-item {
-        padding: 8px;
-        margin-bottom: 8px;
-      }
-
-      .question-text {
-        font-size: 0.95rem;
-      }
-    }
   }
 }
 

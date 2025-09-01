@@ -196,6 +196,10 @@ export const API_CONFIG = {
       CREATE_CHAT_MESSAGE: '/chat/message',
       MARK_AS_READ: (conversationId: string) =>
         `/chat/conversation/${conversationId}/read`,
+      LEAVE_GROUP_CHAT: (groupId: string) =>
+        `/chat/conversation/group/${groupId}/leave`,
+      SET_ROLE_FOR_USER_CHAT: (groupId: string) =>
+        `/chat/conversation/group/${groupId}/role`,
       REACTION_POST: (postId: string) => `/post/${postId}/reaction/toggle`,
       ADD_COMMENT_POST: (postId: string) => `/post/${postId}/comment`,
       ADD_REPLY_COMMENT_POST: (postId: string, commentId: string) =>
@@ -234,6 +238,8 @@ export const API_CONFIG = {
       DELETE_FILE: (id: string) => `/file/api/FileDocument/${id}`,
       DELETE_THREAD_CHATBOT: (threadId: string) =>
         `/ai/chat/thread/${threadId}`,
+      DELETE_GROUP_CHAT: (groupId: string) =>
+        `/chat/conversation/group/${groupId}`,
       DELETE_POST: (postId: string) => `/post/${postId}`,
       DELETE_COMMENT_POST: (commentId: string) => `/post/comment/${commentId}`,
       UNSAVE_EXERCISE: (exerciseId: string) =>

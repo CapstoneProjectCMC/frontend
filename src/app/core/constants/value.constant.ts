@@ -108,4 +108,10 @@ export const lottieOptions2 = {
   loop: true,
 };
 
+export const lottieOptionsLoading1 = {
+  path: 'assets/lottie-animation/sandy-loading.json',
+  autoplay: true,
+  loop: true,
+};
+
 export const avatarUrlDefault: string = 'auth-assets/avatar_placeholder.png';

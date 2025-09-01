@@ -54,6 +54,26 @@ export class ChatService {
     );
   }
 
+  deleteGroup(groupId: string) {
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.DELETE_GROUP_CHAT(groupId)
+    );
+  }
+
+  leaveGroup(groupId: string) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.LEAVE_GROUP_CHAT(groupId),
+      null
+    );
+  }
+
+  setRole(groupId: string, userId: string, role: 'ADMIN' | 'MEMBER' | 'OWNER') {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.SET_ROLE_FOR_USER_CHAT(groupId),
+      { userId, role }
+    );
+  }
+
   createMessage(payload: { conversationId: string; message: string }) {
     return this.api.post<ApiResponse<Message>>(
       API_CONFIG.ENDPOINTS.POST.CREATE_CHAT_MESSAGE,

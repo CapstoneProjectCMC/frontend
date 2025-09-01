@@ -17,6 +17,15 @@
     width: 100%;
     overflow-x: hidden; // Ngăn tràn ngang cho content
     box-sizing: border-box;
+    position: relative;
+    app-box-chat-ai {
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      width: 70vw;
+      display: flex;
+      justify-content: end;
+    }
   }
 
   app-footer {
