@@ -31,6 +31,13 @@ export class AuthService {
     );
   }
 
+  createInitialPassword(password: string) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.CREATE_FIRST_PASSWORD,
+      { password }
+    );
+  }
+
   requestForgotPassword(email: string) {
     return this.api.post<ApiResponse<RequestForgotPasswordResponse>>(
       API_CONFIG.ENDPOINTS.POST.REQUEST_FORGOT_PASSWORD,

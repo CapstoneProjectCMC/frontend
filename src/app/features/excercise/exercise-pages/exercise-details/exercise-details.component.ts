@@ -123,6 +123,7 @@ export class ExerciseDetailsComponent implements OnInit {
     freeForOrg: false,
     visibility: false,
     startTime: '',
+    purchased: false,
     endTime: '',
     duration: 0,
     allowDiscussionId: 'chưa có',

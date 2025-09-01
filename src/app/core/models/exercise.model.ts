@@ -23,6 +23,7 @@ export type ExerciseItem = {
   freeForOrg: boolean;
   tags: Set<string>;
   createdAt: string;
+  purchased: boolean;
 };
 
 export type UserBasicInfo = {
@@ -101,6 +102,7 @@ export interface ExerciseQuiz {
   endTime: string;
   duration: number;
   allowDiscussionId: string;
+  purchased: boolean;
   resourceIds: string[];
   tags: string[];
   allowAiQuestion: boolean;

@@ -7,7 +7,6 @@ import {
   HostListener,
 } from '@angular/core';
 import { AuthService } from '../../../../core/services/api-service/auth.service';
-import { sendNotification } from '../../../utils/notification';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import {
@@ -15,22 +14,28 @@ import {
   setLoading,
 } from '../../../store/loading-state/loading.action';
 import { ChangePasswordComponent } from '../../../../features/auth/components/modal/change-password/change-password.component';
+import { Observable } from 'rxjs';
+import { selectVariable } from '../../../store/variable-state/variable.selectors';
+import { CommonModule } from '@angular/common';
+import { setVariable } from '../../../store/variable-state/variable.actions';
 
 @Component({
   selector: 'app-profile-menu',
   templateUrl: './profile-menu.component.html',
   styleUrls: ['./profile-menu.component.scss'],
   standalone: true,
-  imports: [ChangePasswordComponent],
+  imports: [ChangePasswordComponent, CommonModule],
 })
 export class ProfileMenuComponent {
   @Input() isVisible: boolean = false;
+  @Input() needSetNewPass: boolean = false;
   @Output() closeMenu = new EventEmitter<void>();
+  @Output() openSetPassword = new EventEmitter<boolean>();
 
   status = '';
   loading = false;
-
   isOpenChangePassword = false;
+  isPasswordModalOpen: boolean = false;
 
   constructor(
     private elementRef: ElementRef,
@@ -57,6 +62,10 @@ export class ProfileMenuComponent {
   openChangePasswordModal() {
     this.isOpenChangePassword = !this.isOpenChangePassword;
     this.isVisible = false;
+  }
+
+  openSetPasswordModal() {
+    this.openSetPassword.emit(true);
   }
 
   onCloseModal($event: boolean) {

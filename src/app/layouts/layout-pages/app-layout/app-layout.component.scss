@@ -26,6 +26,12 @@
       display: flex;
       justify-content: end;
       z-index: 3;
+      // Bỏ sự kiện cho toàn container
+      pointer-events: none;
+
+      .chat-box {
+        pointer-events: auto; // Chỉ phần này thao tác được
+      }
     }
   }
 

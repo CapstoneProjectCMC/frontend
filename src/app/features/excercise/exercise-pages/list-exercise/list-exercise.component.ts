@@ -238,7 +238,9 @@ export class ListExerciseComponent implements OnInit {
       next: (res) => {
         this.pageIndex = 1;
         this.searchData = '';
-        this.fetchData();
+        setTimeout(() => {
+          this.fetchData();
+        }, 2000);
         this.showModalCreate = false;
         sendNotification(this.store, 'Thành công', res.message, 'success');
         this.store.dispatch(clearLoading());

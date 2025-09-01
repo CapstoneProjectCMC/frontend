@@ -4,7 +4,11 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../core/services/api-service/auth.service';
 import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-shared/loading-overlay/loading-overlay.component';
 import { Store } from '@ngrx/store';
-import { sendNotification } from '../../../../shared/utils/notification';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../../shared/utils/notification';
+import { setVariable } from '../../../../shared/store/variable-state/variable.actions';
 
 @Component({
   selector: 'app-oauth-callback',
@@ -38,6 +42,20 @@ export class OauthCallbackComponent {
               if (res.code === 20000) {
                 this.router.navigate(['/exercise/exercise-layout/list']);
                 localStorage.setItem('token', res.result.accessToken);
+                localStorage.setItem('refreshToken', res.result.refreshToken);
+
+                if (!res.result.needPasswordSetup) {
+                  openModalNotification(
+                    this.store,
+                    'Cảnh báo',
+                    'Tài khoản của bạn chưa có mật khẩu, hãy cài đặt nó sớm nhất có thể để tránh rủi ro.',
+                    'Đồng ý',
+                    'hủy'
+                  );
+                  this.store.dispatch(
+                    setVariable({ key: 'needPasswordSetup', value: true })
+                  );
+                }
               } else {
                 this.router.navigate(['/auth/identity/login']);
               }

@@ -148,6 +148,7 @@ export const API_CONFIG = {
       LOGIN: '/identity/auth/login',
       REGISTER: '/identity/auth/register',
       LOGOUT: '/identity/auth/logout',
+      CREATE_FIRST_PASSWORD: '/identity/auth/user/create-password',
       REQUEST_FORGOT_PASSWORD: '/identity/auth/forgot-password/request',
       RESET_PASSWORD: `/identity/auth/forgot-password/reset`,
       REFRESH_TOKEN: '/identity/auth/refresh',

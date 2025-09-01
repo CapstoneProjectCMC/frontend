@@ -70,6 +70,7 @@ export class Login {
     authenticated: false,
     enabled: false,
     active: false,
+    needPasswordSetup: false,
   };
 
   constructor(
