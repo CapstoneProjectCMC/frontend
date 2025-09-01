@@ -93,9 +93,11 @@ export class ResourceDetail implements OnInit {
   private loadResource() {
     if (!this.resourceId) return;
 
-    this.store.dispatch(
-      setLoading({ isLoading: true, content: 'Đang tải, xin chờ...' })
-    );
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Đang tải, xin chờ...' })
+      );
+    });
 
     this.resourceService.getResourceById(this.resourceId).subscribe({
       next: (res) => {

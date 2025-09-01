@@ -1,37 +1,5 @@
 <div class="post-create-container">
   <div class="general-infor">
-    <div class="input-info">
-      <app-dropdown-button
-        [label]="'Loại tệp'"
-        [options]="category"
-        [variant]="'secondary'"
-        [size]="'small'"
-        [customDropField]="'main-type'"
-        [disabled]="false"
-        [multiSelect]="false"
-        [isDisplayCheckbox]="false"
-        (onSelect)="handleSelect('category', $event)"
-        [isOpen]="activeDropdown === 'category'"
-        (toggle)="toggleDropdown('category')"
-        [isDisplaySelectedOpptionLabels]="true"
-        [isButtonControl]="true"
-        [isSearchable]="true"
-        [minHeight]="true"
-        [needIndexColor]="true"
-      ></app-dropdown-button>
-    </div>
-    <div class="input-title">
-      <app-input
-        label="Link thumbnail"
-        placeholder="Nhập link thumbnail..."
-        [value]="thumbnail"
-        (valueChange)="handleInputChange($event)"
-        [minLength]="3"
-        [variant]="'primary'"
-        [errorMessage]="thumbnailError"
-        [isSvg]="false"
-      ></app-input>
-    </div>
     <div class="input-title">
       <!-- Thay bằng input -->
       <app-input
@@ -54,8 +22,6 @@
         [(value)]="editorContent"
         [config]="editorConfig"
         (onChange)="onContentChange($event)"
-        (onFocus)="onEditorFocus()"
-        (onBlur)="onEditorBlur()"
       ></app-text-editor>
     </div>
     <div class="post-create-button">
@@ -83,54 +49,6 @@
     </div>
   </div>
   <div class="metric">
-    <div class="link-section">
-      <div class="link-header" (click)="startAddLink()">
-        <span>Thêm link</span>
-        <button type="button" class="add-link-btn">
-          <span>+</span>
-        </button>
-      </div>
-
-      <!-- Ô nhập link khi bấm + -->
-      <div class="link-input" *ngIf="isAddingLink">
-        <input
-          #linkInput
-          type="text"
-          [(ngModel)]="newLink"
-          placeholder="Nhập link..."
-          (keyup.enter)="addLink()"
-        />
-        <button type="button" (click)="addLink()">OK</button>
-      </div>
-      <!-- Danh sách nhiều link -->
-      <div class="link-list" *ngIf="associatedResourceIds.length > 0">
-        <div
-          class="single-link"
-          *ngFor="let link of associatedResourceIds; let i = index"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-link-2"
-          >
-            <path d="M9 17H7A5 5 0 0 1 7 7h2" />
-            <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
-            <line x1="8" x2="16" y1="12" y2="12" />
-          </svg>
-          <a [href]="link" target="_blank">{{ link }}</a>
-          <button type="button" class="remove-link" (click)="removeLink(i)">
-            ×
-          </button>
-        </div>
-      </div>
-    </div>
     <div class="file-upload">
       <label class="upload-label">
         <input

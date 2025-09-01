@@ -10,8 +10,8 @@ export function activeForAdminAndTeacher(): boolean {
 }
 
 export function activeForMyContent(
-  usernameEqual: string,
-  emailEqual: string,
+  usernameEqual: string | null | undefined,
+  emailEqual: string | null | undefined,
   exception?: boolean
 ): boolean {
   const username = getUserName();

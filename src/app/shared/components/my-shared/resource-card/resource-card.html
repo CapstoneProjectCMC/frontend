@@ -44,7 +44,7 @@
         *ngIf="isFileType('video') && resource.duration"
         class="media-duration"
       >
-        {{ formatDuration(resource.duration) }}
+        {{ resource.duration }}
       </span>
       <div class="info-item">
         <i class="fa-solid fa-eye"></i> {{ resource.viewCount || 0 }}
@@ -75,7 +75,7 @@
       </span>
     </div>
   </div>
-  <div *ngIf="showControls" class="card-controls">
+  <div *ngIf="showControls && isActionActive" class="card-controls">
     <button class="control-btn edit-btn" (click)="onEditClick($event)">
       <i class="fa-solid fa-pen-to-square"></i>
     </button>

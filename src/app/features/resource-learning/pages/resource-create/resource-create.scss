@@ -1,167 +1,176 @@
+:root {
+  --primary-color: #007bff;
+  --primary-hover-color: #0056b3;
+  --cancel-color: #6c757d;
+  --cancel-hover-color: #5a6268;
+  --border-color: #e0e0e0;
+  --background-color: #f8f9fa;
+  --card-background-color: #ffffff;
+  --text-color: #343a40;
+  --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --border-radius: 12px;
+}
+
 .post-create-container {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: flex-start;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
   .general-infor {
+    flex: 3;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 16px;
-    flex: 2;
-    .input-title {
-      width: 100%;
-      font-size: 1.5rem;
-    }
-    .input-info {
-      display: flex;
-      flex-direction: row;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .input-content {
-      .title {
-        font-size: 14px;
-        font-weight: 600;
-        color: oklch(from var(--title-text) l c h);
-      }
-
-      width: 100%;
-      .require {
-        color: red;
-      }
-    }
-    .post-create-button {
-      display: flex;
-      flex-direction: row;
-      gap: 10px;
-      width: 100%;
-      align-items: flex-end; // canh trái
-      justify-content: flex-end; // không cần nhưng an toàn
-    }
+    gap: 1.5rem;
+    min-width: 0;
   }
+
   .metric {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; // căn trái
-    justify-content: flex-start; // căn trên
-    gap: 8px;
-    min-width: 0;
-    margin-top: 40px;
-    .link-section {
-      .link-header {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 12px;
-        background-color: #334eac; // màu nền nút
-        color: #fff; // chữ trắng
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 500;
-        transition: background-color 0.2s ease;
+    gap: 1.5rem;
+    min-width: 280px;
 
-        &:hover {
-          background-color: #081f5c;
-        }
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+}
 
-        .add-link-btn {
-          background: transparent;
-          border: none;
-          color: inherit;
-          font-size: 16px;
-          font-weight: bold;
-          cursor: pointer;
-          padding: 0;
-        }
+.input-title {
+  app-input {
+    width: 100%;
+  }
+}
+
+.input-content {
+  .title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+
+    .require {
+      color: #dc3545;
+      margin-left: 4px;
+    }
+  }
+
+  app-text-editor {
+    display: block;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-light);
+    transition: box-shadow 0.3s ease;
+
+    &:focus-within {
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+  }
+}
+
+.post-create-button {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1rem;
+
+  app-button {
+    min-width: 120px;
+    height: 50px;
+  }
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .upload-label {
+    display: block;
+    cursor: pointer;
+
+    app-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: 2px dashed var(--primary-color);
+      border-radius: var(--border-radius);
+      padding: 1rem;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+
+      span {
+        color: var(--primary-color);
+        font-weight: 600;
+      }
+      svg {
+        stroke: var(--primary-color);
+        transition: stroke 0.3s ease;
       }
 
-      .single-link {
-        display: flex;
-        align-items: center;
-        background: var(--input-primary-color);
-        padding: 6px 8px;
-        border-radius: 4px;
-        margin-top: 8px;
-        max-width: 400px;
-
+      &:hover {
+        background-color: var(--primary-color);
+        span {
+          color: #fff;
+        }
         svg {
-          flex-shrink: 0;
-          color: var(--primary-color);
-        }
-
-        a {
-          flex: 1;
-          padding-left: 5px;
-          color: var(--primary-color);
-          text-decoration: none;
-
-          /* 👇 Cấu hình ẩn link dài */
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 280px; // chỉnh tùy theo bố cục
-          display: inline-block;
-          vertical-align: middle;
-        }
-
-        .remove-link {
-          background: var(--surface-color);
-          border: none;
-          border-radius: 20px;
-          color: rgb(202, 35, 35);
-          font-size: 16px;
-          cursor: pointer;
-          line-height: 1;
-          flex-shrink: 0;
-          margin-left: 8px;
-
-          &:hover {
-            background: var(--hover-color);
-            color: rgb(255, 83, 83);
-          }
+          stroke: #fff;
         }
       }
     }
+  }
+}
 
-    .file-upload {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      min-width: 0;
-      margin-top: 40px;
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--card-background-color);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-light);
+  min-height: 200px;
 
-      .upload-label {
-        align-self: center;
-        min-width: 100px;
-        cursor: pointer;
-        align-self: flex-start;
-      }
+  .preview-image {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: var(--border-radius);
+    object-fit: contain;
+  }
 
-      .preview-container {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+  .file-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    text-align: center;
 
-        .preview-image {
-          max-height: 250px;
-          border-radius: 6px;
-          border: 1px solid #ddd;
-          object-fit: cover;
-        }
-
-        .file-info {
-          display: flex;
-          align-items: center;
-          gap: 6px;
-          font-size: 14px;
-          color: #555;
-        }
-      }
+    svg {
+      width: 48px;
+      height: 48px;
+      stroke: var(--cancel-color);
+    }
+    span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-color);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
   }
 }

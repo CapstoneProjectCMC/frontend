@@ -155,3 +155,12 @@ export type PostResponse = {
   upvoteCount: number;
   downvoteCount: number;
 };
+
+//post-create
+export interface PostDataCreateRequest {
+  file: File;
+  description: string;
+  tags: string[];
+  isLectureVideo: boolean;
+  isTextbook: boolean;
+}
