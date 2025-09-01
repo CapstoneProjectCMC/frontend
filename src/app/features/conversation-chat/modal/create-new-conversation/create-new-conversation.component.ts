@@ -38,6 +38,8 @@ export class CreateNewConversationComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput') searchInput!: ElementRef;
 
   isLoading = false;
+  isCreatingNewChat = false;
+
   query = '';
   searchResults: SearchUserProfileResponse[] = [];
   selectedParticipants: SearchUserProfileResponse[] = [];
@@ -153,7 +155,9 @@ export class CreateNewConversationComponent implements OnInit, OnDestroy {
   }
 
   createChat(): void {
+    this.isCreatingNewChat = true;
     if (this.isCreateButtonDisabled()) {
+      this.isCreatingNewChat = false;
       return;
     }
 
@@ -172,10 +176,12 @@ export class CreateNewConversationComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             this.chatCreated.emit(res.result);
+            this.isCreatingNewChat = false;
             this.closeModal();
           },
           error: (err) => {
             console.error('Create conversation failed', err);
+            this.isCreatingNewChat = false;
           },
         });
     } else {
@@ -192,16 +198,22 @@ export class CreateNewConversationComponent implements OnInit, OnDestroy {
         .subscribe({
           next: (res) => {
             this.chatCreated.emit(res.result);
+            this.isCreatingNewChat = false;
             this.closeModal();
           },
           error: (err) => {
             console.error('Create group conversation failed', err);
+            this.isCreatingNewChat = false;
           },
         });
     }
   }
 
   closeModal(): void {
+    if (this.isCreatingNewChat) {
+      return;
+    }
+
     this.isModalVisible = false;
     this.modalClosed.emit();
     // Reset trạng thái

@@ -25,7 +25,7 @@ export interface IDepositGPData {
 export type TopUpTransactionRequest = {
   transactionId: string;
   referenceId?: string | null;
-  amount: number;
+  amount?: number;
   currency: string;
 };
 

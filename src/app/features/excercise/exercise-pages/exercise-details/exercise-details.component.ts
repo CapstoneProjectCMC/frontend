@@ -35,6 +35,8 @@ import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 import { getUserRoles } from '../../../../shared/utils/userInfo';
 import { activeForMyContent } from '../../../../shared/utils/authenRoleActions';
 import { isAvailabelTime } from '../../../../shared/utils/availableTime';
+import { PaymentService } from '../../../../core/services/api-service/payment.service';
+import { IPurChaseTransactionRequest } from '../../../../core/models/service-and-payment';
 
 @Component({
   selector: 'app-exercise-details',
@@ -63,6 +65,7 @@ export class ExerciseDetailsComponent implements OnInit {
   isOpenUpdateExercise: boolean = false;
   isUpdateQuestion: boolean = false;
   resetLoadingFlag = false;
+  isBought = false;
 
   initialSelectedQuestion: QuizQuestion = {
     id: '',
@@ -162,6 +165,7 @@ export class ExerciseDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private exerciseService: ExerciseService,
+    private paymentService: PaymentService,
     private store: Store,
     private router: Router,
     private location: Location
@@ -173,6 +177,18 @@ export class ExerciseDetailsComponent implements OnInit {
       // page, size, sort, asc có thể lấy mặc định hoặc từ query param nếu cần
       this.fetchingData(this.exerciseId);
     }
+  }
+
+  payForExercise(item: IPurChaseTransactionRequest) {
+    this.paymentService.purchaseItem(item).subscribe({
+      next: (res) => {
+        //todo tomorrow
+        this.isBought = true;
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
   }
 
   fetchingData(id: string) {

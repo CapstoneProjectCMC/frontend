@@ -74,7 +74,7 @@
     </ng-container>
     <nav
       class="pagination-container"
-      [class.hidden]="(state.response?.result?.totalElements || 1) < 1"
+      [class.hidden]="(state.response?.result?.totalPages || 0) <= 1"
     >
       <app-pagination
         [totalData]="state.response?.result?.totalElements || 0"

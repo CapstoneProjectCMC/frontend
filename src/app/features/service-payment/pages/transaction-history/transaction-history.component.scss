@@ -9,7 +9,7 @@
 .history-container {
   background-color: var(--background-color);
   padding: 24px 32px;
-  max-height: calc(100vh - 180px);
+  height: calc(100vh - 180px);
   position: relative;
   display: flex;
   flex-direction: column;

@@ -161,14 +161,19 @@
           {{ exercise.duration }} phút</span
         >
         <span title="Giá"
-          ><i class="fa fa-money"></i> ${{ exercise.cost }}</span
+          ><i class="fa-solid fa-cart-shopping"></i
+          >{{ exercise.cost }} VNĐ</span
         >
       </div>
 
       <div class="btn-container">
         <button
           class="btn main"
-          *ngIf="hasQuestions && canStartDoing"
+          *ngIf="
+            hasQuestions &&
+            canStartDoing &&
+            (exercise.cost <= 0 ? true : isBought)
+          "
           (click)="doingQuiz()"
         >
           <i class="fa fa-play"></i> Bắt đầu
