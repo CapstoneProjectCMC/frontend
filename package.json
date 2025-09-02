@@ -47,7 +47,7 @@
     "highlight.js": "^11.11.1",
     "hls.js": "^1.6.10",
     "marked": "^16.2.1",
-    "ng-apexcharts": "^1.11.0",
+    "ng-apexcharts": "1.15.0",
     "ngx-cookie-service": "^19.1.2",
     "ngx-lottie": "^20.0.0",
     "ngx-markdown": "^19.1.1",
