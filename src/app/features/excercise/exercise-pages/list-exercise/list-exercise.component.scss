@@ -1,8 +1,9 @@
 .exercise-main-container {
   display: flex;
   width: 100%;
-  height: calc(100vh - 130px);
+  height: calc(100vh - 150px);
   overflow: hidden;
+  padding-top: 12px;
 
   .main-content {
     display: flex;

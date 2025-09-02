@@ -74,7 +74,7 @@
     display: grid;
     overflow: auto;
     flex: 1;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 16px;
     height: calc(100vh - 250px);
     overflow: auto;
@@ -107,7 +107,7 @@
     max-height: 400px;
     min-height: 400px;
     overflow: auto;
-    min-width: 300px;
+    min-width: 400px;
 
     &:hover {
       transform: translateY(-5px);
@@ -296,6 +296,7 @@
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
     animation: fadeIn 0.3s ease;
+    z-index: 1000;
   }
 
   .modal {
@@ -304,6 +305,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1000;
     .modal-content {
       background: #fff;
       border-radius: 8px;

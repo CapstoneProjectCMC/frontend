@@ -313,6 +313,8 @@ export const API_CONFIG = {
         `/profile/exercise/${exerciseId}/save`,
       DELETE_ORG: (orgId: string) => `/org/organization/${orgId}`,
       DELETE_BLOCK: (blockId: string) => `/org/block/${blockId}`,
+      REMOVE_MEMBER_FROM_BLOCK: (blockId: string, memberId: string) =>
+        `/org/block/${blockId}/member/${memberId}`,
     },
   },
   HEADERS: {
