@@ -50,7 +50,7 @@
     "ng-apexcharts": "1.15.0",
     "ngx-cookie-service": "^19.1.2",
     "ngx-lottie": "^13.0.0",
-    "ngx-markdown": "^19.1.1",
+    "ngx-markdown": "^15.0.0",
     "pdfjs-dist": "^5.4.54",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.8.1",
