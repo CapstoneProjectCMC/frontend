@@ -3,9 +3,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutOrganizationComponent } from './layout-organization/layout-organization.component';
 import { OrganizationManagementComponent } from './pages/organization-management/organization-management.component';
-import { InAOrganizationComponent } from './pages/in-a-organization/in-a-organization.component';
 import { RoleGuard } from '../../core/guards/router-protected/role.guard';
 import { OrgBlocksComponent } from './pages/org-blocks/org-blocks.component';
+import { BlockDetailsComponent } from './pages/block-details/block-details.component';
+import { OrgDetailsComponent } from './pages/org-details/org-details.component';
 
 const routes: Routes = [
   {
@@ -21,13 +22,19 @@ const routes: Routes = [
       },
       {
         path: 'in-org/:orgId',
-        component: InAOrganizationComponent,
+        component: OrgDetailsComponent,
         children: [
           {
             path: 'org-details',
             component: OrgBlocksComponent,
             title: 'Chi tiết tổ chức',
             data: { breadcrumb: 'Chi tiết tổ chức' },
+          },
+          {
+            path: 'block-details/:blockId',
+            component: BlockDetailsComponent,
+            title: 'Chi tiết khối',
+            data: { breadcrumb: 'Chi tiết khối' },
           },
         ],
         title: 'Tổ chức',

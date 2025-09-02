@@ -1,0 +1,194 @@
+.block-details-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.block-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+}
+
+.info-block h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.info-block .meta-info .code {
+  font-size: 0.9rem;
+  color: #777;
+  display: block;
+  margin-top: 5px;
+}
+
+.info-block .description {
+  margin-top: 10px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.actions .btn-primary {
+  background-color: #007bff; /* Ví dụ màu xanh dương */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: #ddd;
+  margin: 20px 0;
+}
+
+.members-section {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.members-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.members-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.search-box {
+  position: relative;
+  width: 250px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px 12px;
+  padding-right: 40px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.search-box .fa-search {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.members-list {
+  max-height: 500px; /* Chiều cao cố định cho phép cuộn */
+  overflow-y: auto;
+  padding-right: 5px; /* Để tránh thanh cuộn che mất nội dung */
+}
+
+.member-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.member-card.inactive {
+  opacity: 0.6;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.member-info {
+  flex-grow: 1;
+}
+
+.member-info .name-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.member-info .name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.member-info .email {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.role-badge {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #007bff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.role-badge .fa-crown {
+  color: gold;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.status-dot.active {
+  background-color: #28a745;
+}
+
+.loading {
+  text-align: center;
+  padding: 12px;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+  .block-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .actions {
+    width: 100%;
+    margin-top: 15px;
+  }
+  .search-box {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

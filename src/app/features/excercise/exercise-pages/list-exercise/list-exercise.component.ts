@@ -89,7 +89,6 @@ export class ListExerciseComponent implements OnInit {
       { value: '1', label: 'Trung bình' },
       { value: '2', label: 'Khó' },
     ];
-    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
   }
 
   private mapExerciseResToCardDataUI(data: ExerciseItem[]): CardExcercise[] {

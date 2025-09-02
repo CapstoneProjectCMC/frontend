@@ -1,0 +1,28 @@
+.organization-page-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 150px);
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 8px; // chiều rộng thanh cuộn
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent; // nền phía sau thanh cuộn
+  }
+  &::-webkit-scrollbar-button {
+    display: none; // ẩn mũi tên hai đầu
+    height: 0;
+    width: 0;
+  }
+  &::-webkit-scrollbar-button:single-button {
+    display: none; // ẩn mũi tên ↑ và ↓
+    height: 0;
+    width: 0;
+  }
+  .content-router-org {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+}

@@ -224,6 +224,7 @@ export class ExerciseDetailsComponent implements OnInit {
             if (res.result.user) {
               this.authorName = res.result.user.displayName;
               this.avatarUrl = res.result.user.avatarUrl;
+              this.isBought = res.result.purchased;
               this.availabelDate = res.result.startTime
                 ? new Date(res.result.startTime)
                 : null;

@@ -3,6 +3,7 @@ import { ApiMethod } from '../config-service/api.methods';
 import { ApiResponse, IPaginationResponse } from '../../models/api-response';
 import { API_CONFIG } from '../config-service/api.enpoints';
 import {
+  AddUsersOrgRequest,
   BlockResponse,
   CreateOrgRequest,
   EditOrgRequest,
@@ -100,6 +101,13 @@ export class OrganizationService {
   ) {
     return this.api.get<ApiResponse<BlockResponse>>(
       API_CONFIG.ENDPOINTS.GET.GET_BLOCK_DETAILS(blockId, data)
+    );
+  }
+
+  bulkAddToBlock(blockId: string, data: AddUsersOrgRequest) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.BULK_ADD_TO_BLOCK(blockId),
+      data
     );
   }
 }

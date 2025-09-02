@@ -267,6 +267,9 @@ export const API_CONFIG = {
       PURCHASE: '/payment/purchase',
       CREATE_ORGANIZATION: '/org/organization',
       CREATE_BLOCK_IN_ORG: (orgId: string) => `/org/${orgId}/block`,
+      BULK_ADD_TO_ORG: (orgId: string) => `/org/${orgId}/members:bulk`,
+      BULK_ADD_TO_BLOCK: (blockId: string) =>
+        `/org/block/${blockId}/members:bulk`,
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,
