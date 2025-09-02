@@ -1,6 +1,9 @@
 import { environment } from '../../../../environments/environment';
 import { EnumType } from '../../models/data-handle';
-import { FilterOrgs } from '../../models/organization.model';
+import {
+  FilterOrgs,
+  ParamGetAllBlockOfOrg,
+} from '../../models/organization.model';
 import { SearchingUser } from '../../models/user.models';
 
 export const version = '/v1';
@@ -168,8 +171,35 @@ export const API_CONFIG = {
 
         return query;
       },
-      GET_ORG_DETAILS_BY_ID: (orgId: string) =>
-        `/org/api/Organization/${orgId}`,
+      GET_ORG_DETAILS_BY_ID: (orgId: string) => `/org/organization/${orgId}`,
+      SEACH_ALL_BLOCKS: (orgId: string, params: ParamGetAllBlockOfOrg) => {
+        let query = `/org/${orgId}/blocks?`;
+        if (
+          params?.blocksPage !== undefined &&
+          params?.blocksSize !== undefined
+        ) {
+          query += `blocksPage=${params.blocksPage}&blocksSize=${params.blocksSize}&`;
+        }
+        if (
+          params?.membersPage !== undefined &&
+          params?.membersSize !== undefined
+        ) {
+          query += `membersPage=${params.membersPage}&membersSize=${params.membersSize}&`;
+        }
+        if (params?.activeOnlyMembers !== undefined) {
+          query += `activeOnlyMembers=${params.activeOnlyMembers}&`;
+        }
+        if (params?.includeUnassigned !== undefined) {
+          query += `includeUnassigned=${params.includeUnassigned}&`;
+        }
+        // Xóa dấu `&` hoặc `?` cuối cùng nếu có
+        return query.replace(/[&?]$/, '');
+      },
+      GET_BLOCK_DETAILS: (
+        blockId: string,
+        data: { membersPage: number; membersSize: number; activeOnly: boolean }
+      ) =>
+        `/org/block/${blockId}?membersPage=${data.membersPage}&membersSize=${data.membersSize}&activeOnly=${data.activeOnly}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -236,10 +266,10 @@ export const API_CONFIG = {
       TOPUP: '/payment/topup',
       PURCHASE: '/payment/purchase',
       CREATE_ORGANIZATION: '/org/organization',
+      CREATE_BLOCK_IN_ORG: (orgId: string) => `/org/${orgId}/block`,
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,
-      EDIT_ORG: (id: string) => `/org/api/Organization/${id}`,
     },
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
@@ -257,6 +287,8 @@ export const API_CONFIG = {
         `/submission/coding/exercise/${exerciseId}/coding-detail`,
       RENAME_THREAD: (threadId: string) => `/ai/chat/thread/${threadId}`,
       CHANGE_MY_PASSWORD: `/identity/user/password`,
+      EDIT_ORG: (id: string) => `/org/organization/${id}`,
+      EDIT_BLOCK: (blockId: string) => `/org/block/${blockId}`,
     },
     DELETE: {
       DELETE_QUESTION: (exerciseId: string, questionId: string) =>
@@ -277,6 +309,7 @@ export const API_CONFIG = {
       UNSAVE_EXERCISE: (exerciseId: string) =>
         `/profile/exercise/${exerciseId}/save`,
       DELETE_ORG: (orgId: string) => `/org/organization/${orgId}`,
+      DELETE_BLOCK: (blockId: string) => `/org/block/${blockId}`,
     },
   },
   HEADERS: {

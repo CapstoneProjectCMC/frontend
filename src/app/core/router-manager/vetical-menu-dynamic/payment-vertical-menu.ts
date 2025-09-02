@@ -17,7 +17,7 @@ export function sidebarPaymentRouter(role: string): SidebarItem[] {
     {
       id: 'purchase-history',
       path: '/service-and-payment/purchase-history',
-      label: 'Lịch sử giao dịch',
+      label: 'Lịch sử đã mua',
       icon: 'fa-solid fa-cart-shopping',
     },
   ];

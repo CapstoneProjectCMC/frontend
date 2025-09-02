@@ -1,18 +1,13 @@
 // auth-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ListOrganizationsComponent } from './pages/list-organizations/list-organizations.component';
-import { DetailsOrganizationComponent } from './organization-component/details-organization/details-organization.component';
 import { LayoutOrganizationComponent } from './layout-organization/layout-organization.component';
 import { OrganizationManagementComponent } from './pages/organization-management/organization-management.component';
+import { InAOrganizationComponent } from './pages/in-a-organization/in-a-organization.component';
+import { RoleGuard } from '../../core/guards/router-protected/role.guard';
+import { OrgBlocksComponent } from './pages/org-blocks/org-blocks.component';
 
 const routes: Routes = [
-  {
-    path: 'list',
-    component: ListOrganizationsComponent,
-    title: 'Danh sách tổ chức',
-    data: { breadcrumb: 'Danh sách tổ chức' },
-  },
   {
     path: '',
     component: LayoutOrganizationComponent,
@@ -21,11 +16,24 @@ const routes: Routes = [
         path: 'orgs-list',
         component: OrganizationManagementComponent,
         title: 'Quản lý tổ chức',
-        data: { breadcrumb: 'Quản lý tổ chức' },
+        data: { breadcrumb: 'Quản lý tổ chức', roles: ['ADMIN'] },
+        canActivate: [RoleGuard],
+      },
+      {
+        path: 'in-org/:orgId',
+        component: InAOrganizationComponent,
+        children: [
+          {
+            path: 'org-details',
+            component: OrgBlocksComponent,
+            title: 'Chi tiết tổ chức',
+            data: { breadcrumb: 'Chi tiết tổ chức' },
+          },
+        ],
+        title: 'Tổ chức',
+        data: { breadcrumb: 'Tổ chức' },
       },
     ],
-    title: 'Chi tiết tổ chức',
-    data: { breadcrumb: 'Tổ chức của tôi' },
   },
 
   { path: '', redirectTo: 'list', pathMatch: 'full' },

@@ -13,13 +13,23 @@
 
     <!-- Organization info -->
     <div *ngIf="!isLoading && organization" class="org-header__content">
+      <!-- Logo -->
       <div class="org-header__logo">
         <img
-          *ngIf="organization.logoUrl; else defaultLogo"
+          *ngIf="organization.logoUrl && !isEditing; else defaultLogo"
           [src]="organization.logoUrl"
           [alt]="organization.name"
           class="org-logo"
         />
+
+        <!-- Edit mode: chọn file -->
+        <div *ngIf="isEditing" class="org-logo__edit">
+          <input type="file" (change)="onFileChange($event)" />
+          <div class="org-logo-fallback" *ngIf="!organization.logoUrl">
+            {{ organization.name.charAt(0) }}
+          </div>
+        </div>
+
         <ng-template #defaultLogo>
           <div class="org-logo-fallback">
             {{ organization.name.charAt(0) }}
@@ -27,36 +37,82 @@
         </ng-template>
       </div>
 
+      <!-- Info -->
       <div class="org-header__info">
         <div class="org-header__main">
           <h1 class="org-name">{{ organization.name }}</h1>
-          <span
-            class="org-status"
-            [class]="getStatusClass(organization.status)"
+
+          <ng-container *ngIf="!isEditing; else editStatus">
+            <span
+              class="org-status"
+              [class]="getStatusClass(organization.status)"
+            >
+              {{ getStatusLabel(organization.status) }}
+            </span>
+          </ng-container>
+
+          <ng-template #editStatus>
+            <select [(ngModel)]="editForm.status" class="org-select">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="pending">Pending</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </ng-template>
+
+          <button
+            *ngIf="!isEditing"
+            (click)="enableEdit()"
+            class="btn btn-edit"
           >
-            {{ getStatusLabel(organization.status) }}
-          </span>
+            <i class="fas fa-edit"></i> Chỉnh sửa
+          </button>
         </div>
 
+        <!-- Details -->
         <div class="org-header__details">
-          <p *ngIf="organization.description" class="org-description">
-            {{ organization.description }}
-          </p>
+          <ng-container *ngIf="!isEditing; else editFormFields">
+            <p *ngIf="organization.description" class="org-description">
+              {{ organization.description }}
+            </p>
 
-          <div class="org-meta">
-            <div class="org-meta__item">
-              <i class="fas fa-map-marker-alt"></i>
-              <span>{{ organization.address }}</span>
+            <div class="org-meta">
+              <div class="org-meta__item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ organization.address }}</span>
+              </div>
+              <div class="org-meta__item">
+                <i class="fas fa-envelope"></i>
+                <span>{{ organization.email }}</span>
+              </div>
+              <div class="org-meta__item">
+                <i class="fas fa-phone"></i>
+                <span>{{ organization.phone }}</span>
+              </div>
             </div>
-            <div class="org-meta__item">
-              <i class="fas fa-envelope"></i>
-              <span>{{ organization.email }}</span>
+          </ng-container>
+
+          <!-- Edit form -->
+          <ng-template #editFormFields>
+            <textarea
+              [(ngModel)]="editForm.description"
+              placeholder="Mô tả"
+            ></textarea>
+            <input [(ngModel)]="editForm.address" placeholder="Địa chỉ" />
+            <input [(ngModel)]="editForm.email" placeholder="Email" />
+            <input [(ngModel)]="editForm.phone" placeholder="Số điện thoại" />
+
+            <div class="form-actions">
+              <button class="btn btn-cancel" (click)="cancelEdit()">Hủy</button>
+              <button
+                class="btn btn-save"
+                (click)="saveEdit()"
+                [disabled]="isSaving"
+              >
+                Lưu
+              </button>
             </div>
-            <div class="org-meta__item">
-              <i class="fas fa-phone"></i>
-              <span>{{ organization.phone }}</span>
-            </div>
-          </div>
+          </ng-template>
         </div>
       </div>
     </div>

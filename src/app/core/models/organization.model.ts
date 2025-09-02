@@ -74,6 +74,15 @@ export type EditOrgRequest = {
   email?: string;
   phone?: string;
   address?: string;
-  status?: string;
+  status?: number;
   logo?: File;
+};
+
+export type ParamGetAllBlockOfOrg = {
+  blocksPage?: number;
+  blocksSize?: number;
+  membersPage?: number;
+  membersSize?: number;
+  activeOnlyMembers?: boolean;
+  includeUnassigned?: boolean;
 };

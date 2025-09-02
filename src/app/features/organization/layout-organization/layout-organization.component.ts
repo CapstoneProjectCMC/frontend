@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
-import { sidebarOrganizations } from '../../../core/constants/menu-router.data';
 import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from '../../dashboard/dashboard-routing.module';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { sidebarOrgRouter } from '../../../core/router-manager/vetical-menu-dynamic/org-vertical-menu';
+import { SidebarItem } from '../../../core/models/data-handle';
+import { decodeJWT } from '../../../shared/utils/stringProcess';
 
 @Component({
   selector: 'app-layout-organization',
@@ -18,7 +20,12 @@ import { RouterOutlet } from '@angular/router';
 })
 export class LayoutOrganizationComponent {
   isSidebarCollapsed = true;
-  sidebarData = sidebarOrganizations;
+  sidebarData: SidebarItem[] = [];
 
   showSidebar = true;
+
+  constructor(private router: Router) {
+    const roles = decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles;
+    this.sidebarData = sidebarOrgRouter(roles);
+  }
 }

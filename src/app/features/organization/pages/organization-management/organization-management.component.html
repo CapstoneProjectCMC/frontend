@@ -33,7 +33,9 @@
             class="logo"
           />
           <ng-template #noLogo>
-            <div class="logo-placeholder">{{ org.name.charAt(0) }}</div>
+            <div class="logo-placeholder">
+              {{ org.name.charAt(0).toUpperCase() }}
+            </div>
           </ng-template>
           <h4>{{ org.name }}</h4>
         </div>
@@ -76,7 +78,9 @@
 
       <div class="card-footer">
         <small>Ngày tạo: {{ org.createdAt | date : "dd/MM/yyyy" }}</small>
-        <button class="btn secondary">Xem chi tiết</button>
+        <button class="btn secondary" (click)="goToOrganization(org.id)">
+          Xem chi tiết
+        </button>
       </div>
     </div>
   </div>

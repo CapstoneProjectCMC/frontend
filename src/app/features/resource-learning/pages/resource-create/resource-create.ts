@@ -106,11 +106,8 @@ export class ResourceCreatePageComponent {
     // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
     this.activeDropdown = this.activeDropdown === id ? null : id;
   }
-  saveDraftPost(): void {
-    // Logic to save the draft post
-    console.log('Draft post saved:', this.thumbnail);
-  }
-  createPost(): void {
+
+  createResource(): void {
     if (!this.selectedFile) {
       sendNotification(
         this.store,
@@ -164,7 +161,7 @@ export class ResourceCreatePageComponent {
     });
   }
 
-  cancelPost(): void {
+  cancelResource(): void {
     // Logic to cancel the post creation
     console.log('Post creation cancelled');
   }

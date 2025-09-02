@@ -11,12 +11,17 @@ import { Observable } from 'rxjs';
 import { decodeJWT } from '../../../shared/utils/stringProcess';
 import { sendNotification } from '../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
+import { Location } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoleGuard implements CanActivate {
-  constructor(private router: Router, private store: Store) {}
+  constructor(
+    private router: Router,
+    private store: Store,
+    private location: Location
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -44,7 +49,9 @@ export class RoleGuard implements CanActivate {
         'warning'
       );
       // nếu không đủ quyền, redirect sang trang 403 hoặc trang chủ
-      return this.router.createUrlTree(['/']);
+      this.location.back();
+      // return this.router.createUrlTree(['/']); // về trang chủ
+      return false;
     }
   }
 }
