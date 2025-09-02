@@ -27,14 +27,14 @@ export class RoleGuard implements CanActivate {
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree> {
     const expectedRoles = next.data['roles'] as string[]; // lấy roles từ route
-    const userRole = decodeJWT(localStorage.getItem('token') ?? '')?.payload
-      .scope;
+    const userRoles = decodeJWT(localStorage.getItem('token') ?? '')?.payload
+      .roles;
 
     if (!expectedRoles || expectedRoles.length === 0) {
       return true; // không yêu cầu role -> cho vào
     }
 
-    if (expectedRoles.includes(userRole)) {
+    if (userRoles && userRoles.some((role) => expectedRoles.includes(role))) {
       return true;
     } else {
       sendNotification(
@@ -60,7 +60,7 @@ export class RoleGuard implements CanActivate {
           import('./features/service-payment/service-and-payment.module').then(
             (m) => m.ServiceAndPaymentModule
           ),
-        data: { roles: ['ROLE_ADMIN'] },
+        data: { roles: ['ADMIN'] },
         canActivate: [RoleGuard],
       },
 

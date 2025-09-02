@@ -45,7 +45,11 @@ const routes: Routes = [
       {
         path: 'exercise-code-details/add-new/:id',
         component: AddCodeDetailsComponent,
-        data: { breadcrumb: 'Thêm mới chi tiết bài tập lập trình' },
+        data: {
+          breadcrumb: 'Thêm mới chi tiết bài tập lập trình',
+          roles: ['ADMIN', 'TEACHER'],
+        },
+        canActivate: [RoleGuard],
       },
       {
         path: 'list',
@@ -92,7 +96,7 @@ const routes: Routes = [
         component: AssignExerciseComponent,
         data: {
           breadcrumb: 'Giao bài tập',
-          roles: ['ROLE_TEACHER', 'ROLE_ADMIN'],
+          roles: ['TEACHER', 'ADMIN'],
         },
         canActivate: [RoleGuard],
       },
@@ -101,7 +105,7 @@ const routes: Routes = [
         component: AssignExerciseComponent,
         data: {
           breadcrumb: 'Giao bài tập',
-          roles: ['ROLE_TEACHER', 'ROLE_ADMIN'],
+          roles: ['TEACHER', 'ADMIN'],
         },
         canActivate: [RoleGuard],
       },

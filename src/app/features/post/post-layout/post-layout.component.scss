@@ -12,5 +12,22 @@
     height: calc(100vh - 130px);
     margin: 0 16px 0 20px;
     overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 8px; // chiều rộng thanh cuộn
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent; // nền phía sau thanh cuộn
+    }
+    &::-webkit-scrollbar-button {
+      display: none; // ẩn mũi tên hai đầu
+      height: 0;
+      width: 0;
+    }
+    &::-webkit-scrollbar-button:single-button {
+      display: none; // ẩn mũi tên ↑ và ↓
+      height: 0;
+      width: 0;
+    }
   }
 }

@@ -19,7 +19,7 @@ export class PostLayoutComponent {
   showSidebar = true;
 
   constructor(private router: Router) {
-    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
-    this.sidebarData = sidebarPosts(role);
+    const roles = decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles;
+    this.sidebarData = sidebarPosts(roles);
   }
 }

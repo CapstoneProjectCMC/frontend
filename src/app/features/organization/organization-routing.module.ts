@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ListOrganizationsComponent } from './pages/list-organizations/list-organizations.component';
 import { DetailsOrganizationComponent } from './organization-component/details-organization/details-organization.component';
 import { LayoutOrganizationComponent } from './layout-organization/layout-organization.component';
+import { OrganizationManagementComponent } from './pages/organization-management/organization-management.component';
 
 const routes: Routes = [
   {
@@ -13,12 +14,20 @@ const routes: Routes = [
     data: { breadcrumb: 'Danh sách tổ chức' },
   },
   {
-    path: 'details/:id',
+    path: '',
     component: LayoutOrganizationComponent,
-    children: [],
+    children: [
+      {
+        path: 'orgs-list',
+        component: OrganizationManagementComponent,
+        title: 'Quản lý tổ chức',
+        data: { breadcrumb: 'Quản lý tổ chức' },
+      },
+    ],
     title: 'Chi tiết tổ chức',
     data: { breadcrumb: 'Tổ chức của tôi' },
   },
+
   { path: '', redirectTo: 'list', pathMatch: 'full' },
 ];
 

@@ -1,5 +1,6 @@
 import { environment } from '../../../../environments/environment';
 import { EnumType } from '../../models/data-handle';
+import { FilterOrgs } from '../../models/organization.model';
 import { SearchingUser } from '../../models/user.models';
 
 export const version = '/v1';
@@ -129,6 +130,8 @@ export const API_CONFIG = {
       GET_CHAT_MESSAGES: (page: number, size: number, conversationId: string) =>
         `/chat/messages?page=${page}&size=${size}&conversationId=${conversationId}`,
       GET_POST_DETAILS: (postId: string) => `/post/${postId}`,
+      GET_SAVED_POSTS: (page: number, size: number) =>
+        `/profile/posts/saved?page=${page}&size=${size}`,
       GET_COMMENT_BY_POST_ID: (
         postId: string,
         page: number,
@@ -143,6 +146,30 @@ export const API_CONFIG = {
         `/payment/purchase-history?page=${page}&size=${size}`,
       GET_TRANSACTION_HISTORY: (page: number, size: number) =>
         `/payment/history?page=${page}&size=${size}`,
+      SEARCH_ORGS_FILTER: (
+        page: number,
+        size: number,
+        search: FilterOrgs | null
+      ) => {
+        let query = `/search/organizations/filter?page=${page}&size=${size}`;
+        if (search?.includeBlocks)
+          query += `&includeBlocks=${search.includeBlocks}`;
+        if (search?.blocksPage && search?.blocksSize)
+          query += `&blocksPage=${search?.blocksPage}&blocksSize=${search?.blocksSize}`;
+        if (search?.membersPage && search?.membersSize)
+          query += `&membersPage=${search?.membersPage}&membersSize=${search?.membersSize}`;
+        if (search?.activeOnlyMembers)
+          query += `&activeOnlyMembers=${search?.activeOnlyMembers}`;
+        if (search?.includeUnassigned)
+          query += `&includeUnassigned=${search?.includeUnassigned}`;
+        if (search?.q) query += `&q=${encodeURIComponent(search?.q)}`;
+        if (search?.status)
+          query += `&status=${encodeURIComponent(search?.status)}`;
+
+        return query;
+      },
+      GET_ORG_DETAILS_BY_ID: (orgId: string) =>
+        `/org/api/Organization/${orgId}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -202,14 +229,17 @@ export const API_CONFIG = {
       SET_ROLE_FOR_USER_CHAT: (groupId: string) =>
         `/chat/conversation/group/${groupId}/role`,
       REACTION_POST: (postId: string) => `/post/${postId}/reaction/toggle`,
+      SAVE_POST: (postId: string) => `/profile/post/${postId}/save`,
       ADD_COMMENT_POST: (postId: string) => `/post/${postId}/comment`,
       ADD_REPLY_COMMENT_POST: (postId: string, commentId: string) =>
         `/post/${postId}/comment/${commentId}`,
       TOPUP: '/payment/topup',
       PURCHASE: '/payment/purchase',
+      CREATE_ORGANIZATION: '/org/organization',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,
+      EDIT_ORG: (id: string) => `/org/api/Organization/${id}`,
     },
     PATCH: {
       UPDATE_EXERCISE: (exerciseId: string) =>
@@ -242,9 +272,11 @@ export const API_CONFIG = {
       DELETE_GROUP_CHAT: (groupId: string) =>
         `/chat/conversation/group/${groupId}`,
       DELETE_POST: (postId: string) => `/post/${postId}`,
+      UNSAVE_POST: (postId: string) => `/profile/post/${postId}/save`,
       DELETE_COMMENT_POST: (commentId: string) => `/post/comment/${commentId}`,
       UNSAVE_EXERCISE: (exerciseId: string) =>
         `/profile/exercise/${exerciseId}/save`,
+      DELETE_ORG: (orgId: string) => `/org/organization/${orgId}`,
     },
   },
   HEADERS: {

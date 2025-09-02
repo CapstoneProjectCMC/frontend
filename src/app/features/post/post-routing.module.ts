@@ -4,6 +4,7 @@ import { PostListComponent } from './pages/post-list/post-list';
 import { PostDetailComponent } from './pages/post-detail/post-detail';
 import { PostCreatePageComponent } from './pages/post-create/post-create';
 import { PostLayoutComponent } from './post-layout/post-layout.component';
+import { SavedPostsListComponent } from './pages/saved-posts-list/saved-posts-list.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,12 @@ const routes: Routes = [
         component: PostCreatePageComponent,
         data: { breadcrumb: 'Tạo bài đăng' },
         title: 'Đăng bài',
+      },
+      {
+        path: 'saved-posts-list',
+        component: SavedPostsListComponent,
+        data: { breadcrumb: 'Bài đăng đã lưu' },
+        title: 'Danh sách lưu',
       },
     ],
   },

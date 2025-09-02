@@ -44,17 +44,10 @@ export class OauthCallbackComponent {
                 localStorage.setItem('token', res.result.accessToken);
                 localStorage.setItem('refreshToken', res.result.refreshToken);
 
-                if (!res.result.needPasswordSetup) {
-                  openModalNotification(
-                    this.store,
-                    'Cảnh báo',
-                    'Tài khoản của bạn chưa có mật khẩu, hãy cài đặt nó sớm nhất có thể để tránh rủi ro.',
-                    'Đồng ý',
-                    'hủy'
-                  );
-                  this.store.dispatch(
-                    setVariable({ key: 'needPasswordSetup', value: true })
-                  );
+                if (res.result.needPasswordSetup) {
+                  localStorage.setItem('needPasswordSetup', 'true');
+                } else {
+                  localStorage.setItem('needPasswordSetup', 'false');
                 }
               } else {
                 this.router.navigate(['/auth/identity/login']);

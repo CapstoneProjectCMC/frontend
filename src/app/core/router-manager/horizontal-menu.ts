@@ -1,8 +1,9 @@
 import { SidebarItem } from '../models/data-handle';
 
-export function getNavHorizontalItems(role: string): SidebarItem[] {
-  const auth_lv1 = ['ROLE_ADMIN', 'ROLE_TEACHER'];
-  const auth_lv2 = ['ROLE_ADMIN'];
+export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
+  const auth_lv1 = ['ADMIN', 'TEACHER'];
+  const auth_lv2 = ['ADMIN'];
+  console.log(roles);
 
   return [
     {
@@ -28,20 +29,21 @@ export function getNavHorizontalItems(role: string): SidebarItem[] {
       path: 'conversations/chat',
       label: 'Tin nhắn',
       icon: 'fas fa-comments',
+      isVisible: !(roles.length !== 0),
     },
     {
       id: 'statistics',
       path: '/statistics',
       label: 'Thống kê',
       icon: 'fas fa-chart-bar',
-      isVisible: !auth_lv2.includes(role),
+      isVisible: !roles.includes(auth_lv2[0]),
     },
     {
       id: 'management',
       path: 'management/admin',
       label: 'Admin quản lý',
       icon: 'fas fa-user-shield',
-      isVisible: !auth_lv2.includes(role),
+      isVisible: !roles.includes(auth_lv2[0]),
     },
     {
       id: 'payment',
@@ -51,10 +53,10 @@ export function getNavHorizontalItems(role: string): SidebarItem[] {
     },
     {
       id: 'organization ',
-      path: '/organization/list',
+      path: '/organization/orgs-list',
       label: 'Tổ chức',
       icon: 'fa-solid fa-building-user',
-      isVisible: !auth_lv2.includes(role),
+      isVisible: !roles.includes(auth_lv2[0]),
     },
   ];
 }

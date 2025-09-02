@@ -118,13 +118,38 @@ export function removeSpecialCharacters(str: string): string {
 }
 
 //Giải mã JWT token
-export function decodeJWT(token: string): {
+export function decodeJWT(token: string | null): {
   header: any;
-  payload: any;
+  payload: DecodedJwtPayload;
   issuedAt?: string;
   expiresAt?: string;
-} | null {
+} {
   try {
+    if (!token) {
+      return {
+        header: {},
+        payload: {
+          sub: '',
+          permissions: [],
+          org_id: '',
+          org_role: '',
+          scope: '',
+          roles: [],
+          iss: '',
+          active: false,
+          exp: 0,
+          iat: 0,
+          token_type: '',
+          userId: '',
+          jti: '',
+          email: '',
+          username: '',
+        },
+        issuedAt: undefined,
+        expiresAt: undefined,
+      };
+    }
+
     const [header64, payload64] = token.split('.');
     const base64UrlDecode = (str: string) => {
       const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
@@ -156,6 +181,27 @@ export function decodeJWT(token: string): {
     };
   } catch (e) {
     console.error('Invalid JWT', e);
-    return null;
+    return {
+      header: {},
+      payload: {
+        sub: '',
+        permissions: [],
+        org_id: '',
+        org_role: '',
+        scope: '',
+        roles: [],
+        iss: '',
+        active: false,
+        exp: 0,
+        iat: 0,
+        token_type: '',
+        userId: '',
+        jti: '',
+        email: '',
+        username: '',
+      },
+      issuedAt: undefined,
+      expiresAt: undefined,
+    };
   }
 }

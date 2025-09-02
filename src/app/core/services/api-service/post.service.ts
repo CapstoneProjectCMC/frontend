@@ -11,6 +11,7 @@ import {
   CreatePostRequest,
   postData,
   PostResponse,
+  SavedPostResponse,
 } from '../../models/post.models';
 
 @Injectable({
@@ -140,6 +141,25 @@ export class PostService {
   deletePost(id: string) {
     return this.api.delete<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.DELETE.DELETE_POST(id)
+    );
+  }
+
+  savePost(postId: string) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.SAVE_POST(postId),
+      null
+    );
+  }
+
+  unSavePost(postId: string) {
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.SAVE_POST(postId)
+    );
+  }
+
+  getSavedPosts(page: number, size: number) {
+    return this.api.get<ApiResponse<IPaginationResponse<SavedPostResponse[]>>>(
+      API_CONFIG.ENDPOINTS.GET.GET_SAVED_POSTS(page, size)
     );
   }
 }

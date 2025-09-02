@@ -57,9 +57,9 @@ export class AppLayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
+    const roles = decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles;
     // Cập nhật visible ngay khi khởi tạo dựa trên url hiện tại
-    this.menuItems = getNavHorizontalItems(role);
+    this.menuItems = getNavHorizontalItems(roles);
     const currentUrl = this.router.url;
     this.visible = currentUrl !== '/';
     this.showFooter = currentUrl === '/' || currentUrl === '';

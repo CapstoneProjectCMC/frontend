@@ -2,7 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { PostCardComponent } from '../../../../shared/components/my-shared/post-card/post-card';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   PostCardInfo,
   PostResponse,
@@ -31,8 +31,7 @@ import { openModalNotification } from '../../../../shared/utils/notification';
     InputComponent,
     DropdownButtonComponent,
     PostCardComponent,
-    NgFor,
-    NgIf,
+    CommonModule,
     PopularPostComponent,
     SkeletonLoadingComponent,
     TrendingComponent,
@@ -239,6 +238,35 @@ export class PostListComponent {
         this.pendingVote[id] = false;
       },
     });
+  }
+
+  handleToggleSave(postId: string) {
+    const post = this.posts.find((p) => p.id === postId);
+    if (!post) return;
+
+    // Nếu đang lưu thì gọi unSave
+    if (post.isSaved) {
+      this.postservice.unSavePost(postId).subscribe({
+        next: () => {
+          post.isSaved = false; // ✅ cập nhật lại trạng thái
+          console.log(`Unsave thành công post: ${postId}`);
+        },
+        error: (err) => {
+          console.error('Unsave thất bại', err);
+        },
+      });
+    } else {
+      // Nếu chưa lưu thì gọi save
+      this.postservice.savePost(postId).subscribe({
+        next: () => {
+          post.isSaved = true;
+          console.log(`Save thành công post: ${postId}`);
+        },
+        error: (err) => {
+          console.error('Save thất bại', err);
+        },
+      });
+    }
   }
 
   handleInputChange(value: string | number): void {

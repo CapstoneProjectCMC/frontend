@@ -91,6 +91,7 @@ export class ProfileMenuComponent {
     });
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('needPasswordSetup');
     sessionStorage.removeItem('avatar-url');
   }
 }

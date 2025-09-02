@@ -181,11 +181,21 @@
             <i class="fa fa-play"></i> Chạy thử
           </button>
           <button
+            *ngIf="!submitted"
             class="control-btn submit"
             (click)="confirmSubmit()"
             [disabled]="isRunning || isSubmitting"
           >
             <i class="fa-solid fa-paper-plane"></i> Nộp bài
+          </button>
+          <button
+            *ngIf="submitted"
+            class="control-btn submit"
+            (click)="confirmScore()"
+            [disabled]="isRunning || isSubmitting"
+          >
+            <i class="fa-solid fa-circle-check"></i> Xác nhận và trở về trang
+            chủ
           </button>
         </div>
       </div>
