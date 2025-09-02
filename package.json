@@ -49,7 +49,7 @@
     "marked": "^16.2.1",
     "ng-apexcharts": "1.15.0",
     "ngx-cookie-service": "^19.1.2",
-    "ngx-lottie": "^20.0.0",
+    "ngx-lottie": "^13.0.0",
     "ngx-markdown": "^19.1.1",
     "pdfjs-dist": "^5.4.54",
     "rxjs": "~7.8.0",
