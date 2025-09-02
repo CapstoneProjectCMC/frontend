@@ -1,4 +1,4 @@
-<div class="post-create-container">
+<div class="resource-create-container">
   <div class="general-infor">
     <div class="input-title">
       <!-- Thay bằng input -->
@@ -29,22 +29,15 @@
         [variant]="'cancel'"
         [width]="'116px'"
         [height]="'50px'"
-        (onClick)="cancelPost()"
+        (onClick)="cancelResource()"
         >Hủy</app-button
-      >
-      <app-button
-        [variant]="'outline'"
-        [width]="'116px'"
-        [height]="'50px'"
-        (onClick)="saveDraftPost()"
-        >Lưu Nháp</app-button
       >
       <app-button
         [variant]="'solid'"
         [width]="'116px'"
         [height]="'50px'"
-        (onClick)="createPost()"
-        >Đăng Bài</app-button
+        (onClick)="createResource()"
+        >Tải lên</app-button
       >
     </div>
   </div>

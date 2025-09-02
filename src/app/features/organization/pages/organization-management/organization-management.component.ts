@@ -20,6 +20,7 @@ import { PaginationComponent } from '../../../../shared/components/fxdonad-share
 import { lottieOptions2 } from '../../../../core/constants/value.constant';
 import { LottieComponent } from 'ngx-lottie';
 import { OrganizationCreateModalComponent } from '../../organization-component/organization-create-modal/organization-create-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-organization-management',
@@ -57,7 +58,8 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
 
   constructor(
     private orgService: OrganizationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -169,6 +171,10 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
     if (file) {
       this.createForm.patchValue({ logo: file });
     }
+  }
+
+  goToOrganization(id: string) {
+    this.router.navigate([`/organization/in-org/${id}/org-details`]);
   }
 
   // Helper function để tính tổng thành viên

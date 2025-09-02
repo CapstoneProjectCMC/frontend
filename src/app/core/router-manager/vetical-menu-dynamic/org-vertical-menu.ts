@@ -5,7 +5,7 @@ export function sidebarOrgRouter(roles: string[]): SidebarItem[] {
     {
       id: 'list-orgs',
       path: '/organization/orgs-list',
-      label: 'Nạp tiền',
+      label: 'Danh sách tổ chức',
       icon: 'fa-solid fa-tasks',
     },
   ];

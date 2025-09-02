@@ -177,14 +177,6 @@
       </div>
 
       <form class="message-form" (ngSubmit)="handleSendMessage()">
-        <input
-          type="text"
-          class="message-input"
-          placeholder="Type a message"
-          [(ngModel)]="message"
-          name="message"
-          autocomplete="off"
-        />
         <button
           class="btn btn--icon btn--primary"
           type="submit"
@@ -206,6 +198,14 @@
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
         </button>
+        <input
+          type="text"
+          class="message-input"
+          placeholder="Type a message"
+          [(ngModel)]="message"
+          name="message"
+          autocomplete="off"
+        />
       </form>
     </ng-container>
 

@@ -30,8 +30,8 @@ export class ExerciseLayoutComponent implements OnInit, OnDestroy {
   private routerSubscription!: Subscription;
 
   constructor(private router: Router) {
-    const role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
-    this.sidebarData = sidebarExercises(role);
+    const roles = decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles;
+    this.sidebarData = sidebarExercises(roles);
   }
 
   ngOnInit() {

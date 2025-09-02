@@ -3,11 +3,13 @@ import { ApiMethod } from '../config-service/api.methods';
 import { ApiResponse, IPaginationResponse } from '../../models/api-response';
 import { API_CONFIG } from '../config-service/api.enpoints';
 import {
+  BlockResponse,
   CreateOrgRequest,
   EditOrgRequest,
   FilterOrgs,
   OrganizationInfo,
   OrganizationResponse,
+  ParamGetAllBlockOfOrg,
 } from '../../models/organization.model';
 import { PostResponse } from '../../models/post.models';
 
@@ -45,15 +47,59 @@ export class OrganizationService {
   }
 
   editOrg(orgId: string, data: EditOrgRequest) {
-    return this.api.put<ApiResponse<null>>(
-      API_CONFIG.ENDPOINTS.PUT.EDIT_ORG(orgId),
-      data
+    const { logo, ...otherData } = data;
+
+    return this.api.patchWithFormData<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PATCH.EDIT_ORG(orgId),
+      otherData,
+      logo
     );
   }
 
   deleteOrg(orgId: string) {
     return this.api.delete<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.DELETE.DELETE_ORG(orgId)
+    );
+  }
+
+  createBlockInOrg(
+    orgId: string,
+    data: { name: string; code: string; description: string }
+  ) {
+    return this.api.post<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.POST.CREATE_BLOCK_IN_ORG(orgId),
+      data
+    );
+  }
+
+  getAllBlockOfOrg(orgId: string, params: ParamGetAllBlockOfOrg) {
+    return this.api.get<ApiResponse<IPaginationResponse<BlockResponse[]>>>(
+      API_CONFIG.ENDPOINTS.GET.SEACH_ALL_BLOCKS(orgId, params)
+    );
+  }
+
+  updateBlock(
+    id: string,
+    data: { name?: string; code?: string; description?: string }
+  ) {
+    return this.api.patch<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.PATCH.EDIT_BLOCK(id),
+      data
+    );
+  }
+
+  deleteBlock(id: string) {
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.DELETE_BLOCK(id)
+    );
+  }
+
+  getBlockDetails(
+    blockId: string,
+    data: { membersPage: number; membersSize: number; activeOnly: boolean }
+  ) {
+    return this.api.get<ApiResponse<BlockResponse>>(
+      API_CONFIG.ENDPOINTS.GET.GET_BLOCK_DETAILS(blockId, data)
     );
   }
 }

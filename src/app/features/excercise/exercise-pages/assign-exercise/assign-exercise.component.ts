@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   SearchUserProfileResponse,
   User,
@@ -18,7 +18,6 @@ import {
 import { forkJoin } from 'rxjs/internal/observable/forkJoin';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { of } from 'rxjs/internal/observable/of';
-import { Subscription } from 'rxjs/internal/Subscription';
 import {
   AssignedStudentsListResponse,
   MySubmissionsHistoryResponse,
@@ -33,10 +32,6 @@ import { CodingService } from '../../../../core/services/api-service/coding.serv
 })
 export class AssignExerciseComponent implements OnInit {
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
-  private checkTypeExercise: string[] = [
-    '/assign-exercise-code',
-    '/assign-exercise-quiz',
-  ];
 
   avatarUrlDefault: string = avatarUrlDefault;
   exerciseTypeCall: MySubmissionsHistoryResponse['exerciseType'] = 'QUIZ';
