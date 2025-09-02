@@ -1,0 +1,90 @@
+name: Frontend CI + Sonar
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "src/**"
+      - "package.json"
+      - "package-lock.json"
+      - "angular.json"
+      - ".github/workflows/ci-sonar-angular.yml"
+      - "sonar-project.properties"
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  build-test-and-analyze:
+    runs-on: ubuntu-latest
+    env:
+      NODE_VERSION: 20
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      CI: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Sonar cần full history để tính blame
+
+      - name: Set up JDK (for Sonar scanner)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install Chrome (for Karma Headless)
+        id: chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (production)
+        run: npm run build
+
+      - name: Unit Test + Coverage (Karma headless)
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
+        run: |
+          # nếu bạn đã có cấu hình Karma CI riêng thì thay lệnh dưới bằng script đó
+          npx ng test --watch=false --browsers=ChromeHeadless --code-coverage
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-frontend
+          path: coverage/**
+          if-no-files-found: warn
+
+      # --- SonarCloud (mặc định) ---
+      - name: SonarCloud Scan
+        if: ${{ env.SONAR_HOST_URL == '' }}
+        uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >
+            -Dsonar.qualitygate.wait=true
+
+      # --- SonarQube self-hosted (nếu bạn set SONAR_HOST_URL) ---
+      - name: SonarQube Scan (self-hosted)
+        if: ${{ env.SONAR_HOST_URL != '' }}
+        uses: SonarSource/sonarqube-scan-action@v4
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.qualitygate.wait=true

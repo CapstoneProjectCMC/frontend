@@ -1,0 +1,39 @@
+version: 2
+updates:
+  # NPM (Angular app)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "02:00"
+      timezone: "Asia/Bangkok"
+    open-pull-requests-limit: 10
+    target-branch: "main"
+    labels: ["dependencies", "npm"]
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "all"
+    ignore:
+      # ví dụ giữ cố định major của Angular 19
+      - dependency-name: "@angular/*"
+        versions: [">=20"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+      timezone: "Asia/Bangkok"
+    labels: ["dependencies", "github-actions"]
+
+  # Docker base images (Nginx, Node…)
+  - package-ecosystem: "docker"
+    directory: "/docker"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "04:00"
+      timezone: "Asia/Bangkok"
+    labels: ["dependencies", "docker"]
