@@ -1,0 +1,150 @@
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  visibility: hidden;
+
+  &.show {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    z-index: 10000;
+  }
+}
+
+.modal-wrapper {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-30px);
+  opacity: 0;
+  transition: all 0.3s ease;
+  visibility: hidden;
+
+  &.show {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    z-index: 10000;
+  }
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 12px;
+  width: 600px;
+  max-width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header,
+.modal-footer {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search-box {
+  padding: 8px 16px;
+
+  input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+}
+
+.results {
+  padding: 8px 16px;
+  .user-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+
+    &:hover {
+      background: #f5f5f5;
+    }
+
+    img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+
+    strong {
+      display: block;
+      font-size: 14px;
+    }
+    span {
+      font-size: 12px;
+      color: #666;
+    }
+  }
+}
+
+.selected {
+  padding: 8px 16px;
+  h3 {
+    margin: 8px 0;
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    background: #e5f0ff;
+    border-radius: 16px;
+    margin: 4px;
+    font-size: 13px;
+
+    button {
+      background: none;
+      border: none;
+      margin-left: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  }
+}
+
+.btn-cancel {
+  padding: 8px 16px;
+  border: none;
+  background: #f1f1f1;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-save {
+  padding: 8px 16px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+
+  &:disabled {
+    background: #93c5fd;
+  }
+}
+
+.close-btn {
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

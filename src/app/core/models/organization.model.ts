@@ -86,3 +86,16 @@ export type ParamGetAllBlockOfOrg = {
   activeOnlyMembers?: boolean;
   includeUnassigned?: boolean;
 };
+
+//add user
+export type InfoUserNeedToAdd = {
+  userId: string;
+  role: string;
+  active: string;
+};
+
+export type AddUsersOrgRequest = {
+  members: InfoUserNeedToAdd[];
+  defaultRole: string;
+  active: boolean;
+};

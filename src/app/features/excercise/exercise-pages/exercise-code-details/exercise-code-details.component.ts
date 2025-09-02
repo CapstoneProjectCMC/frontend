@@ -31,6 +31,7 @@ import { isAvailabelTime } from '../../../../shared/utils/availableTime';
 import { PaymentService } from '../../../../core/services/api-service/payment.service';
 import { v4 as uuidv4 } from 'uuid';
 import { IPurChaseTransactionRequest } from '../../../../core/models/service-and-payment';
+import { FormatViewPipe } from '../../../../shared/pipes/format-view.pipe';
 
 @Component({
   selector: 'app-exercise-code-details',
@@ -39,6 +40,7 @@ import { IPurChaseTransactionRequest } from '../../../../core/models/service-and
     FormsModule,
     UpdateCodeDetailsComponent,
     UpdateExerciseComponent,
+    FormatViewPipe,
   ],
   templateUrl: './exercise-code-details.component.html',
   styleUrls: ['./exercise-code-details.component.scss'],
@@ -230,6 +232,7 @@ export class ExerciseCodeDetailsComponent {
             this.authorName = res.result.user.displayName;
             this.authorRoles = Array.from(res.result.user.roles).join(', ');
             this.avatarUrl = res.result.user.avatarUrl ?? avatarUrlDefault;
+            this.isBought = res.result.purchased;
           }
           this.isActionActive = activeForMyContent(
             res.result.user?.username ?? '',

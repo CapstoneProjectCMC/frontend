@@ -41,6 +41,13 @@ export class ErrorHandlerService {
         'Bạn đã mua sản phẩm này rồi!',
         'warning'
       );
+    } else if (errorCode === 4059101) {
+      sendNotification(
+        this.store,
+        'Hết tiền!',
+        'Bạn cần nạp tiền vào tài khoản của mình trước nhé!',
+        'error'
+      );
     } else {
       sendNotification(
         this.store,

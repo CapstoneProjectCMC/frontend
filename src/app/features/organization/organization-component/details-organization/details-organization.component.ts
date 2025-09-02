@@ -53,9 +53,9 @@ export class DetailsOrganizationComponent implements OnInit {
     });
   }
 
-  getStatusLabel(status: number): string {
+  getStatusLabel(status: number | string): string {
     switch (status) {
-      case 0:
+      case 'Active':
         return 'Hoạt động';
       case 1:
         return 'Tạm ngưng';
@@ -66,9 +66,9 @@ export class DetailsOrganizationComponent implements OnInit {
     }
   }
 
-  getStatusClass(status: number): string {
+  getStatusClass(status: number | string): string {
     switch (status) {
-      case 0:
+      case 'Active':
         return 'status-active';
       case 1:
         return 'status-inactive';

@@ -1,0 +1,61 @@
+<div class="block-details-page">
+  <div class="block-header-section">
+    <div class="info-block">
+      <h1>{{ block.name }}</h1>
+      <div class="meta-info">
+        <span class="code">Mã: {{ block.code }}</span>
+      </div>
+      <p class="description">{{ block.description }}</p>
+    </div>
+    <div class="actions">
+      <button class="btn-primary" (click)="openModalAdd()">
+        <i class="fas fa-user-plus"></i> Thêm người dùng
+      </button>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="members-section">
+    <div class="members-header">
+      <h2>Thành viên ({{ members.length }})</h2>
+      <div class="search-box">
+        <input type="text" placeholder="Tìm kiếm thành viên..." />
+        <i class="fas fa-search"></i>
+      </div>
+    </div>
+
+    <div class="members-list" appScrollEnd (appScrollEnd)="onScrollEnd()">
+      <div
+        class="member-card"
+        *ngFor="let m of members"
+        [class.inactive]="!m.active"
+      >
+        <img
+          [src]="m.user.avatarUrl || avatarDefault"
+          alt="avatar"
+          class="avatar"
+        />
+        <div class="member-info">
+          <div class="name-status">
+            <span class="name">{{ m.user.displayName }}</span>
+            <span class="status-dot" [class.active]="m.active"></span>
+          </div>
+          <div class="email">{{ m.user.email }}</div>
+        </div>
+        <div class="role-badge">
+          <i class="fas fa-crown" *ngIf="m.role === 'admin'"></i>
+          {{ m.role }}
+        </div>
+      </div>
+      <div class="loading" *ngIf="isLoading">Đang tải...</div>
+    </div>
+  </div>
+
+  <app-modal-add-user-to-block
+    [isOpen]="isAddUserOpen"
+    [blockId]="blockId"
+    (closed)="isAddUserOpen = false"
+    (saved)="reloadMembers()"
+  ></app-modal-add-user-to-block>
+</div>

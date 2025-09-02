@@ -170,6 +170,9 @@ export class OrgBlocksComponent implements OnInit {
   }
 
   goToBlock(id: string) {
-    this.router.navigate(['']);
+    this.router.navigate([
+      `/organization/in-org/${this.orgId}/block-details/`,
+      id,
+    ]);
   }
 }
