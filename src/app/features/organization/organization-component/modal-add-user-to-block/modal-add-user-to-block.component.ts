@@ -6,6 +6,8 @@ import { SearchUserProfileResponse } from '../../../../core/models/user.models';
 import { InfoUserNeedToAdd } from '../../../../core/models/organization.model';
 import { UserService } from '../../../../core/services/api-service/user.service';
 import { OrganizationService } from '../../../../core/services/api-service/organization.service';
+import { sendNotification } from '../../../../shared/utils/notification';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-modal-add-user-to-block',
@@ -31,7 +33,8 @@ export class ModalAddUserToBlockComponent {
 
   constructor(
     private userService: UserService,
-    private orgService: OrganizationService
+    private orgService: OrganizationService,
+    private store: Store
   ) {
     this.searchChanged
       .pipe(
@@ -78,6 +81,12 @@ export class ModalAddUserToBlockComponent {
       })
       .subscribe({
         next: () => {
+          sendNotification(
+            this.store,
+            'Thành công',
+            'Thành viên mới đã được thêm',
+            'success'
+          );
           this.saved.emit();
           this.close();
           this.submitting = false;

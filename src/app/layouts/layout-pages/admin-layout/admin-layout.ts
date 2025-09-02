@@ -2,12 +2,7 @@ import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { HeaderComponent } from '../../../shared/components/my-shared/header/header';
-import { FooterComponent } from '../../../shared/components/my-shared/footer/footer';
 import { MenuLayoutComponent } from '../../layout-components/menu/menu-layout.component';
-import {
-  menuItems,
-  navStudentItems,
-} from '../../../core/constants/menu-router.data';
 import { CommonModule, NgIf } from '@angular/common';
 import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { sidebarData } from '../../../features/admin/menu-router.data';

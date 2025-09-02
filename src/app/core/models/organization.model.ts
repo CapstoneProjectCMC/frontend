@@ -99,3 +99,11 @@ export type AddUsersOrgRequest = {
   defaultRole: string;
   active: boolean;
 };
+
+//response excel
+export type ImportMemberResponse = {
+  total: number;
+  created: number;
+  skipped: number;
+  errors: string[];
+};

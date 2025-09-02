@@ -156,6 +156,28 @@
   gap: 5px;
 }
 
+/* Nút xóa */
+.member-actions {
+  display: flex;
+  align-items: center;
+}
+
+.btn-remove {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: var(--text-muted-color);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 5px;
+  transition: color 0.2s ease, background 0.2s ease;
+
+  &:hover {
+    color: #fff;
+    background: #ef4444; /* Màu đỏ nổi bật khi di chuột */
+  }
+}
+
 .role-badge .fa-crown {
   color: gold;
 }

@@ -1,19 +1,6 @@
 <div class="org-header">
   <div class="org-header__container">
-    <!-- Loading state -->
-    <div *ngIf="isLoading" class="org-header__loading">
-      <div class="loading-skeleton">
-        <div class="skeleton-logo"></div>
-        <div class="skeleton-content">
-          <div class="skeleton-title"></div>
-          <div class="skeleton-subtitle"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Organization info -->
     <div *ngIf="!isLoading && organization" class="org-header__content">
-      <!-- Logo -->
       <div class="org-header__logo">
         <img
           *ngIf="organization.logoUrl && !isEditing; else defaultLogo"
@@ -22,7 +9,6 @@
           class="org-logo"
         />
 
-        <!-- Edit mode: chọn file -->
         <div *ngIf="isEditing" class="org-logo__edit">
           <input type="file" (change)="onFileChange($event)" />
           <div class="org-logo-fallback" *ngIf="!organization.logoUrl">
@@ -37,7 +23,6 @@
         </ng-template>
       </div>
 
-      <!-- Info -->
       <div class="org-header__info">
         <div class="org-header__main">
           <h1 class="org-name">{{ organization.name }}</h1>
@@ -52,12 +37,14 @@
           </ng-container>
 
           <ng-template #editStatus>
-            <select [(ngModel)]="editForm.status" class="org-select">
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="pending">Pending</option>
-              <option value="unknown">Unknown</option>
-            </select>
+            <div class="org-select-wrapper">
+              <select [(ngModel)]="editForm.status" class="org-select">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="pending">Pending</option>
+                <option value="unknown">Unknown</option>
+              </select>
+            </div>
           </ng-template>
 
           <button
@@ -69,58 +56,72 @@
           </button>
         </div>
 
-        <!-- Details -->
-        <div class="org-header__details">
-          <ng-container *ngIf="!isEditing; else editFormFields">
-            <p *ngIf="organization.description" class="org-description">
-              {{ organization.description }}
-            </p>
-
-            <div class="org-meta">
-              <div class="org-meta__item">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>{{ organization.address }}</span>
-              </div>
-              <div class="org-meta__item">
-                <i class="fas fa-envelope"></i>
-                <span>{{ organization.email }}</span>
-              </div>
-              <div class="org-meta__item">
-                <i class="fas fa-phone"></i>
-                <span>{{ organization.phone }}</span>
-              </div>
+        <div class="view-mode-details" *ngIf="!isEditing">
+          <p *ngIf="organization.description" class="org-description">
+            {{ organization.description }}
+          </p>
+          <div class="org-meta">
+            <div class="org-meta__item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>{{ organization.address }}</span>
             </div>
-          </ng-container>
+            <div class="org-meta__item">
+              <i class="fas fa-envelope"></i>
+              <span>{{ organization.email }}</span>
+            </div>
+            <div class="org-meta__item">
+              <i class="fas fa-phone"></i>
+              <span>{{ organization.phone }}</span>
+            </div>
+          </div>
+        </div>
 
-          <!-- Edit form -->
-          <ng-template #editFormFields>
+        <div class="edit-mode-form" *ngIf="isEditing">
+          <div class="form-group">
+            <label for="org-description">Mô tả</label>
             <textarea
+              id="org-description"
               [(ngModel)]="editForm.description"
               placeholder="Mô tả"
             ></textarea>
-            <input [(ngModel)]="editForm.address" placeholder="Địa chỉ" />
-            <input [(ngModel)]="editForm.email" placeholder="Email" />
-            <input [(ngModel)]="editForm.phone" placeholder="Số điện thoại" />
+          </div>
+          <div class="form-group">
+            <label for="org-address">Địa chỉ</label>
+            <input
+              id="org-address"
+              [(ngModel)]="editForm.address"
+              placeholder="Địa chỉ"
+            />
+          </div>
+          <div class="form-group">
+            <label for="org-email">Email</label>
+            <input
+              id="org-email"
+              [(ngModel)]="editForm.email"
+              placeholder="Email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="org-phone">Số điện thoại</label>
+            <input
+              id="org-phone"
+              [(ngModel)]="editForm.phone"
+              placeholder="Số điện thoại"
+            />
+          </div>
 
-            <div class="form-actions">
-              <button class="btn btn-cancel" (click)="cancelEdit()">Hủy</button>
-              <button
-                class="btn btn-save"
-                (click)="saveEdit()"
-                [disabled]="isSaving"
-              >
-                Lưu
-              </button>
-            </div>
-          </ng-template>
+          <div class="form-actions">
+            <button class="btn btn-cancel" (click)="cancelEdit()">Hủy</button>
+            <button
+              class="btn btn-save"
+              (click)="saveEdit()"
+              [disabled]="isSaving"
+            >
+              Lưu
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- Error state -->
-    <div *ngIf="!isLoading && !organization" class="org-header__error">
-      <i class="fas fa-exclamation-triangle"></i>
-      <span>Không tìm thấy thông tin tổ chức</span>
     </div>
   </div>
 </div>

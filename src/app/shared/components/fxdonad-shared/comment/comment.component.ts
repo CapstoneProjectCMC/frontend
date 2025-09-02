@@ -13,12 +13,11 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { buildImageUrl } from '../../../utils/BuildUrlFile';
+
 import {
   CommentResponse,
   ICommentFilmResponse,
 } from '../../../../core/models/comment.models';
-import { mockComments } from '../../../../core/fake-data/comment.data';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 import { decodeJWT } from '../../../utils/stringProcess';
 import { checkAuthenticated } from '../../../utils/userInfo';

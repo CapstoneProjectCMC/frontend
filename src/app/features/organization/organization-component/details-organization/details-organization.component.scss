@@ -51,6 +51,100 @@
     }
   }
 
+  // New: Styles for the details in view mode
+  .view-mode-details {
+    .org-description {
+      margin: 0 0 16px 0;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text-color);
+      max-width: 600px;
+    }
+    .org-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      &__item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--text-muted-color);
+        i {
+          width: 16px;
+          color: var(--primary-color);
+        }
+      }
+    }
+  }
+
+  // New: Styles for the edit form
+  .edit-mode-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color-light);
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      label {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-color-light);
+      }
+
+      textarea,
+      input {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        font-size: 14px;
+        color: var(--text-color);
+        background: var(--surface-color);
+        box-sizing: border-box;
+      }
+
+      textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+
+      .btn {
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        border: none;
+        &:hover {
+          cursor: pointer;
+          transform: translateY(-1px);
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        &.btn-save {
+          background-color: var(--button-color);
+          color: var(--reverse-color-text);
+          &:hover {
+            background-color: oklch(from var(--button-color) calc(l * 0.8) c h);
+          }
+        }
+      }
+    }
+  }
+
   // Content
   &__content {
     display: flex;
@@ -105,6 +199,11 @@
       gap: 12px;
       margin-bottom: 12px;
       flex-wrap: wrap;
+
+      .org-select-wrapper {
+        position: relative;
+        display: inline-block;
+      }
 
       .org-name {
         margin: 0;

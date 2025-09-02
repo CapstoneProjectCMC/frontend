@@ -9,7 +9,23 @@
           placeholder="Tìm kiếm theo tên, email..."
         />
       </div>
-      <button class="btn primary" (click)="openCreateModal()">
+      <!-- Nút tải file mẫu -->
+      <button class="btn secondary other" (click)="downloadTemplate()">
+        Tải file mẫu
+      </button>
+
+      <!-- Nút import Excel -->
+      <label class="btn primary">
+        <p>Import Excel</p>
+        <input
+          type="file"
+          accept=".xlsx,.xls"
+          (change)="onImportExcel($event)"
+          hidden
+        />
+      </label>
+
+      <button class="btn primary other" (click)="openCreateModal()">
         + Thêm tổ chức
       </button>
     </div>

@@ -8,6 +8,7 @@ import {
   CreateOrgRequest,
   EditOrgRequest,
   FilterOrgs,
+  ImportMemberResponse,
   OrganizationInfo,
   OrganizationResponse,
   ParamGetAllBlockOfOrg,
@@ -114,6 +115,13 @@ export class OrganizationService {
   removeMemberFromBlock(blockId: string, memberId: string) {
     return this.api.delete<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.DELETE.REMOVE_MEMBER_FROM_BLOCK(blockId, memberId)
+    );
+  }
+
+  importMemberExcel(file: File) {
+    return this.api.uploadFile<ApiResponse<ImportMemberResponse>>(
+      API_CONFIG.ENDPOINTS.POST.IMPORT_EXCEL_ADD_MEMBER,
+      file
     );
   }
 }
