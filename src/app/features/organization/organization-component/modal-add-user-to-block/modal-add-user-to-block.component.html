@@ -3,54 +3,69 @@
 <div class="modal-wrapper" [class.show]="isOpen">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <header class="modal-header">
-      <h2>Thêm người dùng vào Block</h2>
-      <button class="close-btn" (click)="close()">&times;</button>
+      <h2 class="modal-title">Thêm người dùng vào Block</h2>
+      <button class="close-btn" (click)="close()">
+        <i class="fas fa-times"></i>
+      </button>
     </header>
 
-    <!-- Search box -->
-    <div class="search-box">
-      <input
-        type="text"
-        [(ngModel)]="searchQuery"
-        (ngModelChange)="onSearchChange($event)"
-        placeholder="Tìm kiếm tên hoặc email..."
-      />
-    </div>
-
-    <!-- Search results -->
-    <div class="results">
-      <div
-        class="user-item"
-        *ngFor="let user of searchResults"
-        (click)="addUser(user)"
-      >
-        <img
-          [src]="user.avatarUrl || '/assets/avatar-default.png'"
-          alt="avatar"
+    <div class="modal-body">
+      <div class="search-box">
+        <input
+          type="text"
+          [(ngModel)]="searchQuery"
+          (ngModelChange)="onSearchChange($event)"
+          placeholder="Tìm kiếm tên hoặc email..."
         />
-        <div>
-          <strong>{{ user.displayName }}</strong>
-          <span>{{ user.email }}</span>
+        <i class="fas fa-search search-icon"></i>
+      </div>
+
+      <div class="selected-users-section" *ngIf="selectedUsers.length">
+        <h3>Đã chọn ({{ selectedUsers.length }})</h3>
+        <div class="chips-container">
+          <div class="chip" *ngFor="let u of selectedUsers">
+            {{ u.userId }}
+            <button class="remove-chip-btn" (click)="removeUser(u.userId)">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
         </div>
       </div>
-      <p *ngIf="!searchResults.length && searchQuery">
-        Không tìm thấy kết quả.
-      </p>
-    </div>
 
-    <!-- Selected users -->
-    <div class="selected">
-      <h3>Đã chọn</h3>
-      <div class="chip" *ngFor="let u of selectedUsers">
-        {{ u.userId }}
-        <button (click)="removeUser(u.userId)">×</button>
+      <div class="search-results-section">
+        <div class="results-list">
+          <div
+            class="user-item"
+            *ngFor="let user of searchResults"
+            (click)="addUser(user)"
+          >
+            <img
+              [src]="user.avatarUrl || '/assets/avatar-default.png'"
+              alt="avatar"
+              class="user-avatar"
+            />
+            <div class="user-info">
+              <span class="user-name">{{ user.displayName }}</span>
+              <span class="user-email">{{ user.email }}</span>
+            </div>
+          </div>
+          <p
+            *ngIf="!searchResults.length && searchQuery"
+            class="no-results-text"
+          >
+            Không tìm thấy kết quả.
+          </p>
+        </div>
       </div>
     </div>
 
-    <!-- Actions -->
     <footer class="modal-footer">
-      <button class="btn-cancel" (click)="close()">Hủy</button>
-      <button class="btn-save" [disabled]="submitting" (click)="submit()">
+      <button class="btn btn-cancel" (click)="close()">Hủy</button>
+      <button
+        class="btn btn-save"
+        [disabled]="submitting || !selectedUsers.length"
+        (click)="submit()"
+      >
         {{ submitting ? "Đang lưu..." : "Xác nhận thêm" }}
       </button>
     </footer>

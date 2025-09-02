@@ -84,6 +84,17 @@ export class BlockDetailsComponent implements OnInit {
     }
   }
 
+  removeMember(memberId: string) {
+    this.orgService.removeMemberFromBlock(this.blockId, memberId).subscribe({
+      next: () => {
+        this.members = this.members.filter((a) => a.user.userId !== memberId);
+      },
+      error(err) {
+        console.log(err);
+      },
+    });
+  }
+
   openModalAdd() {
     this.isAddUserOpen = !this.isAddUserOpen;
   }

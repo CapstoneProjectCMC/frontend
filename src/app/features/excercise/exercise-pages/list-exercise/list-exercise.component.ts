@@ -21,7 +21,6 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
-import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { BtnType1Component } from '../../../../shared/components/fxdonad-shared/ui-verser-io/btn-type1/btn-type1.component';
 import { GenerateExerciseModalComponent } from '../../exercise-modal/generate-exercise/generate-exercise.component';
@@ -36,7 +35,6 @@ import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleAct
   selector: 'app-list-exercise',
   imports: [
     CommonModule,
-    BreadcrumbComponent,
     CardExcerciseComponent,
     InputComponent,
     DropdownButtonComponent,

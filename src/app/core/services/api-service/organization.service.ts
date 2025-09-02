@@ -110,4 +110,10 @@ export class OrganizationService {
       data
     );
   }
+
+  removeMemberFromBlock(blockId: string, memberId: string) {
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.REMOVE_MEMBER_FROM_BLOCK(blockId, memberId)
+    );
+  }
 }
