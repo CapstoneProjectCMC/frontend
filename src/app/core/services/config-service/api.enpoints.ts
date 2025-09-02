@@ -270,6 +270,7 @@ export const API_CONFIG = {
       BULK_ADD_TO_ORG: (orgId: string) => `/org/${orgId}/members:bulk`,
       BULK_ADD_TO_BLOCK: (blockId: string) =>
         `/org/block/${blockId}/members:bulk`,
+      IMPORT_EXCEL_ADD_MEMBER: '/identity/users/import',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,

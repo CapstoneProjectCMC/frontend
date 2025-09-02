@@ -9,6 +9,8 @@ import {
 } from '../../../../core/models/organization.model';
 import { ModalAddUserToBlockComponent } from '../../organization-component/modal-add-user-to-block/modal-add-user-to-block.component';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
+import { openModalNotification } from '../../../../shared/utils/notification';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-block-details',
@@ -31,7 +33,8 @@ export class BlockDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private orgService: OrganizationService
+    private orgService: OrganizationService,
+    private store: Store
   ) {
     this.route.paramMap.subscribe((params) => {
       this.blockId = params.get('blockId') || '';
@@ -82,6 +85,17 @@ export class BlockDetailsComponent implements OnInit {
       this.page++;
       this.loadBlockDetails(true);
     }
+  }
+
+  openModalConfirmDelete(memberId: string) {
+    openModalNotification(
+      this.store,
+      'Xác nhận xóa',
+      'Bạn có chắc chắn xóa thành viên này?',
+      'Đồng ý',
+      'Hủy',
+      () => this.removeMember(memberId)
+    );
   }
 
   removeMember(memberId: string) {

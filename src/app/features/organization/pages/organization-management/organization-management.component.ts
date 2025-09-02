@@ -13,7 +13,8 @@ import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { OrganizationService } from '../../../../core/services/api-service/organization.service';
 import {
   CreateOrgRequest,
-  FilterOrgs, // Import model FilterOrgs
+  FilterOrgs,
+  ImportMemberResponse, // Import model FilterOrgs
   OrganizationResponse,
 } from '../../../../core/models/organization.model';
 import { PaginationComponent } from '../../../../shared/components/fxdonad-shared/pagination/pagination.component';
@@ -21,6 +22,8 @@ import { lottieOptions2 } from '../../../../core/constants/value.constant';
 import { LottieComponent } from 'ngx-lottie';
 import { OrganizationCreateModalComponent } from '../../organization-component/organization-create-modal/organization-create-modal.component';
 import { Router } from '@angular/router';
+import { sendNotification } from '../../../../shared/utils/notification';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-organization-management',
@@ -55,11 +58,13 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
   createForm!: FormGroup;
+  importResult: ImportMemberResponse | null = null;
 
   constructor(
     private orgService: OrganizationService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private store: Store
   ) {}
 
   ngOnInit() {
@@ -130,7 +135,40 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
     this.loadOrgs();
   }
 
-  // --- Các hàm modal giữ nguyên ---
+  // Nút tải file mẫu
+  downloadTemplate() {
+    const link = document.createElement('a');
+    link.href = '/csv/identity_users_import_template.xlsx';
+    link.download = 'identity_users_import_template.xlsx';
+    link.click();
+  }
+
+  // Khi chọn file import
+  onImportExcel(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.orgService.importMemberExcel(file).subscribe({
+      next: (res) => {
+        this.importResult = res.result;
+        sendNotification(
+          this.store,
+          'Import thành công',
+          `Import hoàn tất:\nTổng: ${res.result.total}\nTạo mới: ${res.result.created}\nBỏ qua: ${res.result.skipped}\nLỗi: ${res.result.errors.length}`,
+          'success'
+        );
+      },
+      error: (err) => {
+        alert('Import thất bại!');
+        console.error(err);
+      },
+    });
+
+    // Reset input để chọn lại cùng 1 file lần sau
+    (event.target as HTMLInputElement).value = '';
+  }
+
+  // --- Các hàm modal ---
   openCreateModal() {
     this.showCreateModal = true;
   }

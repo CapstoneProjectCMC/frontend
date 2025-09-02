@@ -44,8 +44,16 @@
           <div class="email">{{ m.user.email }}</div>
         </div>
         <div class="role-badge">
-          <i class="fas fa-crown" *ngIf="m.role === 'admin'"></i>
+          <i class="fas fa-crown" *ngIf="m.role === 'ADMIN'"></i>
           {{ m.role }}
+        </div>
+        <div class="member-actions">
+          <button
+            class="btn-remove"
+            (click)="openModalConfirmDelete(m.user.userId)"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </div>
       </div>
       <div class="loading" *ngIf="isLoading">Đang tải...</div>

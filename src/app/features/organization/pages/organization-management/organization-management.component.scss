@@ -29,6 +29,13 @@
       display: flex;
       gap: 1rem;
       align-items: center;
+      .btn {
+        white-space: nowrap;
+        p {
+          margin: 0;
+          font-size: 12px;
+        }
+      }
     }
   }
   // Search Bar
@@ -55,10 +62,10 @@
     cursor: pointer;
     transition: all 0.3s ease;
     &.primary {
-      background: #007bff;
-      color: #fff;
+      background: var(--button-color);
+      color: var(--reverse-color-text);
       &:hover {
-        background: #0056b3;
+        background: oklch(from var(--button-color) calc(l * 0.8) c h);
       }
     }
     &.danger {
@@ -67,6 +74,9 @@
       &:hover {
         background: #a71d2a;
       }
+    }
+    &.other {
+      padding: 8px;
     }
   }
 
@@ -98,7 +108,7 @@
   }
 
   .org-card {
-    background: #fff;
+    background: var(--surface-color);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     display: flex;
@@ -110,8 +120,8 @@
     min-width: 400px;
 
     &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
     }
 
     .card-header {
