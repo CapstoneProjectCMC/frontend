@@ -1,6 +1,6 @@
 import { SidebarItem } from '../../models/data-handle';
 
-export function sidebarPosts(role: string): SidebarItem[] {
+export function sidebarPosts(roles: string[]): SidebarItem[] {
   return [
     {
       id: 'saved-posts',

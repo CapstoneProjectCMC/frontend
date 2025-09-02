@@ -33,7 +33,7 @@ import { decodeJWT } from '../../../shared/utils/stringProcess';
 export class AdminLayoutComponent implements OnInit {
   visible = true;
   menuItems = getNavHorizontalItems(
-    decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope
+    decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles
   );
   sidebarData = sidebarData;
   isCollapsed = true;

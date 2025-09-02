@@ -4,7 +4,6 @@ import { sidebarOrganizations } from '../../../core/constants/menu-router.data';
 import { CommonModule } from '@angular/common';
 import { AdminRoutingModule } from '../../dashboard/dashboard-routing.module';
 import { RouterOutlet } from '@angular/router';
-import { DetailsOrganizationComponent } from '../organization-component/details-organization/details-organization.component';
 
 @Component({
   selector: 'app-layout-organization',
@@ -13,7 +12,6 @@ import { DetailsOrganizationComponent } from '../organization-component/details-
     CommonModule,
     MainSidebarComponent,
     AdminRoutingModule,
-    DetailsOrganizationComponent,
   ],
   templateUrl: './layout-organization.component.html',
   styleUrl: './layout-organization.component.scss',

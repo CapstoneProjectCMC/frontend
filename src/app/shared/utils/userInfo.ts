@@ -25,7 +25,7 @@ export function checkAuthenticated(): boolean {
 
 export function getUserRoles(): string[] {
   const token = localStorage.getItem('token');
-  let roles = [];
+  let roles: string[] = [];
   if (token) {
     roles = decodeJWT(token)?.payload.roles;
   }
@@ -35,12 +35,12 @@ export function getUserRoles(): string[] {
 
 export function getUserId(): string {
   const token = localStorage.getItem('token');
-  let roles = [];
+  let id = '';
   if (token) {
-    roles = decodeJWT(token)?.payload.userId;
+    id = decodeJWT(token)?.payload.userId;
   }
 
-  return roles;
+  return id;
 }
 
 export function getUserName(): string {

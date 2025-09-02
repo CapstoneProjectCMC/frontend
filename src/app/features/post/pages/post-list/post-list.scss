@@ -32,8 +32,9 @@
         flex-direction: row;
         gap: 16px;
         align-items: center;
-        justify-content: center;
+        justify-content: start;
         transition: all 0.2s linear;
+        min-width: 142px;
 
         .button-add {
           width: 50px;
@@ -134,6 +135,23 @@
     max-height: calc(100vh - 160px);
     box-sizing: border-box;
     overflow: auto;
+    &::-webkit-scrollbar {
+      width: 8px; // chiều rộng thanh cuộn
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent; // nền phía sau thanh cuộn
+    }
+    &::-webkit-scrollbar-button {
+      display: none; // ẩn mũi tên hai đầu
+      height: 0;
+      width: 0;
+    }
+    &::-webkit-scrollbar-button:single-button {
+      display: none; // ẩn mũi tên ↑ và ↓
+      height: 0;
+      width: 0;
+    }
     .note-card {
       width: 300px;
       height: 52px;

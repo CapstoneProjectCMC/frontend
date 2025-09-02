@@ -34,7 +34,6 @@ export class HeaderComponent {
   showProfileMenu = false;
   isMenuVisible = false;
   timeExpiresAt: string = '';
-  role: string = '';
   avatarUrl: string = '';
   avatarDefault = avatarUrlDefault;
   setPassword = false;
@@ -54,9 +53,6 @@ export class HeaderComponent {
       decodeJWT(localStorage.getItem('token') ?? '')?.expiresAt || '';
     const expiresAt = new Date(this.timeExpiresAt).getTime();
     this.isLoggedIn = !isNaN(expiresAt) && Date.now() < expiresAt;
-
-    this.role =
-      decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles || '';
   }
 
   ngOnInit() {
@@ -75,6 +71,10 @@ export class HeaderComponent {
     if (!this.avatarUrl) {
       this.getUserInfo();
     }
+
+    this.needCreateNewPass = JSON.parse(
+      localStorage.getItem('needPasswordSetup') || 'false'
+    );
   }
 
   organizations = [

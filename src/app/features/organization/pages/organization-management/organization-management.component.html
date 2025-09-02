@@ -1,0 +1,114 @@
+<div class="org-page">
+  <div class="header">
+    <h2>Quản lý Tổ chức</h2>
+    <div class="header-actions">
+      <div class="search-bar">
+        <input
+          type="text"
+          [formControl]="searchControl"
+          placeholder="Tìm kiếm theo tên, email..."
+        />
+      </div>
+      <button class="btn primary" (click)="openCreateModal()">
+        + Thêm tổ chức
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
+
+  <div *ngIf="!loading && !orgs.length" class="no-data">
+    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+    </ng-lottie>
+    <p>Không tìm thấy tổ chức nào.</p>
+  </div>
+
+  <div class="org-list" *ngIf="!loading && orgs.length">
+    <div class="org-card" *ngFor="let org of orgs">
+      <div class="card-header">
+        <div class="card-title">
+          <img
+            *ngIf="org.logoUrl; else noLogo"
+            [src]="org.logoUrl"
+            class="logo"
+          />
+          <ng-template #noLogo>
+            <div class="logo-placeholder">{{ org.name.charAt(0) }}</div>
+          </ng-template>
+          <h4>{{ org.name }}</h4>
+        </div>
+        <div class="card-actions">
+          <span class="status-badge" [ngClass]="org.status.toLowerCase()">
+            {{ org.status }}
+          </span>
+          <button class="btn-icon danger" (click)="confirmDelete(org.id)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <p class="description">{{ org.description || "Không có mô tả." }}</p>
+        <div class="info-grid">
+          <div class="info-item">
+            <strong><i class="fa fa-envelope"></i> Email:</strong>
+            <span>{{ org.email }}</span>
+          </div>
+          <div class="info-item">
+            <strong><i class="fa fa-phone"></i> Điện thoại:</strong>
+            <span>{{ org.phone }}</span>
+          </div>
+          <div class="info-item">
+            <strong><i class="fa fa-users"></i> Tổng thành viên:</strong>
+            <span>{{ getTotalMembers(org) }}</span>
+          </div>
+        </div>
+
+        <div class="blocks-section" *ngIf="org.blocks?.data?.length">
+          <strong>Các khối:</strong>
+          <div class="blocks-list">
+            <span class="block-tag" *ngFor="let block of org.blocks.data">
+              {{ block.name }} ({{ block.members.totalElements }})
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <small>Ngày tạo: {{ org.createdAt | date : "dd/MM/yyyy" }}</small>
+        <button class="btn secondary">Xem chi tiết</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Confirm Delete -->
+  <div
+    class="modal-backdrop"
+    *ngIf="showDeleteConfirm"
+    (click)="showDeleteConfirm = false"
+  ></div>
+  <div class="modal" *ngIf="showDeleteConfirm">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h3>Xác nhận xóa?</h3>
+      <p>Bạn có chắc chắn muốn xóa tổ chức này?</p>
+      <div class="actions">
+        <button class="btn" (click)="showDeleteConfirm = false">Hủy</button>
+        <button class="btn danger" (click)="deleteOrg()">Xóa</button>
+      </div>
+    </div>
+  </div>
+
+  <app-pagination
+    *ngIf="!loading && orgs.length"
+    [currentPageIndex]="page"
+    [totalData]="totalData"
+    [amountDataPerPage]="size"
+    (onPageChange)="loadNextPage($event)"
+  ></app-pagination>
+</div>
+
+<app-organization-create-modal
+  [visible]="showCreateModal"
+  (closed)="closeCreateModal()"
+  (submitted)="submitCreate($event)"
+></app-organization-create-modal>

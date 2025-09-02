@@ -63,6 +63,7 @@ export class CodeSubmissionComponent {
   isRunning = false;
   isSubmitting = false; // Thêm trạng thái submit
   hasError = false;
+  submitted = false;
 
   //anti-cheat
   allowTab: boolean = true;
@@ -187,6 +188,10 @@ export class CodeSubmissionComponent {
           this.output = `[ERROR] ${msg}`;
         });
       })
+    );
+
+    this.submitted = JSON.parse(
+      sessionStorage.getItem('codeSubmitted') ? 'true' : 'false'
     );
   }
 
@@ -342,6 +347,8 @@ export class CodeSubmissionComponent {
     // cleanup socket
     this.socketSubs.forEach((s) => s.unsubscribe());
     this.socketService.disconnect();
+
+    sessionStorage.removeItem('codeSubmitted');
   }
 
   // --- Các hàm xử lý UI ---
@@ -434,6 +441,8 @@ export class CodeSubmissionComponent {
         });
 
         this.isSubmitting = false;
+        this.submitted = true;
+        sessionStorage.setItem('codeSubmitted', 'true');
       },
       error: (err) => {
         console.log(err);
@@ -452,6 +461,9 @@ export class CodeSubmissionComponent {
       'Soát lại',
       () => this.submitCode()
     );
+  }
+  confirmScore() {
+    this.router.navigate(['/exercise/exercise-layout/list']);
   }
 
   get formattedTimeLeft(): string {

@@ -81,7 +81,7 @@
       </div>
 
       <!-- Hiển thị skeleton loading khi đang tải -->
-      <div *ngIf="isLoadingInitial" class="list-post-card">
+      <div *ngIf="isLoadingInitial || isLoadingMore" class="list-post-card">
         <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
       </div>
 

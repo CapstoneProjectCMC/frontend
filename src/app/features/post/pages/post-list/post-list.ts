@@ -2,7 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { PostCardComponent } from '../../../../shared/components/my-shared/post-card/post-card';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   PostCardInfo,
   PostResponse,
@@ -31,8 +31,7 @@ import { openModalNotification } from '../../../../shared/utils/notification';
     InputComponent,
     DropdownButtonComponent,
     PostCardComponent,
-    NgFor,
-    NgIf,
+    CommonModule,
     PopularPostComponent,
     SkeletonLoadingComponent,
     TrendingComponent,
