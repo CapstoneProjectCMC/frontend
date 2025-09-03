@@ -56,7 +56,6 @@ jobs:
         env:
           CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
         run: |
-          # nếu bạn đã có cấu hình Karma CI riêng thì thay lệnh dưới bằng script đó
           npx ng test --watch=false --browsers=ChromeHeadless --code-coverage
 
       - name: Upload coverage artifact
@@ -72,8 +71,7 @@ jobs:
         if: ${{ env.SONAR_HOST_URL == '' }}
         uses: SonarSource/sonarcloud-github-action@v2
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
         with:
           args: >
             -Dsonar.qualitygate.wait=true
@@ -83,7 +81,7 @@ jobs:
         if: ${{ env.SONAR_HOST_URL != '' }}
         uses: SonarSource/sonarqube-scan-action@v4
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
