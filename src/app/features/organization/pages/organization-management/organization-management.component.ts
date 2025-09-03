@@ -154,7 +154,7 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
         sendNotification(
           this.store,
           'Import thành công',
-          `Import hoàn tất:\nTổng: ${res.result.total}\nTạo mới: ${res.result.created}\nBỏ qua: ${res.result.skipped}\nLỗi: ${res.result.errors.length}`,
+          `Import hoàn tất:\nTổng: <b>${res.result.total}</b> \nTạo mới: <b>${res.result.created}</b> \nBỏ qua: <b>${res.result.skipped}</b>\nLỗi: <b>${res.result.errors.length}</b>`,
           'success'
         );
       },

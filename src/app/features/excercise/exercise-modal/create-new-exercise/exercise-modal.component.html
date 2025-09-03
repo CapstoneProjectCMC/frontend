@@ -123,12 +123,36 @@
             <div class="form-group">
               <label for="orgId">Tổ chức</label>
               <input
-                id="orgId"
-                formControlName="orgId"
+                id="orgSearch"
                 type="text"
-                placeholder="Nhập ID tổ chức"
+                placeholder="Tìm kiếm tổ chức"
+                [formControl]="orgSearchControl"
               />
+
+              <div class="dropdown" *ngIf="orgs.length > 0">
+                <div
+                  class="dropdown-item"
+                  *ngFor="let org of orgs"
+                  (click)="selectOrg(org)"
+                >
+                  {{ org.name }}
+                </div>
+              </div>
+
+              <div
+                class="selected-org"
+                *ngIf="exerciseForm.get('orgId')?.value"
+              >
+                Đã chọn:
+                {{
+                  getOrgName(exerciseForm.get("orgId")?.value) | truncate : 15
+                }}
+                <button type="button" class="clear-btn" (click)="clearOrg()">
+                  ✕
+                </button>
+              </div>
             </div>
+
             <div class="form-group">
               <label for="startTime">Thời gian bắt đầu</label>
               <input
@@ -153,26 +177,6 @@
                 type="number"
                 min="0"
                 placeholder="Nhập thời lượng"
-              />
-            </div>
-            <div class="form-group">
-              <label for="allowDiscussionId">ID thảo luận</label>
-              <input
-                id="allowDiscussionId"
-                formControlName="allowDiscussionId"
-                type="text"
-                placeholder="Nhập ID thảo luận"
-              />
-            </div>
-            <div class="form-group">
-              <label for="resourceIds"
-                >Resource IDs (phân cách bởi dấu phẩy)</label
-              >
-              <input
-                id="resourceIds"
-                formControlName="resourceIds"
-                type="text"
-                placeholder="VD: id1, id2"
               />
             </div>
             <div class="form-group">

@@ -108,6 +108,10 @@ export class AlertNotificationComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  getFormattedMessage(message: string): string {
+    return message.replace(/\n/g, '<br>');
+  }
+
   getIconClass(): string {
     const icons = {
       success: 'fa-solid fa-circle-check',

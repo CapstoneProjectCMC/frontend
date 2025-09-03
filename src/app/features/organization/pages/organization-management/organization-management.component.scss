@@ -67,6 +67,8 @@
       &:hover {
         background: oklch(from var(--button-color) calc(l * 0.8) c h);
       }
+      display: flex;
+      gap: 4px;
     }
     &.danger {
       background: #dc3545;

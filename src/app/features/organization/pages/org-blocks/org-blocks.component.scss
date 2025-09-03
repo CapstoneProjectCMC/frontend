@@ -5,7 +5,10 @@
 
   .toolbar {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    h3 {
+      margin: 0;
+    }
 
     .btn-create {
       background: #007bff;
