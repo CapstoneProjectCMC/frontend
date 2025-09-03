@@ -1,10 +1,11 @@
 <div class="main-payment-container-layout">
-  <app-main-sidebar
-    *ngIf="showSidebar"
-    [sidebarItems]="sidebarData"
-    [isCollapsed]="isSidebarCollapsed"
-  >
-  </app-main-sidebar>
+  @if (showSidebar) {
+    <app-main-sidebar
+      [sidebarItems]="sidebarData"
+      [isCollapsed]="isSidebarCollapsed"
+      >
+    </app-main-sidebar>
+  }
   <div class="content-payment-container">
     <router-outlet />
   </div>

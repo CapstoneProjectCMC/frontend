@@ -12,7 +12,7 @@ import {
   TextEditorConfig,
 } from '../../../../shared/components/fxdonad-shared/text-editor/text-editor';
 import { HtmlToMdService } from '../../../../shared/utils/HTMLtoMarkDown';
-import { NgFor, NgIf } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { ResourceService } from '../../../../core/services/api-service/resource.service';
 import { sendNotification } from '../../../../shared/utils/notification';
@@ -26,7 +26,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-resource-create',
   templateUrl: './resource-create.html',
   styleUrls: ['./resource-create.scss'],
-  imports: [InputComponent, TextEditor, ButtonComponent, NgIf, FormsModule],
+  imports: [InputComponent, TextEditor, ButtonComponent, FormsModule],
 })
 export class ResourceCreatePageComponent {
   @ViewChild('linkInput') linkInput!: ElementRef<HTMLInputElement>;

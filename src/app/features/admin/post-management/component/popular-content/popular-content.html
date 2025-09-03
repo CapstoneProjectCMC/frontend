@@ -5,14 +5,15 @@
   </div>
   <div class="line"></div>
   <div class="tags">
-    <div
-      *ngFor="let tag of randomTags"
-      class="tag"
-      [ngClass]="'level-' + tag.level"
-    >
-      <span class="tag-name">{{ tag.name }}</span>
-      <span class="tag-count">{{ formatCount(tag.count) }}</span>
-    </div>
+    @for (tag of randomTags; track tag) {
+      <div
+        class="tag"
+        [ngClass]="'level-' + tag.level"
+        >
+        <span class="tag-name">{{ tag.name }}</span>
+        <span class="tag-count">{{ formatCount(tag.count) }}</span>
+      </div>
+    }
   </div>
   <div class="level-annotation">
     <div class="level-1">

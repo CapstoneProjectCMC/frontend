@@ -11,12 +11,12 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-add-code-details',
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './add-code-details.component.html',
   styleUrl: './add-code-details.component.scss',
 })

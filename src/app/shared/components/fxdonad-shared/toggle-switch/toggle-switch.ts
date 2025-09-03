@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ThemeService } from '../../../../styles/theme-service/theme.service';
 
 @Component({
   selector: 'app-toggle-switch',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './toggle-switch.html',
   styleUrl: './toggle-switch.scss',
 })

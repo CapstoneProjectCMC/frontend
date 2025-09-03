@@ -13,7 +13,7 @@ import {
   OnDestroy,
   Renderer2,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   IContextThreadResponse,
@@ -33,7 +33,7 @@ export type fileUrlIndex = {
 @Component({
   selector: 'app-box-chat-ai',
   standalone: true,
-  imports: [CommonModule, FormsModule, TruncatePipe, MarkdownModule],
+  imports: [FormsModule, TruncatePipe, MarkdownModule],
   templateUrl: './box-chat-ai.component.html',
   styleUrls: ['./box-chat-ai.component.scss'],
 })

@@ -31,69 +31,70 @@
         [height]="'50px'"
         (onClick)="cancelResource()"
         >Hủy</app-button
-      >
-      <app-button
-        [variant]="'solid'"
-        [width]="'116px'"
-        [height]="'50px'"
-        (onClick)="createResource()"
-        >Tải lên</app-button
-      >
-    </div>
-  </div>
-  <div class="metric">
-    <div class="file-upload">
-      <label class="upload-label">
-        <input
-          type="file"
-          (change)="onFileSelected($event)"
-          [multiple]="false"
-          accept="image/*,.pdf,.doc,.docx,video/*"
-          hidden
-        />
-        <app-button [width]="'100%'" [variant]="'outline'">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+        >
+        <app-button
+          [variant]="'solid'"
+          [width]="'116px'"
+          [height]="'50px'"
+          (onClick)="createResource()"
+          >Tải lên</app-button
           >
-            <path d="m18 9-6-6-6 6" />
-            <path d="M12 3v14" />
-            <path d="M5 21h14" />
-          </svg>
-          <span>Chọn file</span>
-        </app-button>
-      </label>
-
-      <div class="preview-container" *ngIf="selectedFile">
-        <ng-container *ngIf="isImageFile; else nonImagePreview">
-          <img [src]="filePreview" alt="Xem trước" class="preview-image" />
-        </ng-container>
-        <ng-template #nonImagePreview>
-          <div class="file-info">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M14 2H6a2 2 0 0 0-2 2v16l4-4h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"
-              />
-            </svg>
-            <span>{{ selectedFile.name }}</span>
-          </div>
-        </ng-template>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
+      <div class="metric">
+        <div class="file-upload">
+          <label class="upload-label">
+            <input
+              type="file"
+              (change)="onFileSelected($event)"
+              [multiple]="false"
+              accept="image/*,.pdf,.doc,.docx,video/*"
+              hidden
+              />
+              <app-button [width]="'100%'" [variant]="'outline'">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  >
+                  <path d="m18 9-6-6-6 6" />
+                  <path d="M12 3v14" />
+                  <path d="M5 21h14" />
+                </svg>
+                <span>Chọn file</span>
+              </app-button>
+            </label>
+
+            @if (selectedFile) {
+              <div class="preview-container">
+                @if (isImageFile) {
+                  <img [src]="filePreview" alt="Xem trước" class="preview-image" />
+                } @else {
+                  <div class="file-info">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      >
+                      <path
+                        d="M14 2H6a2 2 0 0 0-2 2v16l4-4h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"
+                        />
+                      </svg>
+                      <span>{{ selectedFile.name }}</span>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>

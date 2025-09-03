@@ -1,49 +1,52 @@
 <div class="trending-container">
   <div class="trending-header">
     <h3 class="trending-title">{{ title }}</h3>
-    <span class="trending-count" *ngIf="processedItems.length > 0">
-      {{ processedItems.length }} tags
-    </span>
+    @if (processedItems.length > 0) {
+      <span class="trending-count">
+        {{ processedItems.length }} tags
+      </span>
+    }
   </div>
 
-  <div class="trending-content" *ngIf="processedItems.length > 0; else noData">
-    <div class="trending-cloud">
-      <div
-        *ngFor="let item of processedItems; trackBy: trackByName"
-        class="trending-tag"
-        [class]="'trending-tag--' + item.level"
-        [attr.data-views]="item.views"
-        [title]="item.name + ' - ' + formatViews(item.views) + ' views'"
-      >
-        <span class="tag-name">{{ item.name }}</span>
-        <span class="tag-views">{{ formatViews(item.views) }}</span>
+  @if (processedItems.length > 0) {
+    <div class="trending-content">
+      <div class="trending-cloud">
+        @for (item of processedItems; track trackByName($index, item)) {
+          <div
+            class="trending-tag"
+            [class]="'trending-tag--' + item.level"
+            [attr.data-views]="item.views"
+            [title]="item.name + ' - ' + formatViews(item.views) + ' views'"
+            >
+            <span class="tag-name">{{ item.name }}</span>
+            <span class="tag-views">{{ formatViews(item.views) }}</span>
+          </div>
+        }
+      </div>
+      <div class="trending-legend">
+        <div class="legend-item">
+          <span class="legend-dot legend-dot--very-high"></span>
+          <span class="legend-text">Very Popular</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot legend-dot--high"></span>
+          <span class="legend-text">Popular</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot legend-dot--medium"></span>
+          <span class="legend-text">Moderate</span>
+        </div>
+        <div class="legend-item">
+          <span class="legend-dot legend-dot--low"></span>
+          <span class="legend-text">Emerging</span>
+        </div>
       </div>
     </div>
-
-    <div class="trending-legend">
-      <div class="legend-item">
-        <span class="legend-dot legend-dot--very-high"></span>
-        <span class="legend-text">Very Popular</span>
-      </div>
-      <div class="legend-item">
-        <span class="legend-dot legend-dot--high"></span>
-        <span class="legend-text">Popular</span>
-      </div>
-      <div class="legend-item">
-        <span class="legend-dot legend-dot--medium"></span>
-        <span class="legend-text">Moderate</span>
-      </div>
-      <div class="legend-item">
-        <span class="legend-dot legend-dot--low"></span>
-        <span class="legend-text">Emerging</span>
-      </div>
-    </div>
-  </div>
-
-  <ng-template #noData>
+  } @else {
     <div class="trending-empty">
       <div class="empty-icon">📈</div>
       <p class="empty-text">No trending data available</p>
     </div>
-  </ng-template>
+  }
+
 </div>

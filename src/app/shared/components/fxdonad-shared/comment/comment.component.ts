@@ -3,7 +3,7 @@ import { vi } from 'date-fns/locale'; // Tiếng Việt
 import { CookieService } from 'ngx-cookie-service';
 import { sendNotification } from '../../../utils/notification';
 import { Store } from '@ngrx/store';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import {
   Component,
@@ -28,7 +28,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss'],
 })

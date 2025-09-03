@@ -17,50 +17,51 @@
             [alt]="data.uploader.name"
             class="avatar"
             (error)="handleImageError($event)"
-          />
-          <span class="username">{{ data.uploader.name }}</span>
-        </div>
-        <div class="timestamp" [title]="data.uploadTime | date : 'full'">
-          {{ getTimeAgo(data.uploadTime) }}
+            />
+            <span class="username">{{ data.uploader.name }}</span>
+          </div>
+          <div class="timestamp" [title]="data.uploadTime | date : 'full'">
+            {{ getTimeAgo(data.uploadTime) }}
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="description">
-      <p [class.clamp-2-lines]="!isExpanded" [class.expanded]="isExpanded">
-        {{ data.description }}
-      </p>
-      <button
-        *ngIf="data.description.length > 300"
-        (click)="toggleDescription($event)"
-        class="read-more"
-      >
-        {{ isExpanded ? "Read Less" : "Read More" }}
-      </button>
-    </div>
+      <div class="description">
+        <p [class.clamp-2-lines]="!isExpanded" [class.expanded]="isExpanded">
+          {{ data.description }}
+        </p>
+        @if (data.description.length > 300) {
+          <button
+            (click)="toggleDescription($event)"
+            class="read-more"
+            >
+            {{ isExpanded ? "Read Less" : "Read More" }}
+          </button>
+        }
+      </div>
 
-    <div
-      class="difficulty"
-      [attr.aria-label]="'Difficulty: ' + data.difficulty"
-    >
-      <div class="part-difficulty">
-        <div class="difficulty-badge" [ngClass]="data.difficulty">
-          {{
+      <div
+        class="difficulty"
+        [attr.aria-label]="'Difficulty: ' + data.difficulty"
+        >
+        <div class="part-difficulty">
+          <div class="difficulty-badge" [ngClass]="data.difficulty">
+            {{
             data.difficulty === "EASY"
-              ? "Dễ"
-              : data.difficulty === "MEDIUM"
-              ? "Trung bình"
-              : data.difficulty === "HARD"
-              ? "Khó"
-              : (data.difficulty | titlecase)
-          }}
-        </div>
-        <div class="difficulty-stars">
-          <!-- <span
+            ? "Dễ"
+            : data.difficulty === "MEDIUM"
+            ? "Trung bình"
+            : data.difficulty === "HARD"
+            ? "Khó"
+            : (data.difficulty | titlecase)
+            }}
+          </div>
+          <div class="difficulty-stars">
+            <!-- <span
             class="star"
             *ngFor="let star of difficultyStars"
             [class.filled]="star <= difficultyLevel"
-          >
+            >
             ★
           </span> -->
         </div>
@@ -78,31 +79,34 @@
     </div>
 
     <div class="tags-container">
-      <button
-        class="scroll-btn left"
-        *ngIf="showScrollButtons"
-        (click)="scrollLeft($event)"
-      >
-        ‹
-      </button>
+      @if (showScrollButtons) {
+        <button
+          class="scroll-btn left"
+          (click)="scrollLeft($event)"
+          >
+          ‹
+        </button>
+      }
 
       <div class="tags-scroll" #tagsScroll>
-        <span
-          class="tag"
-          *ngFor="let tag of data.tags"
-          [attr.aria-label]="'Tag: ' + tag"
-        >
-          #{{ tag }}
-        </span>
+        @for (tag of data.tags; track tag) {
+          <span
+            class="tag"
+            [attr.aria-label]="'Tag: ' + tag"
+            >
+            #{{ tag }}
+          </span>
+        }
       </div>
 
-      <button
-        class="scroll-btn right"
-        *ngIf="showScrollButtons"
-        (click)="scrollRight($event)"
-      >
-        ›
-      </button>
+      @if (showScrollButtons) {
+        <button
+          class="scroll-btn right"
+          (click)="scrollRight($event)"
+          >
+          ›
+        </button>
+      }
 
       <button
         class="save-btn"
@@ -110,66 +114,66 @@
         (click)="toggleSave($event)"
         aria-label="Save item"
         title="Lưu bài tập này"
-      >
+        >
         <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span>
       </button>
     </div>
 
     <!-- <div class="actions">
-      <div class="status-toggle">
-        <button
-          class="toggle-btn"
-          [class.completed]="data.status === 'completed'"
-          (click)="toggleStatus()"
-          [attr.aria-label]="'Toggle status: Currently ' + data.status"
-        >
-          <span class="toggle-icon">{{
-            data.status === "completed" ? "✓" : "⧖"
-          }}</span>
-          {{ data.status | titlecase }}
-        </button>
-      </div>
+    <div class="status-toggle">
       <button
-        class="save-btn"
-        [class.saved]="isSaved"
-        (click)="toggleSave()"
-        aria-label="Save item"
+        class="toggle-btn"
+        [class.completed]="data.status === 'completed'"
+        (click)="toggleStatus()"
+        [attr.aria-label]="'Toggle status: Currently ' + data.status"
+        >
+        <span class="toggle-icon">{{
+          data.status === "completed" ? "✓" : "⧖"
+        }}</span>
+        {{ data.status | titlecase }}
+      </button>
+    </div>
+    <button
+      class="save-btn"
+      [class.saved]="isSaved"
+      (click)="toggleSave()"
+      aria-label="Save item"
       >
-        <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span>
-      </button>
-    </div> -->
-  </div>
-
-  <!-- Phần này không sử dụng nữa, đã tạm ẩn -->
-  <!-- <div
-    class="admin-actions"
-    [class.accepted]="data.approval === 'accepted'"
-    [class.pending]="data.approval === 'pending'"
-    [class.rejected]="data.approval === 'rejected'"
-    *ngIf="role === typeRoles.admin && false"
-  >
-    <button
-      class="delete-btn"
-      (click)="onDelete()"
-      *ngIf="data.approval !== 'pending'"
-    >
-      <i class="fas fa-trash"></i>
+      <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span>
     </button>
-    <button
-      class="edit-btn"
-      (click)="onEdit()"
-      *ngIf="data.approval !== 'pending'"
-    >
-      <i class="fas fa-edit"></i>
-    </button>
-
-    <ng-container *ngIf="data.approval === 'pending'">
-      <button class="accept-btn" (click)="onApprove('accepted')">
-        Chấp nhận
-      </button>
-      <button class="reject-btn" (click)="onApprove('rejected')">
-        Từ chối
-      </button>
-    </ng-container>
   </div> -->
+</div>
+
+<!-- Phần này không sử dụng nữa, đã tạm ẩn -->
+<!-- <div
+class="admin-actions"
+[class.accepted]="data.approval === 'accepted'"
+[class.pending]="data.approval === 'pending'"
+[class.rejected]="data.approval === 'rejected'"
+*ngIf="role === typeRoles.admin && false"
+>
+<button
+  class="delete-btn"
+  (click)="onDelete()"
+  *ngIf="data.approval !== 'pending'"
+  >
+  <i class="fas fa-trash"></i>
+</button>
+<button
+  class="edit-btn"
+  (click)="onEdit()"
+  *ngIf="data.approval !== 'pending'"
+  >
+  <i class="fas fa-edit"></i>
+</button>
+
+<ng-container *ngIf="data.approval === 'pending'">
+  <button class="accept-btn" (click)="onApprove('accepted')">
+    Chấp nhận
+  </button>
+  <button class="reject-btn" (click)="onApprove('rejected')">
+    Từ chối
+  </button>
+</ng-container>
+</div> -->
 </div>

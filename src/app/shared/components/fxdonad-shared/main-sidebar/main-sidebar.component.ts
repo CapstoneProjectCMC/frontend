@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { SidebarItem } from '../../../../core/models/data-handle';
 
 @Component({
   selector: 'app-main-sidebar',
-  imports: [CommonModule, RouterModule],
+  imports: [RouterModule],
   templateUrl: './main-sidebar.component.html',
   styleUrl: './main-sidebar.component.scss',
 })

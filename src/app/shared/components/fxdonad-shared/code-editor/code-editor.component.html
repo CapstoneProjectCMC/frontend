@@ -6,10 +6,12 @@
         id="language"
         [(ngModel)]="selectedLanguage"
         (change)="onLanguageChange()"
-      >
-        <option *ngFor="let lang of languages" [value]="lang.id">
-          {{ lang.name }}
-        </option>
+        >
+        @for (lang of languages; track lang) {
+          <option [value]="lang.id">
+            {{ lang.name }}
+          </option>
+        }
       </select>
     </div>
   </div>

@@ -37,4 +37,8 @@ export class NoticeModalComponent {
   onClose() {
     this.store.dispatch(closeNoticeModal());
   }
+
+  getFormattedMessage(message: string): string {
+    return message.replace(/\n/g, '<br>');
+  }
 }

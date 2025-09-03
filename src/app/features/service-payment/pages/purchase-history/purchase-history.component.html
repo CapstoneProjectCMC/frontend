@@ -1,71 +1,75 @@
-<ng-container *ngIf="state$ | async as state">
+@if (state$ | async; as state) {
   <div class="history-container">
     <header class="history-header">
       <h1>Lịch sử mua hàng</h1>
       <p>Danh sách tất cả các sản phẩm và dịch vụ bạn đã mua.</p>
     </header>
-
-    <div *ngIf="state.isLoading" class="loading-overlay">
-      <div class="spinner"></div>
-      <p>Đang tải dữ liệu...</p>
-    </div>
-
-    <div *ngIf="state.error && !state.isLoading" class="error-state">
-      <p>{{ state.error }}</p>
-      <button (click)="goToPage(1)" class="btn btn-primary">Tải lại</button>
-    </div>
-
-    <ng-container *ngIf="state.response?.result as result">
-      <div
-        *ngIf="result.data.length === 0 && !state.isLoading"
-        class="empty-state"
-      >
-        <p>Bạn chưa mua sản phẩm nào.</p>
+    @if (state.isLoading) {
+      <div class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Đang tải dữ liệu...</p>
       </div>
-
-      <div *ngIf="result.data.length > 0" class="table-wrapper">
-        <table class="transaction-table">
-          <thead>
-            <tr>
-              <th>Mã đơn hàng</th>
-              <th>Tên sản phẩm</th>
-              <th>Loại</th>
-              <th>Giá tiền</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let purchase of result.data">
-              <td data-label="Mã đơn hàng" class="font-monospace">
-                {{ purchase.purchaseId }}
-              </td>
-              <td data-label="Tên sản phẩm" class="item-name">
-                {{ purchase.itemName }}
-              </td>
-              <td data-label="Loại">
-                <div class="item-type">
-                  <span class="item-type-icon">{{
-                    mapItemType(purchase.itemType).icon
-                  }}</span>
-                  <span>{{ mapItemType(purchase.itemType).text }}</span>
-                </div>
-              </td>
-              <td data-label="Giá tiền" class="amount">
-                {{ purchase.itemPrice | number }} VNĐ
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    }
+    @if (state.error && !state.isLoading) {
+      <div class="error-state">
+        <p>{{ state.error }}</p>
+        <button (click)="goToPage(1)" class="btn btn-primary">Tải lại</button>
       </div>
-
+    }
+    @if (state.response?.result; as result) {
+      @if (result.data.length === 0 && !state.isLoading) {
+        <div
+          class="empty-state"
+          >
+          <p>Bạn chưa mua sản phẩm nào.</p>
+        </div>
+      }
+      @if (result.data.length > 0) {
+        <div class="table-wrapper">
+          <table class="transaction-table">
+            <thead>
+              <tr>
+                <th>Mã đơn hàng</th>
+                <th>Tên sản phẩm</th>
+                <th>Loại</th>
+                <th>Giá tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (purchase of result.data; track purchase) {
+                <tr>
+                  <td data-label="Mã đơn hàng" class="font-monospace">
+                    {{ purchase.purchaseId }}
+                  </td>
+                  <td data-label="Tên sản phẩm" class="item-name">
+                    {{ purchase.itemName }}
+                  </td>
+                  <td data-label="Loại">
+                    <div class="item-type">
+                      <span class="item-type-icon">{{
+                        mapItemType(purchase.itemType).icon
+                      }}</span>
+                      <span>{{ mapItemType(purchase.itemType).text }}</span>
+                    </div>
+                  </td>
+                  <td data-label="Giá tiền" class="amount">
+                    {{ purchase.itemPrice | number }} VNĐ
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
       <nav class="pagination-container" [class.hidden]="result.totalPages <= 1">
         <app-pagination
           [totalData]="result.totalElements"
           [currentPageIndex]="result.currentPage"
           [amountDataPerPage]="pageSize"
           (onPageChange)="handlePageChange($event)"
-        >
+          >
         </app-pagination>
       </nav>
-    </ng-container>
+    }
   </div>
-</ng-container>
+}

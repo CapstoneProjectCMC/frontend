@@ -6,55 +6,61 @@
   [class.resizing]="isResizing"
   [class.position-right]="position === 'right'"
   [class.position-left]="position === 'left'"
->
+  >
   <div class="resize-handle" #resizeHandle></div>
 
   <div class="chat-header">
-    <div class="header-left" *ngIf="isExpanded">
-      <button
-        #contextButtonRef
-        class="context-button"
-        (click)="toggleContextList()"
-      >
-        <i class="fas fa-comments"></i>
-      </button>
-      <div class="chat-title-container">
-        <h3
-          *ngIf="!isEditingTitle"
-          class="chat-title"
-          (dblclick)="startEditingTitle()"
-          title="Double-click để sửa tiêu đề này"
-        >
-          {{ getCurrentContext()?.title || aiName }}
-        </h3>
-
-        <input
-          #titleInput
-          *ngIf="isEditingTitle"
-          type="text"
-          class="title-edit-input"
-          [(ngModel)]="editingTitleText"
-          (blur)="saveTitle()"
-          (keydown.enter)="saveTitle()"
-          (keydown.escape)="cancelEditTitle()"
-        />
+    @if (isExpanded) {
+      <div class="header-left">
+        <button
+          #contextButtonRef
+          class="context-button"
+          (click)="toggleContextList()"
+          >
+          <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-title-container">
+          @if (!isEditingTitle) {
+            <h3
+              class="chat-title"
+              (dblclick)="startEditingTitle()"
+              title="Double-click để sửa tiêu đề này"
+              >
+              {{ getCurrentContext()?.title || aiName }}
+            </h3>
+          }
+          @if (isEditingTitle) {
+            <input
+              #titleInput
+              type="text"
+              class="title-edit-input"
+              [(ngModel)]="editingTitleText"
+              (blur)="saveTitle()"
+              (keydown.enter)="saveTitle()"
+              (keydown.escape)="cancelEditTitle()"
+              />
+          }
+        </div>
       </div>
-    </div>
+    }
     <div class="header-right">
-      <button
-        class="new-chat-button"
-        (click)="createNewChatContext()"
-        title="Tạo cuộc trò chuyện mới"
-        *ngIf="isExpanded"
-      >
-        <i class="fas fa-plus"></i>
-      </button>
-      <h3 *ngIf="!isExpanded">AI</h3>
+      @if (isExpanded) {
+        <button
+          class="new-chat-button"
+          (click)="createNewChatContext()"
+          title="Tạo cuộc trò chuyện mới"
+          >
+          <i class="fas fa-plus"></i>
+        </button>
+      }
+      @if (!isExpanded) {
+        <h3>AI</h3>
+      }
       <button
         class="toggle-button"
         (click)="toggleExpand()"
         title="Thu gọn/Mở rộng"
-      >
+        >
         <i
           class="fas"
           [class.fa-chevron-down]="isExpanded"
@@ -64,143 +70,146 @@
     </div>
   </div>
 
-  <div class="chat-body" *ngIf="isExpanded">
-    <!-- Context list sidebar -->
-    <div
-      #contextListRef
-      class="context-list"
-      [class.open]="showContextList"
-      [class.close]="!showContextList"
-    >
-      <div class="context-list-header">
-        <h4>Lịch sử trò chuyện</h4>
-        <button class="close-button" (click)="toggleContextList()">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div class="context-items">
-        <div
-          *ngFor="let context of chatContexts; trackBy: trackByContextId"
-          class="context-item"
-          [class.active]="context.id === currentContextId"
-          (click)="onSelectContext(context.id)"
+  @if (isExpanded) {
+    <div class="chat-body">
+      <!-- Context list sidebar -->
+      <div
+        #contextListRef
+        class="context-list"
+        [class.open]="showContextList"
+        [class.close]="!showContextList"
         >
-          <span class="context-title">{{ context.title }}</span>
-          <button
-            class="delete-context-button"
-            (click)="onDeleteContext($event, context.id)"
-            title="Xóa cuộc trò chuyện"
-          >
-            <i class="fas fa-trash"></i>
+        <div class="context-list-header">
+          <h4>Lịch sử trò chuyện</h4>
+          <button class="close-button" (click)="toggleContextList()">
+            <i class="fas fa-times"></i>
           </button>
         </div>
+        <div class="context-items">
+          @for (context of chatContexts; track trackByContextId($index, context)) {
+            <div
+              class="context-item"
+              [class.active]="context.id === currentContextId"
+              (click)="onSelectContext(context.id)"
+              >
+              <span class="context-title">{{ context.title }}</span>
+              <button
+                class="delete-context-button"
+                (click)="onDeleteContext($event, context.id)"
+                title="Xóa cuộc trò chuyện"
+                >
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          }
+        </div>
       </div>
-    </div>
-
-    <!-- Chat messages -->
-    <div class="chat-messages" #chatContainer>
-      @if (getCurrentContext()) { @if (getCurrentContext()!.messages?.length) {
-      @for (message of getCurrentContext()!.messages; track message.id) {
-      <div
-        class="message"
-        [class.user-message]="message.role === 'USER'"
-        [class.ai-message]="message.role === 'ASSISTANT'"
-      >
-        <div class="message-content">
-          <div class="message-header">
-            <span class="sender-name">{{
-              message.role === "USER" ? "Bạn" : aiName
-            }}</span>
-            <span class="message-time">{{
-              getMessageTime(message.createdAt)
-            }}</span>
+      <!-- Chat messages -->
+      <div class="chat-messages" #chatContainer>
+        @if (getCurrentContext()) { @if (getCurrentContext()!.messages?.length) {
+          @for (message of getCurrentContext()!.messages; track message.id) {
+            <div
+              class="message"
+              [class.user-message]="message.role === 'USER'"
+              [class.ai-message]="message.role === 'ASSISTANT'"
+              >
+              <div class="message-content">
+                <div class="message-header">
+                  <span class="sender-name">{{
+                    message.role === "USER" ? "Bạn" : aiName
+                  }}</span>
+                  <span class="message-time">{{
+                    getMessageTime(message.createdAt)
+                  }}</span>
+                </div>
+                <div
+                  class="message-text"
+                  [class.you-color-text]="message.role === 'USER'"
+                  >
+                  @if (message.imageUrl) {
+                    <img
+                      [src]="message.imageUrl"
+                      alt="Uploaded Image"
+                      class="message-image"
+                      />
+                  }
+                  <markdown [data]="message.content"></markdown>
+                </div>
+              </div>
+            </div>
+            } } @else {
+            <div class="empty-chat">
+              <div class="empty-chat-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <p>Hãy bắt đầu cuộc trò chuyện với AI</p>
+            </div>
+            } } @else {
+            <div class="empty-chat">
+              <div class="empty-chat-icon">
+                <i class="fas fa-robot"></i>
+              </div>
+              <p>Không có cuộc trò chuyện nào. Hãy tạo một cuộc trò chuyện mới.</p>
+            </div>
+            } @if (isLoading) {
+            <div class="message ai-message">
+              <div class="message-content">
+                <div class="message-header">
+                  <span class="sender-name">{{ aiName }}</span>
+                </div>
+                <div class="typing-indicator">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <!-- Attachment Preview -->
+        @if (file) {
+          <div class="attachment-preview">
+            <div class="attachment-info">
+              <i class="fas fa-file-alt"></i>
+              <span>{{ file.name | truncate : 30 }}</span>
+            </div>
+            <button class="remove-attachment-button" (click)="removeAttachment()">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
-          <div
-            class="message-text"
-            [class.you-color-text]="message.role === 'USER'"
-          >
-            <img
-              *ngIf="message.imageUrl"
-              [src]="message.imageUrl"
-              alt="Uploaded Image"
-              class="message-image"
+        }
+        <!-- Chat input -->
+        <div class="chat-input">
+          <input
+            type="file"
+            #fileInput
+            (change)="onFileSelected($event)"
+            style="display: none"
             />
-            <markdown [data]="message.content"></markdown>
-          </div>
-        </div>
-      </div>
-      } } @else {
-      <div class="empty-chat">
-        <div class="empty-chat-icon">
-          <i class="fas fa-robot"></i>
-        </div>
-        <p>Hãy bắt đầu cuộc trò chuyện với AI</p>
-      </div>
-      } } @else {
-      <div class="empty-chat">
-        <div class="empty-chat-icon">
-          <i class="fas fa-robot"></i>
-        </div>
-        <p>Không có cuộc trò chuyện nào. Hãy tạo một cuộc trò chuyện mới.</p>
-      </div>
-      } @if (isLoading) {
-      <div class="message ai-message">
-        <div class="message-content">
-          <div class="message-header">
-            <span class="sender-name">{{ aiName }}</span>
-          </div>
-          <div class="typing-indicator">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      </div>
-      }
-    </div>
-
-    <!-- Attachment Preview -->
-    <div class="attachment-preview" *ngIf="file">
-      <div class="attachment-info">
-        <i class="fas fa-file-alt"></i>
-        <span>{{ file.name | truncate : 30 }}</span>
-      </div>
-      <button class="remove-attachment-button" (click)="removeAttachment()">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-
-    <!-- Chat input -->
-    <div class="chat-input">
-      <input
-        type="file"
-        #fileInput
-        (change)="onFileSelected($event)"
-        style="display: none"
-      />
-      <button
-        class="attach-button"
-        (click)="fileInput.click()"
-        title="Đính kèm tệp"
-      >
-        <i class="fas fa-paperclip"></i>
-      </button>
-      <textarea
-        [(ngModel)]="newMessage"
-        [placeholder]="placeholder"
-        (keydown)="handleKeyDown($event)"
-        (paste)="handlePaste($event)"
-        [disabled]="isLoading"
-      ></textarea>
-      <button
-        class="send-button"
-        (click)="onSendMessage()"
+            <button
+              class="attach-button"
+              (click)="fileInput.click()"
+              title="Đính kèm tệp"
+              >
+              <i class="fas fa-paperclip"></i>
+            </button>
+            <textarea
+              [(ngModel)]="newMessage"
+              [placeholder]="placeholder"
+              (keydown)="handleKeyDown($event)"
+              (paste)="handlePaste($event)"
+              [disabled]="isLoading"
+            ></textarea>
+            <button
+              class="send-button"
+              (click)="onSendMessage()"
         [disabled]="
           (!newMessage.trim() && !file) || isLoading || !getCurrentContext()
         "
-      >
-        <i class="fas fa-paper-plane"></i>
-      </button>
+              >
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      }
     </div>
-  </div>
-</div>

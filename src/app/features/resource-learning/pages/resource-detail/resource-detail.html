@@ -7,90 +7,89 @@
     }"
   >
     <!-- Nếu là Document thì đưa Info lên trước -->
-    <ng-container *ngIf="isDocument">
-      <div class="resource-video-info">
-        <div class="title">{{ resource.fileName }}</div>
-        <div class="author-action">
-          <div class="author">
-            <div class="avatar">
-              <img
-                [src]="'https://i.pinimg.com/736x/70/1f/e2/701fe2ef71df419a1758931abecfad67.jpg'"
-                alt="Avatar"
-              />
-            </div>
-            <div class="name">Ẩn danh</div>
+    @if (isDocument) {
+    <div class="resource-video-info">
+      <div class="title">{{ resource.fileName }}</div>
+      <div class="author-action">
+        <div class="author">
+          <div class="avatar">
+            <img
+              [src]="'https://i.pinimg.com/736x/70/1f/e2/701fe2ef71df419a1758931abecfad67.jpg'"
+              alt="Avatar"
+            />
           </div>
-          <div class="action">
-            <div class="report">
-              <span>Báo cáo</span>
-              <!-- icon -->
-            </div>
-            <div class="save">
-              <span>Lưu</span>
-              <!-- icon -->
-            </div>
-          </div>
+          <div class="name">Ẩn danh</div>
         </div>
-        <div class="tag-description">
-          <div class="resource-tags">
-            <span class="resource-tag" *ngFor="let tag of resource.tags">
-              #{{ tag.name }}
-            </span>
+        <div class="action">
+          <div class="report">
+            <span>Báo cáo</span>
+            <!-- icon -->
           </div>
-          <div class="resource-detail-content">
-            <markdown [data]="resource.description"></markdown>
+          <div class="save">
+            <span>Lưu</span>
+            <!-- icon -->
           </div>
         </div>
       </div>
-    </ng-container>
+      <div class="tag-description">
+        <div class="resource-tags">
+          @for (tag of resource.tags; track tag) {
+          <span class="resource-tag"> #{{ tag.name }} </span>
+          }
+        </div>
+        <div class="resource-detail-content">
+          <markdown [data]="resource.description"></markdown>
+        </div>
+      </div>
+    </div>
+    }
 
     <div class="resource-content">
       <!-- Nếu là video -->
-      <ng-container
-        *ngIf="!isDocument && !isImage && resource?.hlsUrl; else otherView"
-      >
-        <app-video-player [videoSrc]="resource.hlsUrl || ''"></app-video-player>
-      </ng-container>
-
-      <ng-template #otherView>
-        <!-- Nếu là document -->
-        <div *ngIf="isDocument" class="document-view">
-          <iframe
-            [src]="safeUrl"
-            width="100%"
-            height="600px"
-            frameborder="0"
-            (error)="onIframeError($event)"
-          ></iframe>
-          <div class="resource-detail-content">
-            <markdown [data]="resource.description"></markdown>
-          </div>
+      @if (!isDocument && !isImage && resource.hlsUrl) {
+      <app-video-player [videoSrc]="resource.hlsUrl || ''"></app-video-player>
+      } @else {
+      <!-- Nếu là document -->
+      @if (isDocument) {
+      <div class="document-view">
+        <iframe
+          [src]="safeUrl"
+          width="100%"
+          height="600px"
+          frameborder="0"
+          (error)="onIframeError($event)"
+        ></iframe>
+        <div class="resource-detail-content">
+          <markdown [data]="resource.description"></markdown>
         </div>
-
-        <!-- Nếu là image -->
-        <div *ngIf="isImage" class="image-view">
-          <img
-            [src]="resource.url"
-            [alt]="resource.fileName"
-            class="resource-image"
-          />
-          <div class="resource-detail-content">
-            <markdown [data]="resource.description"></markdown>
-          </div>
+      </div>
+      }
+      <!-- Nếu là image -->
+      @if (isImage) {
+      <div class="image-view">
+        <img
+          [src]="resource.url"
+          [alt]="resource.fileName"
+          class="resource-image"
+        />
+        <div class="resource-detail-content">
+          <markdown [data]="resource.description"></markdown>
         </div>
-      </ng-template>
+      </div>
+      } }
     </div>
 
     <!-- Nếu là Video thì info + comment vẫn nằm dưới như cũ -->
-    <ng-container *ngIf="!isDocument">
-      <div class="resource-video-info">
-        <!-- giữ nguyên phần info -->
-      </div>
-    </ng-container>
+    @if (!isDocument) {
+    <div class="resource-video-info">
+      <!-- giữ nguyên phần info -->
+    </div>
+    }
   </div>
 
   <!-- Ẩn Other video nếu là Document -->
-  <div class="resource-detail-another-video" *ngIf="!isDocument">
+  @if (!isDocument) {
+  <div class="resource-detail-another-video">
     <div class="input-title">
       <app-input
         label="Tìm kiếm video khác"
@@ -104,18 +103,24 @@
       ></app-input>
     </div>
     <div class="list-resource-card-container">
-      <div *ngIf="!isLoading && listResource" class="list-resource-card">
-        <div *ngFor="let resource of listResource">
+      @if (!isLoading && listResource) {
+      <div class="list-resource-card">
+        @for (resource of listResource; track resource) {
+        <div>
           <app-resource-card
             [resource]="resource"
             [showControls]="true"
             (main)="goToDetail($event)"
           ></app-resource-card>
         </div>
+        }
       </div>
-      <div *ngIf="isLoading" class="list-resource-card">
+      } @if (isLoading) {
+      <div class="list-resource-card">
         <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
       </div>
+      }
     </div>
   </div>
+  }
 </div>

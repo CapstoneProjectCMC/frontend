@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import type { CardExcercise } from '../../../shared/components/fxdonad-shared/card-excercise/card-excercise.component';
 import { CardExcerciseComponent } from '../../../shared/components/fxdonad-shared/card-excercise/card-excercise.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-using-card-data',
-  imports: [CardExcerciseComponent, CommonModule],
+  imports: [CardExcerciseComponent],
   templateUrl: './using-card-data.component.html',
   styleUrl: './using-card-data.component.scss',
 })

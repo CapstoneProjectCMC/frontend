@@ -5,7 +5,7 @@ import { ExerciseService } from '../../../../core/services/api-service/exercise.
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
-import { CommonModule } from '@angular/common';
+
 import { ModalNoticeService } from '../../../../shared/store/modal-notice-state/modal-notice.service';
 import { lottieOptionsLoading1 } from '../../../../core/constants/value.constant';
 import { LottieComponent } from 'ngx-lottie';
@@ -13,7 +13,7 @@ import { LottieComponent } from 'ngx-lottie';
 @Component({
   selector: 'app-quiz-submission',
   standalone: true,
-  imports: [CommonModule, QuizComponent, LottieComponent],
+  imports: [QuizComponent, LottieComponent],
   templateUrl: './quiz-submission.component.html',
   styleUrl: './quiz-submission.component.scss',
 })

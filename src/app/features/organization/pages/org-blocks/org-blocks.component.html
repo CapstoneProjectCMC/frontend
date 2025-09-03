@@ -1,34 +1,38 @@
 <div class="org-blocks-container">
   <!-- Nút mở modal -->
   <div class="toolbar">
+    <h3>Danh sách khối trong tổ chức ({{ blocks.length }})</h3>
     <button class="btn-create" (click)="openModal()">+ Tạo khối mới</button>
   </div>
 
   <!-- Danh sách block -->
   <div class="blocks-list" appScrollEnd (appScrollEnd)="onScrollEnd()">
-    <div
-      *ngFor="let block of blocks"
-      class="block-card"
-      (click)="goToBlock(block.id)"
-    >
-      <div class="head-meta">
-        <h4>{{ block.name }} ({{ block.code }})</h4>
-        <div class="icons">
-          <i class="fa fa-edit" (click)="openUpdateModal(block, $event)"></i>
-          <i
-            class="fa fa-trash"
-            (click)="openModalDelete(block.id, $event)"
-          ></i>
+    @for (block of blocks; track block) {
+      <div
+        class="block-card"
+        (click)="goToBlock(block.id)"
+        >
+        <div class="head-meta">
+          <h4>{{ block.name }} ({{ block.code }})</h4>
+          <div class="icons">
+            <i class="fa fa-edit" (click)="openUpdateModal(block, $event)"></i>
+            <i
+              class="fa fa-trash"
+              (click)="openModalDelete(block.id, $event)"
+            ></i>
+          </div>
+        </div>
+        <p>{{ block.description }}</p>
+        <small>Tạo lúc: {{ block.createdAt | date : "short" }}</small>
+        <div class="members-info">
+          <b>Thành viên:</b> {{ block.members.totalElements }}
         </div>
       </div>
-      <p>{{ block.description }}</p>
-      <small>Tạo lúc: {{ block.createdAt | date : "short" }}</small>
-      <div class="members-info">
-        <b>Thành viên:</b> {{ block.members.totalElements }}
-      </div>
-    </div>
+    }
 
-    <div class="loading" *ngIf="isLoading">Đang tải...</div>
+    @if (isLoading) {
+      <div class="loading">Đang tải...</div>
+    }
   </div>
 </div>
 
@@ -48,64 +52,66 @@
         [(ngModel)]="newBlock.name"
         name="blockName"
         placeholder="Tên block"
-      />
-      <input
-        [(ngModel)]="newBlock.code"
-        name="blockCode"
-        placeholder="Mã block"
-      />
-      <textarea
-        [(ngModel)]="newBlock.description"
-        name="blockDesc"
-        placeholder="Mô tả"
-      ></textarea>
+        />
+        <input
+          [(ngModel)]="newBlock.code"
+          name="blockCode"
+          placeholder="Mã block"
+          />
+          <textarea
+            [(ngModel)]="newBlock.description"
+            name="blockDesc"
+            placeholder="Mô tả"
+          ></textarea>
 
-      <div class="modal-actions">
-        <button type="button" class="btn-cancel" (click)="closeModal()">
-          Đóng
-        </button>
-        <button type="submit" class="btn-submit" (click)="createBlock()">
-          Tạo
-        </button>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" (click)="closeModal()">
+              Đóng
+            </button>
+            <button type="submit" class="btn-submit" (click)="createBlock()">
+              Tạo
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
+    </div>
 
-<!-- backdrop update block -->
-<div
-  class="modal-backdrop"
-  [class.show-modal]="showUpdateModal"
-  (click)="closeUpdateModal()"
-></div>
-<!-- modal update block -->
-<div class="modal" [class.show-modal]="showUpdateModal">
-  <div class="modal-content">
-    <h2>Cập nhật block</h2>
-    <form *ngIf="editingBlock">
-      <input
-        [(ngModel)]="editingBlock.name"
-        name="editName"
-        placeholder="Tên block"
-      />
-      <input
-        [(ngModel)]="editingBlock.code"
-        name="editCode"
-        placeholder="Mã block"
-      />
-      <textarea
-        [(ngModel)]="editingBlock.description"
-        name="editDesc"
-        placeholder="Mô tả"
-      ></textarea>
-      <div class="modal-actions">
-        <button type="button" class="btn-cancel" (click)="closeUpdateModal()">
-          Đóng
-        </button>
-        <button type="submit" class="btn-submit" (click)="saveUpdateBlock()">
-          Lưu
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+    <!-- backdrop update block -->
+    <div
+      class="modal-backdrop"
+      [class.show-modal]="showUpdateModal"
+      (click)="closeUpdateModal()"
+    ></div>
+    <!-- modal update block -->
+    <div class="modal" [class.show-modal]="showUpdateModal">
+      <div class="modal-content">
+        <h2>Cập nhật block</h2>
+        @if (editingBlock) {
+          <form>
+            <input
+              [(ngModel)]="editingBlock.name"
+              name="editName"
+              placeholder="Tên block"
+              />
+              <input
+                [(ngModel)]="editingBlock.code"
+                name="editCode"
+                placeholder="Mã block"
+                />
+                <textarea
+                  [(ngModel)]="editingBlock.description"
+                  name="editDesc"
+                  placeholder="Mô tả"
+                ></textarea>
+                <div class="modal-actions">
+                  <button type="button" class="btn-cancel" (click)="closeUpdateModal()">
+                    Đóng
+                  </button>
+                  <button type="submit" class="btn-submit" (click)="saveUpdateBlock()">
+                    Lưu
+                  </button>
+                </div>
+              </form>
+            }
+          </div>
+        </div>

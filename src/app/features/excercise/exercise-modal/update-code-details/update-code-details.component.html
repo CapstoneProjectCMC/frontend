@@ -1,263 +1,252 @@
 <!-- Modal Overlay -->
-<div class="modal-overlay" *ngIf="isVisible" (click)="onClose()">
-  <!-- Modal Content -->
-  <div class="modal-content" (click)="onModalClick($event)">
-    <!-- Modal Header -->
-    <div class="modal-header">
-      <h2 class="modal-title">Chỉnh sửa chi tiết bài tập lập trình</h2>
-      <button class="close-btn" (click)="onClose()">
-        <i class="fa fa-times"></i>
-      </button>
-    </div>
-
-    <!-- Modal Body -->
-    <div class="modal-body">
-      <form class="update-form">
-        <!-- Thông tin cơ bản -->
-        <div class="form-section">
-          <h3 class="section-title">Thông tin cơ bản</h3>
-
-          <div class="form-group">
-            <label for="topic">Chủ đề *</label>
-            <input
-              type="text"
-              id="topic"
-              name="topic"
-              class="form-control"
-              [(ngModel)]="formData.topic"
-              required
-            />
-          </div>
-        </div>
-
-        <!-- Chi tiết lập trình -->
-        <div class="form-section">
-          <h3 class="section-title">Chi tiết lập trình</h3>
-
-          <div class="form-group">
-            <label for="input">Định dạng đầu vào *</label>
-            <textarea
-              id="input"
-              name="input"
-              class="form-control code-input"
-              rows="3"
-              [(ngModel)]="formData.input"
-              required
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="output">Định dạng đầu ra *</label>
-            <textarea
-              id="output"
-              name="output"
-              class="form-control code-input"
-              rows="3"
-              [(ngModel)]="formData.output"
-              required
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="constraintText">Các ràng buộc *</label>
-            <textarea
-              id="constraintText"
-              name="constraintText"
-              class="form-control code-input"
-              rows="3"
-              [(ngModel)]="formData.constraintText"
-              required
-            ></textarea>
-          </div>
-
-          <div class="form-row">
+@if (isVisible) {
+  <div class="modal-overlay" (click)="onClose()">
+    <!-- Modal Content -->
+    <div class="modal-content" (click)="onModalClick($event)">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h2 class="modal-title">Chỉnh sửa chi tiết bài tập lập trình</h2>
+        <button class="close-btn" (click)="onClose()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form class="update-form">
+          <!-- Thông tin cơ bản -->
+          <div class="form-section">
+            <h3 class="section-title">Thông tin cơ bản</h3>
             <div class="form-group">
-              <label for="timeLimit">Giới hạn thời gian (giây) *</label>
+              <label for="topic">Chủ đề *</label>
               <input
-                type="number"
-                id="timeLimit"
-                name="timeLimit"
+                type="text"
+                id="topic"
+                name="topic"
                 class="form-control"
-                min="1"
-                [(ngModel)]="formData.timeLimit"
+                [(ngModel)]="formData.topic"
                 required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="memoryLimit">Giới hạn bộ nhớ (MB) *</label>
-              <input
-                type="number"
-                id="memoryLimit"
-                name="memoryLimit"
-                class="form-control"
-                min="1"
-                [(ngModel)]="formData.memoryLimit"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="maxSubmissions">Lượt nộp tối đa *</label>
-              <input
-                type="number"
-                id="maxSubmissions"
-                name="maxSubmissions"
-                class="form-control"
-                min="1"
-                [(ngModel)]="formData.maxSubmissions"
-                required
-              />
-            </div>
-          </div>
-        </div>
-
-        <!-- Ngôn ngữ lập trình -->
-        <div class="form-section">
-          <h3 class="section-title">Ngôn ngữ lập trình được phép</h3>
-          <div class="languages-container">
-            <div
-              class="language-checkbox"
-              *ngFor="let lang of availableLanguages"
-            >
-              <input
-                type="checkbox"
-                [id]="'lang-' + lang"
-                [checked]="isLanguageSelected(lang)"
-                (change)="toggleLanguage(lang)"
-              />
-              <label [for]="'lang-' + lang">{{ lang }}</label>
-            </div>
-          </div>
-        </div>
-
-        <!-- Code template và solution -->
-        <div class="form-section">
-          <h3 class="section-title">Code template và giải pháp</h3>
-
-          <div class="form-group">
-            <label for="codeTemplate">Code template</label>
-            <textarea
-              id="codeTemplate"
-              name="codeTemplate"
-              class="form-control code-input"
-              rows="6"
-              [(ngModel)]="formData.codeTemplate"
-              placeholder="// Code template cho học viên"
-            ></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="solution">Giải pháp *</label>
-            <textarea
-              id="solution"
-              name="solution"
-              class="form-control code-input"
-              rows="8"
-              [(ngModel)]="formData.solution"
-              required
-              placeholder="// Giải pháp mẫu"
-            ></textarea>
-          </div>
-        </div>
-
-        <!-- Test cases -->
-        <div class="form-section">
-          <h3 class="section-title">Test cases</h3>
-          <div class="test-cases-container">
-            <div
-              class="test-case-item"
-              *ngFor="let testCase of testCases; let i = index"
-              [class.deleted]="testCase.delete"
-            >
-              <div class="test-case-header">
-                <h4>Test case {{ i + 1 }}</h4>
-                <div class="test-case-actions">
-                  <button
-                    type="button"
-                    class="btn btn-toggle-sample"
-                    [class.active]="testCase.sample"
-                    (click)="toggleSampleTestCase(i)"
-                  >
-                    <i
-                      class="fa-star"
-                      [ngClass]="testCase.sample ? 'fa' : 'fa-regular'"
-                    ></i>
-                    Mẫu
-                  </button>
-                  <button
-                    *ngIf="!testCase.id"
-                    type="button"
-                    class="btn btn-confirm"
-                    (click)="confirmNewTestCase(i)"
-                  >
-                    <i class="fa fa-check"></i>
-                    Xác nhận thêm
-                  </button>
-
-                  <button
-                    type="button"
-                    class="btn btn-remove-testcase"
-                    (click)="removeTestCase(i)"
-                  >
-                    <i class="fa fa-trash"></i>
-                    {{ testCase.delete ? "Đã đánh dấu xóa" : "Xóa" }}
-                  </button>
-                </div>
+                />
               </div>
-
-              <div class="test-case-form" *ngIf="!testCase.delete">
+            </div>
+            <!-- Chi tiết lập trình -->
+            <div class="form-section">
+              <h3 class="section-title">Chi tiết lập trình</h3>
+              <div class="form-group">
+                <label for="input">Định dạng đầu vào *</label>
+                <textarea
+                  id="input"
+                  name="input"
+                  class="form-control code-input"
+                  rows="3"
+                  [(ngModel)]="formData.input"
+                  required
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="output">Định dạng đầu ra *</label>
+                <textarea
+                  id="output"
+                  name="output"
+                  class="form-control code-input"
+                  rows="3"
+                  [(ngModel)]="formData.output"
+                  required
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="constraintText">Các ràng buộc *</label>
+                <textarea
+                  id="constraintText"
+                  name="constraintText"
+                  class="form-control code-input"
+                  rows="3"
+                  [(ngModel)]="formData.constraintText"
+                  required
+                ></textarea>
+              </div>
+              <div class="form-row">
                 <div class="form-group">
-                  <label>Input:</label>
-                  <textarea
-                    [name]="'testCaseInput' + i"
-                    class="form-control code-input"
-                    rows="2"
-                    [(ngModel)]="testCase.input"
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Expected Output:</label>
-                  <textarea
-                    [name]="'testCaseOutput' + i"
-                    class="form-control code-input"
-                    rows="2"
-                    [(ngModel)]="testCase.expectedOutput"
-                  ></textarea>
-                </div>
-                <div class="form-group">
-                  <label>Note (giải thích):</label>
-                  <textarea
-                    [name]="'testCaseNote' + i"
+                  <label for="timeLimit">Giới hạn thời gian (giây) *</label>
+                  <input
+                    type="number"
+                    id="timeLimit"
+                    name="timeLimit"
                     class="form-control"
-                    rows="2"
-                    [(ngModel)]="testCase.note"
-                  ></textarea>
+                    min="1"
+                    [(ngModel)]="formData.timeLimit"
+                    required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="memoryLimit">Giới hạn bộ nhớ (MB) *</label>
+                    <input
+                      type="number"
+                      id="memoryLimit"
+                      name="memoryLimit"
+                      class="form-control"
+                      min="1"
+                      [(ngModel)]="formData.memoryLimit"
+                      required
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="maxSubmissions">Lượt nộp tối đa *</label>
+                      <input
+                        type="number"
+                        id="maxSubmissions"
+                        name="maxSubmissions"
+                        class="form-control"
+                        min="1"
+                        [(ngModel)]="formData.maxSubmissions"
+                        required
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Ngôn ngữ lập trình -->
+                  <div class="form-section">
+                    <h3 class="section-title">Ngôn ngữ lập trình được phép</h3>
+                    <div class="languages-container">
+                      @for (lang of availableLanguages; track lang) {
+                        <div
+                          class="language-checkbox"
+                          >
+                          <input
+                            type="checkbox"
+                            [id]="'lang-' + lang"
+                            [checked]="isLanguageSelected(lang)"
+                            (change)="toggleLanguage(lang)"
+                            />
+                            <label [for]="'lang-' + lang">{{ lang }}</label>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                    <!-- Code template và solution -->
+                    <div class="form-section">
+                      <h3 class="section-title">Code template và giải pháp</h3>
+                      <div class="form-group">
+                        <label for="codeTemplate">Code template</label>
+                        <textarea
+                          id="codeTemplate"
+                          name="codeTemplate"
+                          class="form-control code-input"
+                          rows="6"
+                          [(ngModel)]="formData.codeTemplate"
+                          placeholder="// Code template cho học viên"
+                        ></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="solution">Giải pháp *</label>
+                        <textarea
+                          id="solution"
+                          name="solution"
+                          class="form-control code-input"
+                          rows="8"
+                          [(ngModel)]="formData.solution"
+                          required
+                          placeholder="// Giải pháp mẫu"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <!-- Test cases -->
+                    <div class="form-section">
+                      <h3 class="section-title">Test cases</h3>
+                      <div class="test-cases-container">
+                        @for (testCase of testCases; track testCase; let i = $index) {
+                          <div
+                            class="test-case-item"
+                            [class.deleted]="testCase.delete"
+                            >
+                            <div class="test-case-header">
+                              <h4>Test case {{ i + 1 }}</h4>
+                              <div class="test-case-actions">
+                                <button
+                                  type="button"
+                                  class="btn btn-toggle-sample"
+                                  [class.active]="testCase.sample"
+                                  (click)="toggleSampleTestCase(i)"
+                                  >
+                                  <i
+                                    class="fa-star"
+                                    [ngClass]="testCase.sample ? 'fa' : 'fa-regular'"
+                                  ></i>
+                                  Mẫu
+                                </button>
+                                @if (!testCase.id) {
+                                  <button
+                                    type="button"
+                                    class="btn btn-confirm"
+                                    (click)="confirmNewTestCase(i)"
+                                    >
+                                    <i class="fa fa-check"></i>
+                                    Xác nhận thêm
+                                  </button>
+                                }
+                                <button
+                                  type="button"
+                                  class="btn btn-remove-testcase"
+                                  (click)="removeTestCase(i)"
+                                  >
+                                  <i class="fa fa-trash"></i>
+                                  {{ testCase.delete ? "Đã đánh dấu xóa" : "Xóa" }}
+                                </button>
+                              </div>
+                            </div>
+                            @if (!testCase.delete) {
+                              <div class="test-case-form">
+                                <div class="form-group">
+                                  <label>Input:</label>
+                                  <textarea
+                                    [name]="'testCaseInput' + i"
+                                    class="form-control code-input"
+                                    rows="2"
+                                    [(ngModel)]="testCase.input"
+                                  ></textarea>
+                                </div>
+                                <div class="form-group">
+                                  <label>Expected Output:</label>
+                                  <textarea
+                                    [name]="'testCaseOutput' + i"
+                                    class="form-control code-input"
+                                    rows="2"
+                                    [(ngModel)]="testCase.expectedOutput"
+                                  ></textarea>
+                                </div>
+                                <div class="form-group">
+                                  <label>Note (giải thích):</label>
+                                  <textarea
+                                    [name]="'testCaseNote' + i"
+                                    class="form-control"
+                                    rows="2"
+                                    [(ngModel)]="testCase.note"
+                                  ></textarea>
+                                </div>
+                              </div>
+                            }
+                          </div>
+                        }
+                        <button
+                          type="button"
+                          class="btn btn-add-testcase"
+                          (click)="addTestCase()"
+                          >
+                          <i class="fa fa-plus"></i>
+                          Thêm test case
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" (click)="onClose()">
+                    Hủy
+                  </button>
+                  <button type="button" class="btn btn-primary" (click)="onSave()">
+                    Lưu thay đổi
+                  </button>
                 </div>
               </div>
             </div>
-
-            <button
-              type="button"
-              class="btn btn-add-testcase"
-              (click)="addTestCase()"
-            >
-              <i class="fa fa-plus"></i>
-              Thêm test case
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <!-- Modal Footer -->
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" (click)="onClose()">
-        Hủy
-      </button>
-      <button type="button" class="btn btn-primary" (click)="onSave()">
-        Lưu thay đổi
-      </button>
-    </div>
-  </div>
-</div>
+          }

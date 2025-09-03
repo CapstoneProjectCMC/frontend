@@ -1,4 +1,4 @@
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
@@ -26,15 +26,12 @@ import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.dir
   standalone: true,
   imports: [
     InputComponent,
-    // DropdownButtonComponent,
     ButtonComponent,
-    NgFor,
-    NgIf,
     SkeletonLoadingComponent,
     ResourceCardComponent,
     ResourceEditPopupComponent,
-    ScrollEndDirective,
-  ],
+    ScrollEndDirective
+],
 })
 export class ResourceListComponent {
   resources: MediaResource[] = [];

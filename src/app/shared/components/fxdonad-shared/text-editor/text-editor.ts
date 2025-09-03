@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef,
   SimpleChanges,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import TurndownService from 'turndown';
 import { marked } from 'marked';
 
@@ -40,7 +40,7 @@ export interface TextEditorConfig {
 
 @Component({
   selector: 'app-text-editor',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './text-editor.html',
   styleUrl: './text-editor.scss',
 })

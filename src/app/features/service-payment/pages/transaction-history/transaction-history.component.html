@@ -1,87 +1,92 @@
-<ng-container *ngIf="state$ | async as state">
+@if (state$ | async; as state) {
   <div class="history-container">
     <header class="history-header">
       <h1>Lịch sử giao dịch</h1>
       <p>Theo dõi tất cả các hoạt động tài chính của bạn tại đây.</p>
     </header>
-
-    <div *ngIf="state.isLoading" class="loading-overlay">
-      <div class="spinner"></div>
-      <p>Đang tải dữ liệu...</p>
-    </div>
-
-    <div *ngIf="state.error && !state.isLoading" class="error-state">
-      <p>{{ state.error }}</p>
-      <button (click)="goToPage(1)" class="btn btn-primary">Tải lại</button>
-    </div>
-
-    <ng-container *ngIf="state.response?.result as result">
-      <div
-        *ngIf="result.data.length === 0 && !state.isLoading"
-        class="empty-state"
-      >
-        <p>Bạn chưa có giao dịch nào.</p>
+    @if (state.isLoading) {
+      <div class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Đang tải dữ liệu...</p>
       </div>
-
-      <div *ngIf="result.data.length > 0" class="table-wrapper">
-        <table class="transaction-table">
-          <thead>
-            <tr>
-              <th>Mã tham chiếu</th>
-              <th>Người dùng</th>
-              <th>Loại giao dịch</th>
-              <th>Số tiền</th>
-              <th>Trạng thái</th>
-              <th>Ngày thanh toán</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let tx of result.data">
-              <td data-label="Mã tham chiếu" class="font-monospace">
-                {{ tx.referenceCode }}
-              </td>
-              <td data-label="Người dùng">
-                <div class="user-info">
-                  <img
-                    [src]="tx.user.avatarUrl || avatarDefault"
-                    alt="Avatar"
-                    class="user-avatar"
-                  />
-                  <span>{{ tx.user.displayName }}</span>
-                </div>
-              </td>
-              <td data-label="Loại giao dịch">
-                {{ mapTypeToText(tx.transactionType) }}
-              </td>
-              <td data-label="Số tiền" class="amount">
-                {{ tx.amount | number }} {{ tx.currency }}
-              </td>
-              <td data-label="Trạng thái">
-                <span
-                  class="status-badge"
-                  [ngClass]="mapStatusToClass(tx.status)"
-                >
-                  {{ tx.status | titlecase }}
-                </span>
-              </td>
-              <td data-label="Ngày thanh toán">
-                {{ tx.paidAt | date : "dd/MM/yyyy HH:mm" }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+    }
+    @if (state.error && !state.isLoading) {
+      <div class="error-state">
+        <p>{{ state.error }}</p>
+        <button (click)="goToPage(1)" class="btn btn-primary">Tải lại</button>
       </div>
-    </ng-container>
-    <nav
-      class="pagination-container"
-      [class.hidden]="(state.response?.result?.totalPages || 0) <= 1"
-    >
-      <app-pagination
-        [totalData]="state.response?.result?.totalElements || 0"
-        [currentPageIndex]="pageIndex"
-        [amountDataPerPage]="pageSize"
-        (onPageChange)="handlePageChange($event)"
-      ></app-pagination>
-    </nav>
-  </div>
-</ng-container>
+    }
+    @if (state.response?.result; as result) {
+      @if (result.data.length === 0 && !state.isLoading) {
+        <div
+          class="empty-state"
+          >
+          <p>Bạn chưa có giao dịch nào.</p>
+        </div>
+      }
+      @if (result.data.length > 0) {
+        <div class="table-wrapper">
+          <table class="transaction-table">
+            <thead>
+              <tr>
+                <th>Mã tham chiếu</th>
+                <th>Người dùng</th>
+                <th>Loại giao dịch</th>
+                <th>Số tiền</th>
+                <th>Trạng thái</th>
+                <th>Ngày thanh toán</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (tx of result.data; track tx) {
+                <tr>
+                  <td data-label="Mã tham chiếu" class="font-monospace">
+                    {{ tx.referenceCode }}
+                  </td>
+                  <td data-label="Người dùng">
+                    <div class="user-info">
+                      <img
+                        [src]="tx.user.avatarUrl || avatarDefault"
+                        alt="Avatar"
+                        class="user-avatar"
+                        />
+                        <span>{{ tx.user.displayName }}</span>
+                      </div>
+                    </td>
+                    <td data-label="Loại giao dịch">
+                      {{ mapTypeToText(tx.transactionType) }}
+                    </td>
+                    <td data-label="Số tiền" class="amount">
+                      {{ tx.amount | number }} {{ tx.currency }}
+                    </td>
+                    <td data-label="Trạng thái">
+                      <span
+                        class="status-badge"
+                        [ngClass]="mapStatusToClass(tx.status)"
+                        >
+                        {{ tx.status | titlecase }}
+                      </span>
+                    </td>
+                    <td data-label="Ngày thanh toán">
+                      {{ tx.paidAt | date : "dd/MM/yyyy HH:mm" }}
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      }
+      <nav
+        class="pagination-container"
+        [class.hidden]="(state.response?.result?.totalPages || 0) <= 1"
+        >
+        <app-pagination
+          [totalData]="state.response?.result?.totalElements || 0"
+          [currentPageIndex]="pageIndex"
+          [amountDataPerPage]="pageSize"
+          (onPageChange)="handlePageChange($event)"
+        ></app-pagination>
+      </nav>
+    </div>
+  }

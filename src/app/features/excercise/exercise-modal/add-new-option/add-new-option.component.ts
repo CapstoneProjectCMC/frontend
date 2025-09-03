@@ -6,14 +6,14 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-add-new-option',
   templateUrl: './add-new-option.component.html',
   styleUrls: ['./add-new-option.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
 })
 export class AddNewOptionComponent {
   @Input() isOpen: boolean = false;

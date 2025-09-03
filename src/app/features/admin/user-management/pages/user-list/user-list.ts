@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Store } from '@ngrx/store';
 
 import { TableComponent } from '../../../../../shared/components/my-shared/table/table.component';
@@ -28,15 +28,14 @@ import { clearLoading } from '../../../../../shared/store/loading-state/loading.
   styleUrls: ['./user-list.scss'],
   imports: [
     TableComponent,
-    NgIf,
     NgClass,
     PaginationComponent,
     ProfilePopupComponent,
     InputComponent,
     ButtonComponent,
     DropdownButtonComponent,
-    SkeletonLoadingComponent,
-  ],
+    SkeletonLoadingComponent
+],
   standalone: true,
 })
 export class UserListComponent {

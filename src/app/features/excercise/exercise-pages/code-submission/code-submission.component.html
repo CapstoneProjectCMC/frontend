@@ -5,45 +5,46 @@
         class="tab-item"
         [class.active]="activeLeftTab === 'description'"
         (click)="selectLeftTab('description')"
-      >
+        >
         Mô tả
       </button>
       <button
         class="tab-item"
         [class.active]="activeLeftTab === 'testcases'"
         (click)="selectLeftTab('testcases')"
-      >
+        >
         Test Cases
       </button>
     </div>
 
-    <div class="panel-content" *ngIf="activeLeftTab === 'description'">
-      <div class="problem-header">
-        <h2>{{ exercise?.title }}</h2>
-        <span
-          class="difficulty"
-          [ngClass]="exercise?.difficulty?.toLowerCase()"
-        >
-          {{ exercise?.difficulty }}
-        </span>
-      </div>
-      <h4>Mô tả bài toán</h4>
-      <div
-        class="problem-description"
-        [innerHTML]="exercise?.description"
-      ></div>
-      <div class="time-limit" *ngIf="exercise?.duration">
-        <h4>Giới hạn thời gian</h4>
-
-        <div class="timer-wrapper">
-          <div class="time-display">
-            <span class="time-text">{{ formattedTimeLeft }}s</span>
-            <span class="total-time"> {{ exercise?.duration }} Phút </span>
-          </div>
-          <div class="progress-bar">
-            <div
-              class="progress-fill"
-              [style.width.%]="progressPercent"
+    @if (activeLeftTab === 'description') {
+      <div class="panel-content">
+        <div class="problem-header">
+          <h2>{{ exercise?.title }}</h2>
+          <span
+            class="difficulty"
+            [ngClass]="exercise?.difficulty?.toLowerCase()"
+            >
+            {{ exercise?.difficulty }}
+          </span>
+        </div>
+        <h4>Mô tả bài toán</h4>
+        <div
+          class="problem-description"
+          [innerHTML]="exercise?.description"
+        ></div>
+        @if (exercise?.duration) {
+          <div class="time-limit">
+            <h4>Giới hạn thời gian</h4>
+            <div class="timer-wrapper">
+              <div class="time-display">
+                <span class="time-text">{{ formattedTimeLeft }}s</span>
+                <span class="total-time"> {{ exercise?.duration }} Phút </span>
+              </div>
+              <div class="progress-bar">
+                <div
+                  class="progress-fill"
+                  [style.width.%]="progressPercent"
               [ngClass]="{
                 danger: timeLeftSeconds / totalDurationSeconds <= 0.2,
                 warning:
@@ -51,179 +52,204 @@
                   timeLeftSeconds / totalDurationSeconds > 0.2,
                 safe: timeLeftSeconds / totalDurationSeconds > 0.5
               }"
-            ></div>
+                ></div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div class="examples" *ngFor="let example of examples; let i = index">
-        <h4>Mẫu Testcase {{ i + 1 }}</h4>
-        <pre
-          class="test-case-example"
-        ><strong>Input:</strong>{{ example.input }}</pre>
-        <pre
-          class="test-case-example"
-        ><strong>Output:</strong>{{ example.output }}</pre>
-      </div>
-    </div>
+        }
+        @for (example of examples; track example; let i = $index) {
+          <div class="examples">
+            <h4>Mẫu Testcase {{ i + 1 }}</h4>
+            <pre
+              class="test-case-example"
+              ><strong>Input:</strong>{{ example.input }}</pre>
+              <pre
+                class="test-case-example"
+                ><strong>Output:</strong>{{ example.output }}</pre>
+              </div>
+            }
+          </div>
+        }
 
-    <div class="panel-content" *ngIf="activeLeftTab === 'testcases'">
-      <div
-        class="submission-summary"
-        *ngIf="submissionResult"
-        [ngClass]="submissionResult.passedAll ? 'success' : 'failure'"
-      >
-        <div
-          class="summary-status"
-          [ngClass]="submissionResult.passedAll ? 'success' : 'failure'"
-        >
-          <i
-            class="fa"
+        @if (activeLeftTab === 'testcases') {
+          <div class="panel-content">
+            @if (submissionResult) {
+              <div
+                class="submission-summary"
+                [ngClass]="submissionResult.passedAll ? 'success' : 'failure'"
+                >
+                <div
+                  class="summary-status"
+                  [ngClass]="submissionResult.passedAll ? 'success' : 'failure'"
+                  >
+                  <i
+                    class="fa"
             [ngClass]="
               submissionResult.passedAll ? 'fa-check-circle' : 'fa-times-circle'
             "
-          ></i>
-          <span>{{
-            submissionResult.passedAll ? "Accepted" : "Wrong Answer"
-          }}</span>
-        </div>
-        <div class="summary-details">
-          <div class="detail-item">
-            <span class="label">Score</span>
-            <span class="value"
-              >{{ submissionResult.score }} /
-              {{ submissionResult.totalPoints }}</span
-            >
-          </div>
-          <div class="detail-item">
-            <span class="label">Peak Memory</span>
-            <span class="value">{{ submissionResult.peakMemorymb }} MB</span>
-          </div>
-        </div>
-      </div>
-
-      <h4 *ngIf="!submissionResult">Test Cases</h4>
-      <div class="test-case-grid">
-        <div
-          *ngFor="let tc of testCases; let i = index"
-          class="test-case-item"
-          [ngClass]="tc.status"
-        >
-          <div class="case-header">
-            <div class="status-icon">
-              <i
-                *ngIf="tc.status === 'pass' && !isSubmitting"
-                class="fa fa-check"
-              ></i>
-              <i
-                *ngIf="
-                  (tc.status === 'fail' && !isSubmitting) ||
-                  (tc.status === 'error' && !isSubmitting)
-                "
-                class="fa fa-times"
-              ></i>
-              <i
-                *ngIf="tc.status === 'pending' && isSubmitting"
-                class="fa fa-spinner fa-spin"
-              ></i>
-            </div>
-            <span class="case-title">Test Case #{{ i + 1 }}</span>
-            <span class="status-text">{{ tc.status | uppercase }}</span>
-          </div>
-
-          <div class="case-body" *ngIf="tc.status !== 'pending'">
-            <div class="case-metrics">
-              <span><i class="fa fa-clock"></i> {{ tc.runtimeMs }} ms</span>
-              <span *ngIf="tc.memoryKb"
-                ><i class="fa fa-memory"></i>
-                {{ (tc.memoryKb / 1024).toFixed(2) }} MB</span
-              >
-            </div>
-
-            <div *ngIf="tc.status === 'error'" class="error-message">
-              <strong>Error:</strong>
-              <pre>{{ tc.errorMessage }}</pre>
-            </div>
-
-            <div *ngIf="tc.status === 'fail'" class="io-details">
-              <div>
-                <b>Input:</b> <code>{{ tc.input }}</code>
+                  ></i>
+                  <span>{{
+                    submissionResult.passedAll ? "Accepted" : "Wrong Answer"
+                  }}</span>
+                </div>
+                <div class="summary-details">
+                  <div class="detail-item">
+                    <span class="label">Score</span>
+                    <span class="value"
+                      >{{ submissionResult.score }} /
+                      {{ submissionResult.totalPoints }}</span
+                      >
+                    </div>
+                    <div class="detail-item">
+                      <span class="label">Peak Memory</span>
+                      <span class="value">{{ submissionResult.peakMemorymb }} MB</span>
+                    </div>
+                  </div>
+                </div>
+              }
+              @if (!submissionResult) {
+                <h4>Test Cases</h4>
+              }
+              <div class="test-case-grid">
+                @for (tc of testCases; track tc; let i = $index) {
+                  <div
+                    class="test-case-item"
+                    [ngClass]="tc.status"
+                    >
+                    <div class="case-header">
+                      <div class="status-icon">
+                        @if (tc.status === 'pass' && !isSubmitting) {
+                          <i
+                            class="fa fa-check"
+                          ></i>
+                        }
+                        @if (
+                          (tc.status === 'fail' && !isSubmitting) ||
+                          (tc.status === 'error' && !isSubmitting)
+                          ) {
+                          <i
+                            class="fa fa-times"
+                          ></i>
+                        }
+                        @if (tc.status === 'pending' && isSubmitting) {
+                          <i
+                            class="fa fa-spinner fa-spin"
+                          ></i>
+                        }
+                      </div>
+                      <span class="case-title">Test Case #{{ i + 1 }}</span>
+                      <span class="status-text">{{ tc.status | uppercase }}</span>
+                    </div>
+                    @if (tc.status !== 'pending') {
+                      <div class="case-body">
+                        <div class="case-metrics">
+                          <span><i class="fa fa-clock"></i> {{ tc.runtimeMs }} ms</span>
+                          @if (tc.memoryKb) {
+                            <span
+                              ><i class="fa fa-memory"></i>
+                              {{ (tc.memoryKb / 1024).toFixed(2) }} MB</span
+                              >
+                            }
+                          </div>
+                          @if (tc.status === 'error') {
+                            <div class="error-message">
+                              <strong>Error:</strong>
+                              <pre>{{ tc.errorMessage }}</pre>
+                            </div>
+                          }
+                          @if (tc.status === 'fail') {
+                            <div class="io-details">
+                              <div>
+                                <b>Input:</b> <code>{{ tc.input }}</code>
+                              </div>
+                              <div>
+                                <b>Expected:</b> <code>{{ tc.expected }}</code>
+                              </div>
+                              <div>
+                                <b>Your Output:</b>
+                                <code>{{ tc.actualOutput ? tc.actualOutput : "ERROR" }}</code>
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
               </div>
-              <div>
-                <b>Expected:</b> <code>{{ tc.expected }}</code>
+            }
+          </div>
+
+          <div class="resizer" #resizer (mousedown)="onMouseDown($event)"></div>
+
+          <div class="right-panel">
+            <div class="editor-wrapper">
+              <app-code-editor class="code-editor"></app-code-editor>
+            </div>
+
+            <div class="console-wrapper">
+              <div class="console-header">
+                <span>Console</span>
+                <div class="editor-controls">
+                  <button
+                    class="control-btn"
+                    (click)="runCode()"
+                    [disabled]="isRunning || isSubmitting"
+                    >
+                    <i class="fa fa-play"></i> Chạy thử
+                  </button>
+                  @if (!submitted) {
+                    <button
+                      class="control-btn submit"
+                      (click)="confirmSubmit()"
+                      [disabled]="isRunning || isSubmitting"
+                      >
+                      <i class="fa-solid fa-paper-plane"></i> Nộp bài
+                    </button>
+                  }
+                  @if (submitted) {
+                    <button
+                      class="control-btn submit"
+                      (click)="confirmScore()"
+                      [disabled]="isRunning || isSubmitting"
+                      >
+                      <i class="fa-solid fa-circle-check"></i> Xác nhận và trở về trang
+                      chủ
+                    </button>
+                  }
+                </div>
               </div>
-              <div>
-                <b>Your Output:</b>
-                <code>{{ tc.actualOutput ? tc.actualOutput : "ERROR" }}</code>
+              <div #consoleContainer class="console-content">
+                @if (!isRunning) {
+                  <div class="metrics">
+                    <span>Time: {{ executionTime }}ms</span>
+                    <span>Memory: {{ memoryUsage }}MB</span>
+                  </div>
+                }
+
+                <!-- progress bar khi đang chạy -->
+                @if (isRunning) {
+                  <div class="phase-progress">
+                    <div class="bar">
+                      <div class="fill" [style.width.%]="phaseProgress"></div>
+                    </div>
+                    <span class="label">Phase: {{ currentPhase }}</span>
+                  </div>
+                }
+
+                <!-- 2 panel song song -->
+                <div class="console-split">
+                  <pre class="output">{{ output }}</pre>
+
+                  <div class="logs" #logsContainer>
+                    @for (log of logs; track log) {
+                      <div class="list-logs">
+                        <span class="phase">[{{ log.phase }}]</span> {{ log.chunk }}
+                      </div>
+                    }
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="resizer" #resizer (mousedown)="onMouseDown($event)"></div>
-
-  <div class="right-panel">
-    <div class="editor-wrapper">
-      <app-code-editor class="code-editor"></app-code-editor>
-    </div>
-
-    <div class="console-wrapper">
-      <div class="console-header">
-        <span>Console</span>
-        <div class="editor-controls">
-          <button
-            class="control-btn"
-            (click)="runCode()"
-            [disabled]="isRunning || isSubmitting"
-          >
-            <i class="fa fa-play"></i> Chạy thử
-          </button>
-          <button
-            *ngIf="!submitted"
-            class="control-btn submit"
-            (click)="confirmSubmit()"
-            [disabled]="isRunning || isSubmitting"
-          >
-            <i class="fa-solid fa-paper-plane"></i> Nộp bài
-          </button>
-          <button
-            *ngIf="submitted"
-            class="control-btn submit"
-            (click)="confirmScore()"
-            [disabled]="isRunning || isSubmitting"
-          >
-            <i class="fa-solid fa-circle-check"></i> Xác nhận và trở về trang
-            chủ
-          </button>
-        </div>
-      </div>
-      <div #consoleContainer class="console-content">
-        <div class="metrics" *ngIf="!isRunning">
-          <span>Time: {{ executionTime }}ms</span>
-          <span>Memory: {{ memoryUsage }}MB</span>
-        </div>
-
-        <!-- progress bar khi đang chạy -->
-        <div *ngIf="isRunning" class="phase-progress">
-          <div class="bar">
-            <div class="fill" [style.width.%]="phaseProgress"></div>
-          </div>
-          <span class="label">Phase: {{ currentPhase }}</span>
-        </div>
-
-        <!-- 2 panel song song -->
-        <div class="console-split">
-          <pre class="output">{{ output }}</pre>
-
-          <div class="logs" #logsContainer>
-            <div class="list-logs" *ngFor="let log of logs">
-              <span class="phase">[{{ log.phase }}]</span> {{ log.chunk }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

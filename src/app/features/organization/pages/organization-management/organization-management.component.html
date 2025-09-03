@@ -11,11 +11,13 @@
       </div>
       <!-- Nút tải file mẫu -->
       <button class="btn secondary other" (click)="downloadTemplate()">
+        <i class="fa-solid fa-arrow-down"></i>
         Tải file mẫu
       </button>
 
       <!-- Nút import Excel -->
       <label class="btn primary">
+        <i class="fas fa-arrow-up-from-bracket"></i>
         <p>Import Excel</p>
         <input
           type="file"
@@ -26,33 +28,32 @@
       </label>
 
       <button class="btn primary other" (click)="openCreateModal()">
-        + Thêm tổ chức
+        <i class="fa-solid fa-plus"></i> Thêm tổ chức
       </button>
     </div>
   </div>
 
-  <div *ngIf="loading" class="loading">Đang tải dữ liệu...</div>
-
-  <div *ngIf="!loading && !orgs.length" class="no-data">
+  @if (loading) {
+  <div class="loading">Đang tải dữ liệu...</div>
+  } @if (!loading && !orgs.length) {
+  <div class="no-data">
     <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
     </ng-lottie>
     <p>Không tìm thấy tổ chức nào.</p>
   </div>
-
-  <div class="org-list" *ngIf="!loading && orgs.length">
-    <div class="org-card" *ngFor="let org of orgs">
+  } @if (!loading && orgs.length) {
+  <div class="org-list">
+    @for (org of orgs; track org) {
+    <div class="org-card">
       <div class="card-header">
         <div class="card-title">
-          <img
-            *ngIf="org.logoUrl; else noLogo"
-            [src]="org.logoUrl"
-            class="logo"
-          />
-          <ng-template #noLogo>
-            <div class="logo-placeholder">
-              {{ org.name.charAt(0).toUpperCase() }}
-            </div>
-          </ng-template>
+          @if (org.logoUrl) {
+          <img [src]="org.logoUrl" class="logo" />
+          } @else {
+          <div class="logo-placeholder">
+            {{ org.name.charAt(0).toUpperCase() }}
+          </div>
+          }
           <h4>{{ org.name }}</h4>
         </div>
         <div class="card-actions">
@@ -64,7 +65,6 @@
           </button>
         </div>
       </div>
-
       <div class="card-body">
         <p class="description">{{ org.description || "Không có mô tả." }}</p>
         <div class="info-grid">
@@ -81,17 +81,19 @@
             <span>{{ getTotalMembers(org) }}</span>
           </div>
         </div>
-
-        <div class="blocks-section" *ngIf="org.blocks?.data?.length">
+        @if (org.blocks.data.length) {
+        <div class="blocks-section">
           <strong>Các khối:</strong>
           <div class="blocks-list">
-            <span class="block-tag" *ngFor="let block of org.blocks.data">
+            @for (block of org.blocks.data; track block) {
+            <span class="block-tag">
               {{ block.name }} ({{ block.members.totalElements }})
             </span>
+            }
           </div>
         </div>
+        }
       </div>
-
       <div class="card-footer">
         <small>Ngày tạo: {{ org.createdAt | date : "dd/MM/yyyy" }}</small>
         <button class="btn secondary" (click)="goToOrganization(org.id)">
@@ -99,15 +101,15 @@
         </button>
       </div>
     </div>
+    }
   </div>
+  }
 
   <!-- Modal Confirm Delete -->
-  <div
-    class="modal-backdrop"
-    *ngIf="showDeleteConfirm"
-    (click)="showDeleteConfirm = false"
-  ></div>
-  <div class="modal" *ngIf="showDeleteConfirm">
+  @if (showDeleteConfirm) {
+  <div class="modal-backdrop" (click)="showDeleteConfirm = false"></div>
+  } @if (showDeleteConfirm) {
+  <div class="modal">
     <div class="modal-content" (click)="$event.stopPropagation()">
       <h3>Xác nhận xóa?</h3>
       <p>Bạn có chắc chắn muốn xóa tổ chức này?</p>
@@ -117,14 +119,14 @@
       </div>
     </div>
   </div>
-
+  } @if (!loading && orgs.length) {
   <app-pagination
-    *ngIf="!loading && orgs.length"
     [currentPageIndex]="page"
     [totalData]="totalData"
     [amountDataPerPage]="size"
     (onPageChange)="loadNextPage($event)"
   ></app-pagination>
+  }
 </div>
 
 <app-organization-create-modal

@@ -6,7 +6,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MediaResource } from '../../../../core/models/resource.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { activeForMyContent } from '../../../utils/authenRoleActions';
@@ -15,7 +15,7 @@ import { getUserRoles } from '../../../utils/userInfo';
 @Component({
   selector: 'app-resource-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './resource-card.html',
   styleUrls: ['./resource-card.scss'],
 })

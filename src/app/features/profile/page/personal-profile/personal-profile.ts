@@ -1,4 +1,4 @@
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { ProfilePopupComponent } from '../../../../shared/components/my-shared/profile-popup/profile-popup';
 import { EnumType } from '../../../../core/models/data-handle';
@@ -28,14 +28,12 @@ import { ButtonComponent } from '../../../../shared/components/my-shared/button/
   styleUrls: ['./personal-profile.scss'],
   imports: [
     ProfilePopupComponent,
-    NgIf,
     NgClass,
-    NgFor,
     UpdateProfileComponent,
     SkeletonLoadingComponent,
     CardExcerciseComponent,
-    ButtonComponent,
-  ],
+    ButtonComponent
+],
   standalone: true,
 })
 export class PersonalProfileComponent {

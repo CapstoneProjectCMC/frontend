@@ -6,132 +6,133 @@
         [src]="slides[currentSlide].img"
         alt="Slide image"
         class="slider-image"
-      />
-      <h2 class="title">{{ slides[currentSlide].title }}</h2>
-      <p class="description">{{ slides[currentSlide].desc }}</p>
-      <div class="dots">
-        <span
-          *ngFor="let slide of slides; let i = index"
-          [class.active]="i === currentSlide"
-        ></span>
-      </div>
-    </div>
-  </div>
-
-  <div class="form-container">
-    <!-- Phần phải: Form login -->
-    <div class="back-to-home">
-      <app-tooltip
-        [content]="'Trở về trang chủ'"
-        [position]="'left'"
-        [delay]="1"
-        [distance]="5"
-      >
-        <div class="btn-back-to-home" (click)="goToHome()">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-house-icon lucide-house"
-            (click)="goToHome()"
-          >
-            <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
-            <path
-              d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-            />
-          </svg>
-        </div>
-      </app-tooltip>
-    </div>
-    <div class="login-form">
-      <div class="brand">
-        <img src="Logo.svg" alt="Logo" class="logo" />
-        <div class="brand-text">
-          <h2>CodeCampus</h2>
-          <p class="subtitle">Chào mừng trở lại</p>
-          <p class="subtitle">Công nghệ dẫn lối-Tri thức khai mở</p>
+        />
+        <h2 class="title">{{ slides[currentSlide].title }}</h2>
+        <p class="description">{{ slides[currentSlide].desc }}</p>
+        <div class="dots">
+          @for (slide of slides; track slide; let i = $index) {
+            <span
+              [class.active]="i === currentSlide"
+            ></span>
+          }
         </div>
       </div>
+    </div>
 
-      <form>
-        <div class="input-container">
-          <input
-            required=""
-            id="username-input"
-            type="text"
-            [(ngModel)]="dataLogin.accountName"
-            name="accountName"
-          />
-          <label class="label" for="username-input"
-            >Tên tài khoản hoặc Email</label
+    <div class="form-container">
+      <!-- Phần phải: Form login -->
+      <div class="back-to-home">
+        <app-tooltip
+          [content]="'Trở về trang chủ'"
+          [position]="'left'"
+          [delay]="1"
+          [distance]="5"
           >
-          <div class="underline"></div>
+          <div class="btn-back-to-home" (click)="goToHome()">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-house-icon lucide-house"
+              (click)="goToHome()"
+              >
+              <path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+              <path
+                d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+                />
+              </svg>
+            </div>
+          </app-tooltip>
         </div>
-        <div class="input-container">
-          <input
-            required=""
-            id="password-input"
-            [type]="showPassword ? 'text' : 'password'"
-            [(ngModel)]="dataLogin.password"
-            name="password"
-          />
-          <label class="label" for="password-input">Mật khẩu</label>
-          <div class="underline"></div>
-          <span class="toggle-password" (click)="showPassword = !showPassword">
-            <i
-              class="fa"
-              [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
-            ></i>
-          </span>
-        </div>
-        <div class="forgot-row">
-          <label class="check-box">
-            <input
-              type="checkbox"
-              [(ngModel)]="rememberMe"
-              name="rememberMe"
-              style="margin: 0"
-            />
-            Duy trì đăng nhập
-          </label>
-          <div class="forgot">
-            <a (click)="openForgotPassModal()">Quên mật khẩu?</a>
+        <div class="login-form">
+          <div class="brand">
+            <img src="Logo.svg" alt="Logo" class="logo" />
+            <div class="brand-text">
+              <h2>CodeCampus</h2>
+              <p class="subtitle">Chào mừng trở lại</p>
+              <p class="subtitle">Công nghệ dẫn lối-Tri thức khai mở</p>
+            </div>
           </div>
-        </div>
-        <button type="submit" (click)="onLogin()">Đăng nhập</button>
-      </form>
 
-      <div class="or-divider">Hoặc</div>
+          <form>
+            <div class="input-container">
+              <input
+                required=""
+                id="username-input"
+                type="text"
+                [(ngModel)]="dataLogin.accountName"
+                name="accountName"
+                />
+                <label class="label" for="username-input"
+                  >Tên tài khoản hoặc Email</label
+                  >
+                  <div class="underline"></div>
+                </div>
+                <div class="input-container">
+                  <input
+                    required=""
+                    id="password-input"
+                    [type]="showPassword ? 'text' : 'password'"
+                    [(ngModel)]="dataLogin.password"
+                    name="password"
+                    />
+                    <label class="label" for="password-input">Mật khẩu</label>
+                    <div class="underline"></div>
+                    <span class="toggle-password" (click)="showPassword = !showPassword">
+                      <i
+                        class="fa"
+                        [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"
+                      ></i>
+                    </span>
+                  </div>
+                  <div class="forgot-row">
+                    <label class="check-box">
+                      <input
+                        type="checkbox"
+                        [(ngModel)]="rememberMe"
+                        name="rememberMe"
+                        style="margin: 0"
+                        />
+                        Duy trì đăng nhập
+                      </label>
+                      <div class="forgot">
+                        <a (click)="openForgotPassModal()">Quên mật khẩu?</a>
+                      </div>
+                    </div>
+                    <button type="submit" (click)="onLogin()">Đăng nhập</button>
+                  </form>
 
-      <button class="social-btn google" (click)="onGoogleLogin()">
-        <img src="/auth-assets/Google.png" alt="" class="google-icon" />
-        Đăng nhập bằng Google
-      </button>
-      <!-- <button class="social-btn facebook" (click)="onFacebookLogin()">
-        <img src="/auth-assets/Facebook.png" alt="" class="google-icon" />Đăng
-        nhập bằng Facebook
-      </button> -->
+                  <div class="or-divider">Hoặc</div>
 
-      <div class="signup-link">
-        Bạn chưa có tài khoản?
-        <p (click)="linkToRegister()">Đăng ký</p>
-      </div>
-    </div>
-  </div>
-</div>
+                  <button class="social-btn google" (click)="onGoogleLogin()">
+                    <img src="/auth-assets/Google.png" alt="" class="google-icon" />
+                    Đăng nhập bằng Google
+                  </button>
+                  <!-- <button class="social-btn facebook" (click)="onFacebookLogin()">
+                  <img src="/auth-assets/Facebook.png" alt="" class="google-icon" />Đăng
+                  nhập bằng Facebook
+                </button> -->
 
-<app-loading-overlay
-  [visible]="isLoading"
-  [message]="'Đang đăng nhập, xin chờ...'"
-></app-loading-overlay>
+                <div class="signup-link">
+                  Bạn chưa có tài khoản?
+                  <p (click)="linkToRegister()">Đăng ký</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
-<app-forgot-password-modal
-  [isVisible]="isOpenForgotModal"
-  (close)="onCloseForgotModal()"
-></app-forgot-password-modal>
+          <app-loading-overlay
+            [visible]="isLoading"
+            [message]="'Đang đăng nhập, xin chờ...'"
+          ></app-loading-overlay>
+
+          <app-forgot-password-modal
+            [isVisible]="isOpenForgotModal"
+            (close)="onCloseForgotModal()"
+          ></app-forgot-password-modal>

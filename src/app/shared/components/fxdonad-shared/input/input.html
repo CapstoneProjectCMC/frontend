@@ -1,22 +1,25 @@
 <div class="input-container" [class.error-state]="hasError">
-  <label
-    [for]="inputId"
-    class="input-label"
-    [class.primary]="variant === 'primary'"
-    [class.secondary]="variant === 'secondary'"
-    [class.outlined]="variant === 'other'"
-    *ngIf="label"
-  >
-    {{ label }}
-    <span class="required-marker" *ngIf="required">*</span>
-  </label>
+  @if (label) {
+    <label
+      [for]="inputId"
+      class="input-label"
+      [class.primary]="variant === 'primary'"
+      [class.secondary]="variant === 'secondary'"
+      [class.outlined]="variant === 'other'"
+      >
+      {{ label }}
+      @if (required) {
+        <span class="required-marker">*</span>
+      }
+    </label>
+  }
 
   <div
     class="input-wrapper"
     [class.primary]="variant === 'primary'"
     [class.secondary]="variant === 'secondary'"
     [class.outlined]="variant === 'other'"
-  >
+    >
     <input
       [id]="inputId"
       [type]="type"
@@ -35,14 +38,20 @@
       [attr.aria-invalid]="hasError"
       [attr.aria-describedby]="errorId"
       class="dynamic-input"
-    />
+      />
 
-    <img *ngIf="icon && isSvg" [src]="icon" alt="icon" class="input-icon-svg" />
-    <i *ngIf="icon && !isSvg" [class]="icon" class="input-icon"></i>
-  </div>
+      @if (icon && isSvg) {
+        <img [src]="icon" alt="icon" class="input-icon-svg" />
+      }
+      @if (icon && !isSvg) {
+        <i [class]="icon" class="input-icon"></i>
+      }
+    </div>
 
-  <div *ngIf="hasError" [id]="errorId" class="error-message" role="alert">
-    <span class="error-icon">!</span>
-    {{ errorMessage }}
+    @if (hasError) {
+      <div [id]="errorId" class="error-message" role="alert">
+        <span class="error-icon">!</span>
+        {{ errorMessage }}
+      </div>
+    }
   </div>
-</div>

@@ -38,18 +38,19 @@
           <a href="/profile/academic-results">Chi tiết</a>
         </span>
       </div>
-      <div
-        class="competition-item"
-        *ngFor="let competition of fakeCompetition.slice(0, 2)"
-      >
-        <div class="competition-name">{{competition.name}}</div>
+      @for (competition of fakeCompetition.slice(0, 2); track competition) {
         <div
-          class="competition-status"
-          [ngClass]="{'ongoing': competition.status === 'ongoing', 'upcoming': competition.status === 'upcoming', 'completed': competition.status === 'completed'}"
-        >
-          {{competition.status}}
+          class="competition-item"
+          >
+          <div class="competition-name">{{competition.name}}</div>
+          <div
+            class="competition-status"
+            [ngClass]="{'ongoing': competition.status === 'ongoing', 'upcoming': competition.status === 'upcoming', 'completed': competition.status === 'completed'}"
+            >
+            {{competition.status}}
+          </div>
         </div>
-      </div>
+      }
     </div>
     <div class="experience">
       <div class="title-nav">
@@ -58,28 +59,36 @@
           <a href="/profile/academic-results">Chi tiết</a>
         </span>
       </div>
-      <div class="list-exercise" *ngIf="listExercise && !isLoading">
-        <app-card-excercise
-          *ngFor="let item of listExercise"
-          [data]="item"
-          [exerciseId]="item.id"
-        >
-        </app-card-excercise>
-      </div>
+      @if (listExercise && !isLoading) {
+        <div class="list-exercise">
+          @for (item of listExercise; track item) {
+            <app-card-excercise
+              [data]="item"
+              [exerciseId]="item.id"
+              >
+            </app-card-excercise>
+          }
+        </div>
+      }
 
-      <app-skeleton-loading
-        *ngIf="isLoading"
-        type="card"
-        [count]="8"
-      ></app-skeleton-loading>
+      @if (isLoading) {
+        <app-skeleton-loading
+          type="card"
+          [count]="8"
+        ></app-skeleton-loading>
+      }
 
-      <div class="no-content" *ngIf="listExercise.length === 0 && !isLoading">
-        Không có dữ liệu
-      </div>
+      @if (listExercise.length === 0 && !isLoading) {
+        <div class="no-content">
+          Không có dữ liệu
+        </div>
+      }
 
-      <div *ngIf="isLoadingMore" class="loading-more">
-        Đang tải thêm, xin chờ...
-      </div>
+      @if (isLoadingMore) {
+        <div class="loading-more">
+          Đang tải thêm, xin chờ...
+        </div>
+      }
     </div>
     <!-- <div class="post"></div> -->
   </div>
@@ -87,37 +96,40 @@
     <div class="recent-notice">
       <div class="title-nav">
         <span class="title"> Thông báo gần đây </span>
-        <div class="notice" *ngFor="let noti of fakeNotification">
-          <a class="notice-item">{{noti.title}}</a>
-        </div>
+        @for (noti of fakeNotification; track noti) {
+          <div class="notice">
+            <a class="notice-item">{{noti.title}}</a>
+          </div>
+        }
         <app-button
           class="noti-button"
           [width]="'140px'"
           [height]="'40px'"
           [variant]="'outline'"
-        >
+          >
           Xem tất cả</app-button
-        >
+          >
+        </div>
       </div>
     </div>
-  </div>
 
-  <div
-    *ngIf="openedUser"
-    [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}"
-  >
-    <div
-      class="profile-popup-backdrop"
-      [ngClass]="{'hide': isClosing}"
-      (click)="closeProfilePopup()"
-    ></div>
-    <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
-      <button class="close-btn" (click)="closeProfilePopup()">×</button>
-      <app-update-profile
-        [user]="openedUser"
-        [variant]="'popup'"
-        (refresh)="refetchUserData($event)"
-      ></app-update-profile>
-    </div>
+    @if (openedUser) {
+      <div
+        [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}"
+        >
+        <div
+          class="profile-popup-backdrop"
+          [ngClass]="{'hide': isClosing}"
+          (click)="closeProfilePopup()"
+        ></div>
+        <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
+          <button class="close-btn" (click)="closeProfilePopup()">×</button>
+          <app-update-profile
+            [user]="openedUser"
+            [variant]="'popup'"
+            (refresh)="refetchUserData($event)"
+          ></app-update-profile>
+        </div>
+      </div>
+    }
   </div>
-</div>

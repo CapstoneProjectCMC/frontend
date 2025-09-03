@@ -1,14 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-skeleton-loading',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './skeleton-loading.component.html',
   styleUrls: ['./skeleton-loading.component.scss'],
 })
 export class SkeletonLoadingComponent {
   @Input() type: 'card' | 'list' | 'post' = 'card';
   @Input() count: number = 1;
+
+  get skeletonArray() {
+    return Array.from({ length: this.count }, (_, i) => i);
+  }
 }

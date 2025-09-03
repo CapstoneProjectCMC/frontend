@@ -1,13 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router, NavigationEnd, RouterModule } from '@angular/router';
 import { BreadcrumbService, Breadcrumb } from '../breadcrumb.service';
-import { NgForOf, NgIf } from '@angular/common';
+
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-breadcrumb',
   standalone: true,
-  imports: [RouterModule, NgForOf, NgIf],
+  imports: [RouterModule],
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss'],
 })

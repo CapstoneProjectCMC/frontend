@@ -23,7 +23,10 @@
     </button>
   </div>
   <div class="notification-content">
-    <p class="notification-message">{{ message }}</p>
+    <p
+      class="notification-message"
+      [innerHTML]="getFormattedMessage(message)"
+    ></p>
     <span class="notification-timestamp">
       {{ timestamp | date : "dd/MM/yyyy - HH:mm" }}
     </span>

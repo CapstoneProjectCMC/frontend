@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute } from '@angular/router';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { OrganizationService } from '../../../../core/services/api-service/organization.service';
@@ -15,7 +15,7 @@ import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-block-details',
   standalone: true,
-  imports: [CommonModule, ScrollEndDirective, ModalAddUserToBlockComponent],
+  imports: [ScrollEndDirective, ModalAddUserToBlockComponent],
   templateUrl: './block-details.component.html',
   styleUrls: ['./block-details.component.scss'],
 })

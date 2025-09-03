@@ -18,50 +18,46 @@
     </div>
 
     <ul class="question-list">
-      <li
-        *ngFor="let question of questions; let i = index"
-        [class.done]="question.done"
-        (click)="goToQuestion(i)"
-      >
+      @for (question of questions; track question; let i = $index) {
+      <li [class.done]="question.done" (click)="goToQuestion(i)">
         Câu {{ i + 1 }}
       </li>
+      }
     </ul>
   </div>
 
-  <div class="quiz-main" *ngIf="questions.length">
+  @if (questions.length) {
+  <div class="quiz-main">
     <div class="content-quiz-container">
       <div class="question-number">Câu {{ currentQuestionIndex + 1 }}:</div>
       <div class="question-text">
         <strong>{{ questions[currentQuestionIndex].text }}</strong>
       </div>
-
       <div class="options">
+        @for (opt of questions[currentQuestionIndex].options; track opt) {
         <label
           class="option"
-          *ngFor="let opt of questions[currentQuestionIndex]?.options"
           [class.selected]="isOptionSelected(currentQuestionIndex, opt.id)"
         >
+          @if ( questions[currentQuestionIndex].questiontype === 'MULTI_CHOICE')
+          {
           <input
-            *ngIf="
-              questions[currentQuestionIndex].questiontype === 'MULTI_CHOICE';
-              else singleChoice
-            "
             type="checkbox"
             [checked]="isOptionSelected(currentQuestionIndex, opt.id)"
             (change)="selectAnswer(currentQuestionIndex, opt)"
           />
-          <ng-template #singleChoice>
-            <input
-              type="radio"
-              name="answer{{ currentQuestionIndex }}"
-              [checked]="isOptionSelected(currentQuestionIndex, opt.id)"
-              (change)="selectAnswer(currentQuestionIndex, opt)"
-            />
-          </ng-template>
+          } @else {
+          <input
+            type="radio"
+            name="answer{{ currentQuestionIndex }}"
+            [checked]="isOptionSelected(currentQuestionIndex, opt.id)"
+            (change)="selectAnswer(currentQuestionIndex, opt)"
+          />
+          }
           {{ opt.optiontext }}
         </label>
+        }
       </div>
-
       <div class="buttons">
         <div class="control-btn">
           <button
@@ -83,4 +79,5 @@
       </div>
     </div>
   </div>
+  }
 </div>

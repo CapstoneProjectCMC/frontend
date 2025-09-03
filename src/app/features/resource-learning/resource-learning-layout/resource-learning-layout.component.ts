@@ -3,12 +3,12 @@ import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/
 import { Router, RouterModule } from '@angular/router';
 import { SidebarItem } from '../../../core/models/data-handle';
 import { decodeJWT } from '../../../shared/utils/stringProcess';
-import { CommonModule } from '@angular/common';
+
 import { sidebarResourceLearningRouter } from '../../../core/router-manager/vetical-menu-dynamic/resource-learning-vertical-menu';
 
 @Component({
   selector: 'app-resource-learning-layout',
-  imports: [MainSidebarComponent, RouterModule, CommonModule],
+  imports: [MainSidebarComponent, RouterModule],
   templateUrl: './resource-learning-layout.component.html',
   styleUrl: './resource-learning-layout.component.scss',
 })

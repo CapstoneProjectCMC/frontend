@@ -4,14 +4,14 @@ import { AdminRoutingModule } from '../../dashboard/dashboard-routing.module';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/internal/operators/filter';
-import { CommonModule } from '@angular/common';
+
 import { sidebarExercises } from '../../../core/router-manager/vetical-menu-dynamic/exercise-vetical-menu';
 import { decodeJWT } from '../../../shared/utils/stringProcess';
 import { SidebarItem } from '../../../core/models/data-handle';
 
 @Component({
   selector: 'app-exercise-layout',
-  imports: [CommonModule, MainSidebarComponent, AdminRoutingModule],
+  imports: [MainSidebarComponent, AdminRoutingModule],
   templateUrl: './exercise-layout.component.html',
   styleUrl: './exercise-layout.component.scss',
 })

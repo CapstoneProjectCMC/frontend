@@ -1,13 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faTimes, faRedo, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-otp-modal',
-  imports: [FontAwesomeModule, FormsModule, CommonModule],
+  imports: [FontAwesomeModule, FormsModule],
   templateUrl: './otp-modal.component.html',
   styleUrls: ['./otp-modal.component.scss'],
 })

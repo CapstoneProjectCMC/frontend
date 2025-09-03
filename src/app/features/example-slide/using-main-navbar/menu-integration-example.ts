@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { RouterModule } from '@angular/router';
 import { MenuLayoutComponent } from '../../../layouts/layout-components/menu/menu-layout.component';
 import { SidebarItem } from '../../../core/models/data-handle';
@@ -7,7 +7,7 @@ import { SidebarItem } from '../../../core/models/data-handle';
 @Component({
   selector: 'app-layout-with-menu',
   standalone: true,
-  imports: [CommonModule, RouterModule, MenuLayoutComponent],
+  imports: [RouterModule, MenuLayoutComponent],
   template: `
     <div class="layout-container">
       <!-- Menu Layout -->

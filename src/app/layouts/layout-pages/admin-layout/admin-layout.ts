@@ -3,7 +3,7 @@ import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { HeaderComponent } from '../../../shared/components/my-shared/header/header';
 import { MenuLayoutComponent } from '../../layout-components/menu/menu-layout.component';
-import { CommonModule, NgIf } from '@angular/common';
+
 import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
 import { sidebarData } from '../../../features/admin/menu-router.data';
 import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
@@ -14,14 +14,12 @@ import { decodeJWT } from '../../../shared/utils/stringProcess';
   selector: 'app-admin-layout',
   standalone: true,
   imports: [
-    CommonModule,
     RouterOutlet,
     HeaderComponent,
     MenuLayoutComponent,
     MainSidebarComponent,
-    BreadcrumbComponent,
-    NgIf,
-  ],
+    BreadcrumbComponent
+],
   templateUrl: './admin-layout.html',
   styleUrls: ['./admin-layout.scss'],
 })

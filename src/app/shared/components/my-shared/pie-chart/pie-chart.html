@@ -1,15 +1,14 @@
 <div id="chart">
-  <div
-    *ngIf="chartTitle"
-    class="chart-title"
-    style="text-align: center; font-weight: bold; margin-bottom: 8px"
-  >
-    {{ chartTitle }}
-  </div>
-  <ng-container
-    *ngIf="chartOptions.value && chartOptions.chart && chartOptions.labels && chartOptions.title && chartOptions.responsive;"
-  >
-  </ng-container>
+  @if (chartTitle) {
+    <div
+      class="chart-title"
+      style="text-align: center; font-weight: bold; margin-bottom: 8px"
+      >
+      {{ chartTitle }}
+    </div>
+  }
+  @if (chartOptions.value && chartOptions.chart && chartOptions.labels && chartOptions.title && chartOptions.responsive;) {
+  }
   <apx-chart
     #chart
     [series]="chartOptions.value"

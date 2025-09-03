@@ -2,14 +2,14 @@
   class="otp-modal-backdrop"
   [class.open]="show"
   (click)="onBackdropClick($event)"
->
+  >
   <div class="otp-modal" [class.open]="show">
     <button
       class="close-btn"
       (click)="onClose()"
       title="Đóng"
       [disabled]="loading"
-    >
+      >
       <fa-icon [icon]="['fas', 'times']"></fa-icon>
     </button>
     <h2>Xác thực OTP</h2>
@@ -24,38 +24,40 @@
           (ngModelChange)="emailChange.emit(email)"
           required
           [readonly]="loading"
-        />
+          />
+        </div>
+        <div class="form-group">
+          <label for="otp">Nhập mã OTP</label>
+          <input
+            id="otp"
+            type="text"
+            [(ngModel)]="otpCode"
+            name="otpCode"
+            maxlength="6"
+            required
+            autocomplete="one-time-code"
+            [readonly]="loading"
+            />
+          </div>
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="resend-btn"
+              (click)="onResend()"
+              [disabled]="loading"
+              >
+              <fa-icon [icon]="['fas', 'redo']"></fa-icon> Gửi lại mã
+            </button>
+            <button type="submit" class="verify-btn" [disabled]="loading">
+              <fa-icon [icon]="['fas', 'check']"></fa-icon> Xác nhận
+            </button>
+          </div>
+        </form>
+        @if (loading) {
+          <div class="loading-overlay">
+            <div class="spinner"></div>
+            <p>Đang xử lý, xin chờ...</p>
+          </div>
+        }
       </div>
-      <div class="form-group">
-        <label for="otp">Nhập mã OTP</label>
-        <input
-          id="otp"
-          type="text"
-          [(ngModel)]="otpCode"
-          name="otpCode"
-          maxlength="6"
-          required
-          autocomplete="one-time-code"
-          [readonly]="loading"
-        />
-      </div>
-      <div class="modal-actions">
-        <button
-          type="button"
-          class="resend-btn"
-          (click)="onResend()"
-          [disabled]="loading"
-        >
-          <fa-icon [icon]="['fas', 'redo']"></fa-icon> Gửi lại mã
-        </button>
-        <button type="submit" class="verify-btn" [disabled]="loading">
-          <fa-icon [icon]="['fas', 'check']"></fa-icon> Xác nhận
-        </button>
-      </div>
-    </form>
-    <div class="loading-overlay" *ngIf="loading">
-      <div class="spinner"></div>
-      <p>Đang xử lý, xin chờ...</p>
     </div>
-  </div>
-</div>

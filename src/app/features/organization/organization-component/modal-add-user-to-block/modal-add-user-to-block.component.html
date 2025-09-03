@@ -3,7 +3,7 @@
 <div class="modal-wrapper" [class.show]="isOpen">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <header class="modal-header">
-      <h2 class="modal-title">Thêm người dùng vào Block</h2>
+      <h2 class="modal-title">Thêm thành viên vào Block</h2>
       <button class="close-btn" (click)="close()">
         <i class="fas fa-times"></i>
       </button>
@@ -16,58 +16,64 @@
           [(ngModel)]="searchQuery"
           (ngModelChange)="onSearchChange($event)"
           placeholder="Tìm kiếm tên hoặc email..."
-        />
-        <i class="fas fa-search search-icon"></i>
-      </div>
-
-      <div class="selected-users-section" *ngIf="selectedUsers.length">
-        <h3>Đã chọn ({{ selectedUsers.length }})</h3>
-        <div class="chips-container">
-          <div class="chip" *ngFor="let u of selectedUsers">
-            {{ u.userId }}
-            <button class="remove-chip-btn" (click)="removeUser(u.userId)">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
+          />
+          <i class="fas fa-search search-icon"></i>
         </div>
-      </div>
 
-      <div class="search-results-section">
-        <div class="results-list">
-          <div
-            class="user-item"
-            *ngFor="let user of searchResults"
-            (click)="addUser(user)"
-          >
-            <img
-              [src]="user.avatarUrl || '/assets/avatar-default.png'"
-              alt="avatar"
-              class="user-avatar"
-            />
-            <div class="user-info">
-              <span class="user-name">{{ user.displayName }}</span>
-              <span class="user-email">{{ user.email }}</span>
+        @if (selectedUsers.length) {
+          <div class="selected-users-section">
+            <h3>Đã chọn ({{ selectedUsers.length }})</h3>
+            <div class="chips-container">
+              @for (u of selectedUsers; track u) {
+                <div class="chip">
+                  {{ u.userId }}
+                  <button class="remove-chip-btn" (click)="removeUser(u.userId)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              }
             </div>
           </div>
-          <p
-            *ngIf="!searchResults.length && searchQuery"
-            class="no-results-text"
-          >
-            Không tìm thấy kết quả.
-          </p>
+        }
+
+        <div class="search-results-section">
+          <div class="results-list">
+            @for (user of searchResults; track user) {
+              <div
+                class="user-item"
+                (click)="addUser(user)"
+                >
+                <img
+                  [src]="user.avatarUrl || '/assets/avatar-default.png'"
+                  alt="avatar"
+                  class="user-avatar"
+                  />
+                  <div class="user-info">
+                    <span class="user-name">{{ user.displayName }}</span>
+                    <span class="user-email">{{ user.email }}</span>
+                  </div>
+                </div>
+              }
+              @if (!searchResults.length && searchQuery) {
+                <p
+                  class="no-results-text"
+                  >
+                  Không tìm thấy kết quả.
+                </p>
+              }
+            </div>
+          </div>
         </div>
+
+        <footer class="modal-footer">
+          <button class="btn btn-cancel" (click)="close()">Hủy</button>
+          <button
+            class="btn btn-save"
+            [disabled]="submitting || !selectedUsers.length"
+            (click)="submit()"
+            >
+            {{ submitting ? "Đang lưu..." : "Xác nhận thêm" }}
+          </button>
+        </footer>
       </div>
     </div>
-
-    <footer class="modal-footer">
-      <button class="btn btn-cancel" (click)="close()">Hủy</button>
-      <button
-        class="btn btn-save"
-        [disabled]="submitting || !selectedUsers.length"
-        (click)="submit()"
-      >
-        {{ submitting ? "Đang lưu..." : "Xác nhận thêm" }}
-      </button>
-    </footer>
-  </div>
-</div>

@@ -20,7 +20,8 @@
             </div>
           </div>
         </div>
-        <div class="actions" *ngIf="isActionActive">
+        @if (isActionActive) {
+        <div class="actions">
           <div class="dropdown-wrapper">
             <button
               class="icon-btn edit-dropdown-toggle"
@@ -29,7 +30,8 @@
               <i class="fa fa-edit"></i>
               <span>Sửa bài tập</span>
             </button>
-            <div class="edit-dropdown" *ngIf="isMainDropdownOpen">
+            @if (isMainDropdownOpen) {
+            <div class="edit-dropdown">
               <ul>
                 <li (click)="openUpdateExercise(); toggleMainDropdown()">
                   <i class="fa fa-info-circle"></i> Sửa thông tin
@@ -39,8 +41,8 @@
                 </li>
               </ul>
             </div>
+            }
           </div>
-
           <button
             class="icon-btn delete"
             title="Xóa bài tập"
@@ -50,6 +52,7 @@
             <span>Xóa bài tập</span>
           </button>
         </div>
+        }
       </div>
 
       <div class="meta">
@@ -69,7 +72,8 @@
           [ngClass]="exercise.difficulty"
           title="Độ khó"
         >
-          <span *ngFor="let star of difficultyStars">
+          @for (star of difficultyStars; track star) {
+          <span>
             <i
               class="fa"
               [ngClass]="
@@ -77,6 +81,7 @@
               "
             ></i>
           </span>
+          }
           <span class="difficulty-label">
             {{
               exercise.difficulty === "EASY"
@@ -89,18 +94,15 @@
             }}
           </span>
         </span>
-        <span
-          class="badge"
-          *ngIf="exercise.orgId; else publicBadge"
-          title="Nội bộ"
-        >
+        @if (exercise.orgId) {
+        <span class="badge" title="Nội bộ">
           <i class="fa fa-building"></i> Nội bộ
         </span>
-        <ng-template #publicBadge>
-          <span class="badge" title="Công khai">
-            <i class="fa fa-globe"></i> Công khai
-          </span>
-        </ng-template>
+        } @else {
+        <span class="badge" title="Công khai">
+          <i class="fa fa-globe"></i> Công khai
+        </span>
+        }
         <span class="badge" title="Trạng thái">
           <i
             class="fa"
@@ -116,9 +118,9 @@
 
       <div class="tags">
         <i class="fa fa-tags"></i>
-        <span *ngFor="let tag of exercise.tags?.slice(0, 3) || []" class="tag">
-          #{{ tag }}
-        </span>
+        @for (tag of exercise.tags.slice(0, 3) || []; track tag) {
+        <span class="tag"> #{{ tag }} </span>
+        }
 
         <div style="position: relative">
           <app-tooltip
@@ -127,9 +129,11 @@
             [delay]="0.5"
             [distance]="10"
           >
-            <span *ngIf="(exercise.tags?.length || 0) > 3" class="tag other">
+            @if ((exercise.tags.length || 0) > 3) {
+            <span class="tag other">
               +{{ (exercise.tags.length || 0) - 3 }}
             </span>
+            }
           </app-tooltip>
         </div>
       </div>
@@ -167,59 +171,44 @@
       </div>
 
       <div class="btn-container">
-        <button
-          class="btn main"
-          *ngIf="!isBought && exercise.cost > 0"
-          (click)="openRequestBuyExercise()"
-        >
+        @if (!isBought && exercise.cost > 0) {
+        <button class="btn main" (click)="openRequestBuyExercise()">
           <i class="fa-solid fa-cart-plus"></i> Mua bài tập
         </button>
-        <button
-          class="btn main"
-          *ngIf="
-            hasQuestions &&
-            canStartDoing &&
-            (exercise.cost <= 0 ? true : isBought)
-          "
-          (click)="doingQuiz()"
-        >
+        } @if ( hasQuestions && canStartDoing && (exercise.cost <= 0 ? true :
+        isBought) ) {
+        <button class="btn main" (click)="doingQuiz()">
           <i class="fa fa-play"></i> Bắt đầu
         </button>
+        }
         <button class="btn other" (click)="goBack()">
           <i class="fa fa-arrow-left"></i> Quay lại
         </button>
-        <button
-          class="btn other"
-          *ngIf="hasQuestions && isActionActive"
-          (click)="openAssignExercise()"
-        >
+        @if (hasQuestions && isActionActive) {
+        <button class="btn other" (click)="openAssignExercise()">
           <i class="fa-solid fa-business-time"></i> Giao bài tập
         </button>
+        }
       </div>
     </div>
 
     <!-- Vế phải: Danh sách câu hỏi -->
-    <div class="exercise-questions" *ngIf="isActionActive">
+    @if (isActionActive) {
+    <div class="exercise-questions">
       <div class="questions-list">
-        <div
-          *ngFor="let q of exercise.quizDetail?.questions; let i = index"
-          class="question-item"
-        >
+        @for (q of exercise.quizDetail?.questions; track q; let i = $index) {
+        <div class="question-item">
           <div class="question-header">
             <div class="btn-control">
+              @if (isActionActive) {
               <button
                 class="icon-btn edit-dropdown-toggle"
                 (click)="toggleQuestionDropdown(i); $event.stopPropagation()"
-                *ngIf="isActionActive"
               >
                 <i class="fa fa-ellipsis-h"></i>
               </button>
-
-              <div
-                class="edit-dropdown"
-                *ngIf="openDropdownIndex === i"
-                [@dropdownAnimation]
-              >
+              } @if (openDropdownIndex === i) {
+              <div class="edit-dropdown" [@dropdownAnimation]>
                 <ul>
                   <li (click)="onEditQuestion(i, q)">
                     <i class="fa fa-pen"></i> Sửa câu hỏi
@@ -232,14 +221,11 @@
                   </li>
                 </ul>
               </div>
+              }
             </div>
           </div>
-
-          <div
-            *ngIf="opentDeleteConfirm === i"
-            class="confirm-modal-overlay"
-            (click)="cancelDelete()"
-          >
+          @if (opentDeleteConfirm === i) {
+          <div class="confirm-modal-overlay" (click)="cancelDelete()">
             <div class="confirm-modal" (click)="$event.stopPropagation()">
               <p>Bạn có chắc chắn muốn xóa câu hỏi này?</p>
               <div class="confirm-buttons">
@@ -250,24 +236,27 @@
               </div>
             </div>
           </div>
+          }
           <div class="question-title">{{ q.text }}</div>
           <div class="question-content">(Điểm: {{ q.points }})</div>
           <div class="question-options">
-            <div
-              *ngFor="let opt of q.options; let j = index"
-              class="option"
-              [class.correct]="opt.correct"
-            >
+            @for (opt of q.options; track opt; let j = $index) {
+            <div class="option" [class.correct]="opt.correct">
               <span class="option-label">{{ getOptionLabel(j) }}.</span>
               {{ opt.optionText }}
-              <span *ngIf="opt.correct" class="correct-icon" title="Đáp án đúng"
+              @if (opt.correct) {
+              <span class="correct-icon" title="Đáp án đúng"
                 ><i class="fa fa-check"></i
               ></span>
+              }
             </div>
+            }
           </div>
         </div>
+        }
       </div>
     </div>
+    }
   </div>
 </div>
 

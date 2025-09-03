@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/main-sidebar/main-sidebar.component';
-import { CommonModule } from '@angular/common';
+
 import { AdminRoutingModule } from '../../dashboard/dashboard-routing.module';
 import { Router, RouterOutlet } from '@angular/router';
 import { sidebarOrgRouter } from '../../../core/router-manager/vetical-menu-dynamic/org-vertical-menu';
@@ -11,10 +11,9 @@ import { decodeJWT } from '../../../shared/utils/stringProcess';
   selector: 'app-layout-organization',
   imports: [
     RouterOutlet,
-    CommonModule,
     MainSidebarComponent,
-    AdminRoutingModule,
-  ],
+    AdminRoutingModule
+],
   templateUrl: './layout-organization.component.html',
   styleUrl: './layout-organization.component.scss',
 })

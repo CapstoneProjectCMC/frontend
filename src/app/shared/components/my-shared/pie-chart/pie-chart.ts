@@ -22,14 +22,14 @@ export type ChartOptions = {
   labels: any;
   title: ApexTitleSubtitle;
 };
-import { NgIf } from '@angular/common';
+
 
 @Component({
   selector: 'fx-pie-chart',
   templateUrl: './pie-chart.html',
   styleUrls: ['./pie-chart.scss'],
   standalone: true,
-  imports: [NgApexchartsModule, NgIf],
+  imports: [NgApexchartsModule],
 })
 export class PieChartComponent implements OnChanges, OnInit {
   @ViewChild('chart') chart!: ChartComponent;

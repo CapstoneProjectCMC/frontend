@@ -16,224 +16,230 @@
             (focus)="focused['username'] = true"
             (blur)="focused['username'] = false"
             [ngClass]="{ 'has-value': formData.username }"
-          />
-          <label for="username">Tên đăng nhập *</label>
-          <div class="underline"></div>
-        </div>
-        <div class="input-container">
-          <input
-            type="email"
-            id="email"
-            name="email"
-            [(ngModel)]="formData.email"
-            required
-            email
-            (focus)="focused['email'] = true"
-            (blur)="focused['email'] = false"
-            [ngClass]="{ 'has-value': formData.email }"
-          />
-          <label for="email">Email *</label>
-          <div class="underline"></div>
-        </div>
-        <div class="input-container">
-          <input
-            type="password"
-            id="password"
-            name="password"
-            [(ngModel)]="formData.password"
-            required
-            minlength="6"
-            (focus)="focused['password'] = true"
-            (blur)="focused['password'] = false"
-            [ngClass]="{ 'has-value': formData.password }"
-          />
-          <label for="password">Mật khẩu *</label>
-          <div class="underline"></div>
-        </div>
-        <div class="input-container">
-          <input
-            type="password"
-            id="repassword"
-            name="repassword"
-            [(ngModel)]="repassword"
-            required
-            (focus)="focused['repassword'] = true"
-            (blur)="focused['repassword'] = false"
-            [ngClass]="{ 'has-value': repassword }"
-          />
-          <label for="repassword">Nhập lại mật khẩu *</label>
-          <div class="underline"></div>
-        </div>
-
-        <!-- Optional Fields -->
-        <div class="input-container">
-          <input
-            type="text"
-            id="lastName"
-            name="lastName"
-            [(ngModel)]="formData.lastName"
-            (focus)="focused['lastName'] = true"
-            (blur)="focused['lastName'] = false"
-            [ngClass]="{ 'has-value': formData.lastName }"
-          />
-          <label for="lastName">Họ</label>
-          <div class="underline"></div>
-        </div>
-        <div class="input-container">
-          <input
-            type="text"
-            id="firstName"
-            name="firstName"
-            [(ngModel)]="formData.firstName"
-            (focus)="focused['firstName'] = true"
-            (blur)="focused['firstName'] = false"
-            [ngClass]="{ 'has-value': formData.firstName }"
-          />
-          <label for="firstName">Tên</label>
-          <div class="underline"></div>
-        </div>
-        <div class="input-container">
-          <input
-            type="text"
-            id="displayName"
-            name="displayName"
-            [(ngModel)]="formData.displayName"
-            (focus)="focused['displayName'] = true"
-            (blur)="focused['displayName'] = false"
-            [ngClass]="{ 'has-value': formData.displayName }"
-          />
-          <label for="displayName">Tên hiển thị</label>
-          <div class="underline"></div>
-        </div>
-        <div class="input-container">
-          <app-dropdown-button
-            [label]="'Học vấn'"
-            [options]="educationOptions"
-            [variant]="'primary'"
-            [size]="'medium'"
-            [customDropField]="'main-type'"
-            [isDisplaySelectedOpptionLabels]="true"
-            [removeSingleSelected]="true"
-            [disabled]="false"
-            name="education"
-            id="education"
-            typeSubmit="button"
-          ></app-dropdown-button>
-          <div class="underline"></div>
-        </div>
-        <div class="input-container">
-          <input
-            type="date"
-            id="dob"
-            name="dob"
-            [(ngModel)]="formData.dob"
-            (focus)="focused['dob'] = true"
-            (blur)="focused['dob'] = false"
-            [ngClass]="{ 'has-value': formData.dob }"
-          />
-          <label for="dob">Ngày sinh</label>
-          <div class="underline"></div>
-        </div>
-
-        <div class="input-container">
-          <input
-            type="text"
-            id="city"
-            name="city"
-            [(ngModel)]="formData.city"
-            (focus)="focused['city'] = true"
-            (blur)="focused['city'] = false"
-            [ngClass]="{ 'has-value': formData.city }"
-          />
-          <label for="city">Địa chỉ</label>
-          <div class="underline"></div>
-        </div>
-        <div class="full-width-container">
-          <input
-            type="text"
-            id="links"
-            name="links"
-            #linkInput
-            [(ngModel)]="linkInputValue"
-            [ngClass]="{ 'has-value': linkInputValue }"
-            (keydown.enter)="addLink($event, linkInput)"
-            (focus)="focused['links'] = true"
-            (blur)="focused['links'] = false"
-            class="input-link"
-          />
-          <label for="links" *ngIf="!formData.links?.length"
-            >Liên kết (VD: LinkedIn, Github... Enter để thêm)</label
-          >
-          <div class="link-list" *ngIf="formData.links?.length">
-            <span
-              *ngFor="let link of formData.links; let i = index"
-              [title]="link"
-            >
-              {{ truncateString(link) }}
-              <button type="button" (click)="removeLink(i)">×</button>
-            </span>
+            />
+            <label for="username">Tên đăng nhập *</label>
+            <div class="underline"></div>
           </div>
-          <div class="underline"></div>
-        </div>
-        <div class="full-width-container">
-          <textarea
-            id="bio"
-            name="bio"
-            rows="2"
-            [(ngModel)]="formData.bio"
-            (focus)="focused['bio'] = true"
-            (blur)="focused['bio'] = false"
-            [ngClass]="{ 'has-value': formData.bio }"
-          ></textarea>
-          <label for="bio">Giới thiệu bản thân</label>
-          <div class="underline"></div>
-        </div>
-      </div>
+          <div class="input-container">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="formData.email"
+              required
+              email
+              (focus)="focused['email'] = true"
+              (blur)="focused['email'] = false"
+              [ngClass]="{ 'has-value': formData.email }"
+              />
+              <label for="email">Email *</label>
+              <div class="underline"></div>
+            </div>
+            <div class="input-container">
+              <input
+                type="password"
+                id="password"
+                name="password"
+                [(ngModel)]="formData.password"
+                required
+                minlength="6"
+                (focus)="focused['password'] = true"
+                (blur)="focused['password'] = false"
+                [ngClass]="{ 'has-value': formData.password }"
+                />
+                <label for="password">Mật khẩu *</label>
+                <div class="underline"></div>
+              </div>
+              <div class="input-container">
+                <input
+                  type="password"
+                  id="repassword"
+                  name="repassword"
+                  [(ngModel)]="repassword"
+                  required
+                  (focus)="focused['repassword'] = true"
+                  (blur)="focused['repassword'] = false"
+                  [ngClass]="{ 'has-value': repassword }"
+                  />
+                  <label for="repassword">Nhập lại mật khẩu *</label>
+                  <div class="underline"></div>
+                </div>
 
-      <button type="submit" class="primary-btn">Đăng ký</button>
-    </form>
+                <!-- Optional Fields -->
+                <div class="input-container">
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    [(ngModel)]="formData.lastName"
+                    (focus)="focused['lastName'] = true"
+                    (blur)="focused['lastName'] = false"
+                    [ngClass]="{ 'has-value': formData.lastName }"
+                    />
+                    <label for="lastName">Họ</label>
+                    <div class="underline"></div>
+                  </div>
+                  <div class="input-container">
+                    <input
+                      type="text"
+                      id="firstName"
+                      name="firstName"
+                      [(ngModel)]="formData.firstName"
+                      (focus)="focused['firstName'] = true"
+                      (blur)="focused['firstName'] = false"
+                      [ngClass]="{ 'has-value': formData.firstName }"
+                      />
+                      <label for="firstName">Tên</label>
+                      <div class="underline"></div>
+                    </div>
+                    <div class="input-container">
+                      <input
+                        type="text"
+                        id="displayName"
+                        name="displayName"
+                        [(ngModel)]="formData.displayName"
+                        (focus)="focused['displayName'] = true"
+                        (blur)="focused['displayName'] = false"
+                        [ngClass]="{ 'has-value': formData.displayName }"
+                        />
+                        <label for="displayName">Tên hiển thị</label>
+                        <div class="underline"></div>
+                      </div>
+                      <div class="input-container">
+                        <app-dropdown-button
+                          [label]="'Học vấn'"
+                          [options]="educationOptions"
+                          [variant]="'primary'"
+                          [size]="'medium'"
+                          [customDropField]="'main-type'"
+                          [isDisplaySelectedOpptionLabels]="true"
+                          [removeSingleSelected]="true"
+                          [disabled]="false"
+                          name="education"
+                          id="education"
+                          typeSubmit="button"
+                        ></app-dropdown-button>
+                        <div class="underline"></div>
+                      </div>
+                      <div class="input-container">
+                        <input
+                          type="date"
+                          id="dob"
+                          name="dob"
+                          [(ngModel)]="formData.dob"
+                          (focus)="focused['dob'] = true"
+                          (blur)="focused['dob'] = false"
+                          [ngClass]="{ 'has-value': formData.dob }"
+                          />
+                          <label for="dob">Ngày sinh</label>
+                          <div class="underline"></div>
+                        </div>
 
-    <div class="login-nav">
-      Đã có tài khoản?
-      <div class="func">
-        <div class="router-login" (click)="backToLogin()">Đăng nhập</div>
-        |
-        <div class="router-login" (click)="onOtpClose()">Nhập OTP</div>
-      </div>
-    </div>
-  </div>
+                        <div class="input-container">
+                          <input
+                            type="text"
+                            id="city"
+                            name="city"
+                            [(ngModel)]="formData.city"
+                            (focus)="focused['city'] = true"
+                            (blur)="focused['city'] = false"
+                            [ngClass]="{ 'has-value': formData.city }"
+                            />
+                            <label for="city">Địa chỉ</label>
+                            <div class="underline"></div>
+                          </div>
+                          <div class="full-width-container">
+                            <input
+                              type="text"
+                              id="links"
+                              name="links"
+                              #linkInput
+                              [(ngModel)]="linkInputValue"
+                              [ngClass]="{ 'has-value': linkInputValue }"
+                              (keydown.enter)="addLink($event, linkInput)"
+                              (focus)="focused['links'] = true"
+                              (blur)="focused['links'] = false"
+                              class="input-link"
+                              />
+                              @if (!formData.links?.length) {
+                                <label for="links"
+                                  >Liên kết (VD: LinkedIn, Github... Enter để thêm)</label
+                                  >
+                              }
+                              @if (formData.links?.length) {
+                                <div class="link-list">
+                                  @for (link of formData.links; track link; let i = $index) {
+                                    <span
+                                      [title]="link"
+                                      >
+                                      {{ truncateString(link) }}
+                                      <button type="button" (click)="removeLink(i)">×</button>
+                                    </span>
+                                  }
+                                </div>
+                              }
+                              <div class="underline"></div>
+                            </div>
+                            <div class="full-width-container">
+                              <textarea
+                                id="bio"
+                                name="bio"
+                                rows="2"
+                                [(ngModel)]="formData.bio"
+                                (focus)="focused['bio'] = true"
+                                (blur)="focused['bio'] = false"
+                                [ngClass]="{ 'has-value': formData.bio }"
+                              ></textarea>
+                              <label for="bio">Giới thiệu bản thân</label>
+                              <div class="underline"></div>
+                            </div>
+                          </div>
 
-  <!-- Phần trái: Slider -->
-  <div class="login-slider">
-    <div class="slider-content">
-      <img
-        [src]="slides[currentSlide].img"
-        alt="Slide image"
-        class="slider-image"
-      />
-      <h2 class="title">{{ slides[currentSlide].title }}</h2>
-      <p class="description">{{ slides[currentSlide].desc }}</p>
-      <div class="dots">
-        <span
-          *ngFor="let slide of slides; let i = index"
-          [class.active]="i === currentSlide"
-        ></span>
-      </div>
-    </div>
-  </div>
-</div>
+                          <button type="submit" class="primary-btn">Đăng ký</button>
+                        </form>
 
-<app-otp-modal
-  [show]="openOTP"
-  [email]="formData.email"
-  (resend)="onOtpResend()"
-  (close)="onOtpClose()"
-  (verify)="onOtpVerify($event)"
-  (emailChange)="formData.email= $event"
-  [loading]="resendingOTP"
-></app-otp-modal>
+                        <div class="login-nav">
+                          Đã có tài khoản?
+                          <div class="func">
+                            <div class="router-login" (click)="backToLogin()">Đăng nhập</div>
+                            |
+                            <div class="router-login" (click)="onOtpClose()">Nhập OTP</div>
+                          </div>
+                        </div>
+                      </div>
 
-<app-loading-overlay
-  [visible]="isLoading"
-  [message]="'Đang xử lý, xin chờ...'"
-></app-loading-overlay>
+                      <!-- Phần trái: Slider -->
+                      <div class="login-slider">
+                        <div class="slider-content">
+                          <img
+                            [src]="slides[currentSlide].img"
+                            alt="Slide image"
+                            class="slider-image"
+                            />
+                            <h2 class="title">{{ slides[currentSlide].title }}</h2>
+                            <p class="description">{{ slides[currentSlide].desc }}</p>
+                            <div class="dots">
+                              @for (slide of slides; track slide; let i = $index) {
+                                <span
+                                  [class.active]="i === currentSlide"
+                                ></span>
+                              }
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <app-otp-modal
+                        [show]="openOTP"
+                        [email]="formData.email"
+                        (resend)="onOtpResend()"
+                        (close)="onOtpClose()"
+                        (verify)="onOtpVerify($event)"
+                        (emailChange)="formData.email= $event"
+                        [loading]="resendingOTP"
+                      ></app-otp-modal>
+
+                      <app-loading-overlay
+                        [visible]="isLoading"
+                        [message]="'Đang xử lý, xin chờ...'"
+                      ></app-loading-overlay>

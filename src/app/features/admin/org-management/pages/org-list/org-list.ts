@@ -1,4 +1,4 @@
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { formatDate } from '../../../../../shared/utils/stringProcess';
 import { EnumType } from '../../../../../core/models/data-handle';
@@ -18,13 +18,12 @@ import { v4 as uuidv4 } from 'uuid';
   styleUrls: ['./org-list.scss'],
   imports: [
     TableComponent,
-    NgIf,
     NgClass,
     PaginationComponent,
     InputComponent,
     ButtonComponent,
-    DropdownButtonComponent,
-  ],
+    DropdownButtonComponent
+],
   standalone: true,
 })
 export class OrgListComponent {

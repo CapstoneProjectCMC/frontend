@@ -1,12 +1,10 @@
 <div class="history-container" appScrollEnd (appScrollEnd)="loadNextPage()">
   <h2 class="page-title">📘 Lịch sử nộp bài Code</h2>
 
-  <div class="history-list" *ngIf="submissions && !isLoadingInitial">
-    <div
-      class="history-card"
-      *ngFor="let item of submissions"
-      (click)="goToQuizDetails(item.exerciseId)"
-    >
+  @if (submissions && !isLoadingInitial) {
+  <div class="history-list">
+    @for (item of submissions; track item) {
+    <div class="history-card" (click)="goToQuizDetails(item.exerciseId)">
       <div class="card-header">
         <h3 class="exercise-title">{{ item.exerciseTitle }}</h3>
         <span
@@ -17,7 +15,6 @@
           {{ item.score }}/{{ item.totalPoints }}
         </span>
       </div>
-
       <div class="card-body">
         <div class="info">
           <span
@@ -28,7 +25,6 @@
           >
           <span><i class="fa fa-flag"></i> {{ item.status }}</span>
         </div>
-
         <div class="info">
           <span
             ><i class="fa fa-clock"></i> {{ item.timeTakenSeconds }} giây</span
@@ -38,7 +34,6 @@
             {{ item.submittedAt | date : "dd/MM/yyyy HH:mm" }}</span
           >
         </div>
-
         <div class="progress-bar">
           <div
             class="progress-fill"
@@ -47,20 +42,15 @@
         </div>
       </div>
     </div>
+    }
   </div>
-
-  <div
-    *ngIf="submissions?.length === 0 && !isLoadingInitial && !isLoadingNextPage"
-    class="no-data-container"
-  >
+  } @if (submissions.length === 0 && !isLoadingInitial && !isLoadingNextPage) {
+  <div class="no-data-container">
     <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
     </ng-lottie>
     <p>Không có dữ liệu</p>
   </div>
-
-  <app-skeleton-loading
-    *ngIf="isLoadingInitial"
-    type="list"
-    [count]="8"
-  ></app-skeleton-loading>
+  } @if (isLoadingInitial) {
+  <app-skeleton-loading type="list" [count]="8"></app-skeleton-loading>
+  }
 </div>

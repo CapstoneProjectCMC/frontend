@@ -2,7 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { PostCardComponent } from '../../../../shared/components/my-shared/post-card/post-card';
-import { CommonModule } from '@angular/common';
+
 import {
   PostCardInfo,
   PostResponse,
@@ -31,14 +31,13 @@ import { openModalNotification } from '../../../../shared/utils/notification';
     InputComponent,
     DropdownButtonComponent,
     PostCardComponent,
-    CommonModule,
     PopularPostComponent,
     SkeletonLoadingComponent,
     TrendingComponent,
     LottieComponent,
     ScrollEndDirective,
-    BtnType1Component,
-  ],
+    BtnType1Component
+],
   providers: [provideLottieOptions({ player: () => import('lottie-web') })],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

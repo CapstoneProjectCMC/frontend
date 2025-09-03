@@ -55,7 +55,7 @@
           [width]="'50px'"
           [height]="'50px'"
           variant="solid"
-        >
+          >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -67,126 +67,128 @@
             stroke-linecap="round"
             stroke-linejoin="round"
             class="lucide lucide-file-down-icon lucide-file-down"
-          >
+            >
             <path
               d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
-            />
-            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-            <path d="M12 18v-6" />
-            <path d="m9 15 3 3 3-3" />
-          </svg>
-        </app-button>
-        <app-button
-          (onClick)="handleImport()"
-          [width]="'50px'"
-          [height]="'50px'"
-          variant="solid"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-file-up-icon lucide-file-up"
-          >
-            <path
-              d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
-            />
-            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-            <path d="M12 12v6" />
-            <path d="m15 15-3-3-3 3" />
-          </svg>
-        </app-button>
-        <app-button
-          (onClick)="handleAdd()"
-          [width]="'50px'"
-          [height]="'50px'"
-          variant="outline"
-        >
-          <span style="font-size: 24px">+</span>
-        </app-button>
-      </div>
-    </div>
-
-    <app-table
-      [headers]="headers"
-      [data]="fakeOrgs"
-      [amountDataPerPage]="10"
-      [needNo]="true"
-      [needDelete]="false"
-      [needEdit]="false"
-      [needViewResult]="false"
-      [needswitch]="true"
-      [onSwitchClick]="handleSwitch"
-      [switchField]="'Status'"
-      [lockValue]="'Inactive'"
-      [openValue]="'Active'"
-      [pendingValue]="'Pending'"
-    >
-      <!-- Avatar + DisplayName + Popup Links -->
-      <ng-template #cell_Name let-row let-i="rowIndex">
-        <div style="display: flex; align-items: center; position: relative">
-          <img
-            *ngIf="row.LogoUrl!=null"
-            [src]="row.LogoUrl"
-            alt="avatar"
-            width="36"
-            height="36"
-            style="border-radius: 50%; margin-right: 8px"
-          />
-          <span
-            (click)="onDisplayNameClick(row)"
-            style="cursor: pointer; font-weight: 600"
-          >
-            {{ row.Name }}
-          </span>
+              />
+              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+              <path d="M12 18v-6" />
+              <path d="m9 15 3 3 3-3" />
+            </svg>
+          </app-button>
+          <app-button
+            (onClick)="handleImport()"
+            [width]="'50px'"
+            [height]="'50px'"
+            variant="solid"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="lucide lucide-file-up-icon lucide-file-up"
+              >
+              <path
+                d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"
+                />
+                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                <path d="M12 12v6" />
+                <path d="m15 15-3-3-3 3" />
+              </svg>
+            </app-button>
+            <app-button
+              (onClick)="handleAdd()"
+              [width]="'50px'"
+              [height]="'50px'"
+              variant="outline"
+              >
+              <span style="font-size: 24px">+</span>
+            </app-button>
+          </div>
         </div>
-      </ng-template>
 
-      <!-- Vai trò -->
-      <ng-template #cell_role let-row>
-        <span>
-          {{ row.role === 0 ? 'Học sinh' : row.role === 1 ? 'Admin tổ chức' :
-          row.role === 2 ? 'Giáo viên' : 'Khác' }}
-        </span>
-      </ng-template>
+        <app-table
+          [headers]="headers"
+          [data]="fakeOrgs"
+          [amountDataPerPage]="10"
+          [needNo]="true"
+          [needDelete]="false"
+          [needEdit]="false"
+          [needViewResult]="false"
+          [needswitch]="true"
+          [onSwitchClick]="handleSwitch"
+          [switchField]="'Status'"
+          [lockValue]="'Inactive'"
+          [openValue]="'Active'"
+          [pendingValue]="'Pending'"
+          >
+          <!-- Avatar + DisplayName + Popup Links -->
+          <ng-template #cell_Name let-row let-i="rowIndex">
+            <div style="display: flex; align-items: center; position: relative">
+              @if (row.LogoUrl!=null) {
+                <img
+                  [src]="row.LogoUrl"
+                  alt="avatar"
+                  width="36"
+                  height="36"
+                  style="border-radius: 50%; margin-right: 8px"
+                  />
+              }
+              <span
+                (click)="onDisplayNameClick(row)"
+                style="cursor: pointer; font-weight: 600"
+                >
+                {{ row.Name }}
+              </span>
+            </div>
+          </ng-template>
 
-      <!-- Trạng thái -->
-      <ng-template #cell_Status let-row>
-        <span
-          [style.color]="row.Status ===  'Active'? 'green' :row.Status === 'Inactive' ? 'red' : 'orange'"
-        >
-          {{ row.Status }}
-        </span>
-      </ng-template>
-    </app-table>
-  </div>
+          <!-- Vai trò -->
+          <ng-template #cell_role let-row>
+            <span>
+              {{ row.role === 0 ? 'Học sinh' : row.role === 1 ? 'Admin tổ chức' :
+              row.role === 2 ? 'Giáo viên' : 'Khác' }}
+            </span>
+          </ng-template>
 
-  <!-- Overlay Profile Popup -->
-  <div
-    *ngIf="openedOrg"
-    [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}"
-  >
-    <div
-      class="profile-popup-backdrop"
-      [ngClass]="{'hide': isClosing}"
-      (click)="closeProfilePopup()"
-    ></div>
-    <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
-      <button class="close-btn" (click)="closeProfilePopup()">×</button>
-      <!-- <app-profile-popup [user]="openedOrg"></app-profile-popup> -->
+          <!-- Trạng thái -->
+          <ng-template #cell_Status let-row>
+            <span
+              [style.color]="row.Status ===  'Active'? 'green' :row.Status === 'Inactive' ? 'red' : 'orange'"
+              >
+              {{ row.Status }}
+            </span>
+          </ng-template>
+        </app-table>
+      </div>
+
+      <!-- Overlay Profile Popup -->
+      @if (openedOrg) {
+        <div
+          [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}"
+          >
+          <div
+            class="profile-popup-backdrop"
+            [ngClass]="{'hide': isClosing}"
+            (click)="closeProfilePopup()"
+          ></div>
+          <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
+            <button class="close-btn" (click)="closeProfilePopup()">×</button>
+            <!-- <app-profile-popup [user]="openedOrg"></app-profile-popup> -->
+          </div>
+        </div>
+      }
+
+      <app-pagination
+        [totalData]="fakeOrgs.length"
+        [amountDataPerPage]="10"
+        [currentPageIndex]=" 1"
+        (onPageChange)="handlePageChange($event)"
+      ></app-pagination>
     </div>
-  </div>
-
-  <app-pagination
-    [totalData]="fakeOrgs.length"
-    [amountDataPerPage]="10"
-    [currentPageIndex]=" 1"
-    (onPageChange)="handlePageChange($event)"
-  ></app-pagination>
-</div>

@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { NgStyle } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ import { avatarUrlDefault } from '../../../../core/constants/value.constant';
   templateUrl: './profile-popup.html',
   styleUrls: ['./profile-popup.scss'],
   standalone: true,
-  imports: [NgFor, ButtonComponent, NgClass, NgIf, FollowPopup],
+  imports: [ButtonComponent, NgClass, FollowPopup],
 })
 export class ProfilePopupComponent {
   @Input() user!: SearchUserProfileResponse;

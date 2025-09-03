@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 export interface TrendingItem {
   name: string;
@@ -13,7 +13,7 @@ export interface TrendingItemWithLevel extends TrendingItem {
 
 @Component({
   selector: 'app-trending',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './trending.component.html',
   styleUrl: './trending.component.scss',
 })

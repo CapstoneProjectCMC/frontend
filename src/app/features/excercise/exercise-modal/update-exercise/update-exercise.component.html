@@ -2,14 +2,14 @@
   class="modal-overlay"
   [class.open]="isOpen"
   (click)="onOverlayClick($event)"
->
+  >
   <div class="modal-content" [class.open]="isOpen">
     <h2 class="modal-title">Cập nhật bài tập</h2>
 
     @if (errorMessage) {
-    <div class="error-banner">
-      {{ errorMessage }}
-    </div>
+      <div class="error-banner">
+        {{ errorMessage }}
+      </div>
     }
 
     <form [formGroup]="exerciseForm" (ngSubmit)="onSubmit()">
@@ -19,7 +19,7 @@
           class="form-step step-1"
           [class.active]="step === 1"
           [class.inactive]="step !== 1"
-        >
+          >
           <div class="form-grid">
             <div class="form-group checkbox-group">
               <label>
@@ -40,173 +40,177 @@
                 formControlName="title"
                 type="text"
                 placeholder="Nhập tiêu đề"
-              />
-              <div
-                class="error"
-                *ngIf="
+                />
+                @if (
                   exerciseForm.get('title')?.touched &&
                   exerciseForm.get('title')?.invalid
-                "
-              >
-                Tiêu đề là bắt buộc
+                  ) {
+                  <div
+                    class="error"
+                    >
+                    Tiêu đề là bắt buộc
+                  </div>
+                }
               </div>
-            </div>
 
-            <div class="form-group">
-              <label for="difficulty">Độ khó *</label>
-              <select id="difficulty" formControlName="difficulty">
-                <option *ngFor="let level of difficultyLevels" [value]="level">
-                  {{
-                    level === "EASY"
+              <div class="form-group">
+                <label for="difficulty">Độ khó *</label>
+                <select id="difficulty" formControlName="difficulty">
+                  @for (level of difficultyLevels; track level) {
+                    <option [value]="level">
+                      {{
+                      level === "EASY"
                       ? "Dễ"
                       : level === "MEDIUM"
                       ? "Trung bình"
                       : level === "HARD"
                       ? "Khó"
                       : level
-                  }}
-                </option>
-              </select>
-            </div>
+                      }}
+                    </option>
+                  }
+                </select>
+              </div>
 
-            <div class="form-group">
-              <label for="cost">Chi phí (VNĐ)*</label>
-              <input
-                id="cost"
-                formControlName="cost"
-                type="number"
-                min="0"
-                placeholder="Nhập chi phí"
-              />
-              <div
-                class="error"
-                *ngIf="
-                  exerciseForm.get('cost')?.touched &&
-                  exerciseForm.get('cost')?.invalid
-                "
-              >
-                Chi phí là bắt buộc và phải >= 0
+              <div class="form-group">
+                <label for="cost">Chi phí (VNĐ)*</label>
+                <input
+                  id="cost"
+                  formControlName="cost"
+                  type="number"
+                  min="0"
+                  placeholder="Nhập chi phí"
+                  />
+                  @if (
+                    exerciseForm.get('cost')?.touched &&
+                    exerciseForm.get('cost')?.invalid
+                    ) {
+                    <div
+                      class="error"
+                      >
+                      Chi phí là bắt buộc và phải >= 0
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="modal-actions">
+                <button type="button" class="btn btn-primary" (click)="nextStep()">
+                  Tiếp tục
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onCancel()"
+                  >
+                  Hủy
+                </button>
               </div>
             </div>
-          </div>
 
-          <div class="modal-actions">
-            <button type="button" class="btn btn-primary" (click)="nextStep()">
-              Tiếp tục
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="onCancel()"
-            >
-              Hủy
-            </button>
-          </div>
-        </div>
-
-        <!-- Step 2: Additional Information -->
-        <div
-          class="form-step step-2"
-          [class.active]="step === 2"
-          [class.inactive]="step !== 2"
-        >
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="description">Mô tả</label>
-              <textarea
-                id="description"
-                formControlName="description"
-                placeholder="Nhập mô tả"
-              ></textarea>
-            </div>
-
-            <div class="form-group">
-              <label for="startTime">Thời gian bắt đầu</label>
-              <input
-                id="startTime"
-                formControlName="startTime"
-                type="datetime-local"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="endTime">Thời gian kết thúc</label>
-              <input
-                id="endTime"
-                formControlName="endTime"
-                type="datetime-local"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="duration">Thời lượng (phút)</label>
-              <input
-                id="duration"
-                formControlName="duration"
-                type="number"
-                min="0"
-                placeholder="Nhập thời lượng"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="allowDiscussionId">ID thảo luận</label>
-              <input
-                id="allowDiscussionId"
-                formControlName="allowDiscussionId"
-                type="text"
-                placeholder="Nhập ID thảo luận"
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="resourceIds"
-                >Resource IDs (phân cách bởi dấu phẩy)</label
+            <!-- Step 2: Additional Information -->
+            <div
+              class="form-step step-2"
+              [class.active]="step === 2"
+              [class.inactive]="step !== 2"
               >
-              <input
-                id="resourceIds"
-                formControlName="resourceIds"
-                type="text"
-                placeholder="VD: id1, id2"
-              />
-            </div>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="description">Mô tả</label>
+                  <textarea
+                    id="description"
+                    formControlName="description"
+                    placeholder="Nhập mô tả"
+                  ></textarea>
+                </div>
 
-            <div class="form-group">
-              <label for="tags">Tags (phân cách bởi dấu phẩy)</label>
-              <input
-                id="tags"
-                formControlName="tags"
-                type="text"
-                placeholder="VD: tag1, tag2"
-              />
-            </div>
+                <div class="form-group">
+                  <label for="startTime">Thời gian bắt đầu</label>
+                  <input
+                    id="startTime"
+                    formControlName="startTime"
+                    type="datetime-local"
+                    />
+                  </div>
 
-            <div class="form-group checkbox-group">
-              <label>
-                <input type="checkbox" formControlName="allowAiQuestion" />
-                Cho phép sử dụng AI
-              </label>
-            </div>
-          </div>
+                  <div class="form-group">
+                    <label for="endTime">Thời gian kết thúc</label>
+                    <input
+                      id="endTime"
+                      formControlName="endTime"
+                      type="datetime-local"
+                      />
+                    </div>
 
-          <div class="modal-actions">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="prevStep()"
-            >
-              Quay lại
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              [disabled]="isSubmitting"
-            >
-              {{ isSubmitting ? "Đang cập nhật..." : "Cập nhật" }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+                    <div class="form-group">
+                      <label for="duration">Thời lượng (phút)</label>
+                      <input
+                        id="duration"
+                        formControlName="duration"
+                        type="number"
+                        min="0"
+                        placeholder="Nhập thời lượng"
+                        />
+                      </div>
+
+                      <div class="form-group">
+                        <label for="allowDiscussionId">ID thảo luận</label>
+                        <input
+                          id="allowDiscussionId"
+                          formControlName="allowDiscussionId"
+                          type="text"
+                          placeholder="Nhập ID thảo luận"
+                          />
+                        </div>
+
+                        <div class="form-group">
+                          <label for="resourceIds"
+                            >Resource IDs (phân cách bởi dấu phẩy)</label
+                            >
+                            <input
+                              id="resourceIds"
+                              formControlName="resourceIds"
+                              type="text"
+                              placeholder="VD: id1, id2"
+                              />
+                            </div>
+
+                            <div class="form-group">
+                              <label for="tags">Tags (phân cách bởi dấu phẩy)</label>
+                              <input
+                                id="tags"
+                                formControlName="tags"
+                                type="text"
+                                placeholder="VD: tag1, tag2"
+                                />
+                              </div>
+
+                              <div class="form-group checkbox-group">
+                                <label>
+                                  <input type="checkbox" formControlName="allowAiQuestion" />
+                                  Cho phép sử dụng AI
+                                </label>
+                              </div>
+                            </div>
+
+                            <div class="modal-actions">
+                              <button
+                                type="button"
+                                class="btn btn-secondary"
+                                (click)="prevStep()"
+                                >
+                                Quay lại
+                              </button>
+                              <button
+                                type="submit"
+                                class="btn btn-primary"
+                                [disabled]="isSubmitting"
+                                >
+                                {{ isSubmitting ? "Đang cập nhật..." : "Cập nhật" }}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>

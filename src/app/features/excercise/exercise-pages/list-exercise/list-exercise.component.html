@@ -59,7 +59,8 @@
         </app-dropdown-button>
       </div>
 
-      <div *ngIf="isActionActive" class="create-exercise-btn">
+      @if (isActionActive) {
+      <div class="create-exercise-btn">
         <app-btn-type1
           thumb="+"
           [thumbSize]="24"
@@ -73,39 +74,26 @@
           (click)="toggleOpenModalGenerate()"
         ></app-btn-type1>
       </div>
+      }
     </div>
-    <div
-      class="list-exercise"
-      *ngIf="listExercise && !isLoading"
-      appScrollEnd
-      (appScrollEnd)="loadNextPage()"
-    >
-      <app-card-excercise
-        *ngFor="let item of listExercise"
-        [data]="item"
-        [exerciseId]="item.id"
-      >
+    @if (listExercise && !isLoading) {
+    <div class="list-exercise" appScrollEnd (appScrollEnd)="loadNextPage()">
+      @for (item of listExercise; track item.id) {
+      <app-card-excercise [data]="item" [exerciseId]="item.id">
       </app-card-excercise>
+      }
     </div>
-
-    <app-skeleton-loading
-      *ngIf="isLoading"
-      type="card"
-      [count]="8"
-    ></app-skeleton-loading>
-
-    <div
-      *ngIf="listExercise.length === 0 && !isLoading"
-      class="no-data-container"
-    >
+    } @if (isLoading) {
+    <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
+    } @if (listExercise.length === 0 && !isLoading) {
+    <div class="no-data-container">
       <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
       </ng-lottie>
       <p>Không có dữ liệu</p>
     </div>
-
-    <div *ngIf="isLoadingMore" class="loading-more">
-      Đang tải thêm, xin chờ...
-    </div>
+    } @if (isLoadingMore) {
+    <div class="loading-more">Đang tải thêm, xin chờ...</div>
+    }
   </div>
 </div>
 

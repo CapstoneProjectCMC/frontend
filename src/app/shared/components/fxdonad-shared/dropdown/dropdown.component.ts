@@ -9,7 +9,7 @@ import {
   OnInit,
   HostListener,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   ControlValueAccessor,
   FormsModule,
@@ -22,7 +22,7 @@ import { DropdownOption } from '../../../../core/models/data-handle';
 @Component({
   selector: 'app-dropdown-button',
   standalone: true,
-  imports: [CommonModule, FormsModule, InteractiveButtonComponent],
+  imports: [FormsModule, InteractiveButtonComponent],
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.scss'],
   providers: [

@@ -2,14 +2,14 @@
   class="modal-overlay"
   [class.open]="isOpen"
   (click)="onOverlayClick($event)"
->
+  >
   <div class="modal-content" [class.open]="isOpen">
     <h2 class="modal-title">Cập nhật câu hỏi và đáp án</h2>
 
     @if (errorMessage) {
-    <div class="error-banner">
-      {{ errorMessage }}
-    </div>
+      <div class="error-banner">
+        {{ errorMessage }}
+      </div>
     }
 
     <form [formGroup]="questionForm" (ngSubmit)="onSubmit()">
@@ -19,7 +19,7 @@
           class="form-step step-1"
           [class.active]="step === 1"
           [class.inactive]="step !== 1"
-        >
+          >
           <div class="form-grid">
             <div class="form-group">
               <label for="text">Nội dung câu hỏi *</label>
@@ -28,157 +28,166 @@
                 formControlName="text"
                 type="text"
                 placeholder="Nhập nội dung câu hỏi"
-              />
-              <div
-                class="error"
-                *ngIf="
+                />
+                @if (
                   questionForm.get('text')?.touched &&
                   questionForm.get('text')?.invalid
-                "
-              >
-                Nội dung là bắt buộc
+                  ) {
+                  <div
+                    class="error"
+                    >
+                    Nội dung là bắt buộc
+                  </div>
+                }
               </div>
-            </div>
-            <div class="form-group">
-              <label for="questionType">Loại câu hỏi *</label>
-              <select id="questionType" formControlName="questionType">
-                <option *ngFor="let type of questionTypes" [value]="type.value">
-                  {{ type.label }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="points">Điểm *</label>
-              <input
-                id="points"
-                formControlName="points"
-                type="number"
-                min="1"
-                placeholder="Nhập số điểm"
-              />
-              <div
-                class="error"
-                *ngIf="
-                  questionForm.get('points')?.touched &&
-                  questionForm.get('points')?.invalid
-                "
-              >
-                Điểm là bắt buộc và >= 1
+              <div class="form-group">
+                <label for="questionType">Loại câu hỏi *</label>
+                <select id="questionType" formControlName="questionType">
+                  @for (type of questionTypes; track type) {
+                    <option [value]="type.value">
+                      {{ type.label }}
+                    </option>
+                  }
+                </select>
               </div>
-            </div>
-            <div class="form-group">
-              <label for="orderInQuiz">Thứ tự trong bài *</label>
-              <input
-                id="orderInQuiz"
-                formControlName="orderInQuiz"
-                type="number"
-                min="1"
-                placeholder="Nhập thứ tự"
-              />
-              <div
-                class="error"
-                *ngIf="
-                  questionForm.get('orderInQuiz')?.touched &&
-                  questionForm.get('orderInQuiz')?.invalid
-                "
-              >
-                Thứ tự là bắt buộc và >= 1
-              </div>
-            </div>
-          </div>
-
-          <div class="modal-actions">
-            <button type="button" class="btn btn-primary" (click)="nextStep()">
-              Tiếp tục
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="onCancel()"
-            >
-              Hủy
-            </button>
-          </div>
-        </div>
-
-        <!-- Step 2: Danh sách đáp án -->
-        <div
-          class="form-step step-2"
-          [class.active]="step === 2"
-          [class.inactive]="step !== 2"
-        >
-          <div class="form-grid">
-            <div class="form-group" style="grid-column: 1 / -1">
-              <label>Danh sách đáp án *</label>
-              <div formArrayName="options" class="options">
-                <div *ngFor="let option of options.controls; let i = index">
-                  <ng-container *ngIf="!option.get('delete')?.value">
-                    <div [formGroupName]="i" class="option-fields">
-                      <span class="option-order">{{
-                        option.get("order")?.value
-                      }}</span>
-                      <input
-                        type="text"
-                        formControlName="optionText"
-                        placeholder="Nội dung đáp án"
-                        class="option-text"
-                      />
-                      <label class="option-correct">
-                        <input
-                          type="checkbox"
-                          formControlName="correct"
-                          (change)="onCorrectChange(i)"
-                        />
-                        Đúng
-                      </label>
-                      <button
-                        type="button"
-                        class="btn btn-secondary remove"
-                        (click)="markOptionAsDeleted(i)"
-                        [disabled]="option.get('delete')?.value"
-                        title="Xóa đáp án"
+              <div class="form-group">
+                <label for="points">Điểm *</label>
+                <input
+                  id="points"
+                  formControlName="points"
+                  type="number"
+                  min="1"
+                  placeholder="Nhập số điểm"
+                  />
+                  @if (
+                    questionForm.get('points')?.touched &&
+                    questionForm.get('points')?.invalid
+                    ) {
+                    <div
+                      class="error"
                       >
-                        <i class="fa fa-trash"></i>
-                      </button>
+                      Điểm là bắt buộc và >= 1
                     </div>
-                  </ng-container>
+                  }
+                </div>
+                <div class="form-group">
+                  <label for="orderInQuiz">Thứ tự trong bài *</label>
+                  <input
+                    id="orderInQuiz"
+                    formControlName="orderInQuiz"
+                    type="number"
+                    min="1"
+                    placeholder="Nhập thứ tự"
+                    />
+                    @if (
+                      questionForm.get('orderInQuiz')?.touched &&
+                      questionForm.get('orderInQuiz')?.invalid
+                      ) {
+                      <div
+                        class="error"
+                        >
+                        Thứ tự là bắt buộc và >= 1
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="modal-actions">
+                  <button type="button" class="btn btn-primary" (click)="nextStep()">
+                    Tiếp tục
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="onCancel()"
+                    >
+                    Hủy
+                  </button>
                 </div>
               </div>
+
+              <!-- Step 2: Danh sách đáp án -->
               <div
-                *ngIf="emptyOptionError"
-                class="error"
-                style="margin-top: 8px"
-              >
-                Vui lòng nhập nội dung cho tất cả các đáp án.
-              </div>
-              <div
-                *ngIf="noCorrectOptionError"
-                class="error"
-                style="margin-top: 8px"
-              >
-                Vui lòng chọn ít nhất 1 đáp án đúng.
-              </div>
+                class="form-step step-2"
+                [class.active]="step === 2"
+                [class.inactive]="step !== 2"
+                >
+                <div class="form-grid">
+                  <div class="form-group" style="grid-column: 1 / -1">
+                    <label>Danh sách đáp án *</label>
+                    <div formArrayName="options" class="options">
+                      @for (option of options.controls; track option; let i = $index) {
+                        <div>
+                          @if (!option.get('delete')?.value) {
+                            <div [formGroupName]="i" class="option-fields">
+                              <span class="option-order">{{
+                                option.get("order")?.value
+                              }}</span>
+                              <input
+                                type="text"
+                                formControlName="optionText"
+                                placeholder="Nội dung đáp án"
+                                class="option-text"
+                                />
+                                <label class="option-correct">
+                                  <input
+                                    type="checkbox"
+                                    formControlName="correct"
+                                    (change)="onCorrectChange(i)"
+                                    />
+                                    Đúng
+                                  </label>
+                                  <button
+                                    type="button"
+                                    class="btn btn-secondary remove"
+                                    (click)="markOptionAsDeleted(i)"
+                                    [disabled]="option.get('delete')?.value"
+                                    title="Xóa đáp án"
+                                    >
+                                    <i class="fa fa-trash"></i>
+                                  </button>
+                                </div>
+                              }
+                            </div>
+                          }
+                        </div>
+                        @if (emptyOptionError) {
+                          <div
+                            class="error"
+                            style="margin-top: 8px"
+                            >
+                            Vui lòng nhập nội dung cho tất cả các đáp án.
+                          </div>
+                        }
+                        @if (noCorrectOptionError) {
+                          <div
+                            class="error"
+                            style="margin-top: 8px"
+                            >
+                            Vui lòng chọn ít nhất 1 đáp án đúng.
+                          </div>
+                        }
+                      </div>
+                    </div>
+
+                    <div class="modal-actions">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        (click)="prevStep()"
+                        >
+                        Quay lại
+                      </button>
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        [disabled]="isSubmitting"
+                        >
+                        {{ isSubmitting ? "Đang cập nhật..." : "Cập nhật" }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-
-          <div class="modal-actions">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="prevStep()"
-            >
-              Quay lại
-            </button>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              [disabled]="isSubmitting"
-            >
-              {{ isSubmitting ? "Đang cập nhật..." : "Cập nhật" }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>

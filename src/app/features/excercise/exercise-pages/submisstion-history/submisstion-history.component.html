@@ -1,69 +1,72 @@
 <div class="history-container" appScrollEnd (appScrollEnd)="loadNextPage()">
   <h2 class="page-title">📘 Tất cả lịch sử bài đã nộp</h2>
 
-  <div class="history-list" *ngIf="submissions && !isLoadingInitial">
-    <div
-      class="history-card"
-      *ngFor="let item of submissions"
-      (click)="goToExerciseDetails(item.exerciseId, item.exerciseType)"
-    >
-      <div class="card-header">
-        <h3 class="exercise-title">{{ item.exerciseTitle }}</h3>
-        <span
-          class="score"
-          [class.passed]="item.score === item.totalPoints"
-          [class.failed]="item.score < item.totalPoints"
-        >
-          {{ item.score }}/{{ item.totalPoints }}
-        </span>
-      </div>
-
-      <div class="card-body">
-        <div class="info">
-          <span
-            ><i class="fa fa-clock"></i>
-            {{ item.timeTakenSeconds | durationFormat }}</span
+  @if (submissions && !isLoadingInitial) {
+    <div class="history-list">
+      @for (item of submissions; track item) {
+        <div
+          class="history-card"
+          (click)="goToExerciseDetails(item.exerciseId, item.exerciseType)"
           >
-          <span
-            ><i class="fa fa-calendar"></i>
-            {{ item.submittedAt | date : "dd/MM/yyyy HH:mm" }}</span
-          >
-          <span
-            ><i
-              class="fa"
+          <div class="card-header">
+            <h3 class="exercise-title">{{ item.exerciseTitle }}</h3>
+            <span
+              class="score"
+              [class.passed]="item.score === item.totalPoints"
+              [class.failed]="item.score < item.totalPoints"
+              >
+              {{ item.score }}/{{ item.totalPoints }}
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="info">
+              <span
+                ><i class="fa fa-clock"></i>
+                {{ item.timeTakenSeconds | durationFormat }}</span
+                >
+                <span
+                  ><i class="fa fa-calendar"></i>
+                  {{ item.submittedAt | date : "dd/MM/yyyy HH:mm" }}</span
+                  >
+                  <span
+                    ><i
+                    class="fa"
               [class]="
                 item.exerciseType === 'QUIZ' ? 'fa-circle-question' : 'fa-code'
               "
-            ></i>
-            {{ item.exerciseType === "QUIZ" ? "Trắc nghiệm" : "Viết mã" }}</span
+                  ></i>
+                  {{ item.exerciseType === "QUIZ" ? "Trắc nghiệm" : "Viết mã" }}</span
+                  >
+                </div>
+                <div class="progress-bar">
+                  <div
+                    class="progress-fill"
+                    [style.width.%]="(item.score / item.totalPoints) * 100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (
+        (!submissions || submissions.length === 0) &&
+        !isLoadingInitial && !isLoadingNextPage
+        ) {
+        <div
+          class="no-data-container"
           >
+          <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+          </ng-lottie>
+          <p>Không có dữ liệu</p>
         </div>
+      }
 
-        <div class="progress-bar">
-          <div
-            class="progress-fill"
-            [style.width.%]="(item.score / item.totalPoints) * 100"
-          ></div>
-        </div>
-      </div>
+      @if (isLoadingInitial) {
+        <app-skeleton-loading
+          type="list"
+          [count]="8"
+        ></app-skeleton-loading>
+      }
     </div>
-  </div>
-
-  <div
-    *ngIf="
-      (!submissions || submissions.length === 0) &&
-      !isLoadingInitial && !isLoadingNextPage
-    "
-    class="no-data-container"
-  >
-    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
-    </ng-lottie>
-    <p>Không có dữ liệu</p>
-  </div>
-
-  <app-skeleton-loading
-    *ngIf="isLoadingInitial"
-    type="list"
-    [count]="8"
-  ></app-skeleton-loading>
-</div>

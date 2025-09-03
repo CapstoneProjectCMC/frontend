@@ -5,7 +5,7 @@ import { cpp } from '@codemirror/lang-cpp';
 import { javascript } from '@codemirror/lang-javascript';
 import { java } from '@codemirror/lang-java';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ThemeService } from '../../../../styles/theme-service/theme.service';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,7 @@ import { placeholder } from '@codemirror/view';
 @Component({
   selector: 'app-code-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.scss'],
 })
