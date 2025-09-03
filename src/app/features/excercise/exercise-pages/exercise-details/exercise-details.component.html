@@ -11,312 +11,282 @@
             class="avatar"
             [src]="avatarUrl ? avatarUrl : avatarUrlDefault"
             alt="Avatar"
-            />
-            <div class="info-main">
-              <h2>{{ exercise.title }}</h2>
-              <div class="author">
-                <i class="fa fa-user"></i>
-                <span>{{ authorName ? authorName : "Ẩn danh" }}</span>
-              </div>
+          />
+          <div class="info-main">
+            <h2>{{ exercise.title }}</h2>
+            <div class="author">
+              <i class="fa fa-user"></i>
+              <span>{{ authorName ? authorName : "Ẩn danh" }}</span>
             </div>
           </div>
-          @if (isActionActive) {
-            <div class="actions">
-              <div class="dropdown-wrapper">
-                <button
-                  class="icon-btn edit-dropdown-toggle"
-                  (click)="toggleMainDropdown()"
-                  >
-                  <i class="fa fa-edit"></i>
-                  <span>Sửa bài tập</span>
-                </button>
-                @if (isMainDropdownOpen) {
-                  <div class="edit-dropdown">
-                    <ul>
-                      <li (click)="openUpdateExercise(); toggleMainDropdown()">
-                        <i class="fa fa-info-circle"></i> Sửa thông tin
-                      </li>
-                      <li (click)="openAddNewQuestion(); toggleMainDropdown()">
-                        <i class="fa fa-plus-circle"></i> Thêm câu hỏi
-                      </li>
-                    </ul>
-                  </div>
-                }
-              </div>
-              <button
-                class="icon-btn delete"
-                title="Xóa bài tập"
-                (click)="openConfirmDelete()"
-                >
-                <i class="fa fa-trash"></i>
-                <span>Xóa bài tập</span>
-              </button>
-            </div>
-          }
         </div>
+        @if (isActionActive) {
+        <div class="actions">
+          <div class="dropdown-wrapper">
+            <button
+              class="icon-btn edit-dropdown-toggle"
+              (click)="toggleMainDropdown()"
+            >
+              <i class="fa fa-edit"></i>
+              <span>Sửa bài tập</span>
+            </button>
+            @if (isMainDropdownOpen) {
+            <div class="edit-dropdown">
+              <ul>
+                <li (click)="openUpdateExercise(); toggleMainDropdown()">
+                  <i class="fa fa-info-circle"></i> Sửa thông tin
+                </li>
+                <li (click)="openAddNewQuestion(); toggleMainDropdown()">
+                  <i class="fa fa-plus-circle"></i> Thêm câu hỏi
+                </li>
+              </ul>
+            </div>
+            }
+          </div>
+          <button
+            class="icon-btn delete"
+            title="Xóa bài tập"
+            (click)="openConfirmDelete()"
+          >
+            <i class="fa fa-trash"></i>
+            <span>Xóa bài tập</span>
+          </button>
+        </div>
+        }
+      </div>
 
-        <div class="meta">
-          <span class="badge" title="Loại bài tập">
-            <i
-              class="fa"
+      <div class="meta">
+        <span class="badge" title="Loại bài tập">
+          <i
+            class="fa"
             [ngClass]="
               exercise.exerciseType === 'QUIZ'
                 ? 'fa-book'
                 : 'fa-solid fa-file-code'
             "
-            ></i>
-            {{ exercise.exerciseType }}
-          </span>
-          <span
-            class="badge difficulty-badge"
-            [ngClass]="exercise.difficulty"
-            title="Độ khó"
-            >
-            @for (star of difficultyStars; track star) {
-              <span>
-                <i
-                  class="fa"
+          ></i>
+          {{ exercise.exerciseType }}
+        </span>
+        <span
+          class="badge difficulty-badge"
+          [ngClass]="exercise.difficulty"
+          title="Độ khó"
+        >
+          @for (star of difficultyStars; track star) {
+          <span>
+            <i
+              class="fa"
               [ngClass]="
                 star <= difficultyLevel ? 'fa-star' : 'fa-regular fa-star'
               "
-                ></i>
-              </span>
-            }
-            <span class="difficulty-label">
-              {{
-              exercise.difficulty === "EASY"
-              ? "Dễ"
-              : exercise.difficulty === "MEDIUM"
-              ? "Trung bình"
-              : exercise.difficulty === "HARD"
-              ? "Khó"
-              : exercise.difficulty
-              }}
-            </span>
-          </span>
-          @if (exercise.orgId) {
-            <span
-              class="badge"
-              title="Nội bộ"
-              >
-              <i class="fa fa-building"></i> Nội bộ
-            </span>
-          } @else {
-            <span class="badge" title="Công khai">
-              <i class="fa fa-globe"></i> Công khai
-            </span>
-          }
-          <span class="badge" title="Trạng thái">
-            <i
-              class="fa"
-              [ngClass]="exercise.visibility ? 'fa-users' : 'fa-user-lock'"
             ></i>
-            {{ exercise.visibility ? "Tất cả" : "Chỉ định" }}
           </span>
-        </div>
-
-        <div class="details">
-          <p>{{ exercise.description }}</p>
-        </div>
-
-        <div class="tags">
-          <i class="fa fa-tags"></i>
-          @for (tag of exercise.tags?.slice(0, 3) || []; track tag) {
-            <span class="tag">
-              #{{ tag }}
-            </span>
           }
-
-          <div style="position: relative">
-            <app-tooltip
-              [content]="(exercise.tags || []).slice(3).join(', ')"
-              [position]="'right'"
-              [delay]="0.5"
-              [distance]="10"
-              >
-              @if ((exercise.tags?.length || 0) > 3) {
-                <span class="tag other">
-                  +{{ (exercise.tags.length || 0) - 3 }}
-                </span>
-              }
-            </app-tooltip>
-          </div>
-        </div>
-
-        <div class="time-info">
-          <i class="fa-regular fa-clock"></i>
-          <span>
+          <span class="difficulty-label">
             {{
-            exercise.startTime
-            ? (exercise.startTime | date : "dd/MM/yyyy HH:mm")
-            : "Có thể làm"
-            }}
-            -
-            {{
-            exercise.endTime
-            ? (exercise.endTime | date : "dd/MM/yyyy HH:mm")
-            : "Chưa đặt hạn"
+              exercise.difficulty === "EASY"
+                ? "Dễ"
+                : exercise.difficulty === "MEDIUM"
+                ? "Trung bình"
+                : exercise.difficulty === "HARD"
+                ? "Khó"
+                : exercise.difficulty
             }}
           </span>
+        </span>
+        @if (exercise.orgId) {
+        <span class="badge" title="Nội bộ">
+          <i class="fa fa-building"></i> Nội bộ
+        </span>
+        } @else {
+        <span class="badge" title="Công khai">
+          <i class="fa fa-globe"></i> Công khai
+        </span>
+        }
+        <span class="badge" title="Trạng thái">
+          <i
+            class="fa"
+            [ngClass]="exercise.visibility ? 'fa-users' : 'fa-user-lock'"
+          ></i>
+          {{ exercise.visibility ? "Tất cả" : "Chỉ định" }}
+        </span>
+      </div>
+
+      <div class="details">
+        <p>{{ exercise.description }}</p>
+      </div>
+
+      <div class="tags">
+        <i class="fa fa-tags"></i>
+        @for (tag of exercise.tags.slice(0, 3) || []; track tag) {
+        <span class="tag"> #{{ tag }} </span>
+        }
+
+        <div style="position: relative">
+          <app-tooltip
+            [content]="(exercise.tags || []).slice(3).join(', ')"
+            [position]="'right'"
+            [delay]="0.5"
+            [distance]="10"
+          >
+            @if ((exercise.tags.length || 0) > 3) {
+            <span class="tag other">
+              +{{ (exercise.tags.length || 0) - 3 }}
+            </span>
+            }
+          </app-tooltip>
         </div>
+      </div>
 
-        <div class="stats">
-          <span title="Số câu hỏi"
-            ><i class="fa-regular fa-question-circle"></i>
-            {{ exercise.quizDetail?.totalElements ?? 0 }}</span
-            >
-            <span title="Thời lượng"
-              ><i class="fa-regular fa-hourglass-half"></i>
-              {{ exercise.duration }} phút</span
+      <div class="time-info">
+        <i class="fa-regular fa-clock"></i>
+        <span>
+          {{
+            exercise.startTime
+              ? (exercise.startTime | date : "dd/MM/yyyy HH:mm")
+              : "Có thể làm"
+          }}
+          -
+          {{
+            exercise.endTime
+              ? (exercise.endTime | date : "dd/MM/yyyy HH:mm")
+              : "Chưa đặt hạn"
+          }}
+        </span>
+      </div>
+
+      <div class="stats">
+        <span title="Số câu hỏi"
+          ><i class="fa-regular fa-question-circle"></i>
+          {{ exercise.quizDetail?.totalElements ?? 0 }}</span
+        >
+        <span title="Thời lượng"
+          ><i class="fa-regular fa-hourglass-half"></i>
+          {{ exercise.duration }} phút</span
+        >
+        <span title="Giá"
+          ><i class="fa-solid fa-cart-shopping"></i
+          >{{ exercise.cost | formatView }} VNĐ</span
+        >
+      </div>
+
+      <div class="btn-container">
+        @if (!isBought && exercise.cost > 0) {
+        <button class="btn main" (click)="openRequestBuyExercise()">
+          <i class="fa-solid fa-cart-plus"></i> Mua bài tập
+        </button>
+        } @if ( hasQuestions && canStartDoing && (exercise.cost <= 0 ? true :
+        isBought) ) {
+        <button class="btn main" (click)="doingQuiz()">
+          <i class="fa fa-play"></i> Bắt đầu
+        </button>
+        }
+        <button class="btn other" (click)="goBack()">
+          <i class="fa fa-arrow-left"></i> Quay lại
+        </button>
+        @if (hasQuestions && isActionActive) {
+        <button class="btn other" (click)="openAssignExercise()">
+          <i class="fa-solid fa-business-time"></i> Giao bài tập
+        </button>
+        }
+      </div>
+    </div>
+
+    <!-- Vế phải: Danh sách câu hỏi -->
+    @if (isActionActive) {
+    <div class="exercise-questions">
+      <div class="questions-list">
+        @for (q of exercise.quizDetail?.questions; track q; let i = $index) {
+        <div class="question-item">
+          <div class="question-header">
+            <div class="btn-control">
+              @if (isActionActive) {
+              <button
+                class="icon-btn edit-dropdown-toggle"
+                (click)="toggleQuestionDropdown(i); $event.stopPropagation()"
               >
-              <span title="Giá"
-                ><i class="fa-solid fa-cart-shopping"></i
-                >{{ exercise.cost | formatView }} VNĐ</span
-                >
+                <i class="fa fa-ellipsis-h"></i>
+              </button>
+              } @if (openDropdownIndex === i) {
+              <div class="edit-dropdown" [@dropdownAnimation]>
+                <ul>
+                  <li (click)="onEditQuestion(i, q)">
+                    <i class="fa fa-pen"></i> Sửa câu hỏi
+                  </li>
+                  <li (click)="onAddOption(i, q.id)">
+                    <i class="fa fa-plus-circle"></i> Thêm đáp án
+                  </li>
+                  <li class="delete-option" (click)="toggleConfirmDelete(i)">
+                    <i class="fa fa-trash"></i> Xóa câu hỏi
+                  </li>
+                </ul>
               </div>
-
-              <div class="btn-container">
-                @if (!isBought && exercise.cost > 0) {
-                  <button
-                    class="btn main"
-                    (click)="openRequestBuyExercise()"
-                    >
-                    <i class="fa-solid fa-cart-plus"></i> Mua bài tập
-                  </button>
-                }
-                @if (
-                  hasQuestions &&
-                  canStartDoing &&
-                  (exercise.cost <= 0 ? true : isBought)
-                  ) {
-                  <button
-                    class="btn main"
-                    (click)="doingQuiz()"
-                    >
-                    <i class="fa fa-play"></i> Bắt đầu
-                  </button>
-                }
-                <button class="btn other" (click)="goBack()">
-                  <i class="fa fa-arrow-left"></i> Quay lại
+              }
+            </div>
+          </div>
+          @if (opentDeleteConfirm === i) {
+          <div class="confirm-modal-overlay" (click)="cancelDelete()">
+            <div class="confirm-modal" (click)="$event.stopPropagation()">
+              <p>Bạn có chắc chắn muốn xóa câu hỏi này?</p>
+              <div class="confirm-buttons">
+                <button (click)="onDeleteQuestion(exercise.id, q.id)">
+                  Xác nhận
                 </button>
-                @if (hasQuestions && isActionActive) {
-                  <button
-                    class="btn other"
-                    (click)="openAssignExercise()"
-                    >
-                    <i class="fa-solid fa-business-time"></i> Giao bài tập
-                  </button>
-                }
+                <button (click)="cancelDelete()">Hủy</button>
               </div>
             </div>
-
-            <!-- Vế phải: Danh sách câu hỏi -->
-            @if (isActionActive) {
-              <div class="exercise-questions">
-                <div class="questions-list">
-                  @for (q of exercise.quizDetail?.questions; track q; let i = $index) {
-                    <div
-                      class="question-item"
-                      >
-                      <div class="question-header">
-                        <div class="btn-control">
-                          @if (isActionActive) {
-                            <button
-                              class="icon-btn edit-dropdown-toggle"
-                              (click)="toggleQuestionDropdown(i); $event.stopPropagation()"
-                              >
-                              <i class="fa fa-ellipsis-h"></i>
-                            </button>
-                          }
-                          @if (openDropdownIndex === i) {
-                            <div
-                              class="edit-dropdown"
-                              [@dropdownAnimation]
-                              >
-                              <ul>
-                                <li (click)="onEditQuestion(i, q)">
-                                  <i class="fa fa-pen"></i> Sửa câu hỏi
-                                </li>
-                                <li (click)="onAddOption(i, q.id)">
-                                  <i class="fa fa-plus-circle"></i> Thêm đáp án
-                                </li>
-                                <li class="delete-option" (click)="toggleConfirmDelete(i)">
-                                  <i class="fa fa-trash"></i> Xóa câu hỏi
-                                </li>
-                              </ul>
-                            </div>
-                          }
-                        </div>
-                      </div>
-                      @if (opentDeleteConfirm === i) {
-                        <div
-                          class="confirm-modal-overlay"
-                          (click)="cancelDelete()"
-                          >
-                          <div class="confirm-modal" (click)="$event.stopPropagation()">
-                            <p>Bạn có chắc chắn muốn xóa câu hỏi này?</p>
-                            <div class="confirm-buttons">
-                              <button (click)="onDeleteQuestion(exercise.id, q.id)">
-                                Xác nhận
-                              </button>
-                              <button (click)="cancelDelete()">Hủy</button>
-                            </div>
-                          </div>
-                        </div>
-                      }
-                      <div class="question-title">{{ q.text }}</div>
-                      <div class="question-content">(Điểm: {{ q.points }})</div>
-                      <div class="question-options">
-                        @for (opt of q.options; track opt; let j = $index) {
-                          <div
-                            class="option"
-                            [class.correct]="opt.correct"
-                            >
-                            <span class="option-label">{{ getOptionLabel(j) }}.</span>
-                            {{ opt.optionText }}
-                            @if (opt.correct) {
-                              <span class="correct-icon" title="Đáp án đúng"
-                                ><i class="fa fa-check"></i
-                              ></span>
-                            }
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  }
-                </div>
-              </div>
+          </div>
+          }
+          <div class="question-title">{{ q.text }}</div>
+          <div class="question-content">(Điểm: {{ q.points }})</div>
+          <div class="question-options">
+            @for (opt of q.options; track opt; let j = $index) {
+            <div class="option" [class.correct]="opt.correct">
+              <span class="option-label">{{ getOptionLabel(j) }}.</span>
+              {{ opt.optionText }}
+              @if (opt.correct) {
+              <span class="correct-icon" title="Đáp án đúng"
+                ><i class="fa fa-check"></i
+              ></span>
+              }
+            </div>
             }
           </div>
         </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
 
-        <app-add-new-question
-          (submitQuestion)="onSubmitQuestion($event)"
-          [resetLoading]="resetLoadingFlag"
-          [isOpen]="isOpenAddNewQuestion"
-          (cancel)="cancelAddNew()"
-          >
-        </app-add-new-question>
+<app-add-new-question
+  (submitQuestion)="onSubmitQuestion($event)"
+  [resetLoading]="resetLoadingFlag"
+  [isOpen]="isOpenAddNewQuestion"
+  (cancel)="cancelAddNew()"
+>
+</app-add-new-question>
 
-        <app-add-new-option
-          [isOpen]="isOpenAddNewOption"
-          (cancel)="cancelAddNewOption()"
-          (submitOption)="onSubmitOption($event)"
-          >
-        </app-add-new-option>
+<app-add-new-option
+  [isOpen]="isOpenAddNewOption"
+  (cancel)="cancelAddNewOption()"
+  (submitOption)="onSubmitOption($event)"
+>
+</app-add-new-option>
 
-        <app-update-exercise
-          [isOpen]="isOpenUpdateExercise"
-          (cancel)="cancelUpdateExercise()"
-          [exercise]="exercise"
-          (updateSuccess)="onUpdateExercise()"
-          >
-        </app-update-exercise>
+<app-update-exercise
+  [isOpen]="isOpenUpdateExercise"
+  (cancel)="cancelUpdateExercise()"
+  [exercise]="exercise"
+  (updateSuccess)="onUpdateExercise()"
+>
+</app-update-exercise>
 
-        <app-update-question-option
-          [isOpen]="isUpdateQuestion"
-          [exerciseId]="exerciseId ?? ''"
-          [question]="selectedQuestion"
-          (updateSuccess)="onUpdateQuestionSuccess()"
-          (cancel)="closeUpdateModal()"
-        ></app-update-question-option>
+<app-update-question-option
+  [isOpen]="isUpdateQuestion"
+  [exerciseId]="exerciseId ?? ''"
+  [question]="selectedQuestion"
+  (updateSuccess)="onUpdateQuestionSuccess()"
+  (cancel)="closeUpdateModal()"
+></app-update-question-option>

@@ -7,87 +7,84 @@
     <div class="post-card__meta">
       <span class="post-card__author" [title]="post.author"
         >{{ post.author | truncate : 15}}</span
-        >
-        <span class="post-card__time">
-          {{ formatTime(post.time) }} - {{ post.public ? 'Công khai' : 'Nội bộ' }}
-        </span>
-      </div>
-      <div
-        class="post-card__popularity-dot"
-        [ngClass]="popularityClass"
-        [title]="'Độ phổ biến'"
-      ></div>
-    </header>
-
-    <main class="post-card__body">
-      <div class="post-card-description markdown-body">
-        <markdown [data]="post.description"></markdown>
-      </div>
-
-      @if (post.tags?.length) {
-        <div class="post-card__tags">
-          @for (tag of post.tags; track trackByFn($index, tag)) {
-            <span
-              class="post-card__tag"
-              >#{{ tag }}</span
-              >
-            }
-          </div>
-        }
-      </main>
-
-      <footer class="post-card__footer">
-        <div class="post-card__interactions">
-          <button
-            type="button"
-            class="post-card__button"
-            (click)="onUpvoteClick($event)"
-            title="Upvote"
-            >
-            <i class="fa-regular fa-thumbs-up"></i>
-            <span>{{ post.upvote }}</span>
-          </button>
-          <button
-            type="button"
-            class="post-card__button"
-            (click)="onDownvoteClick($event)"
-            title="Downvote"
-            >
-            <i class="fa-regular fa-thumbs-down"></i>
-            <span>{{ post.downvote }}</span>
-          </button>
-
-          @if (post.allowComment) {
-            <button
-              type="button"
-              class="post-card__button no-cursor"
-              (click)="onCommentClick($event)"
-              title="Bình luận"
-              >
-              <i class="fa-regular fa-comment"></i>
-              <span>{{ post.comment }}</span>
-            </button>
-          }
-        </div>
-        <div class="post-card__actions">
-          @if (active) {
-            <button
-              type="button"
-              class="post-card__button"
-              (click)="onDeleteClick($event)"
-              title="Xóa bài viết"
-              >
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          }
-          <button
-            type="button"
-            class="post-card__button"
-            (click)="onSaveClick($event)"
-            title="Lưu lại"
-            >
-            <i class="fa-regular fa-bookmark"></i>
-          </button>
-        </div>
-      </footer>
+      >
+      <span class="post-card__time">
+        {{ formatTime(post.time) }} - {{ post.public ? 'Công khai' : 'Nội bộ' }}
+      </span>
     </div>
+    <div
+      class="post-card__popularity-dot"
+      [ngClass]="popularityClass"
+      [title]="'Độ phổ biến'"
+    ></div>
+  </header>
+
+  <main class="post-card__body">
+    <div class="post-card-description markdown-body">
+      <markdown [data]="post.description"></markdown>
+    </div>
+
+    @if (post.tags.length) {
+    <div class="post-card__tags">
+      @for (tag of post.tags; track trackByFn($index, tag)) {
+      <span class="post-card__tag">#{{ tag }}</span>
+      }
+    </div>
+    }
+  </main>
+
+  <footer class="post-card__footer">
+    <div class="post-card__interactions">
+      <button
+        type="button"
+        class="post-card__button"
+        (click)="onUpvoteClick($event)"
+        title="Upvote"
+      >
+        <i class="fa-regular fa-thumbs-up"></i>
+        <span>{{ post.upvote }}</span>
+      </button>
+      <button
+        type="button"
+        class="post-card__button"
+        (click)="onDownvoteClick($event)"
+        title="Downvote"
+      >
+        <i class="fa-regular fa-thumbs-down"></i>
+        <span>{{ post.downvote }}</span>
+      </button>
+
+      @if (post.allowComment) {
+      <button
+        type="button"
+        class="post-card__button no-cursor"
+        (click)="onCommentClick($event)"
+        title="Bình luận"
+      >
+        <i class="fa-regular fa-comment"></i>
+        <span>{{ post.comment }}</span>
+      </button>
+      }
+    </div>
+    <div class="post-card__actions">
+      @if (active) {
+      <button
+        type="button"
+        class="post-card__button"
+        (click)="onDeleteClick($event)"
+        title="Xóa bài viết"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+      }
+      <button
+        type="button"
+        class="post-card__button"
+        (click)="onSaveClick($event)"
+        title="Lưu lại"
+      >
+        <i class="fa-regular fa-bookmark"></i>
+      </button>
+    </div>
+  </footer>
+</div>
