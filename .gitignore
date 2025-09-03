@@ -42,6 +42,6 @@ testem.log
 Thumbs.db
 
 # Environment files
-# /src/environments/*
+/src/environments/*
 .scannerwork/
 

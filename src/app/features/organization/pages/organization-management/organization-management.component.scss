@@ -61,6 +61,7 @@
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
+
     &.primary {
       background: var(--button-color);
       color: var(--reverse-color-text);
