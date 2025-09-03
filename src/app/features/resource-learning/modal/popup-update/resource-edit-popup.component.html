@@ -5,48 +5,50 @@
       <button class="close-btn" (click)="close.emit()">×</button>
     </div>
 
-    <div class="popup-body" *ngIf="!isLoading && resource">
-      <label>File hiện tại:</label>
-      <div class="readonly-field">{{ resource.fileName | truncate : 40 }}</div>
+    @if (!isLoading && resource) {
+      <div class="popup-body">
+        <label>File hiện tại:</label>
+        <div class="readonly-field">{{ resource.fileName | truncate : 40 }}</div>
+        <label>Thumbnail URL:</label>
+        <input [(ngModel)]="resource.thumbnailUrl" type="text" />
+        <label>Mô tả:</label>
+        <textarea [(ngModel)]="resource.description"></textarea>
+        <label>Category:</label>
+        <select [(ngModel)]="resource.category">
+          <option [ngValue]="0">Image</option>
+          <option [ngValue]="1">Video</option>
+          <option [ngValue]="2">Regular File</option>
+          <option [ngValue]="3">Other</option>
+        </select>
+        <label>Tags (cách nhau bằng dấu phẩy):</label>
+        <input
+          [ngModel]="tagInput"
+          (ngModelChange)="handleTagInputChange($event)"
+          class="tags-input"
+          />
+          <label>Chế độ hiển thị:</label>
+          <select [(ngModel)]="visibility">
+            <option value="community">Cộng đồng chung</option>
+            <option value="organization">Chỉ tổ chức</option>
+          </select>
+          <label>Upload File mới (nếu muốn thay):</label>
+          <input type="file" (change)="onFileSelected($event)" />
+          @if (selectedFile) {
+            <div>File mới: {{ selectedFile.name }}</div>
+          }
+        </div>
+      }
 
-      <label>Thumbnail URL:</label>
-      <input [(ngModel)]="resource.thumbnailUrl" type="text" />
+      <div class="popup-footer">
+        <button (click)="close.emit()">Hủy</button>
+        <button (click)="saveChanges()" [disabled]="isLoading">Lưu</button>
+      </div>
 
-      <label>Mô tả:</label>
-      <textarea [(ngModel)]="resource.description"></textarea>
-
-      <label>Category:</label>
-      <select [(ngModel)]="resource.category">
-        <option [ngValue]="0">Image</option>
-        <option [ngValue]="1">Video</option>
-        <option [ngValue]="2">Regular File</option>
-        <option [ngValue]="3">Other</option>
-      </select>
-
-      <label>Tags (cách nhau bằng dấu phẩy):</label>
-      <input
-        [ngModel]="tagInput"
-        (ngModelChange)="handleTagInputChange($event)"
-        class="tags-input"
-      />
-
-      <label>Chế độ hiển thị:</label>
-      <select [(ngModel)]="visibility">
-        <option value="community">Cộng đồng chung</option>
-        <option value="organization">Chỉ tổ chức</option>
-      </select>
-
-      <label>Upload File mới (nếu muốn thay):</label>
-      <input type="file" (change)="onFileSelected($event)" />
-      <div *ngIf="selectedFile">File mới: {{ selectedFile.name }}</div>
+      @if (isLoading) {
+        <div class="loading">Đang xử lý...</div>
+      }
+      @if (errorMessage) {
+        <div class="error">{{ errorMessage }}</div>
+      }
     </div>
-
-    <div class="popup-footer">
-      <button (click)="close.emit()">Hủy</button>
-      <button (click)="saveChanges()" [disabled]="isLoading">Lưu</button>
-    </div>
-
-    <div *ngIf="isLoading" class="loading">Đang xử lý...</div>
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
   </div>
-</div>

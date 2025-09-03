@@ -2,27 +2,29 @@
   class="profile-menu"
   [class.visible]="isVisible"
   [class.fadeout]="!isVisible"
->
-  <button
-    class="profile-menu-btn"
-    (click)="openChangePasswordModal()"
-    *ngIf="!needSetNewPass"
   >
-    <div class="icon">
-      <i class="fa-solid fa-key"></i>
-    </div>
-    Đổi mật khẩu
-  </button>
-  <button
-    class="profile-menu-btn"
-    (click)="openSetPasswordModal()"
-    *ngIf="needSetNewPass"
-  >
-    <div class="icon">
-      <i class="fa-solid fa-key"></i>
-    </div>
-    Đặt mật khẩu mới
-  </button>
+  @if (!needSetNewPass) {
+    <button
+      class="profile-menu-btn"
+      (click)="openChangePasswordModal()"
+      >
+      <div class="icon">
+        <i class="fa-solid fa-key"></i>
+      </div>
+      Đổi mật khẩu
+    </button>
+  }
+  @if (needSetNewPass) {
+    <button
+      class="profile-menu-btn"
+      (click)="openSetPasswordModal()"
+      >
+      <div class="icon">
+        <i class="fa-solid fa-key"></i>
+      </div>
+      Đặt mật khẩu mới
+    </button>
+  }
   <button class="profile-menu-btn" (click)="goToProfile()">
     <div class="icon">
       <i class="fa-solid fa-user"></i>

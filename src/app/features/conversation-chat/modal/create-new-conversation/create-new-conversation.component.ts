@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import {
@@ -26,7 +26,7 @@ import {
 @Component({
   selector: 'app-create-new-conversation',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './create-new-conversation.component.html',
   styleUrl: './create-new-conversation.component.scss',
 })

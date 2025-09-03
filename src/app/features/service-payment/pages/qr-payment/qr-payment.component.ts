@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription, interval, of } from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 import { Store } from '@ngrx/store';
 import { PaymentService } from '../../../../core/services/api-service/payment.service';
 import {
@@ -24,7 +24,7 @@ import { ModalNoticeService } from '../../../../shared/store/modal-notice-state/
 @Component({
   selector: 'app-qr-payment',
   standalone: true,
-  imports: [CommonModule, FormatViewPipe],
+  imports: [FormatViewPipe],
   templateUrl: './qr-payment.component.html',
   styleUrls: ['./qr-payment.component.scss'],
 })

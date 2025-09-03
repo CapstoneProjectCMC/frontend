@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   ElementRef,
@@ -23,7 +23,7 @@ import { Store } from '@ngrx/store';
   selector: 'app-video-player',
   templateUrl: './video-view.html',
   styleUrls: ['./video-view.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
 })
 export class VideoPlayerComponent
   implements AfterViewInit, OnChanges, OnInit, OnDestroy

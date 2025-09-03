@@ -1,4 +1,4 @@
-import { NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { PostCardInfo } from '../../../../../core/models/post.models';
 import { ButtonComponent } from '../../../../../shared/components/my-shared/button/button.component';
@@ -12,7 +12,7 @@ export interface TagInfo {
 @Component({
   selector: 'app-popular-post',
   standalone: true,
-  imports: [NgFor, ButtonComponent],
+  imports: [ButtonComponent],
   templateUrl: './popular-post.html',
   styleUrls: ['./popular-post.scss'],
 })

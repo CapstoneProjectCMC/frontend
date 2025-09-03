@@ -1,189 +1,193 @@
 <div class="text-editor-container">
   <!-- Toolbar -->
-  <div class="text-editor-toolbar" *ngIf="!config.readonly">
-    <!-- Text Formatting -->
-    <div class="toolbar-group">
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('bold')"
-        (click)="bold()"
-        title="In đậm (Ctrl+B)"
-        *ngIf="config.toolbar?.bold"
-      >
-        <i class="icon-bold">B</i>
-      </button>
+  @if (!config.readonly) {
+    <div class="text-editor-toolbar">
+      <!-- Text Formatting -->
+      <div class="toolbar-group">
+        @if (config.toolbar?.bold) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('bold')"
+            (click)="bold()"
+            title="In đậm (Ctrl+B)"
+            >
+            <i class="icon-bold">B</i>
+          </button>
+        }
+        @if (config.toolbar?.italic) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('italic')"
+            (click)="italic()"
+            title="In nghiêng (Ctrl+I)"
+            >
+            <i class="icon-italic">I</i>
+          </button>
+        }
+        @if (config.toolbar?.underline) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('underline')"
+            (click)="underline()"
+            title="Gạch chân (Ctrl+U)"
+            >
+            <i class="icon-underline">U</i>
+          </button>
+        }
+        @if (config.toolbar?.strikethrough) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('strikeThrough')"
+            (click)="strikethrough()"
+            title="Gạch ngang"
+            >
+            <i class="icon-strikethrough">S</i>
+          </button>
+        }
+      </div>
+      <!-- Text Alignment -->
+      <div class="toolbar-group">
+        @if (config.toolbar?.alignLeft) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('justifyLeft')"
+            (click)="alignLeft()"
+            title="Căn trái"
+            >
+            <i class="fa-regular fa-align-left"></i>
+          </button>
+        }
+        @if (config.toolbar?.alignCenter) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('justifyCenter')"
+            (click)="alignCenter()"
+            title="Căn giữa"
+            >
+            <i class="fa-solid fa-align-center"></i>
+          </button>
+        }
+        @if (config.toolbar?.alignRight) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('justifyRight')"
+            (click)="alignRight()"
+            title="Căn phải"
+            >
+            <i class="fa-solid fa-align-right"></i>
+          </button>
+        }
+        @if (config.toolbar?.alignJustify) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('justifyFull')"
+            (click)="alignJustify()"
+            title="Căn đều"
+            >
+            <i class="fa-solid fa-align-justify"></i>
+          </button>
+        }
+      </div>
+      <!-- Lists -->
+      <div class="toolbar-group">
+        @if (config.toolbar?.bulletList) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('insertUnorderedList')"
+            (click)="insertUnorderedList()"
+            title="Danh sách không đánh số"
+            >
+            <i class="icon-list-ul">•</i>
+          </button>
+        }
+        @if (config.toolbar?.numberedList) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            [class.active]="isCommandActive('insertOrderedList')"
+            (click)="insertOrderedList()"
+            title="Danh sách đánh số"
+            >
+            <i class="icon-list-ol">1.</i>
+          </button>
+        }
+      </div>
+      <!-- Indentation -->
+      <div class="toolbar-group">
+        @if (config.toolbar?.indent) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            (click)="indent()"
+            title="Thụt lề"
+            >
+            <i class="icon-indent">→</i>
+          </button>
+        }
+        @if (config.toolbar?.outdent) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            (click)="outdent()"
+            title="Giảm thụt lề"
+            >
+            <i class="icon-outdent">←</i>
+          </button>
+        }
+      </div>
+      <!-- Clear Format -->
+      <div class="toolbar-group">
+        @if (config.toolbar?.clearFormat) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            (click)="clearFormat()"
+            title="Xóa định dạng"
+            >
+            <i class="fa fa-text-slash"></i>
+          </button>
+        }
+        <!-- Nút upload ảnh -->
+        @if (config.toolbar?.image) {
+          <button
+            type="button"
+            class="toolbar-btn"
+            (click)="onImageUploadClick()"
+            title="Chèn ảnh"
+            >
+            <i class="fa-solid fa-image"></i>
+          </button>
+        }
+        <input
+          #imageInput
+          type="file"
+          accept="image/*"
+          style="display: none"
+          (change)="onImageSelected($event)"
+          />
+        </div>
+      </div>
+    }
 
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('italic')"
-        (click)="italic()"
-        title="In nghiêng (Ctrl+I)"
-        *ngIf="config.toolbar?.italic"
-      >
-        <i class="icon-italic">I</i>
-      </button>
-
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('underline')"
-        (click)="underline()"
-        title="Gạch chân (Ctrl+U)"
-        *ngIf="config.toolbar?.underline"
-      >
-        <i class="icon-underline">U</i>
-      </button>
-
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('strikeThrough')"
-        (click)="strikethrough()"
-        title="Gạch ngang"
-        *ngIf="config.toolbar?.strikethrough"
-      >
-        <i class="icon-strikethrough">S</i>
-      </button>
-    </div>
-
-    <!-- Text Alignment -->
-    <div class="toolbar-group">
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('justifyLeft')"
-        (click)="alignLeft()"
-        title="Căn trái"
-        *ngIf="config.toolbar?.alignLeft"
-      >
-        <i class="fa-regular fa-align-left"></i>
-      </button>
-
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('justifyCenter')"
-        (click)="alignCenter()"
-        title="Căn giữa"
-        *ngIf="config.toolbar?.alignCenter"
-      >
-        <i class="fa-solid fa-align-center"></i>
-      </button>
-
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('justifyRight')"
-        (click)="alignRight()"
-        title="Căn phải"
-        *ngIf="config.toolbar?.alignRight"
-      >
-        <i class="fa-solid fa-align-right"></i>
-      </button>
-
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('justifyFull')"
-        (click)="alignJustify()"
-        title="Căn đều"
-        *ngIf="config.toolbar?.alignJustify"
-      >
-        <i class="fa-solid fa-align-justify"></i>
-      </button>
-    </div>
-
-    <!-- Lists -->
-    <div class="toolbar-group">
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('insertUnorderedList')"
-        (click)="insertUnorderedList()"
-        title="Danh sách không đánh số"
-        *ngIf="config.toolbar?.bulletList"
-      >
-        <i class="icon-list-ul">•</i>
-      </button>
-
-      <button
-        type="button"
-        class="toolbar-btn"
-        [class.active]="isCommandActive('insertOrderedList')"
-        (click)="insertOrderedList()"
-        title="Danh sách đánh số"
-        *ngIf="config.toolbar?.numberedList"
-      >
-        <i class="icon-list-ol">1.</i>
-      </button>
-    </div>
-
-    <!-- Indentation -->
-    <div class="toolbar-group">
-      <button
-        type="button"
-        class="toolbar-btn"
-        (click)="indent()"
-        title="Thụt lề"
-        *ngIf="config.toolbar?.indent"
-      >
-        <i class="icon-indent">→</i>
-      </button>
-
-      <button
-        type="button"
-        class="toolbar-btn"
-        (click)="outdent()"
-        title="Giảm thụt lề"
-        *ngIf="config.toolbar?.outdent"
-      >
-        <i class="icon-outdent">←</i>
-      </button>
-    </div>
-
-    <!-- Clear Format -->
-    <div class="toolbar-group">
-      <button
-        type="button"
-        class="toolbar-btn"
-        (click)="clearFormat()"
-        title="Xóa định dạng"
-        *ngIf="config.toolbar?.clearFormat"
-      >
-        <i class="fa fa-text-slash"></i>
-      </button>
-      <!-- Nút upload ảnh -->
-      <button
-        type="button"
-        class="toolbar-btn"
-        (click)="onImageUploadClick()"
-        title="Chèn ảnh"
-        *ngIf="config.toolbar?.image"
-      >
-        <i class="fa-solid fa-image"></i>
-      </button>
-      <input
-        #imageInput
-        type="file"
-        accept="image/*"
-        style="display: none"
-        (change)="onImageSelected($event)"
-      />
-    </div>
+    <!-- Editor Area -->
+    <div
+      #editor
+      class="text-editor-content"
+      [style.height]="config.height"
+      [style.min-height]="config.minHeight"
+      [style.max-height]="config.maxHeight"
+      (focus)="onEditorFocus()"
+      (blur)="onEditorBlur()"
+      [attr.contenteditable]="!config.readonly"
+      [attr.data-placeholder]="config.placeholder"
+    ></div>
   </div>
-
-  <!-- Editor Area -->
-  <div
-    #editor
-    class="text-editor-content"
-    [style.height]="config.height"
-    [style.min-height]="config.minHeight"
-    [style.max-height]="config.maxHeight"
-    (focus)="onEditorFocus()"
-    (blur)="onEditorBlur()"
-    [attr.contenteditable]="!config.readonly"
-    [attr.data-placeholder]="config.placeholder"
-  ></div>
-</div>

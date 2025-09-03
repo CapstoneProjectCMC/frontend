@@ -1,7 +1,9 @@
 <div class="app-default-container">
   <app-header></app-header>
-  <app-menu-layout [menuItems]="menuItems" mode="horizontal" *ngIf="visible">
-  </app-menu-layout>
+  @if (visible) {
+    <app-menu-layout [menuItems]="menuItems" mode="horizontal">
+    </app-menu-layout>
+  }
   <div class="layout-container">
     <app-main-sidebar
       [sidebarItems]="sidebarData"
@@ -9,7 +11,9 @@
     ></app-main-sidebar>
 
     <div class="main-container">
-      <app-breadcrumb *ngIf="!shouldHideBreadcrumb()"></app-breadcrumb>
+      @if (!shouldHideBreadcrumb()) {
+        <app-breadcrumb></app-breadcrumb>
+      }
       <div class="content-container">
         <router-outlet />
       </div>

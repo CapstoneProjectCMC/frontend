@@ -1,13 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { follow } from '../../../../../core/models/user.models';
-import { NgFor, NgIf } from '@angular/common';
+
 
 @Component({
   selector: 'app-follow-popup',
   templateUrl: './follow-popup.html',
   styleUrls: ['./follow-popup.scss'],
   standalone: true,
-  imports: [NgFor, NgIf],
+  imports: [],
 })
 export class FollowPopup {
   @Input() follower!: follow[];

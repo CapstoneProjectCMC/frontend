@@ -20,12 +20,18 @@
     [attr.aria-label]="buttonText"
     [attr.aria-disabled]="isDisabled"
     [title]="tooltipText"
-  >
+    >
     <div class="button-content">
-      <i *ngIf="iconName" [class]="iconName" class="material-icons icon"></i>
+      @if (iconName) {
+        <i [class]="iconName" class="material-icons icon"></i>
+      }
       <div class="button-text">{{ buttonText }}</div>
-      <ng-content *ngIf="!isLoading"></ng-content>
-      <div *ngIf="isLoading" class="loader"></div>
+      @if (!isLoading) {
+        <ng-content></ng-content>
+      }
+      @if (isLoading) {
+        <div class="loader"></div>
+      }
     </div>
   </button>
 </div>

@@ -5,84 +5,92 @@
     <div class="payment-amount">
       <label for="amountInput"
         >Nhập mức nạp <small>(Số tiền chẵn và tối thiểu 2,000VNĐ)</small></label
-      >
-      <div class="input-group">
-        <input
-          type="number"
-          id="amountInput"
-          placeholder="0"
-          (input)="onAmountChange($event)"
-          [value]="amount"
-          [disabled]="loading"
-          max="20000000"
-        />
-        <div>VNĐ</div>
-      </div>
-      <div class="amount-in-words" *ngIf="amountInWords">
-        <em>{{ amountInWords }}</em>
-      </div>
-    </div>
+        >
+        <div class="input-group">
+          <input
+            type="number"
+            id="amountInput"
+            placeholder="0"
+            (input)="onAmountChange($event)"
+            [value]="amount"
+            [disabled]="loading"
+            max="20000000"
+            />
+            <div>VNĐ</div>
+          </div>
+          @if (amountInWords) {
+            <div class="amount-in-words">
+              <em>{{ amountInWords }}</em>
+            </div>
+          }
+        </div>
 
-    <button
-      class="confirm-button"
-      (click)="handlePaymentStart()"
-      [disabled]="loading || countdown === 0"
-      [class.loading]="loading"
-    >
-      <ng-container *ngIf="loading; else notLoading">
-        Đang kiểm tra...
-      </ng-container>
-      <ng-template #notLoading> Tôi đã thanh toán </ng-template>
-    </button>
+        <button
+          class="confirm-button"
+          (click)="handlePaymentStart()"
+          [disabled]="loading || countdown === 0"
+          [class.loading]="loading"
+          >
+          @if (loading) {
+            Đang kiểm tra...
+          } @else {
+            Tôi đã thanh toán
+          }
+        </button>
 
-    <div class="payment-instructions">
-      Lưu ý: Không được thay đổi nội dung và hạn mức tiền tự động của giao dịch
-      bằng QR này. Chúng tôi sẽ không chịu trách nhiệm nếu bạn thay đổi nó khi
-      chuyển khoản.
-    </div>
-  </div>
-
-  <!-- Cột phải: Thông tin giao dịch + QR Code -->
-  <div class="payment-right">
-    <div class="qr-code-container">
-      <img *ngIf="qrUrl" [src]="qrUrl" alt="QR Code" />
-      <img *ngIf="!qrUrl" [src]="'/assets/qr-placeholder.png'" alt="QR Code" />
-      <!-- Đếm ngược -->
-      <p
-        *ngIf="!transactionSuccess && qrUrl !== qrUrlPlaceHolder"
-        class="expire-countdown"
-      >
-        Giao dịch hết hạn sau: {{ formatTime(countdown) }}s
-      </p>
-    </div>
-    <div class="payment-info">
-      <h3>Thông tin thanh toán</h3>
-      <small>{{
-        transactionSuccess ? "(✔Thanh toán thành công)" : "(❌Chưa thanh toán)"
-      }}</small>
-      <div class="payment-form-info">
-        <div>
-          <label>Mã GD:</label>
-          <span>{{ matchedTransaction?.['Mã GD'] || '--' }}</span>
-        </div>
-        <div>
-          <label>Mã tham chiếu:</label>
-          <span>{{ matchedTransaction?.['Mã tham chiếu'] || '--' }}</span>
-        </div>
-        <div>
-          <label>Mệnh giá:</label>
-          <span>{{ amount || 0 | formatView }} VNĐ</span>
-        </div>
-        <div>
-          <label>Loại giao dịch:</label>
-          <span>Nạp tiền</span>
-        </div>
-        <div>
-          <label>Số dư hiện tại:</label>
-          <!-- Dữ liệu này tuỳ logic của bạn -->
-          <span>{{ currentGp | formatView }} VNĐ</span>
+        <div class="payment-instructions">
+          Lưu ý: Không được thay đổi nội dung và hạn mức tiền tự động của giao dịch
+          bằng QR này. Chúng tôi sẽ không chịu trách nhiệm nếu bạn thay đổi nó khi
+          chuyển khoản.
         </div>
       </div>
+
+      <!-- Cột phải: Thông tin giao dịch + QR Code -->
+      <div class="payment-right">
+        <div class="qr-code-container">
+          @if (qrUrl) {
+            <img [src]="qrUrl" alt="QR Code" />
+          }
+          @if (!qrUrl) {
+            <img [src]="'/assets/qr-placeholder.png'" alt="QR Code" />
+          }
+          <!-- Đếm ngược -->
+          @if (!transactionSuccess && qrUrl !== qrUrlPlaceHolder) {
+            <p
+              class="expire-countdown"
+              >
+              Giao dịch hết hạn sau: {{ formatTime(countdown) }}s
+            </p>
+          }
+        </div>
+        <div class="payment-info">
+          <h3>Thông tin thanh toán</h3>
+          <small>{{
+            transactionSuccess ? "(✔Thanh toán thành công)" : "(❌Chưa thanh toán)"
+          }}</small>
+          <div class="payment-form-info">
+            <div>
+              <label>Mã GD:</label>
+              <span>{{ matchedTransaction?.['Mã GD'] || '--' }}</span>
+            </div>
+            <div>
+              <label>Mã tham chiếu:</label>
+              <span>{{ matchedTransaction?.['Mã tham chiếu'] || '--' }}</span>
+            </div>
+            <div>
+              <label>Mệnh giá:</label>
+              <span>{{ amount || 0 | formatView }} VNĐ</span>
+            </div>
+            <div>
+              <label>Loại giao dịch:</label>
+              <span>Nạp tiền</span>
+            </div>
+            <div>
+              <label>Số dư hiện tại:</label>
+              <!-- Dữ liệu này tuỳ logic của bạn -->
+              <span>{{ currentGp | formatView }} VNĐ</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>

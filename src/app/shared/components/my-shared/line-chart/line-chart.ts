@@ -18,7 +18,7 @@ import {
   ApexLegend,
   ApexFill,
 } from 'ng-apexcharts';
-import { NgIf } from '@angular/common';
+
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -36,7 +36,7 @@ export type ChartOptions = {
   templateUrl: './line-chart.html',
   styleUrls: ['./line-chart.scss'],
   standalone: true,
-  imports: [NgApexchartsModule, NgIf],
+  imports: [NgApexchartsModule],
 })
 export class LineChartComponent implements OnChanges, OnInit {
   @ViewChild('chart') chart!: ChartComponent;

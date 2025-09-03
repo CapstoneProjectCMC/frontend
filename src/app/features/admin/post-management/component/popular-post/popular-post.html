@@ -4,16 +4,18 @@
   </div>
   <div class="line"></div>
   <div class="posts">
-    <div *ngFor="let post of topPosts" class="post">
-      <div class="post-form">
-        <span class="post-name">{{ post.title }}</span>
-        <div class="post-inf">
-          <span class="post-author">{{ post.author }}</span>
-          <span class="post-vote">vote {{ formatCount(post.upvote) }}</span>
-          <span class="post-count">{{ timeAgo(post.time) }}</span>
+    @for (post of topPosts; track post) {
+      <div class="post">
+        <div class="post-form">
+          <span class="post-name">{{ post.title }}</span>
+          <div class="post-inf">
+            <span class="post-author">{{ post.author }}</span>
+            <span class="post-vote">vote {{ formatCount(post.upvote) }}</span>
+            <span class="post-count">{{ timeAgo(post.time) }}</span>
+          </div>
         </div>
       </div>
-    </div>
+    }
   </div>
   <div class="popular-post-button">
     <app-button
@@ -21,7 +23,7 @@
       [width]="'150px'"
       [height]="'37px'"
       variant="outline"
-    >
+      >
       Xem thêm
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -34,7 +36,7 @@
         stroke-linecap="round"
         stroke-linejoin="round"
         class="lucide lucide-circle-arrow-down-icon lucide-circle-arrow-down"
-      >
+        >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v8" />
         <path d="m8 12 4 4 4-4" />

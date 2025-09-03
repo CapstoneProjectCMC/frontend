@@ -5,7 +5,7 @@
       [class.active]="activeTab === 'followers'"
       [class.inactive]="activeTab !== 'followers'"
       (click)="activeTab = 'followers'"
-    >
+      >
       Người theo dõi {{follower.length}}
     </div>
     <div
@@ -13,31 +13,32 @@
       [class.active]="activeTab === 'following'"
       [class.inactive]="activeTab !== 'following'"
       (click)="activeTab = 'following'"
-    >
+      >
       Đang theo dõi {{following.length}}
     </div>
   </div>
 
   <div class="list">
-    <div
-      class="user-item"
-      *ngFor="let user of activeTab === 'followers' ? follower : following"
-    >
-      <div class="user-info">
-        <img [src]="user.avatarUrl" alt="avatar" />
-        <div class="text">
-          <div class="name">{{user.displayName}}</div>
-          <div class="username">{{user.firstName }} {{user.lastName}}</div>
+    @for (user of activeTab === 'followers' ? follower : following; track user) {
+      <div
+        class="user-item"
+        >
+        <div class="user-info">
+          <img [src]="user.avatarUrl" alt="avatar" />
+          <div class="text">
+            <div class="name">{{user.displayName}}</div>
+            <div class="username">{{user.firstName }} {{user.lastName}}</div>
+          </div>
         </div>
+        @if (activeTab === 'following') {
+          <button
+            class="unfollow-btn"
+            (click)="unfollow(user)"
+            >
+            Hủy theo dõi
+          </button>
+        }
       </div>
-
-      <button
-        *ngIf="activeTab === 'following'"
-        class="unfollow-btn"
-        (click)="unfollow(user)"
-      >
-        Hủy theo dõi
-      </button>
-    </div>
+    }
   </div>
 </div>

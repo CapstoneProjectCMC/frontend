@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { debounceTime, Subject, switchMap } from 'rxjs';
 import { SearchUserProfileResponse } from '../../../../core/models/user.models';
@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-modal-add-user-to-block',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './modal-add-user-to-block.component.html',
   styleUrls: ['./modal-add-user-to-block.component.scss'],
 })

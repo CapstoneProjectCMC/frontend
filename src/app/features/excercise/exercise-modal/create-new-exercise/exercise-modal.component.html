@@ -2,7 +2,7 @@
   class="modal-create-overlay"
   [class.open]="isOpen"
   (click)="onOverlayClick($event)"
->
+  >
   <div class="modal-content" [class.open]="isOpen">
     <h2 class="modal-title">Tạo form bài tập mới</h2>
     <form [formGroup]="exerciseForm" (ngSubmit)="onSubmit()">
@@ -11,7 +11,7 @@
           class="form-step step-1"
           [class.active]="step === 1"
           [class.inactive]="step !== 1"
-        >
+          >
           <div class="form-grid">
             <div class="form-group">
               <label for="title">Tiêu đề *</label>
@@ -20,193 +20,203 @@
                 formControlName="title"
                 type="text"
                 placeholder="Nhập tiêu đề"
-              />
-              <div
-                class="error"
-                *ngIf="
+                />
+                @if (
                   exerciseForm.get('title')?.touched &&
                   exerciseForm.get('title')?.invalid
-                "
-              >
-                Tiêu đề là bắt buộc
+                  ) {
+                  <div
+                    class="error"
+                    >
+                    Tiêu đề là bắt buộc
+                  </div>
+                }
               </div>
-            </div>
-            <div class="form-group">
-              <label for="difficulty">Độ khó *</label>
-              <select id="difficulty" formControlName="difficulty">
-                <option *ngFor="let level of difficultyLevels" [value]="level">
-                  {{
-                    level === "EASY"
+              <div class="form-group">
+                <label for="difficulty">Độ khó *</label>
+                <select id="difficulty" formControlName="difficulty">
+                  @for (level of difficultyLevels; track level) {
+                    <option [value]="level">
+                      {{
+                      level === "EASY"
                       ? "Dễ"
                       : level === "MEDIUM"
                       ? "Trung bình"
                       : level === "HARD"
                       ? "Khó"
                       : level
-                  }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="exerciseType">Loại bài tập *</label>
-              <select id="exerciseType" formControlName="exerciseType">
-                <option *ngFor="let type of exerciseTypes" [value]="type">
-                  {{
-                    type === "CODING"
+                      }}
+                    </option>
+                  }
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="exerciseType">Loại bài tập *</label>
+                <select id="exerciseType" formControlName="exerciseType">
+                  @for (type of exerciseTypes; track type) {
+                    <option [value]="type">
+                      {{
+                      type === "CODING"
                       ? "Viết mã"
                       : type === "QUIZ"
                       ? "Trắc nghiệm"
                       : type
-                  }}
-                </option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="cost">Chi phí (VNĐ)*</label>
-              <input
-                id="cost"
-                formControlName="cost"
-                type="number"
-                min="0"
-                placeholder="Nhập chi phí"
-              />
-              <div
-                class="error"
-                *ngIf="
-                  exerciseForm.get('cost')?.touched &&
-                  exerciseForm.get('cost')?.invalid
-                "
-              >
-                Chi phí là bắt buộc và phải >= 0
+                      }}
+                    </option>
+                  }
+                </select>
               </div>
-            </div>
-            <div class="form-group checkbox-group">
-              <label>
-                <input type="checkbox" formControlName="freeForOrg" /> Miễn phí
-                cho tổ chức
-              </label>
-            </div>
-            <div class="form-group checkbox-group">
-              <label>
-                <input type="checkbox" formControlName="visibility" /> Bài tập
-                công khai
-              </label>
-            </div>
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="btn btn-primary" (click)="nextStep()">
-              Tiếp tục
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="onCancel()"
-            >
-              Hủy
-            </button>
-          </div>
-        </div>
-        <div
-          class="form-step step-2"
-          [class.active]="step === 2"
-          [class.inactive]="step !== 2"
-        >
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="description">Mô tả</label>
-              <textarea
-                id="description"
-                formControlName="description"
-                placeholder="Nhập mô tả"
-              ></textarea>
-            </div>
-            <div class="form-group">
-              <label for="orgId">Tổ chức</label>
-              <input
-                id="orgSearch"
-                type="text"
-                placeholder="Tìm kiếm tổ chức"
-                [formControl]="orgSearchControl"
-              />
-
-              <div class="dropdown" *ngIf="orgs.length > 0">
-                <div
-                  class="dropdown-item"
-                  *ngFor="let org of orgs"
-                  (click)="selectOrg(org)"
-                >
-                  {{ org.name }}
+              <div class="form-group">
+                <label for="cost">Chi phí (VNĐ)*</label>
+                <input
+                  id="cost"
+                  formControlName="cost"
+                  type="number"
+                  min="0"
+                  placeholder="Nhập chi phí"
+                  />
+                  @if (
+                    exerciseForm.get('cost')?.touched &&
+                    exerciseForm.get('cost')?.invalid
+                    ) {
+                    <div
+                      class="error"
+                      >
+                      Chi phí là bắt buộc và phải >= 0
+                    </div>
+                  }
+                </div>
+                <div class="form-group checkbox-group">
+                  <label>
+                    <input type="checkbox" formControlName="freeForOrg" /> Miễn phí
+                    cho tổ chức
+                  </label>
+                </div>
+                <div class="form-group checkbox-group">
+                  <label>
+                    <input type="checkbox" formControlName="visibility" /> Bài tập
+                    công khai
+                  </label>
                 </div>
               </div>
-
-              <div
-                class="selected-org"
-                *ngIf="exerciseForm.get('orgId')?.value"
-              >
-                Đã chọn:
-                {{
-                  getOrgName(exerciseForm.get("orgId")?.value) | truncate : 15
-                }}
-                <button type="button" class="clear-btn" (click)="clearOrg()">
-                  ✕
+              <div class="modal-actions">
+                <button type="button" class="btn btn-primary" (click)="nextStep()">
+                  Tiếp tục
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  (click)="onCancel()"
+                  >
+                  Hủy
                 </button>
               </div>
             </div>
+            <div
+              class="form-step step-2"
+              [class.active]="step === 2"
+              [class.inactive]="step !== 2"
+              >
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="description">Mô tả</label>
+                  <textarea
+                    id="description"
+                    formControlName="description"
+                    placeholder="Nhập mô tả"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="orgId">Tổ chức</label>
+                  <input
+                    id="orgSearch"
+                    type="text"
+                    placeholder="Tìm kiếm tổ chức"
+                    [formControl]="orgSearchControl"
+                    />
 
-            <div class="form-group">
-              <label for="startTime">Thời gian bắt đầu</label>
-              <input
-                id="startTime"
-                formControlName="startTime"
-                type="datetime-local"
-              />
-            </div>
-            <div class="form-group">
-              <label for="endTime">Thời gian kết thúc</label>
-              <input
-                id="endTime"
-                formControlName="endTime"
-                type="datetime-local"
-              />
-            </div>
-            <div class="form-group">
-              <label for="duration">Thời lượng (phút)</label>
-              <input
-                id="duration"
-                formControlName="duration"
-                type="number"
-                min="0"
-                placeholder="Nhập thời lượng"
-              />
-            </div>
-            <div class="form-group">
-              <label for="tags">Tags (phân cách bởi dấu phẩy)</label>
-              <input
-                id="tags"
-                formControlName="tags"
-                type="text"
-                placeholder="VD: tag1, tag2"
-              />
-            </div>
-            <div class="form-group checkbox-group">
-              <label>
-                <input type="checkbox" formControlName="allowAiQuestion" /> Cho
-                phép AI tạo câu hỏi
-              </label>
-            </div>
-          </div>
-          <div class="modal-actions">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              (click)="prevStep()"
-            >
-              Quay lại
-            </button>
-            <button type="submit" class="btn btn-primary">Tạo mới</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
+                    @if (orgs.length > 0) {
+                      <div class="dropdown">
+                        @for (org of orgs; track org) {
+                          <div
+                            class="dropdown-item"
+                            (click)="selectOrg(org)"
+                            >
+                            {{ org.name }}
+                          </div>
+                        }
+                      </div>
+                    }
+
+                    @if (exerciseForm.get('orgId')?.value) {
+                      <div
+                        class="selected-org"
+                        >
+                        Đã chọn:
+                        {{
+                        getOrgName(exerciseForm.get("orgId")?.value) | truncate : 15
+                        }}
+                        <button type="button" class="clear-btn" (click)="clearOrg()">
+                          ✕
+                        </button>
+                      </div>
+                    }
+                  </div>
+
+                  <div class="form-group">
+                    <label for="startTime">Thời gian bắt đầu</label>
+                    <input
+                      id="startTime"
+                      formControlName="startTime"
+                      type="datetime-local"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label for="endTime">Thời gian kết thúc</label>
+                      <input
+                        id="endTime"
+                        formControlName="endTime"
+                        type="datetime-local"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="duration">Thời lượng (phút)</label>
+                        <input
+                          id="duration"
+                          formControlName="duration"
+                          type="number"
+                          min="0"
+                          placeholder="Nhập thời lượng"
+                          />
+                        </div>
+                        <div class="form-group">
+                          <label for="tags">Tags (phân cách bởi dấu phẩy)</label>
+                          <input
+                            id="tags"
+                            formControlName="tags"
+                            type="text"
+                            placeholder="VD: tag1, tag2"
+                            />
+                          </div>
+                          <div class="form-group checkbox-group">
+                            <label>
+                              <input type="checkbox" formControlName="allowAiQuestion" /> Cho
+                              phép AI tạo câu hỏi
+                            </label>
+                          </div>
+                        </div>
+                        <div class="modal-actions">
+                          <button
+                            type="button"
+                            class="btn btn-secondary"
+                            (click)="prevStep()"
+                            >
+                            Quay lại
+                          </button>
+                          <button type="submit" class="btn btn-primary">Tạo mới</button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>

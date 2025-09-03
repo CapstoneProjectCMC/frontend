@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import {
   QuizQuestionCreate,
   QuizOptionCreate,
@@ -19,7 +19,7 @@ import { Tooltip } from '../../../../shared/components/fxdonad-shared/tooltip/to
   templateUrl: './add-new-question.component.html',
   styleUrls: ['./add-new-question.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, Tooltip],
+  imports: [FormsModule, ReactiveFormsModule, Tooltip],
 })
 export class AddNewQuestionComponent {
   @Input() isOpen: boolean = false;

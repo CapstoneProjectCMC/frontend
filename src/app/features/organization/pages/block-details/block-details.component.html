@@ -26,44 +26,49 @@
     </div>
 
     <div class="members-list" appScrollEnd (appScrollEnd)="onScrollEnd()">
-      <div
-        class="member-card"
-        *ngFor="let m of members"
-        [class.inactive]="!m.active"
-      >
-        <img
-          [src]="m.user.avatarUrl || avatarDefault"
-          alt="avatar"
-          class="avatar"
-        />
-        <div class="member-info">
-          <div class="name-status">
-            <span class="name">{{ m.user.displayName }}</span>
-            <span class="status-dot" [class.active]="m.active"></span>
-          </div>
-          <div class="email">{{ m.user.email }}</div>
-        </div>
-        <div class="role-badge">
-          <i class="fas fa-crown" *ngIf="m.role === 'ADMIN'"></i>
-          {{ m.role }}
-        </div>
-        <div class="member-actions">
-          <button
-            class="btn-remove"
-            (click)="openModalConfirmDelete(m.user.userId)"
+      @for (m of members; track m) {
+        <div
+          class="member-card"
+          [class.inactive]="!m.active"
           >
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </div>
+          <img
+            [src]="m.user.avatarUrl || avatarDefault"
+            alt="avatar"
+            class="avatar"
+            />
+            <div class="member-info">
+              <div class="name-status">
+                <span class="name">{{ m.user.displayName }}</span>
+                <span class="status-dot" [class.active]="m.active"></span>
+              </div>
+              <div class="email">{{ m.user.email }}</div>
+            </div>
+            <div class="role-badge">
+              @if (m.role === 'ADMIN') {
+                <i class="fas fa-crown"></i>
+              }
+              {{ m.role }}
+            </div>
+            <div class="member-actions">
+              <button
+                class="btn-remove"
+                (click)="openModalConfirmDelete(m.user.userId)"
+                >
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </div>
+          </div>
+        }
+        @if (isLoading) {
+          <div class="loading">Đang tải...</div>
+        }
       </div>
-      <div class="loading" *ngIf="isLoading">Đang tải...</div>
     </div>
-  </div>
 
-  <app-modal-add-user-to-block
-    [isOpen]="isAddUserOpen"
-    [blockId]="blockId"
-    (closed)="isAddUserOpen = false"
-    (saved)="reloadMembers()"
-  ></app-modal-add-user-to-block>
-</div>
+    <app-modal-add-user-to-block
+      [isOpen]="isAddUserOpen"
+      [blockId]="blockId"
+      (closed)="isAddUserOpen = false"
+      (saved)="reloadMembers()"
+    ></app-modal-add-user-to-block>
+  </div>

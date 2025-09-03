@@ -1,13 +1,13 @@
 // set-password-modal.component.ts
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../../core/services/api-service/auth.service';
 
 @Component({
   selector: 'app-set-password-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './set-password-modal.component.html',
   styleUrls: ['./set-password-modal.component.scss'],
 })

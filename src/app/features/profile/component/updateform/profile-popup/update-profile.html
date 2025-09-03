@@ -1,199 +1,20 @@
 <div class="profile-popup" [ngClass]="variant">
-  <div *ngIf="!isLoading && (hasError || !user)" class="no-data-container">
-    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
-    </ng-lottie>
-    <p>Không có dữ liệu</p>
-  </div>
-
-  <div class="avt-bg" *ngIf="hasError!=true ">
-    <div class="bg-container">
-      <img
-        class="bg"
-        [src]="this.user.backgroundUrl ? this.user.backgroundUrl : this.background"
-      />
-      <button class="upload-btn-bg" (click)="uploadBackground()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-upload-icon lucide-upload"
-        >
-          <path d="M12 3v12" />
-          <path d="m17 8-5-5-5 5" />
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        </svg>
-      </button>
+  @if (!isLoading && (hasError || !user)) {
+    <div class="no-data-container">
+      <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+      </ng-lottie>
+      <p>Không có dữ liệu</p>
     </div>
+  }
 
-    <div class="avt-container">
-      <img
-        class="avt"
-        [src]="this.user.avatarUrl ? this.user.avatarUrl : this.avatar"
-      />
-      <button class="upload-btn-avt" (click)="uploadAvatar()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-upload-icon lucide-upload"
-        >
-          <path d="M12 3v12" />
-          <path d="m17 8-5-5-5 5" />
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        </svg>
-      </button>
-    </div>
-  </div>
-
-  <div class="general-infor" *ngIf="hasError!=true ">
-    <div class="detail-infor">
-      <!-- Tên hiển thị -->
-      <app-input
-        [label]="'Tên hiển thị'"
-        placeholder="Nhập tên..."
-        [value]="displayName"
-        (valueChange)="handleInputChange('displayName', $event)"
-        [required]="false"
-        [minLength]="3"
-        [variant]="'primary'"
-        [isSvg]="false"
-      ></app-input>
-
-      <!-- Họ & Tên -->
-      <div class="two-fields">
-        <app-input
-          [label]="'Họ'"
-          placeholder="Nhập họ..."
-          [value]="lastName"
-          (valueChange)="handleInputChange('lastName', $event)"
-          [required]="false"
-          [minLength]="1"
-          [variant]="'primary'"
-          [isSvg]="false"
-        ></app-input>
-        <app-input
-          [label]="'Tên'"
-          placeholder="Nhập tên..."
-          [value]="firstName"
-          (valueChange)="handleInputChange('firstName', $event)"
-          [required]="false"
-          [minLength]="1"
-          [variant]="'primary'"
-          [isSvg]="false"
-        ></app-input>
-      </div>
-
-      <!-- Trình độ học vấn -->
-      <div class="dropdown">
-        <span class="dropdown-title">Trình độ học vấn</span>
-        <app-dropdown-button
-          [label]="'Trình độ học vấn'"
-          [options]="education"
-          [variant]="'secondary'"
-          [size]="'small'"
-          [customDropField]="'main-type'"
-          [disabled]="false"
-          [multiSelect]="false"
-          [isDisplayCheckbox]="false"
-          (onSelect)="handleSelect('education', $event)"
-          [isOpen]="activeDropdown === 'education'"
-          (toggle)="toggleDropdown('education')"
-          [isDisplaySelectedOpptionLabels]="true"
-          [isButtonControl]="false"
-          [isSearchable]="false"
-          [minHeight]="true"
-          [needIndexColor]="true"
-        ></app-dropdown-button>
-      </div>
-
-      <!-- Giới tính & Ngày sinh -->
-      <div class="two-fields">
-        <div class="dropdown">
-          <span class="dropdown-title">Giới tính</span>
-          <app-dropdown-button
-            *ngIf="selectedGender"
-            [label]="'Giới tính'"
-            [options]="gender"
-            [variant]="'secondary'"
-            [size]="'small'"
-            [customDropField]="'main-type'"
-            [disabled]="false"
-            [multiSelect]="false"
-            [isDisplayCheckbox]="false"
-            (onSelect)="handleSelect('gender', $event)"
-            [isOpen]="activeDropdown === 'gender'"
-            (toggle)="toggleDropdown('gender')"
-            [isDisplaySelectedOpptionLabels]="true"
-            [isButtonControl]="false"
-            [isSearchable]="false"
-            [minHeight]="true"
-            [needIndexColor]="true"
-          ></app-dropdown-button>
-        </div>
-        <div class="dropdown">
-          <span class="dropdown-title">Ngày sinh</span>
-          <input
-            class="date-picker"
-            type="datetime-local"
-            [(ngModel)]="dob"
-            *ngIf="dob !== null"
+  @if (hasError!=true ) {
+    <div class="avt-bg">
+      <div class="bg-container">
+        <img
+          class="bg"
+          [src]="this.user.backgroundUrl ? this.user.backgroundUrl : this.background"
           />
-        </div>
-      </div>
-      <!-- Thành phố -->
-      <div class="dropdown">
-        <span class="dropdown-title">Thành phố</span>
-        <app-dropdown-button
-          [label]="'Chọn thành phố'"
-          [options]="cities"
-          [variant]="'secondary'"
-          [size]="'small'"
-          [customDropField]="'main-type'"
-          [disabled]="false"
-          [multiSelect]="false"
-          [isDisplayCheckbox]="false"
-          (onSelect)="handleSelect('city', $event)"
-          [isOpen]="activeDropdown === 'city'"
-          (toggle)="toggleDropdown('city')"
-          [isDisplaySelectedOpptionLabels]="true"
-          [isButtonControl]="true"
-          [isSearchable]="true"
-          [minHeight]="true"
-          [needIndexColor]="true"
-        ></app-dropdown-button>
-      </div>
-      <!-- bio -->
-      <app-input
-        [label]="'Giới thiệu bản thân'"
-        placeholder="Nhập giới thiệu..."
-        [value]="bio"
-        (valueChange)="handleInputChange('bio', $event)"
-        [required]="false"
-        [minLength]="3"
-        [variant]="'primary'"
-        [isSvg]="false"
-      ></app-input>
-
-      <!-- Danh sách link -->
-      <div class="social-link">
-        <div *ngFor="let link of links; let i = index" class="social-link-item">
-          <a
-            [href]="link"
-            target="_blank"
-            style="display: flex; align-items: center; gap: 6px; flex: 1"
-          >
+          <button class="upload-btn-bg" (click)="uploadBackground()">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -204,98 +25,283 @@
               stroke-width="2"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="lucide lucide-link2-icon lucide-link-2"
-            >
-              <path d="M9 17H7A5 5 0 0 1 7 7h2" />
-              <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
-              <line x1="8" x2="16" y1="12" y2="12" />
+              class="lucide lucide-upload-icon lucide-upload"
+              >
+              <path d="M12 3v12" />
+              <path d="m17 8-5-5-5 5" />
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             </svg>
-            <span
+          </button>
+        </div>
+        <div class="avt-container">
+          <img
+            class="avt"
+            [src]="this.user.avatarUrl ? this.user.avatarUrl : this.avatar"
+            />
+            <button class="upload-btn-avt" (click)="uploadAvatar()">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-upload-icon lucide-upload"
+                >
+                <path d="M12 3v12" />
+                <path d="m17 8-5-5-5 5" />
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (hasError!=true ) {
+        <div class="general-infor">
+          <div class="detail-infor">
+            <!-- Tên hiển thị -->
+            <app-input
+              [label]="'Tên hiển thị'"
+              placeholder="Nhập tên..."
+              [value]="displayName"
+              (valueChange)="handleInputChange('displayName', $event)"
+              [required]="false"
+              [minLength]="3"
+              [variant]="'primary'"
+              [isSvg]="false"
+            ></app-input>
+            <!-- Họ & Tên -->
+            <div class="two-fields">
+              <app-input
+                [label]="'Họ'"
+                placeholder="Nhập họ..."
+                [value]="lastName"
+                (valueChange)="handleInputChange('lastName', $event)"
+                [required]="false"
+                [minLength]="1"
+                [variant]="'primary'"
+                [isSvg]="false"
+              ></app-input>
+              <app-input
+                [label]="'Tên'"
+                placeholder="Nhập tên..."
+                [value]="firstName"
+                (valueChange)="handleInputChange('firstName', $event)"
+                [required]="false"
+                [minLength]="1"
+                [variant]="'primary'"
+                [isSvg]="false"
+              ></app-input>
+            </div>
+            <!-- Trình độ học vấn -->
+            <div class="dropdown">
+              <span class="dropdown-title">Trình độ học vấn</span>
+              <app-dropdown-button
+                [label]="'Trình độ học vấn'"
+                [options]="education"
+                [variant]="'secondary'"
+                [size]="'small'"
+                [customDropField]="'main-type'"
+                [disabled]="false"
+                [multiSelect]="false"
+                [isDisplayCheckbox]="false"
+                (onSelect)="handleSelect('education', $event)"
+                [isOpen]="activeDropdown === 'education'"
+                (toggle)="toggleDropdown('education')"
+                [isDisplaySelectedOpptionLabels]="true"
+                [isButtonControl]="false"
+                [isSearchable]="false"
+                [minHeight]="true"
+                [needIndexColor]="true"
+              ></app-dropdown-button>
+            </div>
+            <!-- Giới tính & Ngày sinh -->
+            <div class="two-fields">
+              <div class="dropdown">
+                <span class="dropdown-title">Giới tính</span>
+                @if (selectedGender) {
+                  <app-dropdown-button
+                    [label]="'Giới tính'"
+                    [options]="gender"
+                    [variant]="'secondary'"
+                    [size]="'small'"
+                    [customDropField]="'main-type'"
+                    [disabled]="false"
+                    [multiSelect]="false"
+                    [isDisplayCheckbox]="false"
+                    (onSelect)="handleSelect('gender', $event)"
+                    [isOpen]="activeDropdown === 'gender'"
+                    (toggle)="toggleDropdown('gender')"
+                    [isDisplaySelectedOpptionLabels]="true"
+                    [isButtonControl]="false"
+                    [isSearchable]="false"
+                    [minHeight]="true"
+                    [needIndexColor]="true"
+                  ></app-dropdown-button>
+                }
+              </div>
+              <div class="dropdown">
+                <span class="dropdown-title">Ngày sinh</span>
+                @if (dob !== null) {
+                  <input
+                    class="date-picker"
+                    type="datetime-local"
+                    [(ngModel)]="dob"
+                    />
+                }
+              </div>
+            </div>
+            <!-- Thành phố -->
+            <div class="dropdown">
+              <span class="dropdown-title">Thành phố</span>
+              <app-dropdown-button
+                [label]="'Chọn thành phố'"
+                [options]="cities"
+                [variant]="'secondary'"
+                [size]="'small'"
+                [customDropField]="'main-type'"
+                [disabled]="false"
+                [multiSelect]="false"
+                [isDisplayCheckbox]="false"
+                (onSelect)="handleSelect('city', $event)"
+                [isOpen]="activeDropdown === 'city'"
+                (toggle)="toggleDropdown('city')"
+                [isDisplaySelectedOpptionLabels]="true"
+                [isButtonControl]="true"
+                [isSearchable]="true"
+                [minHeight]="true"
+                [needIndexColor]="true"
+              ></app-dropdown-button>
+            </div>
+            <!-- bio -->
+            <app-input
+              [label]="'Giới thiệu bản thân'"
+              placeholder="Nhập giới thiệu..."
+              [value]="bio"
+              (valueChange)="handleInputChange('bio', $event)"
+              [required]="false"
+              [minLength]="3"
+              [variant]="'primary'"
+              [isSvg]="false"
+            ></app-input>
+            <!-- Danh sách link -->
+            <div class="social-link">
+              @for (link of links; track link; let i = $index) {
+                <div class="social-link-item">
+                  <a
+                    [href]="link"
+                    target="_blank"
+                    style="display: flex; align-items: center; gap: 6px; flex: 1"
+                    >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-link2-icon lucide-link-2"
+                      >
+                      <path d="M9 17H7A5 5 0 0 1 7 7h2" />
+                      <path d="M15 7h2a5 5 0 1 1 0 10h-2" />
+                      <line x1="8" x2="16" y1="12" y2="12" />
+                    </svg>
+                    <span
               style="
                 width: 80%;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
               "
-            >
-              {{ link | truncate: 40 }}
-            </span>
-          </a>
-
-          <!-- nút xóa -->
-          <button
-            type="button"
-            (click)="removeLink(i)"
+                      >
+                      {{ link | truncate: 40 }}
+                    </span>
+                  </a>
+                  <!-- nút xóa -->
+                  <button
+                    type="button"
+                    (click)="removeLink(i)"
             style="
               background: none;
               border: none;
               cursor: pointer;
               padding: 4px;
             "
-            title="Xóa link này"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="lucide lucide-circle-minus-icon lucide-circle-minus"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M8 12h8" />
-            </svg>
-          </button>
+                    title="Xóa link này"
+                    >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="lucide lucide-circle-minus-icon lucide-circle-minus"
+                      >
+                      <circle cx="12" cy="12" r="10" />
+                      <path d="M8 12h8" />
+                    </svg>
+                  </button>
+                </div>
+              }
+              <!-- nút thêm link -->
+              <button
+                class="add-link-btn"
+                type="button"
+                (click)="isAddingLink = !isAddingLink"
+                >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-square-plus-icon lucide-square-plus"
+                  >
+                  <rect width="18" height="18" x="3" y="3" rx="2" />
+                  <path d="M8 12h8" />
+                  <path d="M12 8v8" />
+                </svg>
+              </button>
+              <!-- input thêm link -->
+              @if (isAddingLink) {
+                <div class="add-link-input">
+                  <input
+                    type="text"
+                    placeholder="Nhập link mới..."
+                    [(ngModel)]="newLink"
+                    (keyup.enter)="addLink()"
+                    />
+                    <button type="button" (click)="addLink()">Xong</button>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (hasError!=true ) {
+          <div class="update-button">
+            <app-button
+              [variant]="'solid'"
+              [width]="'130px'"
+              (onClick)="updateProfile()"
+              >Cập nhật</app-button
+              >
+            </div>
+          }
         </div>
-
-        <!-- nút thêm link -->
-        <button
-          class="add-link-btn"
-          type="button"
-          (click)="isAddingLink = !isAddingLink"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-square-plus-icon lucide-square-plus"
-          >
-            <rect width="18" height="18" x="3" y="3" rx="2" />
-            <path d="M8 12h8" />
-            <path d="M12 8v8" />
-          </svg>
-        </button>
-
-        <!-- input thêm link -->
-        <div *ngIf="isAddingLink" class="add-link-input">
-          <input
-            type="text"
-            placeholder="Nhập link mới..."
-            [(ngModel)]="newLink"
-            (keyup.enter)="addLink()"
-          />
-          <button type="button" (click)="addLink()">Xong</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="update-button" *ngIf="hasError!=true ">
-    <app-button
-      [variant]="'solid'"
-      [width]="'130px'"
-      (onClick)="updateProfile()"
-      >Cập nhật</app-button
-    >
-  </div>
-</div>

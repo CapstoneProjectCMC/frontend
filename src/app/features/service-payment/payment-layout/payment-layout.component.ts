@@ -3,12 +3,12 @@ import { MainSidebarComponent } from '../../../shared/components/fxdonad-shared/
 import { SidebarItem } from '../../../core/models/data-handle';
 import { RouterOutlet } from '@angular/router';
 import { decodeJWT } from '../../../shared/utils/stringProcess';
-import { CommonModule } from '@angular/common';
+
 import { sidebarPaymentRouter } from '../../../core/router-manager/vetical-menu-dynamic/payment-vertical-menu';
 
 @Component({
   selector: 'app-payment-layout',
-  imports: [MainSidebarComponent, RouterOutlet, CommonModule],
+  imports: [MainSidebarComponent, RouterOutlet],
   templateUrl: './payment-layout.component.html',
   styleUrl: './payment-layout.component.scss',
 })

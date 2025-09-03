@@ -1,77 +1,84 @@
 <div class="sidebar" [class.collapsed]="isCollapsed">
   <nav class="sidebar-nav">
     <ul class="sidebar-menu">
-      <li
-        *ngFor="let item of sidebarItems"
-        class="sidebar-item"
-        [class.active]="item.isActive"
-        [title]="isCollapsed ? item.label : ''"
-      >
-        <div
-          class="sidebar-link"
+      @for (item of sidebarItems; track item) {
+        <li
+          class="sidebar-item"
+          [class.active]="item.isActive"
+          [title]="isCollapsed ? item.label : ''"
+          >
+          <div
+            class="sidebar-link"
           (click)="
             item.children && !item.allowParentLink
               ? toggleItem(item)
               : setActiveItem(item)
           "
-          [class.has-children]="item.children"
+            [class.has-children]="item.children"
           [routerLink]="
             !item.children || item.allowParentLink ? item.path : null
           "
-          routerLinkActive="active"
-        >
-          <i *ngIf="item.icon" [class]="item.icon" class="sidebar-icon"></i>
-          <!-- <span *ngIf="!isCollapsed" class="sidebar-label">{{
+            routerLinkActive="active"
+            >
+            @if (item.icon) {
+              <i [class]="item.icon" class="sidebar-icon"></i>
+            }
+            <!-- <span *ngIf="!isCollapsed" class="sidebar-label">{{
             item.label
           }}</span> -->
           <span class="sidebar-label">{{ item.label }}</span>
-          <i
-            *ngIf="item.children && item.children.length > 0 && !isCollapsed"
-            class="fas fa-chevron-down expand-icon"
-            [class.expanded]="item.isExpanded"
-            (click)="toggleItem(item); $event.stopPropagation()"
-          >
-          </i>
+          @if (item.children && item.children.length > 0 && !isCollapsed) {
+            <i
+              class="fas fa-chevron-down expand-icon"
+              [class.expanded]="item.isExpanded"
+              (click)="toggleItem(item); $event.stopPropagation()"
+              >
+            </i>
+          }
         </div>
         <!-- Submenu -->
-        <ul
-          *ngIf="
-            item.children &&
-            item.children.length > 0 &&
-            item.isExpanded &&
-            !isCollapsed
-          "
-          class="submenu"
-          [class.expanded]="item.isExpanded"
-        >
-          <li
-            *ngFor="let child of item.children"
-            class="submenu-item"
-            [class.active]="child.isActive"
-            [class.visible]="child.isVisible"
-          >
-            <a
-              class="submenu-link"
-              [routerLink]="child.path"
-              routerLinkActive="active"
-              (click)="setActiveItem(child)"
+        @if (
+          item.children &&
+          item.children.length > 0 &&
+          item.isExpanded &&
+          !isCollapsed
+          ) {
+          <ul
+            class="submenu"
+            [class.expanded]="item.isExpanded"
             >
-              <i
-                *ngIf="child.icon"
-                [class]="child.icon"
-                class="submenu-icon"
-              ></i>
-              <span class="submenu-label">{{ child.label }}</span>
-            </a>
-          </li>
-        </ul>
+            @for (child of item.children; track child) {
+              <li
+                class="submenu-item"
+                [class.active]="child.isActive"
+                [class.visible]="child.isVisible"
+                >
+                <a
+                  class="submenu-link"
+                  [routerLink]="child.path"
+                  routerLinkActive="active"
+                  (click)="setActiveItem(child)"
+                  >
+                  @if (child.icon) {
+                    <i
+                      [class]="child.icon"
+                      class="submenu-icon"
+                    ></i>
+                  }
+                  <span class="submenu-label">{{ child.label }}</span>
+                </a>
+              </li>
+            }
+          </ul>
+        }
       </li>
-    </ul>
-  </nav>
-  <div class="sidebar-header">
-    <!-- <h3 *ngIf="!isCollapsed">Menu</h3> -->
-    <div class="toggle-btn" (click)="isCollapsed = !isCollapsed">
-      <i class="fas fa-bars"></i>
-    </div>
+    }
+  </ul>
+</nav>
+<div class="sidebar-header">
+  <!-- <h3 *ngIf="!isCollapsed">Menu</h3> -->
+  <div class="toggle-btn" (click)="isCollapsed = !isCollapsed">
+    <i class="fas fa-bars"></i>
   </div>
+</div>
 </div>

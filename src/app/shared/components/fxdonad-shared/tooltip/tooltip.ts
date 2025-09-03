@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
   Component,
   Input,
@@ -17,7 +17,7 @@ import {
 
 @Component({
   selector: 'app-tooltip',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './tooltip.html',
   styleUrl: './tooltip.scss',
   animations: [

@@ -15,7 +15,7 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { Store } from '@ngrx/store';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { sendNotification } from '../../../../shared/utils/notification';
@@ -31,7 +31,7 @@ import {
   templateUrl: './update-question-option.component.html',
   styleUrls: ['./update-question-option.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
 })
 export class UpdateQuestionOptionComponent implements OnInit, OnChanges {
   @Input() isOpen: boolean = false;

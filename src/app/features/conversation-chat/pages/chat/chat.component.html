@@ -6,7 +6,7 @@
         class="btn btn--icon"
         aria-label="New chat"
         (click)="openModalCreateNew()"
-      >
+        >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -17,7 +17,7 @@
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-        >
+          >
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
         </svg>
@@ -25,210 +25,223 @@
     </header>
 
     <div class="conversations-list">
-      <div *ngIf="loading" class="state-container">
-        <div class="loader"></div>
-      </div>
+      @if (loading) {
+        <div class="state-container">
+          <div class="loader"></div>
+        </div>
+      }
 
-      <div
-        *ngIf="error && !loading"
-        class="state-container state-container--error"
-      >
-        <p>{{ error }}</p>
-        <button
-          class="btn btn--icon"
-          (click)="fetchConversations()"
-          aria-label="Refresh conversations"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+      @if (error && !loading) {
+        <div
+          class="state-container state-container--error"
           >
-            <polyline points="23 4 23 10 17 10"></polyline>
-            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
-          </svg>
-        </button>
-      </div>
+          <p>{{ error }}</p>
+          <button
+            class="btn btn--icon"
+            (click)="fetchConversations()"
+            aria-label="Refresh conversations"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              >
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+          </button>
+        </div>
+      }
 
-      <div
-        *ngIf="!loading && !error && conversations.length === 0"
-        class="state-container"
-      >
-        <p class="text-secondary">Chưa có đoạn chat nào.</p>
-      </div>
+      @if (!loading && !error && conversations.length === 0) {
+        <div
+          class="state-container"
+          >
+          <p class="text-secondary">Chưa có đoạn chat nào.</p>
+        </div>
+      }
 
-      <ul *ngIf="!loading && !error && conversations.length > 0">
-        <li
-          *ngFor="let convo of conversations"
-          class="conversation-item"
-          (click)="handleConversationSelect(convo)"
-          [class.selected]="selectedConversation?.id === convo.id"
-          tabindex="0"
-        >
-          <div class="avatar-container">
-            <img
-              class="avatar"
-              [src]="convo.conversationAvatar || avatarUrlDefault"
-              alt=""
-            />
-
-            <div *ngIf="convo.unreadCount > 0" class="unread-wrapper">
-              <span class="unread-badge">{{ convo.unreadCount }}</span>
-              <span class="unread-ping"></span>
-            </div>
-          </div>
-
-          <div class="conversation-item__details">
-            <div class="details__header">
-              <span class="name" [title]="convo.conversationName"
-                >{{ convo.conversationName | truncate : 9 }}
-                <p>
-                  {{convo.type === "GROUP" ? `(Nhóm - ${convo.myRole.toLocaleLowerCase()})` : ``}}
-                </p>
-              </span>
-              <span class="date">{{
-                convo.modifiedDate | date : "mediumDate"
-              }}</span>
-            </div>
-            <!-- <p class="last-message">
-              {{ convo.lastMessage || "Start a conversation" }}
-            </p> -->
-          </div>
-          <div
-            *ngIf="convo.type === 'GROUP'"
-            class="chat-options"
+      @if (!loading && !error && conversations.length > 0) {
+        <ul>
+          @for (convo of conversations; track convo) {
+            <li
+              class="conversation-item"
+              (click)="handleConversationSelect(convo)"
+              [class.selected]="selectedConversation?.id === convo.id"
+              tabindex="0"
+              >
+              <div class="avatar-container">
+                <img
+                  class="avatar"
+                  [src]="convo.conversationAvatar || avatarUrlDefault"
+                  alt=""
+                  />
+                  @if (convo.unreadCount > 0) {
+                    <div class="unread-wrapper">
+                      <span class="unread-badge">{{ convo.unreadCount }}</span>
+                      <span class="unread-ping"></span>
+                    </div>
+                  }
+                </div>
+                <div class="conversation-item__details">
+                  <div class="details__header">
+                    <span class="name" [title]="convo.conversationName"
+                      >{{ convo.conversationName | truncate : 9 }}
+                      <p>
+                        {{convo.type === "GROUP" ? `(Nhóm - ${convo.myRole.toLocaleLowerCase()})` : ``}}
+                      </p>
+                    </span>
+                    <span class="date">{{
+                      convo.modifiedDate | date : "mediumDate"
+                    }}</span>
+                  </div>
+                  <!-- <p class="last-message">
+                  {{ convo.lastMessage || "Start a conversation" }}
+                </p> -->
+              </div>
+              @if (convo.type === 'GROUP') {
+                <div
+                  class="chat-options"
             (click)="
               openOptionDropdownCoversation(convo.id); $event.stopPropagation()
             "
-            (clickOutside)="closeOptionDropdownCoversation()"
-          >
-            <i class="fa-solid fa-ellipsis"></i>
-
-            <!-- Dropdown -->
-            <ul
-              class="chat-options-dropdown"
-              *ngIf="isOpenOptionConversation === convo.id"
-              [@dropdownAnimation]
-            >
-              <li (click)="leaveGroup(convo.id)">Rời đoạn chat</li>
-              <li (click)="deleteGroupChat(convo.id)">Xóa đoạn chat</li>
-              <li
-                *ngIf="convo.ownerId === userId"
-                (click)="openModalSetRoleForUser()"
-              >
-                Cài đặt quyền hạn
-              </li>
-            </ul>
-          </div>
-        </li>
-      </ul>
+                  (clickOutside)="closeOptionDropdownCoversation()"
+                  >
+                  <i class="fa-solid fa-ellipsis"></i>
+                  <!-- Dropdown -->
+                  @if (isOpenOptionConversation === convo.id) {
+                    <ul
+                      class="chat-options-dropdown"
+                      [@dropdownAnimation]
+                      >
+                      <li (click)="leaveGroup(convo.id)">Rời đoạn chat</li>
+                      <li (click)="deleteGroupChat(convo.id)">Xóa đoạn chat</li>
+                      @if (convo.ownerId === userId) {
+                        <li
+                          (click)="openModalSetRoleForUser()"
+                          >
+                          Cài đặt quyền hạn
+                        </li>
+                      }
+                    </ul>
+                  }
+                </div>
+              }
+            </li>
+          }
+        </ul>
+      }
     </div>
   </aside>
 
   <main class="chat-area">
-    <ng-container *ngIf="selectedConversation; else noConversationSelected">
+    @if (selectedConversation) {
       <header class="panel-header chat-header">
         <img
           class="avatar avatar--small"
           [src]="selectedConversation.conversationAvatar || avatarUrlDefault"
           alt="Conversation Avatar"
-        />
-        <h3>{{ selectedConversation.conversationName }}</h3>
-      </header>
-
-      <div class="messages-container" #messageContainer>
-        <div
-          *ngFor="let msg of currentMessages"
-          class="message-row"
-          [class.me]="msg.me"
-        >
-          <img
-            *ngIf="!msg.me"
-            class="avatar avatar--tiny"
-            [src]="msg.sender.avatarUrl || avatarUrlDefault"
-            alt="Sender Avatar"
           />
-          <div class="message-bubble" [ngClass]="{ failed: false }">
-            <!-- Khi nào xử lý đoạn chat nhiều người thì mới cần hiện tên -->
-            <b class="message-username" *ngIf="!msg.me && false">
-              {{ msg.sender.displayName }}
-            </b>
-            <p class="message-content">{{ msg.message }}</p>
-            <span class="message-timestamp">{{
-              msg.createdDate | date : "shortTime"
-            }}</span>
-            <!-- hiển thị avatar tiny -->
-            <div class="read-by" *ngIf="msg.readBy?.length">
-              <img
-                *ngFor="let user of msg.readBy"
-                [src]="user.avatarUrl || avatarUrlDefault"
-                class="tiny-avatar"
-                [title]="user.displayName"
-              />
+          <h3>{{ selectedConversation.conversationName }}</h3>
+        </header>
+        <div class="messages-container" #messageContainer>
+          @for (msg of currentMessages; track msg) {
+            <div
+              class="message-row"
+              [class.me]="msg.me"
+              >
+              @if (!msg.me) {
+                <img
+                  class="avatar avatar--tiny"
+                  [src]="msg.sender.avatarUrl || avatarUrlDefault"
+                  alt="Sender Avatar"
+                  />
+              }
+              <div class="message-bubble" [ngClass]="{ failed: false }">
+                <!-- Khi nào xử lý đoạn chat nhiều người thì mới cần hiện tên -->
+                @if (!msg.me && false) {
+                  <b class="message-username">
+                    {{ msg.sender.displayName }}
+                  </b>
+                }
+                <p class="message-content">{{ msg.message }}</p>
+                <span class="message-timestamp">{{
+                  msg.createdDate | date : "shortTime"
+                }}</span>
+                <!-- hiển thị avatar tiny -->
+                @if (msg.readBy?.length) {
+                  <div class="read-by">
+                    @for (user of msg.readBy; track user) {
+                      <img
+                        [src]="user.avatarUrl || avatarUrlDefault"
+                        class="tiny-avatar"
+                        [title]="user.displayName"
+                        />
+                    }
+                  </div>
+                }
+              </div>
             </div>
-          </div>
+          }
         </div>
-      </div>
+        <form class="message-form" (ngSubmit)="handleSendMessage()">
+          <button
+            class="btn btn--icon btn--primary"
+            type="submit"
+            [disabled]="!message.trim()"
+            aria-label="Send message"
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              >
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+          <input
+            type="text"
+            class="message-input"
+            placeholder="Type a message"
+            [(ngModel)]="message"
+            name="message"
+            autocomplete="off"
+            />
+          </form>
+        } @else {
+          <div class="state-container state-container--full">
+            <h3 class="text-secondary">
+              Chọn một đoạn chat để bắt đầu trò chuyện.
+            </h3>
+          </div>
+        }
 
-      <form class="message-form" (ngSubmit)="handleSendMessage()">
-        <button
-          class="btn btn--icon btn--primary"
-          type="submit"
-          [disabled]="!message.trim()"
-          aria-label="Send message"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
-        <input
-          type="text"
-          class="message-input"
-          placeholder="Type a message"
-          [(ngModel)]="message"
-          name="message"
-          autocomplete="off"
-        />
-      </form>
-    </ng-container>
+      </main>
+    </div>
 
-    <ng-template #noConversationSelected>
-      <div class="state-container state-container--full">
-        <h3 class="text-secondary">
-          Chọn một đoạn chat để bắt đầu trò chuyện.
-        </h3>
-      </div>
-    </ng-template>
-  </main>
-</div>
+    <app-create-new-conversation
+      [isModalVisible]="isOpenCreateNewChat"
+      (modalClosed)="closeModalCreateNewConversation()"
+      (chatCreated)="createdNewConversation()"
+    ></app-create-new-conversation>
 
-<app-create-new-conversation
-  [isModalVisible]="isOpenCreateNewChat"
-  (modalClosed)="closeModalCreateNewConversation()"
-  (chatCreated)="createdNewConversation()"
-></app-create-new-conversation>
-
-<app-set-role-for-user
-  [isModalVisible]="openModalSetRole"
-  [groupId]="selectedConversation?.id || ''"
-  [members]="selectedConversation?.participants || []"
-  (modalClosed)="openModalSetRole = false"
-  (roleUpdated)="onRoleUpdated($event)"
-></app-set-role-for-user>
+    <app-set-role-for-user
+      [isModalVisible]="openModalSetRole"
+      [groupId]="selectedConversation?.id || ''"
+      [members]="selectedConversation?.participants || []"
+      (modalClosed)="openModalSetRole = false"
+      (roleUpdated)="onRoleUpdated($event)"
+    ></app-set-role-for-user>

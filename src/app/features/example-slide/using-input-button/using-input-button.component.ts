@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { InputComponent } from '../../../shared/components/fxdonad-shared/input/input';
 import { InteractiveButtonComponent } from '../../../shared/components/fxdonad-shared/button/button.component';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-using-input-button',
-  imports: [CommonModule, InputComponent, InteractiveButtonComponent],
+  imports: [InputComponent, InteractiveButtonComponent],
   templateUrl: './using-input-button.component.html',
   styleUrl: './using-input-button.component.scss',
 })

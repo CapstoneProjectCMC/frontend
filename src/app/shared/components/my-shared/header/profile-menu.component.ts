@@ -16,7 +16,7 @@ import {
 import { ChangePasswordComponent } from '../../../../features/auth/components/modal/change-password/change-password.component';
 import { Observable } from 'rxjs';
 import { selectVariable } from '../../../store/variable-state/variable.selectors';
-import { CommonModule } from '@angular/common';
+
 import { setVariable } from '../../../store/variable-state/variable.actions';
 
 @Component({
@@ -24,7 +24,7 @@ import { setVariable } from '../../../store/variable-state/variable.actions';
   templateUrl: './profile-menu.component.html',
   styleUrls: ['./profile-menu.component.scss'],
   standalone: true,
-  imports: [ChangePasswordComponent, CommonModule],
+  imports: [ChangePasswordComponent],
 })
 export class ProfileMenuComponent {
   @Input() isVisible: boolean = false;

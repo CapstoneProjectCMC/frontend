@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { ResourceService } from '../../../../core/services/api-service/resource.service';
 import {
@@ -17,7 +17,7 @@ import { TruncatePipe } from '../../../../shared/pipes/format-view.pipe';
 @Component({
   selector: 'app-resource-edit-popup',
   standalone: true,
-  imports: [CommonModule, FormsModule, TruncatePipe],
+  imports: [FormsModule, TruncatePipe],
   templateUrl: './resource-edit-popup.component.html',
   styleUrls: ['./resource-edit-popup.component.scss'],
 })

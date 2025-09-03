@@ -4,7 +4,7 @@ import {
   CardExcercise,
   CardExcerciseComponent,
 } from '../../../../shared/components/fxdonad-shared/card-excercise/card-excercise.component';
-import { CommonModule } from '@angular/common';
+
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import {
   CreateExerciseRequest,
@@ -34,7 +34,6 @@ import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleAct
 @Component({
   selector: 'app-list-exercise',
   imports: [
-    CommonModule,
     CardExcerciseComponent,
     InputComponent,
     DropdownButtonComponent,
@@ -43,8 +42,8 @@ import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleAct
     ScrollEndDirective,
     BtnType1Component,
     GenerateExerciseModalComponent,
-    LottieComponent,
-  ],
+    LottieComponent
+],
   templateUrl: './list-exercise.component.html',
   styleUrl: './list-exercise.component.scss',
 })

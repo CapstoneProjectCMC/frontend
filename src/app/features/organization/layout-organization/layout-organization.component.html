@@ -1,11 +1,12 @@
 <div class="org-layout-container">
   <div class="main-org-container">
-    <app-main-sidebar
-      *ngIf="showSidebar"
-      [sidebarItems]="sidebarData"
-      [isCollapsed]="isSidebarCollapsed"
-    >
-    </app-main-sidebar>
+    @if (showSidebar) {
+      <app-main-sidebar
+        [sidebarItems]="sidebarData"
+        [isCollapsed]="isSidebarCollapsed"
+        >
+      </app-main-sidebar>
+    }
     <div class="org-content-container">
       <router-outlet />
     </div>

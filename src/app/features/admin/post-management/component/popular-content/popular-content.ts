@@ -1,4 +1,4 @@
-import { NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 export interface TagInfo {
@@ -10,7 +10,7 @@ export interface TagInfo {
 @Component({
   selector: 'app-popular-content',
   standalone: true,
-  imports: [NgFor, NgClass],
+  imports: [NgClass],
   templateUrl: './popular-content.html',
   styleUrls: ['./popular-content.scss'],
 })

@@ -1,5 +1,5 @@
 import { Component, SimpleChanges } from '@angular/core';
-import { NgIf } from '@angular/common';
+
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ProfileMenuComponent } from './profile-menu.component';
@@ -19,11 +19,10 @@ import { SetPasswordModalComponent } from '../../../../features/auth/components/
   styleUrls: ['./header.scss'],
   standalone: true,
   imports: [
-    NgIf,
     ProfileMenuComponent,
     ToggleSwitch,
-    SetPasswordModalComponent,
-  ],
+    SetPasswordModalComponent
+],
 })
 export class HeaderComponent {
   needReloadAvatar$: Observable<boolean>;

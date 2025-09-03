@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ActivatedRoute } from '@angular/router';
 import {
   EditOrgRequest,
@@ -14,7 +14,7 @@ import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-details-organization',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './details-organization.component.html',
   styleUrls: ['./details-organization.component.scss'],
 })

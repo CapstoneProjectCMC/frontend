@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { IExerciseResultResponse } from '../../../../core/models/exercise.model';
 
 interface QuizResult {
@@ -13,7 +13,7 @@ interface QuizResult {
 
 @Component({
   selector: 'app-display-score',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './display-score.component.html',
   styleUrl: './display-score.component.scss',
 })
@@ -23,7 +23,7 @@ export class DisplayScoreComponent implements OnInit {
 
   constructor(private router: Router) {
     // Lấy dữ liệu từ router state
-    const navigation = this.router.getCurrentNavigation();
+    const navigation = this.router.currentNavigation();
     if (navigation?.extras.state) {
       this.quizData = navigation.extras.state as QuizResult;
     }

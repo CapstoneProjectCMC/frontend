@@ -19,43 +19,50 @@
           [width]="'50px'"
           [height]="'50px'"
           variant="outline"
-        >
+          >
           <span style="font-size: 24px">+</span>
         </app-button>
       </div>
     </div>
 
     <div class="list-resource-card-container">
-      <div
-        *ngIf="!isLoading && resources"
-        class="list-resource-card"
-        appScrollEnd
-        (appScrollEnd)="loadNextPage()"
-      >
-        <div *ngFor="let resource of resources">
-          <app-resource-card
-            [resource]="resource"
-            [showControls]="true"
-            (main)="goToDetail($event)"
-            (edit)="selectedResourceId = $event"
-            (delete)="deleteResource($event)"
-          ></app-resource-card>
+      @if (!isLoading && resources) {
+        <div
+          class="list-resource-card"
+          appScrollEnd
+          (appScrollEnd)="loadNextPage()"
+          >
+          @for (resource of resources; track resource) {
+            <div>
+              <app-resource-card
+                [resource]="resource"
+                [showControls]="true"
+                (main)="goToDetail($event)"
+                (edit)="selectedResourceId = $event"
+                (delete)="deleteResource($event)"
+              ></app-resource-card>
+            </div>
+          }
         </div>
-      </div>
+      }
 
-      <div *ngIf="isLoading " class="list-resource-card">
-        <app-skeleton-loading
-          *ngIf="isLoading"
-          type="card"
-          [count]="8"
-        ></app-skeleton-loading>
-      </div>
+      @if (isLoading ) {
+        <div class="list-resource-card">
+          @if (isLoading) {
+            <app-skeleton-loading
+              type="card"
+              [count]="8"
+            ></app-skeleton-loading>
+          }
+        </div>
+      }
     </div>
   </div>
 </div>
-<app-resource-edit-popup
-  *ngIf="selectedResourceId"
-  [resourceId]="selectedResourceId"
-  (close)="handlePopupClose()"
-  (updated)="handleResourceUpdated()"
-></app-resource-edit-popup>
+@if (selectedResourceId) {
+  <app-resource-edit-popup
+    [resourceId]="selectedResourceId"
+    (close)="handlePopupClose()"
+    (updated)="handleResourceUpdated()"
+  ></app-resource-edit-popup>
+}

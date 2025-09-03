@@ -1,9 +1,13 @@
 <div class="assign-container theme-light">
   <h1 class="title">
     Giao bài tập:
-    <span class="exercise-name" *ngIf="!isLoading; else loadingState">{{
-      exerciseName
-    }}</span>
+    @if (!isLoading) {
+      <span class="exercise-name">{{
+        exerciseName
+      }}</span>
+    } @else {
+      <div class="skeleton skeleton-text"></div>
+    }
   </h1>
 
   <div class="main-content">
@@ -17,245 +21,238 @@
             placeholder="Tìm kiếm theo tên, email..."
             [(ngModel)]="searchTerm"
             (input)="filterAvailableStudents()"
-          />
+            />
+          </div>
         </div>
-      </div>
-      <div class="student-list">
-        <ng-container
-          *ngIf="
+        <div class="student-list">
+          @if (
             availableStudents.length > 0 &&
-              (!isLoadingSearchUser || !isLoading);
-            else checkLoading
-          "
-        >
-          <div
-            class="student-card"
-            *ngFor="let student of availableStudents"
-            (click)="selectStudent(student)"
-          >
-            <img
-              [src]="student.avatarUrl || avatarUrlDefault"
-              alt="Avatar"
-              class="avatar"
-            />
-            <div class="student-info">
-              <span class="name">{{ student.displayName }}</span>
-              <span class="email">{{ student.email }}</span>
-            </div>
-            <button class="action-btn add-btn" title="Thêm học sinh">
-              <i class="fa fa-plus"></i>
-            </button>
+            (!isLoadingSearchUser || !isLoading)) {
+            @for (student of availableStudents; track student) {
+              <div
+                class="student-card"
+                (click)="selectStudent(student)"
+                >
+                <img
+                  [src]="student.avatarUrl || avatarUrlDefault"
+                  alt="Avatar"
+                  class="avatar"
+                  />
+                  <div class="student-info">
+                    <span class="name">{{ student.displayName }}</span>
+                    <span class="email">{{ student.email }}</span>
+                  </div>
+                  <button class="action-btn add-btn" title="Thêm học sinh">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
+              }
+            } @else {
+              @if (isLoadingSearchUser || isLoading) {
+                <!-- <ng-container *ngTemplateOutlet="loadingUser"></ng-container> -->
+                @for (i of [1, 2, 3, 4, 5]; track i) {
+                  <div class="skeleton-card">
+                    <div class="skeleton skeleton-avatar"></div>
+                    <div class="skeleton-info">
+                      <div class="skeleton skeleton-text"></div>
+                      <div class="skeleton skeleton-text" style="width: 70%"></div>
+                    </div>
+                  </div>
+                }
+              } @else {
+                <div class="state-placeholder">
+                  <p>Không tìm thấy học sinh nào.</p>
+                </div>
+              }
+            }
           </div>
-        </ng-container>
-      </div>
-    </div>
+        </div>
 
-    <div class="student-panel selected-panel">
-      <div class="panel-header">
-        <h2>
-          Đã chọn <span class="count">({{ selectedStudents.length }})</span>
-        </h2>
-      </div>
-      <div class="student-list">
-        <ng-container
-          *ngIf="selectedStudents.length > 0; else emptySelectedState"
-        >
-          <div class="student-card" *ngFor="let student of selectedStudents">
-            <img
-              [src]="student.avatarUrl || avatarUrlDefault"
-              alt="Avatar"
-              class="avatar"
-            />
-            <div class="student-info">
-              <span class="name">{{ student.displayName }}</span>
-              <span class="email">{{ student.email }}</span>
-            </div>
-            <button
-              class="action-btn remove-btn"
-              (click)="deselectStudent(student)"
-              title="Bỏ chọn"
-            >
-              <i class="fa fa-times"></i>
-            </button>
+        <div class="student-panel selected-panel">
+          <div class="panel-header">
+            <h2>
+              Đã chọn <span class="count">({{ selectedStudents.length }})</span>
+            </h2>
           </div>
-        </ng-container>
-      </div>
-    </div>
-    <div class="student-panel assigned-panel">
-      <div class="panel-header">
-        <h2>
-          Danh sách đã giao
-          <span class="count">({{ assignedTotalElements }})</span>
-        </h2>
-        <div class="search-bar">
-          <i class="fa fa-search"></i>
-          <input
-            type="text"
-            placeholder="Tìm kiếm theo tên, email..."
-            [(ngModel)]="assignedSearchTerm"
-            (input)="filterAssignedStudents()"
-          />
-        </div>
-        <div class="filter-bar">
-          <button
-            [class.active]="assignedFilterCompleted === undefined"
-            (click)="setAssignedFilter(undefined)"
-          >
-            Tất cả
-          </button>
-          <button
-            [class.active]="assignedFilterCompleted === true"
-            (click)="setAssignedFilter(true)"
-          >
-            Đã hoàn thành
-          </button>
-          <button
-            [class.active]="assignedFilterCompleted === false"
-            (click)="setAssignedFilter(false)"
-          >
-            Chưa hoàn thành
-          </button>
-        </div>
-      </div>
-      <div class="student-list">
-        <ng-container
-          *ngIf="
-            assignedStudents.length > 0 && !isLoadingAssigned;
-            else assignedLoading
-          "
-        >
-          <div class="student-card" *ngFor="let assigned of assignedStudents">
-            <img
-              [src]="assigned.student.avatarUrl || avatarUrlDefault"
-              alt="Avatar"
-              class="avatar"
-            />
-            <div class="student-info">
-              <span class="name">{{ assigned.student.displayName }}</span>
-              <span class="email">{{ assigned.student.email }}</span>
-              <span class="due"
-                >Hạn: {{ assigned.dueAt | date : "dd/MM/yyyy HH:mm" }}</span
-              >
-              <span class="status">
-                <i
-                  class="fa"
+          <div class="student-list">
+            @if (selectedStudents.length > 0) {
+              @for (student of selectedStudents; track student) {
+                <div class="student-card">
+                  <img
+                    [src]="student.avatarUrl || avatarUrlDefault"
+                    alt="Avatar"
+                    class="avatar"
+                    />
+                    <div class="student-info">
+                      <span class="name">{{ student.displayName }}</span>
+                      <span class="email">{{ student.email }}</span>
+                    </div>
+                    <button
+                      class="action-btn remove-btn"
+                      (click)="deselectStudent(student)"
+                      title="Bỏ chọn"
+                      >
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                }
+              } @else {
+                <div class="state-placeholder">
+                  <p>
+                    Chưa chọn học sinh nào.<br />Nhấn vào học sinh trong danh sách để thêm.
+                  </p>
+                </div>
+              }
+            </div>
+          </div>
+          <div class="student-panel assigned-panel">
+            <div class="panel-header">
+              <h2>
+                Danh sách đã giao
+                <span class="count">({{ assignedTotalElements }})</span>
+              </h2>
+              <div class="search-bar">
+                <i class="fa fa-search"></i>
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm theo tên, email..."
+                  [(ngModel)]="assignedSearchTerm"
+                  (input)="filterAssignedStudents()"
+                  />
+                </div>
+                <div class="filter-bar">
+                  <button
+                    [class.active]="assignedFilterCompleted === undefined"
+                    (click)="setAssignedFilter(undefined)"
+                    >
+                    Tất cả
+                  </button>
+                  <button
+                    [class.active]="assignedFilterCompleted === true"
+                    (click)="setAssignedFilter(true)"
+                    >
+                    Đã hoàn thành
+                  </button>
+                  <button
+                    [class.active]="assignedFilterCompleted === false"
+                    (click)="setAssignedFilter(false)"
+                    >
+                    Chưa hoàn thành
+                  </button>
+                </div>
+              </div>
+              <div class="student-list">
+                @if (
+                  assignedStudents.length > 0 && !isLoadingAssigned) {
+                  @for (assigned of assignedStudents; track assigned) {
+                    <div class="student-card">
+                      <img
+                        [src]="assigned.student.avatarUrl || avatarUrlDefault"
+                        alt="Avatar"
+                        class="avatar"
+                        />
+                        <div class="student-info">
+                          <span class="name">{{ assigned.student.displayName }}</span>
+                          <span class="email">{{ assigned.student.email }}</span>
+                          <span class="due"
+                            >Hạn: {{ assigned.dueAt | date : "dd/MM/yyyy HH:mm" }}</span
+                            >
+                            <span class="status">
+                              <i
+                                class="fa"
                   [ngClass]="{
                     'fa-check-circle text-success': assigned.completed,
                     'fa-times-circle text-error': !assigned.completed
                   }"
-                ></i>
-                {{ assigned.completed ? "Hoàn thành" : "Chưa hoàn thành" }}
-              </span>
-              <span class="score"
-                >Điểm: {{ assigned.bestScore }} /
-                {{ assigned.totalPoints }}</span
-              >
-              <span class="completed-at" *ngIf="assigned.completed"
-                >Hoàn thành lúc:
-                {{ assigned.completedAt | date : "dd/MM/yyyy HH:mm" }}</span
-              >
-            </div>
-            <div class="actions">
-              <button
-                class="action-btn remind-btn"
-                (click)="remindStudent(assigned.assignmentId)"
-                title="Nhắc nhở"
-              >
-                <i class="fa fa-bell"></i>
-              </button>
-              <button
-                class="action-btn delete-btn"
-                (click)="deleteAssignment(assigned.assignmentId)"
-                title="Xóa giao"
-              >
-                <i class="fa fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        </ng-container>
-      </div>
-      <div class="pagination" *ngIf="assignedTotalPages > 1">
-        <button
-          (click)="changeAssignedPage(-1)"
-          [disabled]="assignedPage === 1"
-        >
-          <i class="fa fa-chevron-left"></i>
-        </button>
-        <span>Trang {{ assignedPage }} / {{ assignedTotalPages }}</span>
-        <button
-          (click)="changeAssignedPage(1)"
-          [disabled]="assignedPage === assignedTotalPages"
-        >
-          <i class="fa fa-chevron-right"></i>
-        </button>
-      </div>
-    </div>
-  </div>
+                              ></i>
+                              {{ assigned.completed ? "Hoàn thành" : "Chưa hoàn thành" }}
+                            </span>
+                            <span class="score"
+                              >Điểm: {{ assigned.bestScore }} /
+                              {{ assigned.totalPoints }}</span
+                              >
+                              @if (assigned.completed) {
+                                <span class="completed-at"
+                                  >Hoàn thành lúc:
+                                  {{ assigned.completedAt | date : "dd/MM/yyyy HH:mm" }}</span
+                                  >
+                              }
+                            </div>
+                            <div class="actions">
+                              <button
+                                class="action-btn remind-btn"
+                                (click)="remindStudent(assigned.assignmentId)"
+                                title="Nhắc nhở"
+                                >
+                                <i class="fa fa-bell"></i>
+                              </button>
+                              <button
+                                class="action-btn delete-btn"
+                                (click)="deleteAssignment(assigned.assignmentId)"
+                                title="Xóa giao"
+                                >
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </div>
+                          </div>
+                        }
+                      } @else {
+                        @if (isLoadingAssigned) {
+                          @for (i of [1, 2, 3, 4, 5]; track i) {
+                            <div class="skeleton-card">
+                              <div class="skeleton skeleton-avatar"></div>
+                              <div class="skeleton-info">
+                                <div class="skeleton skeleton-text"></div>
+                                <div class="skeleton skeleton-text" style="width: 70%"></div>
+                                <div class="skeleton skeleton-text" style="width: 50%"></div>
+                              </div>
+                            </div>
+                          }
+                        } @else {
+                          <div class="state-placeholder">
+                            <p>Không tìm thấy học sinh nào</p>
+                          </div>
+                        }
+                      }
+                    </div>
+                    @if (assignedTotalPages > 1) {
+                      <div class="pagination">
+                        <button
+                          (click)="changeAssignedPage(-1)"
+                          [disabled]="assignedPage === 1"
+                          >
+                          <i class="fa fa-chevron-left"></i>
+                        </button>
+                        <span>Trang {{ assignedPage }} / {{ assignedTotalPages }}</span>
+                        <button
+                          (click)="changeAssignedPage(1)"
+                          [disabled]="assignedPage === assignedTotalPages"
+                          >
+                          <i class="fa fa-chevron-right"></i>
+                        </button>
+                      </div>
+                    }
+                  </div>
+                </div>
 
-  <div class="actions-section">
-    <div class="due-date-picker">
-      <label for="due-date">Hạn nộp:</label>
-      <input type="datetime-local" id="due-date" [(ngModel)]="dueAt" />
-    </div>
-    <button
-      class="assign-button"
-      [disabled]="selectedStudents.length === 0 || !dueAt"
-      (click)="assignExercise()"
-    >
-      <i class="fa fa-paper-plane"></i>
-      Giao bài
-    </button>
-  </div>
-</div>
+                <div class="actions-section">
+                  <div class="due-date-picker">
+                    <label for="due-date">Hạn nộp:</label>
+                    <input type="datetime-local" id="due-date" [(ngModel)]="dueAt" />
+                  </div>
+                  <button
+                    class="assign-button"
+                    [disabled]="selectedStudents.length === 0 || !dueAt"
+                    (click)="assignExercise()"
+                    >
+                    <i class="fa fa-paper-plane"></i>
+                    Giao bài
+                  </button>
+                </div>
+              </div>
 
-<ng-template #checkLoading>
-  <ng-container
-    *ngIf="isLoadingSearchUser || isLoading; else emptyAvailableState"
-  >
-    <!-- <ng-container *ngTemplateOutlet="loadingUser"></ng-container> -->
-    <div class="skeleton-card" *ngFor="let i of [1, 2, 3, 4, 5]">
-      <div class="skeleton skeleton-avatar"></div>
-      <div class="skeleton-info">
-        <div class="skeleton skeleton-text"></div>
-        <div class="skeleton skeleton-text" style="width: 70%"></div>
-      </div>
-    </div>
-  </ng-container>
-</ng-template>
 
-<ng-template #loadingState>
-  <div class="skeleton skeleton-text"></div>
-</ng-template>
 
-<ng-template #emptyAvailableState>
-  <div class="state-placeholder">
-    <p>Không tìm thấy học sinh nào.</p>
-  </div>
-</ng-template>
 
-<ng-template #emptySelectedState>
-  <div class="state-placeholder">
-    <p>
-      Chưa chọn học sinh nào.<br />Nhấn vào học sinh trong danh sách để thêm.
-    </p>
-  </div>
-</ng-template>
 
-<ng-template #assignedLoading>
-  <ng-container *ngIf="isLoadingAssigned; else emptyAssignedState">
-    <div class="skeleton-card" *ngFor="let i of [1, 2, 3, 4, 5]">
-      <div class="skeleton skeleton-avatar"></div>
-      <div class="skeleton-info">
-        <div class="skeleton skeleton-text"></div>
-        <div class="skeleton skeleton-text" style="width: 70%"></div>
-        <div class="skeleton skeleton-text" style="width: 50%"></div>
-      </div>
-    </div>
-  </ng-container>
-</ng-template>
 
-<ng-template #emptyAssignedState>
-  <div class="state-placeholder">
-    <p>Không tìm thấy học sinh nào</p>
-  </div>
-</ng-template>

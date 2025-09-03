@@ -1,14 +1,13 @@
 <div id="chart">
-  <div
-    *ngIf="chartTitle"
-    class="chart-title"
-    style="text-align: center; font-weight: bold; margin-bottom: 8px"
-  >
-    {{ chartTitle }}
-  </div>
-  <ng-container
-    *ngIf="chartOptions.series && chartOptions.chart && chartOptions.xaxis && chartOptions.legend && chartOptions.fill && chartOptions.plotOptions && chartOptions.responsive && chartOptions.dataLabels; else errorBlock"
-  >
+  @if (chartTitle) {
+    <div
+      class="chart-title"
+      style="text-align: center; font-weight: bold; margin-bottom: 8px"
+      >
+      {{ chartTitle }}
+    </div>
+  }
+  @if (chartOptions.series && chartOptions.chart && chartOptions.xaxis && chartOptions.legend && chartOptions.fill && chartOptions.plotOptions && chartOptions.responsive && chartOptions.dataLabels) {
     <apx-chart
       #chart
       [series]="chartOptions.series"
@@ -20,11 +19,10 @@
       [responsive]="chartOptions.responsive"
       [dataLabels]="chartOptions.dataLabels"
     ></apx-chart>
-  </ng-container>
-  <ng-template #errorBlock>
+  } @else {
     <div style="color: red; text-align: center; padding: 16px">
       Lỗi: Thiếu dữ liệu đầu vào bắt buộc hoặc dữ liệu không hợp lệ để hiển thị
       biểu đồ.
     </div>
-  </ng-template>
+  }
 </div>

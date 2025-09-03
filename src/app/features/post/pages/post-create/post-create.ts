@@ -1,4 +1,4 @@
-import { NgIf, Location, CommonModule } from '@angular/common';
+import { Location, CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -48,9 +48,8 @@ export interface Draft {
     DropdownButtonComponent,
     ButtonComponent,
     FormsModule,
-    NgIf,
-    CommonModule,
-  ],
+    CommonModule
+],
 })
 export class PostCreatePageComponent {
   @ViewChild('linkInput') linkInput!: ElementRef<HTMLInputElement>;

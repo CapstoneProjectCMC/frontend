@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MenuLayoutComponent } from '../../../layouts/layout-components/menu/menu-layout.component';
 import { SidebarItem } from '../../../core/models/data-handle';
 
 @Component({
   selector: 'app-menu-demo',
   standalone: true,
-  imports: [CommonModule, MenuLayoutComponent],
+  imports: [MenuLayoutComponent],
   template: `
     <div class="demo-container">
       <h2>Menu Layout Demo - Ant Design Style</h2>

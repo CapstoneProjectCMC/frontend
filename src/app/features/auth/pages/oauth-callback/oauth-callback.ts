@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../core/services/api-service/auth.service';
 import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-shared/loading-overlay/loading-overlay.component';
@@ -13,7 +13,7 @@ import { setVariable } from '../../../../shared/store/variable-state/variable.ac
 @Component({
   selector: 'app-oauth-callback',
   standalone: true,
-  imports: [CommonModule, LoadingOverlayComponent],
+  imports: [LoadingOverlayComponent],
   templateUrl: './oauth-callback.html',
   styleUrl: './oauth-callback.scss',
 })

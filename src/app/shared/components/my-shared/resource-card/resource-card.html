@@ -1,58 +1,69 @@
 <div class="resource-card" (click)="onCardClick()">
   <div class="card-media">
-    <video
-      *ngIf="isFileType('video')"
-      [src]="resource.hlsUrl || resource.url"
-      [poster]="resource.thumbnailUrl"
-      preload="metadata"
-      class="media-preview"
-    ></video>
+    @if (isFileType('video')) {
+      <video
+        [src]="resource.hlsUrl || resource.url"
+        [poster]="resource.thumbnailUrl"
+        preload="metadata"
+        class="media-preview"
+      ></video>
+    }
 
-    <img
-      *ngIf="isFileType('image')"
-      [src]="resource.thumbnailUrl || resource.url"
-      [alt]="resource.fileName"
-      class="media-preview"
-    />
+    @if (isFileType('image')) {
+      <img
+        [src]="resource.thumbnailUrl || resource.url"
+        [alt]="resource.fileName"
+        class="media-preview"
+        />
+    }
 
-    <div *ngIf="isFileType('document')" class="media-icon">
-      <div class="file-icon-wrapper">
-        <i
-          class="fa-solid fa-file-lines"
-          *ngIf="resource.fileType.includes('pdf')"
-        ></i>
-        <i
-          class="fa-solid fa-file-word"
-          *ngIf="resource.fileType.includes('word')"
-        ></i>
-        <i class="fa-solid fa-file" *ngIf="!isSpecificDocumentType()"></i>
+    @if (isFileType('document')) {
+      <div class="media-icon">
+        <div class="file-icon-wrapper">
+          @if (resource.fileType.includes('pdf')) {
+            <i
+              class="fa-solid fa-file-lines"
+            ></i>
+          }
+          @if (resource.fileType.includes('word')) {
+            <i
+              class="fa-solid fa-file-word"
+            ></i>
+          }
+          @if (!isSpecificDocumentType()) {
+            <i class="fa-solid fa-file"></i>
+          }
+        </div>
       </div>
-    </div>
+    }
 
-    <iframe
-      *ngIf="isFileType('document') && resource.fileType.includes('pdf')"
-      [src]="safeUrl"
-      width="100%"
-      frameborder="0"
-    ></iframe>
+    @if (isFileType('document') && resource.fileType.includes('pdf')) {
+      <iframe
+        [src]="safeUrl"
+        width="100%"
+        frameborder="0"
+      ></iframe>
+    }
 
-    <div
-      *ngIf="isFileType('image') || isFileType('video')"
-      class="card-overlay"
-    >
-      <span
-        *ngIf="isFileType('video') && resource.duration"
-        class="media-duration"
-      >
-        {{ resource.duration }}
-      </span>
-      <div class="info-item">
-        <i class="fa-solid fa-eye"></i> {{ resource.viewCount || 0 }}
+    @if (isFileType('image') || isFileType('video')) {
+      <div
+        class="card-overlay"
+        >
+        @if (isFileType('video') && resource.duration) {
+          <span
+            class="media-duration"
+            >
+            {{ resource.duration }}
+          </span>
+        }
+        <div class="info-item">
+          <i class="fa-solid fa-eye"></i> {{ resource.viewCount || 0 }}
+        </div>
+        <div class="info-item">
+          <i class="fa-solid fa-star"></i> {{ resource.rating || 0 }}
+        </div>
       </div>
-      <div class="info-item">
-        <i class="fa-solid fa-star"></i> {{ resource.rating || 0 }}
-      </div>
-    </div>
+    }
   </div>
 
   <div class="card-content">
@@ -63,24 +74,30 @@
           [src]="resource.userProfile.avatarUrl"
           [alt]="resource.userProfile.displayName"
           class="author-avatar"
-        />
-        <span class="author-name">{{ resource.userProfile.displayName }}</span>
+          />
+          <span class="author-name">{{ resource.userProfile.displayName }}</span>
+        </div>
+        <span class="created-at">{{ formatDate(resource.createdAt) }}</span>
       </div>
-      <span class="created-at">{{ formatDate(resource.createdAt) }}</span>
-    </div>
 
-    <div *ngIf="resource.tags.length > 0" class="card-tags">
-      <span *ngFor="let tag of resource.tags" class="tag">
-        {{ tag.name }}
-      </span>
+      @if (resource.tags.length > 0) {
+        <div class="card-tags">
+          @for (tag of resource.tags; track tag) {
+            <span class="tag">
+              {{ tag.name }}
+            </span>
+          }
+        </div>
+      }
     </div>
+    @if (showControls && isActionActive) {
+      <div class="card-controls">
+        <button class="control-btn edit-btn" (click)="onEditClick($event)">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </button>
+        <button class="control-btn delete-btn" (click)="onDeleteClick($event)">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    }
   </div>
-  <div *ngIf="showControls && isActionActive" class="card-controls">
-    <button class="control-btn edit-btn" (click)="onEditClick($event)">
-      <i class="fa-solid fa-pen-to-square"></i>
-    </button>
-    <button class="control-btn delete-btn" (click)="onDeleteClick($event)">
-      <i class="fa-solid fa-trash"></i>
-    </button>
-  </div>
-</div>

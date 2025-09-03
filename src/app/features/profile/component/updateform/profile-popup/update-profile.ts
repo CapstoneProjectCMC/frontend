@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -38,16 +38,14 @@ import { TruncatePipe } from '../../../../../shared/pipes/format-view.pipe';
   styleUrls: ['./update-profile.scss'],
   standalone: true,
   imports: [
-    NgFor,
     DropdownButtonComponent,
     NgClass,
     InputComponent,
     FormsModule,
     ButtonComponent,
-    NgIf,
     LottieComponent,
-    TruncatePipe,
-  ],
+    TruncatePipe
+],
   providers: [provideLottieOptions({ player: () => import('lottie-web') })],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

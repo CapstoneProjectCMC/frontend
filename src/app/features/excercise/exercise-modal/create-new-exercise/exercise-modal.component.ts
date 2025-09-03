@@ -7,7 +7,7 @@ import {
   FormsModule,
   FormControl,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import {
   CreateExerciseRequest,
   DifficultyLevel,
@@ -29,7 +29,7 @@ import { TruncatePipe } from '../../../../shared/pipes/format-view.pipe';
   templateUrl: './exercise-modal.component.html',
   styleUrls: ['./exercise-modal.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TruncatePipe],
+  imports: [FormsModule, ReactiveFormsModule, TruncatePipe],
 })
 export class ExerciseModalComponent {
   @Input() isOpen: boolean = false;

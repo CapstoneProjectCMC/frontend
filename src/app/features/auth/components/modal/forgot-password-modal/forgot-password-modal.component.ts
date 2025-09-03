@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../../core/services/api-service/auth.service';
 import { sendNotification } from '../../../../../shared/utils/notification';
@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 @Component({
   selector: 'app-forgot-password-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './forgot-password-modal.component.html',
   styleUrls: ['./forgot-password-modal.component.scss'],
 })

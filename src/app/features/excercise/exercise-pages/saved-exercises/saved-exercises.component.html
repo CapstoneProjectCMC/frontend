@@ -2,51 +2,55 @@
   <h2>Bài tập đã lưu</h2>
 
   <!-- Empty state -->
-  <div *ngIf="!isLoading && exercises.length === 0" class="no-data-container">
-    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
-    </ng-lottie>
-    <p>Chưa lưu bài tập nào</p>
-  </div>
+  @if (!isLoading && exercises.length === 0) {
+    <div class="no-data-container">
+      <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+      </ng-lottie>
+      <p>Chưa lưu bài tập nào</p>
+    </div>
+  }
 
   <!-- List -->
   <div class="exercise-list">
-    <div
-      class="exercise-card"
-      *ngFor="let ex of exercises"
-      [@fadeInOut]
-      (click)="goToExercise(ex.exercise.exerciseId, ex.exercise.type)"
-    >
-      <div class="info">
-        <span class="type" [ngClass]="ex.exercise.type.toLowerCase()">
-          {{ ex.exercise.type }}
-        </span>
-        <h3>{{ ex.exercise.title }}</h3>
-        <p class="difficulty">
-          Độ khó:
-          <span [ngClass]="'level-' + ex.exercise.difficulty">
-            {{
-              ex.exercise.difficulty === 0
-                ? "Dễ"
-                : ex.exercise.difficulty === 1
-                ? "Trung bình"
-                : "Khó"
-            }}
-          </span>
-        </p>
-        <small
-          >Lưu lúc:
-          {{ ex.saveAt ? (ex.saveAt | date : "short") : "Chưa rõ" }}</small
+    @for (ex of exercises; track ex) {
+      <div
+        class="exercise-card"
+        [@fadeInOut]
+        (click)="goToExercise(ex.exercise.exerciseId, ex.exercise.type)"
         >
-      </div>
-      <button class="unsave-btn" (click)="onUnsave(ex, $event)">
-        <i class="fa fa-link-slash"></i> Bỏ lưu
-      </button>
+        <div class="info">
+          <span class="type" [ngClass]="ex.exercise.type.toLowerCase()">
+            {{ ex.exercise.type }}
+          </span>
+          <h3>{{ ex.exercise.title }}</h3>
+          <p class="difficulty">
+            Độ khó:
+            <span [ngClass]="'level-' + ex.exercise.difficulty">
+              {{
+              ex.exercise.difficulty === 0
+              ? "Dễ"
+              : ex.exercise.difficulty === 1
+              ? "Trung bình"
+              : "Khó"
+              }}
+            </span>
+          </p>
+          <small
+            >Lưu lúc:
+            {{ ex.saveAt ? (ex.saveAt | date : "short") : "Chưa rõ" }}</small
+            >
+          </div>
+          <button class="unsave-btn" (click)="onUnsave(ex, $event)">
+            <i class="fa fa-link-slash"></i> Bỏ lưu
+          </button>
+        </div>
+      }
     </div>
-  </div>
 
-  <app-skeleton-loading
-    *ngIf="isLoading"
-    type="list"
-    [count]="8"
-  ></app-skeleton-loading>
-</div>
+    @if (isLoading) {
+      <app-skeleton-loading
+        type="list"
+        [count]="8"
+      ></app-skeleton-loading>
+    }
+  </div>

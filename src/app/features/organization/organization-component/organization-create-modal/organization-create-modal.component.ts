@@ -1,6 +1,6 @@
 // organization-create-modal.component.ts
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -12,7 +12,7 @@ import { CreateOrgRequest } from '../../../../core/models/organization.model';
 @Component({
   selector: 'app-organization-create-modal',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './organization-create-modal.component.html',
   styleUrls: ['./organization-create-modal.component.scss'],
 })

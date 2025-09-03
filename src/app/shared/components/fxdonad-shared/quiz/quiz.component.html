@@ -18,69 +18,69 @@
     </div>
 
     <ul class="question-list">
-      <li
-        *ngFor="let question of questions; let i = index"
-        [class.done]="question.done"
-        (click)="goToQuestion(i)"
-      >
-        Câu {{ i + 1 }}
-      </li>
+      @for (question of questions; track question; let i = $index) {
+        <li
+          [class.done]="question.done"
+          (click)="goToQuestion(i)"
+          >
+          Câu {{ i + 1 }}
+        </li>
+      }
     </ul>
   </div>
 
-  <div class="quiz-main" *ngIf="questions.length">
-    <div class="content-quiz-container">
-      <div class="question-number">Câu {{ currentQuestionIndex + 1 }}:</div>
-      <div class="question-text">
-        <strong>{{ questions[currentQuestionIndex].text }}</strong>
-      </div>
-
-      <div class="options">
-        <label
-          class="option"
-          *ngFor="let opt of questions[currentQuestionIndex]?.options"
-          [class.selected]="isOptionSelected(currentQuestionIndex, opt.id)"
-        >
-          <input
-            *ngIf="
-              questions[currentQuestionIndex].questiontype === 'MULTI_CHOICE';
-              else singleChoice
-            "
-            type="checkbox"
-            [checked]="isOptionSelected(currentQuestionIndex, opt.id)"
-            (change)="selectAnswer(currentQuestionIndex, opt)"
-          />
-          <ng-template #singleChoice>
-            <input
-              type="radio"
-              name="answer{{ currentQuestionIndex }}"
-              [checked]="isOptionSelected(currentQuestionIndex, opt.id)"
-              (change)="selectAnswer(currentQuestionIndex, opt)"
-            />
-          </ng-template>
-          {{ opt.optiontext }}
-        </label>
-      </div>
-
-      <div class="buttons">
-        <div class="control-btn">
-          <button
-            class="btn-prev"
-            (click)="prevQuestion()"
-            [disabled]="currentQuestionIndex === 0"
-          >
-            Câu trước
-          </button>
-          <button
-            class="btn-next"
-            (click)="nextQuestion()"
-            [disabled]="currentQuestionIndex >= questions.length - 1"
-          >
-            Câu tiếp
-          </button>
+  @if (questions.length) {
+    <div class="quiz-main">
+      <div class="content-quiz-container">
+        <div class="question-number">Câu {{ currentQuestionIndex + 1 }}:</div>
+        <div class="question-text">
+          <strong>{{ questions[currentQuestionIndex].text }}</strong>
         </div>
-        <button class="btn-submit" (click)="openModalConfirm()">Nộp bài</button>
+        <div class="options">
+          @for (opt of questions[currentQuestionIndex]?.options; track opt) {
+            <label
+              class="option"
+              [class.selected]="isOptionSelected(currentQuestionIndex, opt.id)"
+              >
+              @if (
+                questions[currentQuestionIndex].questiontype === 'MULTI_CHOICE') {
+                <input
+                  type="checkbox"
+                  [checked]="isOptionSelected(currentQuestionIndex, opt.id)"
+                  (change)="selectAnswer(currentQuestionIndex, opt)"
+                  />
+              } @else {
+                <input
+                  type="radio"
+                  name="answer{{ currentQuestionIndex }}"
+                  [checked]="isOptionSelected(currentQuestionIndex, opt.id)"
+                  (change)="selectAnswer(currentQuestionIndex, opt)"
+                  />
+                }
+                {{ opt.optiontext }}
+              </label>
+            }
+          </div>
+          <div class="buttons">
+            <div class="control-btn">
+              <button
+                class="btn-prev"
+                (click)="prevQuestion()"
+                [disabled]="currentQuestionIndex === 0"
+                >
+                Câu trước
+              </button>
+              <button
+                class="btn-next"
+                (click)="nextQuestion()"
+                [disabled]="currentQuestionIndex >= questions.length - 1"
+                >
+                Câu tiếp
+              </button>
+            </div>
+            <button class="btn-submit" (click)="openModalConfirm()">Nộp bài</button>
+          </div>
+        </div>
       </div>
-    </div>
+    }
   </div>
-</div>

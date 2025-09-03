@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import {
   DifficultyLevel,
   ExerciseQuiz,
@@ -21,7 +21,7 @@ import { sendNotification } from '../../../../shared/utils/notification';
   templateUrl: './update-exercise.component.html',
   styleUrls: ['./update-exercise.component.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
 })
 export class UpdateExerciseComponent implements OnInit {
   @Input() isOpen: boolean = false;

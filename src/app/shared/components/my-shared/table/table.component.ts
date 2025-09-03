@@ -6,7 +6,7 @@ import {
   AfterContentInit,
   TemplateRef,
 } from '@angular/core';
-import { NgIf, NgFor, NgClass, CommonModule } from '@angular/common';
+import { NgClass, CommonModule } from '@angular/common';
 import { InteractiveButtonComponent } from '../../fxdonad-shared/button/button.component';
 import { ButtonComponent } from '../button/button.component';
 
@@ -16,13 +16,11 @@ import { ButtonComponent } from '../button/button.component';
   styleUrls: ['./table.component.scss'],
   standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     NgClass,
     CommonModule,
     InteractiveButtonComponent,
-    ButtonComponent,
-  ],
+    ButtonComponent
+],
 })
 export class TableComponent implements AfterContentInit {
   @Input() data: Array<{ [key: string]: any }> = [];

@@ -1,16 +1,19 @@
 <div class="quiz-submission-container">
-  <app-quiz
-    *ngIf="startDoing"
-    [questions]="questions"
-    [totalTime]="times * 60"
-    [quizId]="quizId"
-    [exerciseId]="exerciseId ?? ''"
-    (quizStateChanged)="onQuizStateChanged($event)"
-  ></app-quiz>
+  @if (startDoing) {
+    <app-quiz
+      [questions]="questions"
+      [totalTime]="times * 60"
+      [quizId]="quizId"
+      [exerciseId]="exerciseId ?? ''"
+      (quizStateChanged)="onQuizStateChanged($event)"
+    ></app-quiz>
+  }
 
-  <div *ngIf="!startDoing" class="no-data-container">
-    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
-    </ng-lottie>
-    <p>Đang load nội dung, xin chờ...</p>
-  </div>
+  @if (!startDoing) {
+    <div class="no-data-container">
+      <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+      </ng-lottie>
+      <p>Đang load nội dung, xin chờ...</p>
+    </div>
+  }
 </div>

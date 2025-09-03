@@ -1,60 +1,60 @@
-<div class="paging-component" *ngIf="totalData > 0">
-  <div class="pagi-area">
-    <div class="pagination-container">
-      <button
-        class="start-arrow"
-        [class.disabled]="!canPressStart"
-        [disabled]="!canPressStart"
-        (click)="pageIndex(1)"
-      >
-        <i class="fa-solid fa-angles-left"></i>
-      </button>
-
-      <button
-        class="previous-arrow"
-        [class.disabled]="!canPressStart"
-        [disabled]="!canPressStart"
-        (click)="pageIndex(currentPageIndex - 1)"
-      >
-        <i class="fa-solid fa-angle-left"></i>
-      </button>
-
-      <div class="page-number">
-        <div class="midle-page">
-          <ng-container *ngFor="let pageNum of generatePageNumbers()">
-            <span *ngIf="pageNum === '...'">...</span>
-            <button
-              *ngIf="pageNum !== '...'"
-              [class.active]="currentPageIndex === pageNum"
-              (click)="pageIndex(+pageNum)"
-            >
-              {{ pageNum }}
-            </button>
-          </ng-container>
+@if (totalData > 0) {
+  <div class="paging-component">
+    <div class="pagi-area">
+      <div class="pagination-container">
+        <button
+          class="start-arrow"
+          [class.disabled]="!canPressStart"
+          [disabled]="!canPressStart"
+          (click)="pageIndex(1)"
+          >
+          <i class="fa-solid fa-angles-left"></i>
+        </button>
+        <button
+          class="previous-arrow"
+          [class.disabled]="!canPressStart"
+          [disabled]="!canPressStart"
+          (click)="pageIndex(currentPageIndex - 1)"
+          >
+          <i class="fa-solid fa-angle-left"></i>
+        </button>
+        <div class="page-number">
+          <div class="midle-page">
+            @for (pageNum of generatePageNumbers(); track pageNum) {
+              @if (pageNum === '...') {
+                <span>...</span>
+              }
+              @if (pageNum !== '...') {
+                <button
+                  [class.active]="currentPageIndex === pageNum"
+                  (click)="pageIndex(+pageNum)"
+                  >
+                  {{ pageNum }}
+                </button>
+              }
+            }
+          </div>
         </div>
+        <button
+          class="next-arrow"
+          [class.disabled]="!canPressEnd"
+          [disabled]="!canPressEnd"
+          (click)="pageIndex(currentPageIndex + 1)"
+          >
+          <i class="fa-solid fa-angle-right"></i>
+        </button>
+        <button
+          class="end-arrow"
+          [class.disabled]="!canPressEnd"
+          [disabled]="!canPressEnd"
+          (click)="pageIndex(totalPages)"
+          >
+          <i class="fa-solid fa-angles-right"></i>
+        </button>
       </div>
-
-      <button
-        class="next-arrow"
-        [class.disabled]="!canPressEnd"
-        [disabled]="!canPressEnd"
-        (click)="pageIndex(currentPageIndex + 1)"
-      >
-        <i class="fa-solid fa-angle-right"></i>
-      </button>
-
-      <button
-        class="end-arrow"
-        [class.disabled]="!canPressEnd"
-        [disabled]="!canPressEnd"
-        (click)="pageIndex(totalPages)"
-      >
-        <i class="fa-solid fa-angles-right"></i>
-      </button>
+    </div>
+    <div class="total-data">
+      <p class="label-total-data">Tất cả: {{ totalData }}</p>
     </div>
   </div>
-
-  <div class="total-data">
-    <p class="label-total-data">Tất cả: {{ totalData }}</p>
-  </div>
-</div>
+}

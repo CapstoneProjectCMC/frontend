@@ -8,8 +8,8 @@
   class="notice-modal"
   [class.open]="isOpen$ | async"
   [class.close]="!(isOpen$ | async)"
->
-  <ng-container *ngIf="payload$ | async as payload">
+  >
+  @if (payload$ | async; as payload) {
     <div class="notice-modal-header">
       <h2>{{ payload.title }}</h2>
       <button class="close-btn" (click)="onClose()">&times;</button>
@@ -18,12 +18,16 @@
       <p [innerHTML]="getFormattedMessage(payload.message)"></p>
     </div>
     <div class="notice-modal-footer">
-      <button *ngIf="payload.cancelText" (click)="onCancel(payload)">
-        {{ payload.cancelText }}
-      </button>
-      <button *ngIf="payload.confirmText" (click)="onConfirm(payload)">
-        {{ payload.confirmText }}
-      </button>
+      @if (payload.cancelText) {
+        <button (click)="onCancel(payload)">
+          {{ payload.cancelText }}
+        </button>
+      }
+      @if (payload.confirmText) {
+        <button (click)="onConfirm(payload)">
+          {{ payload.confirmText }}
+        </button>
+      }
     </div>
-  </ng-container>
+  }
 </div>

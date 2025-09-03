@@ -1,101 +1,106 @@
 <div class="my-assignments-container">
   <h1 class="title">Bài tập của tôi</h1>
 
-  <div *ngIf="isLoadingInitial; else content" class="assignment-list">
-    <div class="assignment-card skeleton-card" *ngFor="let i of [1, 2, 3]">
-      <div
-        class="skeleton skeleton-text"
-        style="width: 60%; height: 24px"
-      ></div>
-      <div class="skeleton skeleton-text" style="width: 40%"></div>
-      <div class="skeleton skeleton-progress"></div>
-      <div class="skeleton-footer">
-        <div
-          class="skeleton skeleton-text"
-          style="width: 25%; height: 28px"
-        ></div>
-        <div class="skeleton skeleton-button"></div>
-      </div>
-    </div>
-  </div>
-
-  <div
-    *ngIf="assignments.length === 0 && !isLoadingInitial && !isLoadingNextPage"
-    class="no-data-container"
-  >
-    <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
-    </ng-lottie>
-    <p>Không có dữ liệu</p>
-  </div>
-
-  <ng-template #content>
-    <div class="assignment-list" appScrollEnd (appScrollEnd)="loadNextPage()">
-      <div
-        class="assignment-card"
-        *ngFor="let assignment of assignments"
-        [ngClass]="getCardStatus(assignment).className"
-      >
-        <div class="card-header">
-          <h2 class="exercise-name">
-            {{ assignment.exerciseTitle || "Tên bài tập bị thiếu" }}
-          </h2>
+  @if (isLoadingInitial) {
+    <div class="assignment-list">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="assignment-card skeleton-card">
           <div
-            class="status-tag"
-            [ngClass]="getCardStatus(assignment).className"
-          >
-            {{ getCardStatus(assignment).label }}
+            class="skeleton skeleton-text"
+            style="width: 60%; height: 24px"
+          ></div>
+          <div class="skeleton skeleton-text" style="width: 40%"></div>
+          <div class="skeleton skeleton-progress"></div>
+          <div class="skeleton-footer">
+            <div
+              class="skeleton skeleton-text"
+              style="width: 25%; height: 28px"
+            ></div>
+            <div class="skeleton skeleton-button"></div>
           </div>
         </div>
-
-        <div class="other-info">
-          <div class="due-date">
-            <i class="fa fa-calendar-alt"></i>
-            <span
-              >Hạn nộp: {{ assignment.dueAt | date : "dd/MM/yyyy HH:mm" }}</span
-            >
+      }
+    </div>
+  } @else {
+    <div class="assignment-list" appScrollEnd (appScrollEnd)="loadNextPage()">
+      @for (assignment of assignments; track assignment) {
+        <div
+          class="assignment-card"
+          [ngClass]="getCardStatus(assignment).className"
+          >
+          <div class="card-header">
+            <h2 class="exercise-name">
+              {{ assignment.exerciseTitle || "Tên bài tập bị thiếu" }}
+            </h2>
+            <div
+              class="status-tag"
+              [ngClass]="getCardStatus(assignment).className"
+              >
+              {{ getCardStatus(assignment).label }}
+            </div>
           </div>
-          <div class="exercise-type">
-            <i
+          <div class="other-info">
+            <div class="due-date">
+              <i class="fa fa-calendar-alt"></i>
+              <span
+                >Hạn nộp: {{ assignment.dueAt | date : "dd/MM/yyyy HH:mm" }}</span
+                >
+              </div>
+              <div class="exercise-type">
+                <i
               [class]="
                 assignment.exerciseType === 'QUIZ'
                   ? 'fa-regular fa-circle-question'
                   : 'fa fa-code'
               "
-            ></i>
-            {{ assignment.exerciseType === "QUIZ" ? "Trắc nghiệm" : "Viết mã" }}
-          </div>
+                ></i>
+                {{ assignment.exerciseType === "QUIZ" ? "Trắc nghiệm" : "Viết mã" }}
+              </div>
+            </div>
+            <div class="progress-section">
+              <span class="score"
+                >Điểm: {{ assignment.myBestScore || 0 }} /
+                {{ assignment.totalPoints }}</span
+                >
+                <div class="progress-bar">
+                  <div
+                    class="progress-value"
+                    [style.width.%]="calculateProgress(assignment)"
+                  ></div>
+                </div>
+              </div>
+              <div class="card-footer">
+                @if (assignment.completedAt) {
+                  <div class="completed-time">
+                    Đã nộp: {{ assignment.completedAt | date : "dd/MM/yyyy HH:mm" }}
+                  </div>
+                }
+                <button
+                  class="action-button"
+                  [class]="assignment.completed ? 'done' : ''"
+                  (click)="doExercise(assignment.exerciseId, assignment.exerciseType)"
+                  >
+                  {{ assignment.completed ? "Xem lại" : "Làm bài" }}
+                </button>
+              </div>
+            </div>
+          }
+          @if (isLoadingNextPage) {
+            <div class="loading-more">
+              <p>Đang tải thêm...</p>
+            </div>
+          }
         </div>
+      }
 
-        <div class="progress-section">
-          <span class="score"
-            >Điểm: {{ assignment.myBestScore || 0 }} /
-            {{ assignment.totalPoints }}</span
+      @if (assignments.length === 0 && !isLoadingInitial && !isLoadingNextPage) {
+        <div
+          class="no-data-container"
           >
-          <div class="progress-bar">
-            <div
-              class="progress-value"
-              [style.width.%]="calculateProgress(assignment)"
-            ></div>
-          </div>
+          <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+          </ng-lottie>
+          <p>Không có dữ liệu</p>
         </div>
+      }
 
-        <div class="card-footer">
-          <div class="completed-time" *ngIf="assignment.completedAt">
-            Đã nộp: {{ assignment.completedAt | date : "dd/MM/yyyy HH:mm" }}
-          </div>
-          <button
-            class="action-button"
-            [class]="assignment.completed ? 'done' : ''"
-            (click)="doExercise(assignment.exerciseId, assignment.exerciseType)"
-          >
-            {{ assignment.completed ? "Xem lại" : "Làm bài" }}
-          </button>
-        </div>
-      </div>
-
-      <div *ngIf="isLoadingNextPage" class="loading-more">
-        <p>Đang tải thêm...</p>
-      </div>
     </div>
-  </ng-template>
-</div>

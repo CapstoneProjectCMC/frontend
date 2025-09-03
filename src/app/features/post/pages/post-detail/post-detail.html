@@ -1,109 +1,120 @@
-<ng-container *ngIf="isLoading">
+@if (isLoading) {
   <div class="post-detail-container skeleton-loader"></div>
-</ng-container>
+}
 
-<ng-container *ngIf="error">
+@if (error) {
   <div class="error-container"></div>
-</ng-container>
+}
 
-<ng-container *ngIf="!isLoading && !error && post">
+@if (!isLoading && !error && post) {
   <div class="post-detail-container">
     <div class="post-detail-content">
       <h1 class="post-title">{{ post.title }}</h1>
-
       <div class="post-meta">
-        <div class="post-author" *ngIf="post.user">
-          <img
-            [src]="post.user.avatarUrl || avatarDefault"
-            alt="Avatar của tác giả"
-          />
-          <div class="author-info">
-            <span class="author-name">{{ post.user.displayName }}</span>
-            <span class="post-time"
-              >{{ post.createdAt | date:'dd/MM/yyyy, HH:mm' }}</span
-            >
+        @if (post.user) {
+          <div class="post-author">
+            <img
+              [src]="post.user.avatarUrl || avatarDefault"
+              alt="Avatar của tác giả"
+              />
+              <div class="author-info">
+                <span class="author-name">{{ post.user.displayName }}</span>
+                <span class="post-time"
+                  >{{ post.createdAt | date:'dd/MM/yyyy, HH:mm' }}</span
+                  >
+                </div>
+              </div>
+            }
+            <div class="post-votes">
+              <button class="vote-button" (click)="handleUpVote()" title="Upvote">
+                <i class="fa-regular fa-thumbs-up"></i>
+                <span>{{ post.upvoteCount }}</span>
+              </button>
+              <button
+                class="vote-button"
+                (click)="handleDownVote()"
+                title="Downvote"
+                >
+                <i class="fa-regular fa-thumbs-down"></i>
+                <span>{{ post.downvoteCount }}</span>
+              </button>
+            </div>
           </div>
-        </div>
-        <div class="post-votes">
-          <button class="vote-button" (click)="handleUpVote()" title="Upvote">
-            <i class="fa-regular fa-thumbs-up"></i>
-            <span>{{ post.upvoteCount }}</span>
-          </button>
-          <button
-            class="vote-button"
-            (click)="handleDownVote()"
-            title="Downvote"
-          >
-            <i class="fa-regular fa-thumbs-down"></i>
-            <span>{{ post.downvoteCount }}</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="post-media" *ngIf="post.fileUrls?.length">
-        <ng-container *ngFor="let file of post.fileUrls">
-          <!-- Ảnh -->
-          <img
-            *ngIf="isImage(file)"
-            [src]="file"
-            alt="Hình ảnh trong bài viết"
-            class="post-image"
-          />
-
-          <!-- Video -->
-          <video
-            *ngIf="isVideo(file)"
-            [src]="file"
-            controls
-            class="post-video"
-          ></video>
-        </ng-container>
-      </div>
-
-      <div class="post-detail-content">
-        <markdown [data]="post.content"></markdown>
-      </div>
-
-      <div class="post-tags" *ngIf="post.hashtag && !isCommentVisible">
-        <span *ngFor="let tag of post.hashtag.split(',')" class="tag"
-          >#{{ tag.trim() }}</span
-        >
-      </div>
-
-      <div class="comment-section" *ngIf="post.allowComment">
-        <button
-          class="toggle-comment-button"
-          (click)="toggleCommentVisibility()"
-        >
-          <i class="fa-regular fa-comments"></i>
-          <span
-            >{{ isCommentVisible ? 'Ẩn bình luận' : 'Xem ' + post.commentCount +
-            ' bình luận' }}</span
-          >
-        </button>
-        <div class="comment-container" [class.is-visible]="isCommentVisible">
-          <app-comment
-            [contentId]="post.postId"
-            (commentSuccess)="countComment()"
-          ></app-comment>
-        </div>
-      </div>
-    </div>
-
-    <aside class="post-sidebar">
-      <h2 class="sidebar-title">Mục lục</h2>
-      <ul class="toc-list" *ngIf="tocItems.length > 0">
-        <li *ngFor="let item of tocItems" [class]="'level-' + item.level">
-          <a
-            [href]="'#' + item.anchor"
-            (click)="scrollToAnchor(item.anchor, $event)"
-            >{{ item.text }}</a
-          >
-        </li>
-      </ul>
-      <p class="no-toc" *ngIf="tocItems.length === 0">
-        Bài viết không có mục lục.
-      </p>
-    </aside>
-  </div>
-</ng-container>
+          @if (post.fileUrls?.length) {
+            <div class="post-media">
+              @for (file of post.fileUrls; track file) {
+                <!-- Ảnh -->
+                @if (isImage(file)) {
+                  <img
+                    [src]="file"
+                    alt="Hình ảnh trong bài viết"
+                    class="post-image"
+                    />
+                }
+                <!-- Video -->
+                @if (isVideo(file)) {
+                  <video
+                    [src]="file"
+                    controls
+                    class="post-video"
+                  ></video>
+                }
+              }
+            </div>
+          }
+          <div class="post-detail-content">
+            <markdown [data]="post.content"></markdown>
+          </div>
+          @if (post.hashtag && !isCommentVisible) {
+            <div class="post-tags">
+              @for (tag of post.hashtag.split(','); track tag) {
+                <span class="tag"
+                  >#{{ tag.trim() }}</span
+                  >
+                }
+              </div>
+            }
+            @if (post.allowComment) {
+              <div class="comment-section">
+                <button
+                  class="toggle-comment-button"
+                  (click)="toggleCommentVisibility()"
+                  >
+                  <i class="fa-regular fa-comments"></i>
+                  <span
+                    >{{ isCommentVisible ? 'Ẩn bình luận' : 'Xem ' + post.commentCount +
+                    ' bình luận' }}</span
+                    >
+                  </button>
+                  <div class="comment-container" [class.is-visible]="isCommentVisible">
+                    <app-comment
+                      [contentId]="post.postId"
+                      (commentSuccess)="countComment()"
+                    ></app-comment>
+                  </div>
+                </div>
+              }
+            </div>
+            <aside class="post-sidebar">
+              <h2 class="sidebar-title">Mục lục</h2>
+              @if (tocItems.length > 0) {
+                <ul class="toc-list">
+                  @for (item of tocItems; track item) {
+                    <li [class]="'level-' + item.level">
+                      <a
+                        [href]="'#' + item.anchor"
+                        (click)="scrollToAnchor(item.anchor, $event)"
+                        >{{ item.text }}</a
+                        >
+                      </li>
+                    }
+                  </ul>
+                }
+                @if (tocItems.length === 0) {
+                  <p class="no-toc">
+                    Bài viết không có mục lục.
+                  </p>
+                }
+              </aside>
+            </div>
+          }

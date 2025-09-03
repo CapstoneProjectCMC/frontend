@@ -4,8 +4,10 @@
   <button (click)="clear()">Xóa hết</button>
 
   <ul>
-    <li *ngFor="let notif of notifications$ | async">
-      {{ notif.id }} - {{ notif.message }}
-    </li>
+    @for (notif of notifications$ | async; track notif) {
+      <li>
+        {{ notif.id }} - {{ notif.message }}
+      </li>
+    }
   </ul>
 </div>

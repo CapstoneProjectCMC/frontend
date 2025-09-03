@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-skeleton-loading',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './skeleton-loading.component.html',
   styleUrls: ['./skeleton-loading.component.scss'],
 })
