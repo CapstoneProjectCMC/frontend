@@ -33,7 +33,7 @@
           [isSearchable]="true"
           [minHeight]="true"
           [needIndexColor]="true"
-          >
+        >
         </app-dropdown-button>
       </div>
       <div class="dropdown-filter">
@@ -55,64 +55,44 @@
           [isSearchable]="false"
           [minHeight]="true"
           [needIndexColor]="true"
-          >
+        >
         </app-dropdown-button>
       </div>
 
       @if (isActionActive) {
-        <div class="create-exercise-btn">
-          <app-btn-type1
-            thumb="+"
-            [thumbSize]="24"
-            description="Tạo thủ công"
-            (click)="toggleOpenModalCreate()"
-          ></app-btn-type1>
-          <app-btn-type1
-            thumb="AI +"
-            [thumbSize]="16"
-            description="Tạo bằng AI"
-            (click)="toggleOpenModalGenerate()"
-          ></app-btn-type1>
-        </div>
+      <div class="create-exercise-btn">
+        <app-btn-type1
+          thumb="+"
+          [thumbSize]="24"
+          description="Tạo thủ công"
+          (click)="toggleOpenModalCreate()"
+        ></app-btn-type1>
+        <app-btn-type1
+          thumb="AI +"
+          [thumbSize]="16"
+          description="Tạo bằng AI"
+          (click)="toggleOpenModalGenerate()"
+        ></app-btn-type1>
+      </div>
       }
     </div>
     @if (listExercise && !isLoading) {
-      <div
-        class="list-exercise"
-        appScrollEnd
-        (appScrollEnd)="loadNextPage()"
-        >
-        @for (item of listExercise; track item) {
-          <app-card-excercise
-            [data]="item"
-            [exerciseId]="item.id"
-            >
-          </app-card-excercise>
-        }
-      </div>
-    }
-
-    @if (isLoading) {
-      <app-skeleton-loading
-        type="card"
-        [count]="8"
-      ></app-skeleton-loading>
-    }
-
-    @if (listExercise.length === 0 && !isLoading) {
-      <div
-        class="no-data-container"
-        >
-        <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
-        </ng-lottie>
-        <p>Không có dữ liệu</p>
-      </div>
-    }
-
-    @if (isLoadingMore) {
-      <div class="loading-more">
-        Đang tải thêm, xin chờ...
-      </div>
+    <div class="list-exercise" appScrollEnd (appScrollEnd)="loadNextPage()">
+      @for (item of listExercise; track item.id) {
+      <app-card-excercise [data]="item" [exerciseId]="item.id">
+      </app-card-excercise>
+      }
+    </div>
+    } @if (isLoading) {
+    <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
+    } @if (listExercise.length === 0 && !isLoading) {
+    <div class="no-data-container">
+      <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
+      </ng-lottie>
+      <p>Không có dữ liệu</p>
+    </div>
+    } @if (isLoadingMore) {
+    <div class="loading-more">Đang tải thêm, xin chờ...</div>
     }
   </div>
 </div>

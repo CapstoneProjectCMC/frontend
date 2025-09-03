@@ -1,45 +1,33 @@
 @if (type === 'card') {
-  <div class="skeleton-list-grid">
-    @for (i of [].constructor(count); track i) {
-      <div
-        class="skeleton-card skeleton-animate"
-        >
-        <div class="skeleton-card-thumb"></div>
-        <div class="skeleton-card-content">
-          <div class="skeleton-line skeleton-title"></div>
-          <div class="skeleton-line skeleton-subtitle"></div>
-          <div class="skeleton-line skeleton-text"></div>
-          <div class="skeleton-line skeleton-text short"></div>
-        </div>
-      </div>
-    }
-  </div>
-}
-@if (type === 'list') {
-  @for (i of [].constructor(count); track i) {
-    <div
-      class="skeleton-list skeleton-animate"
-      >
-      <div class="skeleton-list-avatar"></div>
-      <div class="skeleton-list-lines">
-        <div class="skeleton-line skeleton-title"></div>
-        <div class="skeleton-line skeleton-text short"></div>
-      </div>
-    </div>
-  }
-}
-@if (type === 'post') {
-  @for (i of [].constructor(count); track i) {
-    <div
-      class="skeleton-post skeleton-animate"
-      >
-      <div class="skeleton-post-header">
-        <div class="skeleton-post-avatar"></div>
-        <div class="skeleton-line skeleton-title"></div>
-      </div>
-      <div class="skeleton-line skeleton-text"></div>
+<div class="skeleton-list-grid">
+  @for (i of skeletonArray; track i) {
+  <div class="skeleton-card skeleton-animate">
+    <div class="skeleton-card-thumb"></div>
+    <div class="skeleton-card-content">
+      <div class="skeleton-line skeleton-title"></div>
+      <div class="skeleton-line skeleton-subtitle"></div>
       <div class="skeleton-line skeleton-text"></div>
       <div class="skeleton-line skeleton-text short"></div>
     </div>
+  </div>
   }
-}
+</div>
+} @if (type === 'list') { @for (i of skeletonArray; track i) {
+<div class="skeleton-list skeleton-animate">
+  <div class="skeleton-list-avatar"></div>
+  <div class="skeleton-list-lines">
+    <div class="skeleton-line skeleton-title"></div>
+    <div class="skeleton-line skeleton-text short"></div>
+  </div>
+</div>
+} } @if (type === 'post') { @for (i of skeletonArray; track i) {
+<div class="skeleton-post skeleton-animate">
+  <div class="skeleton-post-header">
+    <div class="skeleton-post-avatar"></div>
+    <div class="skeleton-line skeleton-title"></div>
+  </div>
+  <div class="skeleton-line skeleton-text"></div>
+  <div class="skeleton-line skeleton-text"></div>
+  <div class="skeleton-line skeleton-text short"></div>
+</div>
+} }

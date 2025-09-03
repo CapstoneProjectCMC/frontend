@@ -1,22 +1,18 @@
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    @for (breadcrumb of breadcrumbs; track breadcrumb; let last = $last) {
-      <li
-        class="breadcrumb-item"
-        >
-        <!-- <a *ngIf="!breadcrumb.isActive" [routerLink]="breadcrumb.url">{{
+    @for (breadcrumb of breadcrumbs; track breadcrumb.url; let last = $last) {
+    <li class="breadcrumb-item">
+      <!-- <a *ngIf="!breadcrumb.isActive" [routerLink]="breadcrumb.url">{{
         breadcrumb.label
       }}</a> -->
       @if (!breadcrumb.isActive) {
-        <span>{{ breadcrumb.label }}</span>
-      }
-      @if (breadcrumb.isActive) {
-        <span>{{ breadcrumb.label }}</span>
-      }
-      @if (!last) {
-        <span class="breadcrumb-separator">/</span>
+      <span>{{ breadcrumb.label }}</span>
+      } @if (breadcrumb.isActive) {
+      <span>{{ breadcrumb.label }}</span>
+      } @if (!last) {
+      <span class="breadcrumb-separator">/</span>
       }
     </li>
-  }
-</ol>
+    }
+  </ol>
 </nav>
