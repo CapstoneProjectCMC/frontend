@@ -13,7 +13,7 @@
   "dependencies": {
     "@angular-devkit/build-angular": "19.2.14",
     "@angular-devkit/core": "19.2.14",
-    "@angular-devkit/schematics": "19.2.14",
+    "@angular-devkit/schematics": "20.2.1",
     "@angular/animations": "19.2.14",
     "@angular/common": "19.2.14",
     "@angular/compiler": "19.2.14",
