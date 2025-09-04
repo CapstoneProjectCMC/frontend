@@ -118,7 +118,7 @@ CodeCampus là một nền tảng trực tuyến được thiết kế để h�
 ## Yêu cầu hệ thống
 - Node.js (phiên bản LTS mới nhất)
 - npm (được cài đặt cùng với Node.js)
-- Angular CLI (phiên bản 19+)
+- Angular CLI (phiên bản 20.2.1)
 
 ## Cấu trúc dự án (Tổng quan & Minh họa)
 
