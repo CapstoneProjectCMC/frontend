@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../../core/services/api-service/auth.service';
+import { sendNotification } from '../../../../../shared/utils/notification';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-set-password-modal',
@@ -20,7 +22,7 @@ export class SetPasswordModalComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private store: Store) {}
 
   close() {
     this.closed.emit();
@@ -55,6 +57,12 @@ export class SetPasswordModalComponent {
         this.isLoading = false;
         this.close();
         // Có thể bắn event success hoặc toast ở đây
+        sendNotification(
+          this.store,
+          'Thành công',
+          'Đã đặt mật khẩu',
+          'success'
+        );
       },
       error: () => {
         this.isLoading = false;

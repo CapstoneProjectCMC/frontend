@@ -1,0 +1,35 @@
+<div class="modal-backdrop" *ngIf="isOpen" (click)="closeModal()"></div>
+
+<div class="modal-container" *ngIf="isOpen" @fadeSlide>
+  <div class="modal-header">
+    <h3>Thông báo</h3>
+    <button class="mark-all" (click)="markAllAsRead()">
+      Đánh dấu tất cả đã đọc
+    </button>
+    <span class="close-btn" (click)="closeModal()">✕</span>
+  </div>
+
+  <div class="modal-body">
+    <div *ngIf="isLoading" class="loading">Đang tải...</div>
+    <div *ngIf="!isLoading && notifications.length === 0" class="empty">
+      Không có thông báo
+    </div>
+
+    <ul class="notification-list">
+      <li
+        *ngFor="let notice of notifications"
+        [class.unread]="notice.readStatus === 'UNREAD'"
+      >
+        <div class="notice-content" (click)="markAsRead(notice.id)">
+          <h4>{{ notice.subject }}</h4>
+          <p>{{ notice.body }}</p>
+          <small>{{ notice.createdAt | date : "short" }}</small>
+        </div>
+      </li>
+    </ul>
+
+    <div class="load-more" *ngIf="page < totalPages">
+      <button (click)="loadMore()">Tải thêm</button>
+    </div>
+  </div>
+</div>

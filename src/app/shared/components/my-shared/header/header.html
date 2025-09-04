@@ -7,86 +7,77 @@
             class="header-logo-icon"
             src="landing-assets/Logo.svg"
             alt="logo"
-            />
-            <div class="header-logo-text">
-              <p class="header-logo-text-name">CodeCampus</p>
-              <span class="header-logo-text-description"
-                >Học tập và kết nối cộng đồng</span
-                >
-              </div>
-              <span class="header-logo-divider"></span>
-            </div>
-            <!-- <app-dropdown-button
-            *ngIf="isLoggedIn"
-            [label]="'Cộng đồng'"
-            [options]="organizations"
-            [variant]="'primary'"
-            [size]="'small'"
-            [customDropField]="'main-type'"
-            [isDisplaySelectedOpptionLabels]="true"
-            [disabled]="false"
-            name="education"
-            id="education"
-            typeSubmit="button"
-            (onSelect)="onSelectedOganization($event)"
-          ></app-dropdown-button> -->
+          />
+          <div class="header-logo-text">
+            <p class="header-logo-text-name">CodeCampus</p>
+            <span class="header-logo-text-description"
+              >Học tập và kết nối cộng đồng</span
+            >
+          </div>
+          <span class="header-logo-divider"></span>
         </div>
+      </div>
 
-        @if (!isLoggedIn) {
-          <div class="header-auth">
-            <span class="header-logo-divider"></span>
-            <span class="header-auth-item-text" (click)="goToLogin()"
-              >Đăng nhập</span
-              >
-              <span class="header-auth-item-button" (click)="goToRegister()"
-                >Tạo tài khoản</span
-                >
-              </div>
-            }
-            @if (isLoggedIn) {
-              <div class="header-action">
-                <div class="toggle-switch-container">
-                  <app-toggle-switch
-                    [isChecked]="isDarkMode"
-                    [disabled]="false"
-                    [label]="'Your Label'"
-                    [size]="'medium'"
-                    (toggleChange)="toggleTheme($event)"
-                    >
-                  </app-toggle-switch>
-                </div>
-                <!-- From Uiverse.io by 3bdel3ziz-T -->
-                <div class="notification">
-                  <div class="bell-container">
-                    <div class="bell"></div>
-                  </div>
-                </div>
-                <div
-                  class="header-action-avatar"
-                  (click)="toggleProfileMenu()"
-                  style="position: relative"
-                  >
-                  <img
-                    class="header-action-avatar-img"
-                    [src]="avatarUrl  ? avatarUrl: avatarDefault"
-                    alt="avatar"
-                    />
-                  </div>
-                </div>
-              }
-            </div>
+      @if (!isLoggedIn) {
+      <div class="header-auth">
+        <span class="header-logo-divider"></span>
+        <span class="header-auth-item-text" (click)="goToLogin()"
+          >Đăng nhập</span
+        >
+        <span class="header-auth-item-button" (click)="goToRegister()"
+          >Tạo tài khoản</span
+        >
+      </div>
+      } @if (isLoggedIn) {
+      <div class="header-action">
+        <div class="toggle-switch-container">
+          <app-toggle-switch
+            [isChecked]="isDarkMode"
+            [disabled]="false"
+            [label]="'Your Label'"
+            [size]="'medium'"
+            (toggleChange)="toggleTheme($event)"
+          >
+          </app-toggle-switch>
+        </div>
+        <!-- From Uiverse.io by 3bdel3ziz-T -->
+        <div class="notification" (click)="toggleNotification()">
+          <div class="bell-container">
+            <div class="bell"></div>
           </div>
         </div>
-        @if (showProfileMenu) {
-          <app-profile-menu
-            [isVisible]="isMenuVisible"
-            [needSetNewPass]="needCreateNewPass"
-            (closeMenu)="onCloseMenu()"
-            (openSetPassword)="openSetPassword($event)"
-          ></app-profile-menu>
-        }
+        <div
+          class="header-action-avatar"
+          (click)="toggleProfileMenu()"
+          style="position: relative"
+        >
+          <img
+            class="header-action-avatar-img"
+            [src]="avatarUrl  ? avatarUrl: avatarDefault"
+            alt="avatar"
+          />
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+@if (showProfileMenu) {
+<app-profile-menu
+  [isVisible]="isMenuVisible"
+  [needSetNewPass]="needCreateNewPass"
+  (closeMenu)="onCloseMenu()"
+  (openSetPassword)="openSetPassword($event)"
+></app-profile-menu>
+}
 
-        <app-set-password-modal
-          [isOpen]="setPassword"
-          (closed)="setPassword = false"
-        ></app-set-password-modal>
+<app-set-password-modal
+  [isOpen]="setPassword"
+  (closed)="setPassword = false"
+></app-set-password-modal>
+
+<app-notification-modal
+  [isOpen]="showNotificationModal"
+  (closed)="showNotificationModal = false"
+>
+</app-notification-modal>

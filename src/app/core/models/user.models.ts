@@ -77,3 +77,20 @@ export type RequestForgotPasswordResponse = {
   email: string;
   message: string;
 };
+
+export type CreateAccoutByAdmin = {
+  username: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dob: string;
+  bio: string;
+  gender: boolean;
+  displayName: string;
+  education: number;
+  links: string[];
+  city: string;
+  organizationId: string;
+  organizationMemberRole: 'ADMIN' | 'TEACHER' | 'STUDENT';
+};

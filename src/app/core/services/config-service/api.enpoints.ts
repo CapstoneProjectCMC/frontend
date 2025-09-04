@@ -1,5 +1,6 @@
 // import { environment } from '../../../../environments/environment';
 import { EnumType } from '../../models/data-handle';
+import { ReadStatusNotice } from '../../models/notice.model';
 import {
   FilterOrgs,
   ParamGetAllBlockOfOrg,
@@ -200,12 +201,18 @@ export const API_CONFIG = {
         data: { membersPage: number; membersSize: number; activeOnly: boolean }
       ) =>
         `/org/block/${blockId}?membersPage=${data.membersPage}&membersSize=${data.membersSize}&activeOnly=${data.activeOnly}`,
+      GET_ALL_MY_NOTIFICATIONS: (
+        page: number,
+        size: number,
+        readStatus: ReadStatusNotice
+      ) =>
+        `/notification/my?page=${page}&size=${size}&readStatus=${readStatus}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',
       REGISTER: '/identity/auth/register',
       LOGOUT: '/identity/auth/logout',
-      CREATE_FIRST_PASSWORD: '/identity/auth/user/create-password',
+      CREATE_FIRST_PASSWORD: '/identity/user/create-password',
       REQUEST_FORGOT_PASSWORD: '/identity/auth/forgot-password/request',
       RESET_PASSWORD: `/identity/auth/forgot-password/reset`,
       REFRESH_TOKEN: '/identity/auth/refresh',
@@ -271,6 +278,10 @@ export const API_CONFIG = {
       BULK_ADD_TO_BLOCK: (blockId: string) =>
         `/org/block/${blockId}/members:bulk`,
       IMPORT_EXCEL_ADD_MEMBER: '/identity/users/import',
+      ADD_ADMIN: '/identity/admin',
+      ADD_STUDENT: '/identity/teacher',
+      ADD_TEACHER: '/identity/user',
+      MARK_AS_READ_NOTIFICATION: '/my/mark-read',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,

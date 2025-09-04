@@ -16,8 +16,8 @@ import { LottieComponent } from 'ngx-lottie';
 })
 export class SavedPostsListComponent implements OnInit {
   savedPosts: SavedPostResponse[] = [];
-  currentPage = 0;
-  totalPages = 0;
+  currentPage = 1;
+  totalPages = 1;
   pageSize = 10;
   loading = false;
 
@@ -30,10 +30,7 @@ export class SavedPostsListComponent implements OnInit {
   }
 
   loadSavedPosts(): void {
-    if (
-      this.loading ||
-      (this.totalPages && this.currentPage >= this.totalPages)
-    )
+    if (this.loading || (this.totalPages && this.currentPage > this.totalPages))
       return;
 
     this.loading = true;

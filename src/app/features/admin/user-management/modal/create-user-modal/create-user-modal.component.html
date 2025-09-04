@@ -1,0 +1,182 @@
+<div class="modal-overlay" [class.active]="isOpen" (click)="closeModal()">
+  <div
+    class="modal-content"
+    [class.active]="isOpen"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="modal-header">
+      <h2>Tạo người dùng mới</h2>
+      <button class="close-btn" (click)="closeModal()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <form [formGroup]="createUserForm" (ngSubmit)="onSubmit()">
+        <div class="steps-container">
+          <!-- STEP 1 -->
+          <div class="form-step" [class.active]="currentStep === 1">
+            <div class="form-group">
+              <label>Vai trò hệ thống *</label>
+              <select formControlName="role">
+                <option value="STUDENT">Học sinh</option>
+                <option value="TEACHER">Giáo viên</option>
+                <option value="ADMIN">Quản trị viên</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Giới tính *</label>
+              <select formControlName="gender">
+                <option [ngValue]="true">Nam</option>
+                <option [ngValue]="false">Nữ</option>
+              </select>
+            </div>
+
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label for="firstName">Họ *</label>
+                <input type="text" id="firstName" formControlName="firstName" />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Tên *</label>
+                <input type="text" id="lastName" formControlName="lastName" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="username">User Name *</label>
+              <input type="text" id="username" formControlName="username" />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email *</label>
+              <input type="email" id="email" formControlName="email" />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Mật khẩu *</label>
+              <input type="password" id="password" formControlName="password" />
+            </div>
+
+            <div class="form-group">
+              <label for="displayName">Tên hiển thị *</label>
+              <input
+                type="text"
+                id="displayName"
+                formControlName="displayName"
+              />
+            </div>
+
+            <!-- Ngày sinh -->
+            <div class="form-group">
+              <label for="dob">Ngày sinh *</label>
+              <input type="date" id="dob" formControlName="dob" />
+            </div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="form-step" [class.active]="currentStep === 2">
+            <div class="form-group">
+              <label for="bio">Tiểu sử</label>
+              <textarea id="bio" rows="3" formControlName="bio"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="education">Trình độ học vấn</label>
+              <select id="education" formControlName="education">
+                <option
+                  *ngFor="let option of educationOptions"
+                  [value]="option.value"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="links">Liên kết cá nhân</label>
+              <input
+                type="text"
+                id="links"
+                formControlName="links"
+                placeholder="https://..."
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="city">Thành phố</label>
+              <input type="text" id="city" formControlName="city" />
+            </div>
+
+            <div class="form-group org-search-group">
+              <label for="organization">Tổ chức *</label>
+              <input
+                type="text"
+                id="organization"
+                placeholder="Tìm kiếm theo tên tổ chức..."
+                [value]="selectedOrganizationName || ''"
+                (input)="onOrgSearchInput($event)"
+                (focus)="showOrgDropdown = true"
+              />
+
+              <div class="org-dropdown" *ngIf="showOrgDropdown">
+                <div *ngIf="isSearchingOrgs" class="dropdown-item loading">
+                  Đang tìm...
+                </div>
+                <div
+                  *ngIf="!isSearchingOrgs && searchedOrganizations.length === 0"
+                  class="dropdown-item not-found"
+                >
+                  Không tìm thấy kết quả.
+                </div>
+                <div
+                  *ngFor="let org of searchedOrganizations"
+                  class="dropdown-item"
+                  (click)="selectOrganization(org)"
+                >
+                  {{ org.name }}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Vai trò trong tổ chức *</label>
+              <select formControlName="organizationMemberRole">
+                <option value="STUDENT">Học sinh</option>
+                <option value="TEACHER">Giáo viên</option>
+                <option value="ADMIN">Quản trị viên</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <button
+        class="btn btn-secondary"
+        *ngIf="currentStep === 2"
+        (click)="prevStep()"
+      >
+        Quay lại
+      </button>
+
+      <button
+        class="btn btn-primary"
+        *ngIf="currentStep === 1"
+        (click)="nextStep()"
+      >
+        Tiếp theo
+      </button>
+
+      <button
+        class="btn btn-primary"
+        *ngIf="currentStep === 2"
+        [disabled]="isSubmitting"
+        (click)="onSubmit()"
+      >
+        <span *ngIf="!isSubmitting">Tạo người dùng</span>
+        <span *ngIf="isSubmitting" class="spinner"></span>
+      </button>
+    </div>
+  </div>
+</div>
