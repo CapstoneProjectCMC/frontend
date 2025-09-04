@@ -35,7 +35,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@lottiefiles/lottie-player": "^2.0.12",
     "@ngrx/effects": "19.2.1",
-    "@ngrx/entity": "19.2.1",
+    "@ngrx/entity": "20.0.1",
     "@ngrx/schematics": "19.2.1",
     "@ngrx/store": "19.2.1",
     "@ngrx/store-devtools": "19.2.1",
