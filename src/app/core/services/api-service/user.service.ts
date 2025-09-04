@@ -63,4 +63,10 @@ export class UserService {
 
     return this.api.post<ApiResponse<null>>(enpoint, data);
   }
+
+  deleteUserAccount(accountId: string) {
+    return this.api.delete<ApiResponse<null>>(
+      API_CONFIG.ENDPOINTS.DELETE.DELETE_USER_ACCOUNT(accountId)
+    );
+  }
 }

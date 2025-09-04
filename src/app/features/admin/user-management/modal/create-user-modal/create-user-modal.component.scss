@@ -24,9 +24,11 @@
   transition: opacity var(--transition-speed) ease,
     visibility var(--transition-speed) ease;
   z-index: 1000;
+  pointer-events: none;
 
   &.active {
     opacity: 1;
+    pointer-events: auto;
     visibility: visible;
   }
 }
@@ -44,10 +46,12 @@
     opacity var(--transition-speed) ease;
   display: flex;
   flex-direction: column;
+  pointer-events: none;
 
   &.active {
     transform: translateY(0);
     opacity: 1;
+    pointer-events: auto;
   }
 }
 

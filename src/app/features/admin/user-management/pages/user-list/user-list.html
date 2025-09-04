@@ -51,7 +51,7 @@
         ></app-dropdown-button>
       </div>
       <div class="button-user">
-        <app-button
+        <!-- <app-button
           (onClick)="handleImport()"
           [width]="'50px'"
           [height]="'50px'"
@@ -76,9 +76,10 @@
             <path d="M12 18v-6" />
             <path d="m9 15 3 3 3-3" />
           </svg>
-        </app-button>
+        </app-button> -->
+        <!-- Nút Import -->
         <app-button
-          (onClick)="handleImport()"
+          (onClick)="triggerFileInput()"
           [width]="'50px'"
           [height]="'50px'"
           variant="solid"
@@ -103,6 +104,16 @@
             <path d="m15 15-3-3-3 3" />
           </svg>
         </app-button>
+
+        <!-- Input file ẩn -->
+        <input
+          #fileInput
+          type="file"
+          accept=".xlsx,.xls"
+          (change)="onImportExcel($event)"
+          style="display: none"
+        />
+
         <app-button
           (onClick)="handleAdd()"
           [width]="'50px'"
@@ -118,16 +129,18 @@
     <app-table
       [headers]="headers"
       [data]="ListUser"
-      [amountDataPerPage]="10"
+      [amountDataPerPage]="itemsPerPage"
       [needNo]="true"
       [needDelete]="true"
       [needEdit]="true"
       [needViewResult]="false"
       [needswitch]="true"
+      [idSelect]="'userId'"
       [onSwitchClick]="handleSwitch"
       [switchField]="'status'"
       [lockValue]="0"
       [openValue]="1"
+      [onDeleteClick]="openModalDelete"
     >
       <!-- Avatar + DisplayName + Popup Links -->
       <ng-template #cell_displayName let-row let-i="rowIndex">
@@ -136,16 +149,34 @@
           <img
             [src]="row.avatarUrl"
             alt="avatar"
-            width="36"
-            height="36"
-            style="border-radius: 50%; margin-right: 8px"
+            width="36px"
+            height="36px"
+            style="border-radius: 50%; margin-right: 8px; object-fit: cover"
           />
+          } @else {
+          <div
+            class="avatar"
+            style="
+              min-width: 36px;
+              min-height: 36px;
+              border-radius: 50%;
+              margin-right: 8px;
+              background: #ddd;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 600;
+              font-size: 14px;
+            "
+          >
+            {{ row.username?.charAt(0) }}
+          </div>
           }
           <span
             (click)="onDisplayNameClick(row)"
             style="cursor: pointer; font-weight: 600"
           >
-            {{ row.displayName }}
+            {{ row.displayName ? row.displayName : 'Chưa đặt tên' }}
           </span>
         </div>
       </ng-template>
@@ -190,9 +221,9 @@
   }
 
   <app-pagination
-    [totalData]="ListUser.length"
-    [amountDataPerPage]="10"
-    [currentPageIndex]=" 1"
+    [totalData]="totalDatas"
+    [amountDataPerPage]="itemsPerPage"
+    [currentPageIndex]=" pageIndex"
     (onPageChange)="handlePageChange($event)"
   ></app-pagination>
 </div>

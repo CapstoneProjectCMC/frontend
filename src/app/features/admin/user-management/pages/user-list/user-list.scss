@@ -57,6 +57,34 @@
             }
           }
         }
+
+        .btn {
+          padding: 6px 12px;
+          border-radius: 6px;
+          border: none;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &.primary {
+            background: var(--button-color);
+            color: var(--reverse-color-text);
+            &:hover {
+              background: oklch(from var(--button-color) calc(l * 0.8) c h);
+            }
+            display: flex;
+            gap: 4px;
+          }
+          &.danger {
+            background: #dc3545;
+            color: #fff;
+            &:hover {
+              background: #a71d2a;
+            }
+          }
+          &.other {
+            padding: 8px;
+          }
+        }
       }
     }
   }

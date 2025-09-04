@@ -24,6 +24,10 @@ import { OrganizationCreateModalComponent } from '../../organization-component/o
 import { Router } from '@angular/router';
 import { sendNotification } from '../../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../shared/store/loading-state/loading.action';
 
 @Component({
   selector: 'app-organization-management',
@@ -148,6 +152,12 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (!file) return;
 
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Đang thêm test case...' })
+      );
+    });
+
     this.orgService.importMemberExcel(file).subscribe({
       next: (res) => {
         this.importResult = res.result;
@@ -157,10 +167,13 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
           `Import hoàn tất:\nTổng: <b>${res.result.total}</b> \nTạo mới: <b>${res.result.created}</b> \nBỏ qua: <b>${res.result.skipped}</b>\nLỗi: <b>${res.result.errors.length}</b>`,
           'success'
         );
+
+        this.store.dispatch(clearLoading());
       },
       error: (err) => {
         alert('Import thất bại!');
         console.error(err);
+        this.store.dispatch(clearLoading());
       },
     });
 
