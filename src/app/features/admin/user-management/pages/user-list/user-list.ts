@@ -21,6 +21,7 @@ import {
 import { EnumType } from '../../../../../core/models/data-handle';
 import { UserService } from '../../../../../core/services/api-service/user.service';
 import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
+import { CreateUserModalComponent } from '../../modal/create-user-modal/create-user-modal.component';
 
 @Component({
   selector: 'app-user-list',
@@ -34,8 +35,9 @@ import { clearLoading } from '../../../../../shared/store/loading-state/loading.
     InputComponent,
     ButtonComponent,
     DropdownButtonComponent,
-    SkeletonLoadingComponent
-],
+    SkeletonLoadingComponent,
+    CreateUserModalComponent,
+  ],
   standalone: true,
 })
 export class UserListComponent {
@@ -43,6 +45,7 @@ export class UserListComponent {
 
   headers = userHeaders;
   sidebarData = sidebarData;
+  isOpenCreateUser = false;
 
   // UI State
   isCollapsed = false;
@@ -61,47 +64,47 @@ export class UserListComponent {
   // Data
   listId = 'user-list-2024-06-09'; // hoặc số, hoặc uuid, hoặc lấy từ backend
   ListUser: SearchUserProfileResponse[] = [];
-  dataJson = `[
-    {
-      "id": 1,
-      "displayName": "nguyenvana",
-      "avatarUrl": "https://randomuser.me/api/portraits/men/1.jpg",
-      "backgroundUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
-      "dob": "2020-01-01T00:00:00.000Z",
-      "role": 0,
-      "status": 1,
-      "org": "Trường Đại học ABC",
-      "links": [
-        { "type": "facebook", "url": "https://facebook.com/nguyenvana" },
-        { "type": "github", "url": "https://github.com/nguyenvana" }
-      ],
-      "followers": 120000000000000,
-      "following": 80,
-      "bio": "Yêu thích lập trình, thích chia sẻ kiến thức.",
-      "firstname": "Nguyen",
-      "lastname": "Van A",
-      "education": "Đại học ABC",
-      "gender": "Nam"
-    },
-    {
-      "id": 2,
-      "displayName": "tranthib",
-      "avatarUrl": "https://randomuser.me/api/portraits/women/2.jpg",
-      "backgroundUrl": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca",
-      "dob": "2020-01-01T00:00:00.000Z",
-      "role": 2,
-      "status": 0,
-      "org": "Trường Đại học XYZ",
-      "links": [],
-      "followers": 200,
-      "following": 150,
-      "bio": "Giáo viên Toán, đam mê dạy học.",
-      "firstname": "Tran",
-      "lastname": "Thi B",
-      "education": "Đại học XYZ",
-      "gender": "Nữ"
-    }
-  ]`;
+
+  //   {
+  //     "id": 1,
+  //     "displayName": "nguyenvana",
+  //     "avatarUrl": "https://randomuser.me/api/portraits/men/1.jpg",
+  //     "backgroundUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+  //     "dob": "2020-01-01T00:00:00.000Z",
+  //     "role": 0,
+  //     "status": 1,
+  //     "org": "Trường Đại học ABC",
+  //     "links": [
+  //       { "type": "facebook", "url": "https://facebook.com/nguyenvana" },
+  //       { "type": "github", "url": "https://github.com/nguyenvana" }
+  //     ],
+  //     "followers": 120000000000000,
+  //     "following": 80,
+  //     "bio": "Yêu thích lập trình, thích chia sẻ kiến thức.",
+  //     "firstname": "Nguyen",
+  //     "lastname": "Van A",
+  //     "education": "Đại học ABC",
+  //     "gender": "Nam"
+  //   },
+  //   {
+  //     "id": 2,
+  //     "displayName": "tranthib",
+  //     "avatarUrl": "https://randomuser.me/api/portraits/women/2.jpg",
+  //     "backgroundUrl": "https://images.unsplash.com/photo-1465101046530-73398c7f28ca",
+  //     "dob": "2020-01-01T00:00:00.000Z",
+  //     "role": 2,
+  //     "status": 0,
+  //     "org": "Trường Đại học XYZ",
+  //     "links": [],
+  //     "followers": 200,
+  //     "following": 150,
+  //     "bio": "Giáo viên Toán, đam mê dạy học.",
+  //     "firstname": "Tran",
+  //     "lastname": "Thi B",
+  //     "education": "Đại học XYZ",
+  //     "gender": "Nữ"
+  //   }
+  // ]`;
 
   // Pagination
   pageIndex: number = 1;
@@ -136,6 +139,11 @@ export class UserListComponent {
 
   // Lifecycle
   ngOnInit(): void {
+    this.fetchDataListUser();
+  }
+
+  reloadData() {
+    this.pageIndex = 1;
     this.fetchDataListUser();
   }
 
@@ -180,7 +188,7 @@ export class UserListComponent {
   };
 
   handleAdd = () => {
-    console.log('Add button clicked, listId:', this.listId);
+    this.isOpenCreateUser = !this.isOpenCreateUser;
   };
 
   handleInputChange(value: string | number): void {

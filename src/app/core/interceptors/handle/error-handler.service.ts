@@ -45,7 +45,7 @@ export class ErrorHandlerService {
       sendNotification(
         this.store,
         'Hết tiền!',
-        'Bạn cần nạp tiền vào tài khoản của mình trước nhé!',
+        'Bạn cần nạp tiền vào tài khoản của mình trước để kích hoạt ví nhé!',
         'error'
       );
     } else {

@@ -141,7 +141,7 @@ export class ExerciseCodeDetailsComponent {
       referenceId: uuidv4(),
       currency: 'VNĐ',
       itemId: this.exerciseId,
-      itemType: this.exercise?.exerciseType,
+      itemType: 'EXERCISE',
       itemPrice: this.exercise?.cost,
       itemName: this.exercise?.title,
     };

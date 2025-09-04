@@ -3,6 +3,7 @@ import { ApiMethod } from '../config-service/api.methods';
 import { EnumType } from '../../models/data-handle';
 import { ApiResponse, IPaginationResponse } from '../../models/api-response';
 import {
+  CreateAccoutByAdmin,
   SearchingUser,
   SearchUserProfileResponse,
   User,
@@ -44,5 +45,22 @@ export class UserService {
       API_CONFIG.ENDPOINTS.GET.GET_FOLLOWINGS(page, size),
       {}
     );
+  }
+
+  createAccountUser(
+    role: 'ADMIN' | 'STUDENT' | 'TEACHER',
+    data: CreateAccoutByAdmin
+  ) {
+    let enpoint = '';
+
+    if (role === 'ADMIN') {
+      enpoint = API_CONFIG.ENDPOINTS.POST.ADD_ADMIN;
+    } else if (role === 'STUDENT') {
+      enpoint = API_CONFIG.ENDPOINTS.POST.ADD_STUDENT;
+    } else if (role === 'TEACHER') {
+      enpoint = API_CONFIG.ENDPOINTS.POST.ADD_TEACHER;
+    }
+
+    return this.api.post<ApiResponse<null>>(enpoint, data);
   }
 }

@@ -12,6 +12,7 @@ import { selectVariable } from '../../../store/variable-state/variable.selectors
 import { resetVariable } from '../../../store/variable-state/variable.actions';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 import { SetPasswordModalComponent } from '../../../../features/auth/components/modal/set-password-modal/set-password-modal.component';
+import { NotificationModalComponent } from './notification-modal/notification-modal.component';
 
 @Component({
   selector: 'app-header',
@@ -21,8 +22,9 @@ import { SetPasswordModalComponent } from '../../../../features/auth/components/
   imports: [
     ProfileMenuComponent,
     ToggleSwitch,
-    SetPasswordModalComponent
-],
+    SetPasswordModalComponent,
+    NotificationModalComponent,
+  ],
 })
 export class HeaderComponent {
   needReloadAvatar$: Observable<boolean>;
@@ -37,6 +39,7 @@ export class HeaderComponent {
   avatarDefault = avatarUrlDefault;
   setPassword = false;
   needCreateNewPass = false;
+  showNotificationModal = false;
 
   constructor(
     private router: Router,
@@ -87,6 +90,10 @@ export class HeaderComponent {
     this.selectedOptions = selected;
 
     console.log(this.selectedOptions);
+  }
+
+  toggleNotification() {
+    this.showNotificationModal = !this.showNotificationModal;
   }
 
   goToLogin() {
