@@ -327,6 +327,7 @@ export const API_CONFIG = {
       DELETE_BLOCK: (blockId: string) => `/org/block/${blockId}`,
       REMOVE_MEMBER_FROM_BLOCK: (blockId: string, memberId: string) =>
         `/org/block/${blockId}/member/${memberId}`,
+      DELETE_USER_ACCOUNT: (userId: string) => `/identity/user/${userId}`,
     },
   },
   HEADERS: {

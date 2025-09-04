@@ -21,6 +21,7 @@ import { Store } from '@ngrx/store';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { FormsModule } from '@angular/forms';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-resource-create',
@@ -41,20 +42,9 @@ export class ResourceCreatePageComponent {
     private resourceService: ResourceService,
     private store: Store,
     private cdr: ChangeDetectorRef,
-    private ngZone: NgZone
-  ) {
-    this.tag = [
-      { value: 'tag1', label: 'Tag 1' },
-      { value: 'tag2', label: 'Tag 2' },
-      { value: 'tag3', label: 'Tag 3' },
-    ];
-    this.category = [
-      { value: '0', label: 'Tệp ảnh' },
-      { value: '1', label: 'Tệp video' },
-      { value: '2', label: 'Tệp tài liệu' },
-      { value: '3', label: 'Tệp khác' },
-    ];
-  }
+    private ngZone: NgZone,
+    private location: Location
+  ) {}
   thumbnail: string = '';
   thumbnailError: string | null = null;
   handleInputChange(value: string | number): void {
@@ -64,7 +54,6 @@ export class ResourceCreatePageComponent {
     console.log('Input changed:', this.thumbnail);
   }
 
-  // ===== Link cũ (oldImgesUrls) =====
   newLink = '';
   isAddingLink = false;
 
@@ -163,7 +152,7 @@ export class ResourceCreatePageComponent {
 
   cancelResource(): void {
     // Logic to cancel the post creation
-    console.log('Post creation cancelled');
+    this.location.back();
   }
   editorContent: string = '';
 

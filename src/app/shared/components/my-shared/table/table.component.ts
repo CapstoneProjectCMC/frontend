@@ -15,12 +15,7 @@ import { ButtonComponent } from '../button/button.component';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
   standalone: true,
-  imports: [
-    NgClass,
-    CommonModule,
-    InteractiveButtonComponent,
-    ButtonComponent
-],
+  imports: [NgClass, CommonModule, InteractiveButtonComponent, ButtonComponent],
 })
 export class TableComponent implements AfterContentInit {
   @Input() data: Array<{ [key: string]: any }> = [];
@@ -64,6 +59,7 @@ export class TableComponent implements AfterContentInit {
 
   handleDeleteClick(id: string | number) {
     console.log('Delete', id);
+    this.onDeleteClick(id);
   }
 
   handleEditClick(id: string | number) {

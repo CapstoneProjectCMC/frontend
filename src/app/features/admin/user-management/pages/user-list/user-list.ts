@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { Store } from '@ngrx/store';
 
@@ -20,8 +20,17 @@ import {
 } from '../../../../../core/models/user.models';
 import { EnumType } from '../../../../../core/models/data-handle';
 import { UserService } from '../../../../../core/services/api-service/user.service';
-import { clearLoading } from '../../../../../shared/store/loading-state/loading.action';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../../shared/store/loading-state/loading.action';
 import { CreateUserModalComponent } from '../../modal/create-user-modal/create-user-modal.component';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../../../shared/utils/notification';
+import { OrganizationService } from '../../../../../core/services/api-service/organization.service';
+import { ImportMemberResponse } from '../../../../../core/models/organization.model';
 
 @Component({
   selector: 'app-user-list',
@@ -41,6 +50,7 @@ import { CreateUserModalComponent } from '../../modal/create-user-modal/create-u
   standalone: true,
 })
 export class UserListComponent {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
   headers = userHeaders;
@@ -109,9 +119,11 @@ export class UserListComponent {
   // Pagination
   pageIndex: number = 1;
   itemsPerPage: number = 8;
+  totalDatas: number = 0;
   sortBy: EnumType['sort'] = 'CREATED_AT';
   asc: boolean = false;
   hasMore = true;
+  importResult: ImportMemberResponse | null = null;
 
   // Loading
   isLoading = false;
@@ -121,7 +133,11 @@ export class UserListComponent {
   role: { value: string; label: string }[] = [];
   status: { value: string; label: string }[] = [];
 
-  constructor(private userService: UserService, private store: Store) {
+  constructor(
+    private userService: UserService,
+    private store: Store,
+    private orgService: OrganizationService
+  ) {
     // Mock data for role
     this.role = [
       { value: 'STUDENT', label: 'Học sinh' },
@@ -135,6 +151,10 @@ export class UserListComponent {
       { value: 'false', label: 'Block' },
       { value: 'true', label: 'Acctive' },
     ];
+  }
+
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
   }
 
   // Lifecycle
@@ -164,7 +184,9 @@ export class UserListComponent {
       .subscribe({
         next: (res) => {
           this.ListUser = res.result.data;
-          if (this.ListUser.length < this.itemsPerPage) {
+          this.totalDatas = res.result.totalElements;
+          this.pageIndex = res.result.currentPage;
+          if (res.result.currentPage >= res.result.totalPages) {
             this.hasMore = false;
           }
           this.isLoading = false;
@@ -180,7 +202,8 @@ export class UserListComponent {
 
   // Handlers
   handlePageChange(page: number) {
-    console.log('chuyển trang');
+    this.pageIndex = page;
+    this.fetchDataListUser();
   }
 
   handleImport = () => {
@@ -270,5 +293,67 @@ export class UserListComponent {
       });
 
     return values.join(', ');
+  }
+
+  openModalDelete = (id: string | number) => {
+    openModalNotification(
+      this.store,
+      'Xóa người dùng',
+      'Bạn có chắc chắn xóa người dùng này?',
+      'Đồng ý',
+      'Hủy',
+      () => this.deleteUser(id.toString())
+    );
+  };
+
+  deleteUser(userId: string) {
+    return this.userService.deleteUserAccount(userId).subscribe({
+      next: () => {
+        sendNotification(this.store, 'Đã xóa', 'Đã xóa người dùng', 'success');
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  downloadTemplate() {
+    const link = document.createElement('a');
+    link.href = '/csv/identity_users_import_template.xlsx';
+    link.download = 'identity_users_import_template.xlsx';
+    link.click();
+  }
+
+  // Khi chọn file import
+  onImportExcel(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Đang thêm test case...' })
+      );
+    });
+
+    this.orgService.importMemberExcel(file).subscribe({
+      next: (res) => {
+        this.importResult = res.result;
+        sendNotification(
+          this.store,
+          'Import thành công',
+          `Import hoàn tất:\nTổng: <b>${res.result.total}</b> \nTạo mới: <b>${res.result.created}</b> \nBỏ qua: <b>${res.result.skipped}</b>\nLỗi: <b>${res.result.errors.length}</b>`,
+          'success'
+        );
+        this.store.dispatch(clearLoading());
+      },
+      error: (err) => {
+        alert('Import thất bại!');
+        console.error(err);
+        this.store.dispatch(clearLoading());
+      },
+    });
+
+    // Reset input để chọn lại cùng 1 file lần sau
+    (event.target as HTMLInputElement).value = '';
   }
 }
