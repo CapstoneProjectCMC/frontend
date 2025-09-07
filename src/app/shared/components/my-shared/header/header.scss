@@ -175,7 +175,7 @@
         }
         /*notifications number with before*/
         .notification::before {
-          content: "1";
+          content: attr(data-count);
           color: white;
           font-size: 10px;
           width: 16px;

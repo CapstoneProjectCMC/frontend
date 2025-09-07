@@ -32,6 +32,7 @@ export interface CommentResponse {
   content: string;
   replies?: CommentResponse[] | []; // đệ quy
   user: User;
+  createdAt: string;
 }
 
 export interface AddCommentResponse {

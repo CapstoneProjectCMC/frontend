@@ -1,4 +1,4 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -13,6 +13,11 @@ import { resetVariable } from '../../../store/variable-state/variable.actions';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 import { SetPasswordModalComponent } from '../../../../features/auth/components/modal/set-password-modal/set-password-modal.component';
 import { NotificationModalComponent } from './notification-modal/notification-modal.component';
+import {
+  NotificationEvent,
+  NotificationService,
+} from '../../../../core/services/socket-service/notification-socket.service';
+import { NotificationListService } from '../../../../core/services/api-service/notification-list.service';
 
 @Component({
   selector: 'app-header',
@@ -30,7 +35,7 @@ export class HeaderComponent {
   needReloadAvatar$: Observable<boolean>;
 
   isDarkMode: boolean = false;
-  notificationCount: number = 10;
+  notificationCount: number = 0;
   isLoggedIn: boolean = false;
   showProfileMenu = false;
   isMenuVisible = false;
@@ -45,7 +50,9 @@ export class HeaderComponent {
     private router: Router,
     private profileService: ProfileService,
     private themeService: ThemeService,
-    private store: Store
+    private store: Store,
+    private notificationService: NotificationService,
+    private notificationListService: NotificationListService
   ) {
     this.needReloadAvatar$ = this.store.select(
       selectVariable('reloadAvatarHeader')
@@ -77,6 +84,21 @@ export class HeaderComponent {
     this.needCreateNewPass = JSON.parse(
       localStorage.getItem('needPasswordSetup') || 'false'
     );
+
+    // 👇 Đăng ký lắng nghe notification từ socket
+    this.notificationService
+      .listenNotifications()
+      .subscribe((event: NotificationEvent) => {
+        console.log('Header nhận notification:', event);
+
+        // Tăng counter
+        this.notificationCount++;
+
+        // Nếu muốn push vào modal hoặc show toast
+        // this.notifications.unshift(event);
+      });
+
+    this.getCountNotice();
   }
 
   organizations = [
@@ -119,6 +141,17 @@ export class HeaderComponent {
         }
       },
       error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getCountNotice() {
+    this.notificationListService.countMyUnread().subscribe({
+      next: (res) => {
+        this.notificationCount = res.result;
+      },
+      error(err) {
         console.log(err);
       },
     });

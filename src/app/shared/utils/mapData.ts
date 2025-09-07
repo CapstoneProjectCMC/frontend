@@ -190,7 +190,7 @@ export function mapCommentToFilmResponse(
     parentId: comment.parentCommentId ?? null,
     content: comment.content,
     isDeactivated: false, // default vì trong Comment không có field này
-    createdAt: new Date().toISOString(), // hoặc gán giá trị mặc định
+    createdAt: comment.createdAt, // hoặc gán giá trị mặc định
     updatedAt: new Date().toISOString(), // tùy use case
     user: {
       id: comment.user.userId,

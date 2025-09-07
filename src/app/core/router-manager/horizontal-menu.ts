@@ -53,10 +53,12 @@ export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
     },
     {
       id: 'organization ',
-      path: '/organization/orgs-list',
+      path: roles.includes('ADMIN')
+        ? '/organization/orgs-list'
+        : '/organization/org-list-post',
       label: 'Tổ chức',
       icon: 'fa-solid fa-building-user',
-      isVisible: !roles.includes(auth_lv2[0]),
+      // isVisible: !roles.includes(auth_lv2[0]),
     },
   ];
 }
