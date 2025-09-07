@@ -71,7 +71,7 @@ export interface postData {
 }
 export type PostType = 'Global' | 'Private' | 'Org';
 export interface FileDocument {
-  file?: File;
+  file?: File[];
   category?: string; // BE mong muốn STRING
   description?: string;
   tags?: string[]; // mảng -> sẽ append tags[0], tags[1]...
@@ -102,7 +102,7 @@ export interface CreatePostRequest {
   hashtag?: string;
 
   fileDocument?: {
-    file?: File;
+    files?: File[];
     category?: string;
     description?: string;
     tags?: string[];

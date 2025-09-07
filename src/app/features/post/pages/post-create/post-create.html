@@ -81,190 +81,182 @@
               name="visibility"
               [(ngModel)]="post.postType"
               value="Org"
-              />
-              <span>Nội bộ</span>
-            </label>
-            <label class="option-label">
-              <input
-                type="radio"
-                name="visibility"
-                [(ngModel)]="post.postType"
-                value="Private"
-                />
-                <span>Riêng tư</span>
-              </label>
-              <label class="option-label">
-                <input
-                  type="radio"
-                  name="visibility"
-                  [(ngModel)]="post.postType"
-                  value="Global"
-                  />
-                  <span>Công khai</span>
-                </label>
-              </div>
+            />
+            <span>Nội bộ</span>
+          </label>
+          <label class="option-label">
+            <input
+              type="radio"
+              name="visibility"
+              [(ngModel)]="post.postType"
+              value="Private"
+            />
+            <span>Riêng tư</span>
+          </label>
+          <label class="option-label">
+            <input
+              type="radio"
+              name="visibility"
+              [(ngModel)]="post.postType"
+              value="Global"
+            />
+            <span>Công khai</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="option-group">
+        <span class="option-title">Bình luận</span>
+        <div class="option-choices">
+          <label class="option-label">
+            <input
+              type="radio"
+              name="allowComment"
+              [(ngModel)]="post.allowComment"
+              [value]="true"
+            />
+            <span>Cho phép</span>
+          </label>
+          <label class="option-label">
+            <input
+              type="radio"
+              name="allowComment"
+              [(ngModel)]="post.allowComment"
+              [value]="false"
+            />
+            <span>Không</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="input-content">
+      <app-text-editor
+        [(value)]="editorContent"
+        [config]="editorConfig"
+        (onChange)="onContentChange($event)"
+        (onFocus)="onEditorFocus()"
+        (onBlur)="onEditorBlur()"
+      ></app-text-editor>
+    </div>
+    <div class="post-create-button">
+      <app-button
+        [variant]="'cancel'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="cancelPost()"
+        >Hủy</app-button
+      >
+      <app-button
+        [variant]="'outline'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="saveDraftPost()"
+        >Lưu Nháp</app-button
+      >
+      <app-button
+        [variant]="'solid'"
+        [width]="'116px'"
+        [height]="'50px'"
+        (onClick)="createPost()"
+        >Đăng Bài</app-button
+      >
+    </div>
+  </div>
+  <div class="metric">
+    @if (drafts.length > 0) {
+    <div class="draft-list-container">
+      <div class="draft-header">
+        <h2>Bản nháp đã lưu</h2>
+        <span class="draft-count">{{ drafts.length }} bản nháp</span>
+      </div>
+      <ul class="draft-list">
+        @for (draft of drafts; track draft) {
+        <li class="draft-item" [class.selected]="draft.id === selectedDraftId">
+          <div class="draft-content" (click)="restoreDraft(draft)">
+            <div class="draft-main">
+              <span class="draft-title">{{ draft.title }}</span>
+              <span class="draft-timestamp">
+                {{ draft.timestamp | date:'short' }}
+              </span>
             </div>
+          </div>
+          <div class="draft-actions">
+            <button
+              class="delete-draft-btn"
+              (click)="deleteDraft(draft.id)"
+              title="Xóa bản nháp"
+            >
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </li>
+        }
+      </ul>
+    </div>
+    }
 
-            <div class="option-group">
-              <span class="option-title">Bình luận</span>
-              <div class="option-choices">
-                <label class="option-label">
-                  <input
-                    type="radio"
-                    name="allowComment"
-                    [(ngModel)]="post.allowComment"
-                    [value]="true"
-                    />
-                    <span>Cho phép</span>
-                  </label>
-                  <label class="option-label">
-                    <input
-                      type="radio"
-                      name="allowComment"
-                      [(ngModel)]="post.allowComment"
-                      [value]="false"
-                      />
-                      <span>Không</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
+    <div class="post-create-container"></div>
+    <div class="file-upload">
+      <label class="upload-label">
+        <input
+          type="file"
+          (change)="onFilesSelected($event)"
+          [multiple]="true"
+          accept="image/*, video/*"
+          hidden
+        />
 
-              <div class="input-content">
-                <app-text-editor
-                  [(value)]="editorContent"
-                  [config]="editorConfig"
-                  (onChange)="onContentChange($event)"
-                  (onFocus)="onEditorFocus()"
-                  (onBlur)="onEditorBlur()"
-                ></app-text-editor>
-              </div>
-              <div class="post-create-button">
-                <app-button
-                  [variant]="'cancel'"
-                  [width]="'116px'"
-                  [height]="'50px'"
-                  (onClick)="cancelPost()"
-                  >Hủy</app-button
-                  >
-                  <app-button
-                    [variant]="'outline'"
-                    [width]="'116px'"
-                    [height]="'50px'"
-                    (onClick)="saveDraftPost()"
-                    >Lưu Nháp</app-button
-                    >
-                    <app-button
-                      [variant]="'solid'"
-                      [width]="'116px'"
-                      [height]="'50px'"
-                      (onClick)="createPost()"
-                      >Đăng Bài</app-button
-                      >
-                    </div>
-                  </div>
-                  <div class="metric">
-                    @if (drafts.length > 0) {
-                      <div class="draft-list-container">
-                        <div class="draft-header">
-                          <h2>Bản nháp đã lưu</h2>
-                          <span class="draft-count">{{ drafts.length }} bản nháp</span>
-                        </div>
-                        <ul class="draft-list">
-                          @for (draft of drafts; track draft) {
-                            <li
-                              class="draft-item"
-                              [class.selected]="draft.id === selectedDraftId"
-                              >
-                              <div class="draft-content" (click)="restoreDraft(draft)">
-                                <div class="draft-main">
-                                  <span class="draft-title">{{ draft.title }}</span>
-                                  <span class="draft-timestamp">
-                                    {{ draft.timestamp | date:'short' }}
-                                  </span>
-                                </div>
-                              </div>
-                              <div class="draft-actions">
-                                <button
-                                  class="delete-draft-btn"
-                                  (click)="deleteDraft(draft.id)"
-                                  title="Xóa bản nháp"
-                                  >
-                                  <i class="fa fa-trash"></i>
-                                </button>
-                              </div>
-                            </li>
-                          }
-                        </ul>
-                      </div>
-                    }
+        <app-button [width]="'100%'" [variant]="'outline'">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m18 9-6-6-6 6" />
+            <path d="M12 3v14" />
+            <path d="M5 21h14" />
+          </svg>
+          <span>Chọn file</span>
+        </app-button>
+      </label>
+      @if (filePreviews) {
+      <div class="preview-container" *ngIf="filePreviews.length > 0">
+        <div
+          class="preview-item"
+          *ngFor="let file of filePreviews; let i = index"
+        >
+          <img
+            *ngIf="file.isImage"
+            [src]="file.url"
+            [alt]="file.name"
+            class="preview-image"
+          />
+          <video
+            *ngIf="file.isVideo"
+            [src]="file.url"
+            controls
+            class="preview-video"
+          ></video>
+          <button type="button" class="remove-btn" (click)="removeFile(i)">
+            ×
+          </button>
 
-                    <div class="post-create-container"></div>
-                    <div class="file-upload">
-                      <label class="upload-label">
-                        <input
-                          type="file"
-                          (change)="onFileSelected($event)"
-                          [multiple]="false"
-                          accept="image/*, video/*"
-                          hidden
-                          />
+          <app-input
+            [label]="file.isImage ? 'Mô tả cho ảnh' : 'Mô tả cho video'"
+            placeholder="Nhập mô tả..."
+            [value]="post.fileDocument?.description || ''"
+            (valueChange)="handleInputDesChange($event)"
+          ></app-input>
+        </div>
+      </div>
 
-                          <app-button [width]="'100%'" [variant]="'outline'">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              fill="none"
-                              stroke="currentColor"
-                              stroke-width="2"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              >
-                              <path d="m18 9-6-6-6 6" />
-                              <path d="M12 3v14" />
-                              <path d="M5 21h14" />
-                            </svg>
-                            <span>Chọn file</span>
-                          </app-button>
-                        </label>
-                        @if (filePreview) {
-                          <div class="preview-container">
-                            <div class="preview-item">
-                              @if (isImageFile) {
-                                <img
-                                  [src]="filePreview"
-                                  alt="Xem trước ảnh"
-                                  class="preview-image"
-                                  />
-                              }
-                              @if (isVideoFile) {
-                                <video
-                                  [src]="filePreview"
-                                  controls
-                                  class="preview-video"
-                                  alt="Xem trước video"
-                                ></video>
-                              }
-                              <button type="button" class="remove-btn" (click)="removeFile()">
-                                ×
-                              </button>
-                            </div>
-                            <div class="input-title">
-                              <app-input
-                                [label]="isImageFile ? 'Mô tả cho ảnh' : 'Mô tả cho video'"
-                                placeholder="Nhập mô tả..."
-                                [value]="post.fileDocument?.description || ''"
-                                (valueChange)="handleInputDesChange($event)"
-                                [required]="false"
-                                [minLength]="3"
-                                [variant]="'primary'"
-                                [errorMessage]="postTitleError"
-                                [isSvg]="false"
-                              ></app-input>
-                            </div>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
+      }
+    </div>
+  </div>
+</div>

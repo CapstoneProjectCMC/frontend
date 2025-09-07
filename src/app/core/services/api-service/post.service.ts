@@ -94,16 +94,19 @@ export class PostService {
   createPost(data: CreatePostRequest) {
     const { fileDocument, ...otherData } = data;
 
-    // Chuẩn bị files và form data
-    const files: { [fieldName: string]: File } = {};
-    if (fileDocument?.file) {
-      files['fileDocument.file'] = fileDocument.file; //tên key cần khớp backend
+    // Gom các field còn lại vào data (lọc undefined/null)
+    const formDataData: Record<string, any> = {};
+    for (const [key, value] of Object.entries(otherData)) {
+      if (value !== undefined && value !== null) {
+        formDataData[key] = value;
+      }
     }
 
-    // Gom các field còn lại vào data
-    const formDataData: Record<string, any> = {
-      ...otherData,
-    };
+    // Chuẩn bị files
+    const files: { [fieldName: string]: File[] } = {};
+    if (fileDocument?.files) {
+      files['fileDocument.files'] = fileDocument.files; // key cần khớp backend
+    }
 
     if (fileDocument) {
       const fd: Record<string, any> = {
@@ -115,19 +118,18 @@ export class PostService {
         'fileDocument.orgId': fileDocument.orgId,
       };
 
-      // Chỉ append field nào có giá trị khác undefined
       for (const [key, value] of Object.entries(fd)) {
-        if (value !== undefined) {
+        if (value !== undefined && value !== null) {
           formDataData[key] = value;
         }
       }
     }
 
-    // Gọi method postWithFormData
+    // Gọi API
     return this.api.postWithFormData<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.POST.ADD_POST,
       formDataData,
-      files
+      Object.keys(files).length ? files : undefined // chỉ gửi nếu có file
     );
   }
 

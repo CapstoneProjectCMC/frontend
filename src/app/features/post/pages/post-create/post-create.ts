@@ -48,8 +48,8 @@ export interface Draft {
     DropdownButtonComponent,
     ButtonComponent,
     FormsModule,
-    CommonModule
-],
+    CommonModule,
+  ],
 })
 export class PostCreatePageComponent {
   @ViewChild('linkInput') linkInput!: ElementRef<HTMLInputElement>;
@@ -99,8 +99,15 @@ export class PostCreatePageComponent {
   ) {}
 
   // ===== File (1 ảnh) =====
-  selectedFile: File | null = null;
-  filePreview: string | null = null;
+  // ===== File (nhiều ảnh/video) =====
+  selectedFiles: File[] = [];
+  filePreviews: {
+    url: string;
+    isImage: boolean;
+    isVideo: boolean;
+    name: string;
+  }[] = [];
+
   isImageFile: boolean = false;
   isVideoFile: boolean = false;
 
@@ -108,48 +115,33 @@ export class PostCreatePageComponent {
     this.loadAllDrafts();
   }
 
-  onFileSelected(event: Event) {
+  onFilesSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
+      this.selectedFiles = Array.from(input.files);
+      this.filePreviews = [];
 
-      // Reset tất cả các cờ
-      this.selectedFile = null;
-      this.filePreview = null;
-      this.isImageFile = false;
-      this.isVideoFile = false;
-
-      if (file.type.startsWith('image/')) {
-        this.selectedFile = file;
-        this.isImageFile = true;
-      } else if (file.type.startsWith('video/')) {
-        this.selectedFile = file;
-        this.isVideoFile = true;
-      } else {
-        // Nếu không phải ảnh hoặc video, không làm gì cả
-        return;
-      }
-
-      // Đọc file để tạo URL xem trước
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          this.filePreview = e.target.result as string;
-          // Kích hoạt phát hiện thay đổi để cập nhật UI
-          this.cdr.detectChanges();
-        }
-      };
-      reader.readAsDataURL(file);
+      this.selectedFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (e.target?.result) {
+            this.filePreviews.push({
+              url: e.target.result as string,
+              isImage: file.type.startsWith('image/'),
+              isVideo: file.type.startsWith('video/'),
+              name: file.name,
+            });
+            this.cdr.detectChanges();
+          }
+        };
+        reader.readAsDataURL(file);
+      });
     }
   }
 
-  removeFile() {
-    // Đổi tên từ removeImage thành removeFile
-    this.selectedFile = null;
-    this.filePreview = null;
-    this.isImageFile = false;
-    this.isVideoFile = false;
-    this.post.fileDocument = null; // Xóa luôn mô tả khi remove file
+  removeFile(index: number) {
+    this.selectedFiles.splice(index, 1);
+    this.filePreviews.splice(index, 1);
   }
 
   // ===== Input handlers =====
@@ -297,9 +289,9 @@ export class PostCreatePageComponent {
     this.post.isPublic = this.post.postType !== 'Private';
 
     // Gắn file vào fileDocument
-    if (this.selectedFile) {
+    if (this.selectedFiles) {
       if (!this.post.fileDocument) this.post.fileDocument = {};
-      this.post.fileDocument.file = this.selectedFile;
+      this.post.fileDocument.file = this.selectedFiles;
     }
 
     this.store.dispatch(
@@ -309,16 +301,20 @@ export class PostCreatePageComponent {
     // Debug nhanh
     const payload: CreatePostRequest = {
       title: this.post.title,
-      content: this.post.content,
-      isPublic: this.post.isPublic,
+      content: this.htmlToMd.convert(this.editorContent || ''),
+      isPublic: this.post.postType !== 'Private',
       allowComment: this.post.allowComment ?? false,
       postType: this.post.postType ?? 'Global',
       hashtag: this.post.hashtag,
       fileDocument: {
-        file: this.post.fileDocument?.file,
+        files: this.selectedFiles, // Gửi nhiều file
         description: this.post.fileDocument?.description,
-        isLectureVideo: this.isVideoFile, // Sử dụng cờ isVideoFile
-        isTextBook: this.isImageFile, // Sử dụng cờ isImageFile
+        tags: this.post.fileDocument?.tags,
+        isLectureVideo: this.selectedFiles.some((f) =>
+          f.type.startsWith('video/')
+        ),
+        isTextBook: this.selectedFiles.some((f) => f.type.startsWith('image/')),
+        orgId: this.post.fileDocument?.orgId,
       },
     };
 
@@ -386,8 +382,8 @@ export class PostCreatePageComponent {
       fileDocument: null,
     };
     this.editorContent = '';
-    this.selectedFile = null;
-    this.filePreview = null;
+    this.selectedFiles = [];
+    this.filePreviews = [];
     this.isImageFile = false;
     this.isVideoFile = false;
     this.selectedOptions = {};

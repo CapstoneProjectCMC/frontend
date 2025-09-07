@@ -200,7 +200,7 @@ export class ApiMethod {
   patchWithFormData<T>(
     endpoint: string,
     data?: Record<string, any>,
-    files?: File | { [fieldName: string]: File | File[] },
+    files?: File | { [fieldName: string]: File | File[] | undefined },
     apiType: 'MAIN_API' | 'SECONDARY_API' = 'MAIN_API'
   ): Observable<T> {
     const url = `${API_CONFIG.BASE_URLS[apiType]}${endpoint}`;
@@ -221,8 +221,12 @@ export class ApiMethod {
         Object.keys(files).forEach((fieldName) => {
           const fileItem = files[fieldName];
           if (Array.isArray(fileItem)) {
-            fileItem.forEach((file) => formData.append(fieldName, file));
-          } else {
+            fileItem.forEach((file) => {
+              if (file !== undefined && file !== null) {
+                formData.append(fieldName, file);
+              }
+            });
+          } else if (fileItem !== undefined && fileItem !== null) {
             formData.append(fieldName, fileItem);
           }
         });
