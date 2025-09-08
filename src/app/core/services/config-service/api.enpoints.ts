@@ -207,6 +207,7 @@ export const API_CONFIG = {
         readStatus: ReadStatusNotice
       ) =>
         `/notification/my?page=${page}&size=${size}&readStatus=${readStatus}`,
+      GET_COUNT_MY_UNREAD: '/notification/my/unread-count',
     },
     POST: {
       LOGIN: '/identity/auth/login',

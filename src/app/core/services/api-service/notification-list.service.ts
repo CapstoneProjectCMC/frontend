@@ -31,4 +31,10 @@ export class NotificationListService {
       Ids
     );
   }
+
+  countMyUnread() {
+    return this.api.get<ApiResponse<number>>(
+      API_CONFIG.ENDPOINTS.GET.GET_COUNT_MY_UNREAD
+    );
+  }
 }

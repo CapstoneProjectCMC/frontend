@@ -4,6 +4,8 @@ export const IGNORE_ERROR_NOTIFICATION_URLS = [
   '/submission/exercise/quiz/', // Bỏ qua tất cả endpoint chứa pattern này
   '/profile/user/',
   '/submission/exercise/coding/',
+  '/notification/',
+  '/ai/chat/',
   // Ví dụ pattern regex: /\/submission\/exercise\/quiz\/\d+(\?.*)?$/
   // Thêm các endpoint khác nếu cần
 ];

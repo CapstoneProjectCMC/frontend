@@ -9,10 +9,10 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ChatService } from '../../../../core/services/api-service/chat-conversation.service';
-import { SocketConnectionService } from '../../../../core/services/socket-service/socketConnection.service';
+import { SocketConnectionService } from '../../../../core/services/config-socket/socketConnection.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CONVERSATION_CHAT_SOCKET } from '../../../../core/services/socket-service/port-socket';
+import { CONVERSATION_CHAT_SOCKET } from '../../../../core/services/config-socket/port-socket';
 import {
   Conversation,
   ConversationEvent,

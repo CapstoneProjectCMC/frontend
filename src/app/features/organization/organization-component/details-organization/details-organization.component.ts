@@ -97,9 +97,9 @@ export class DetailsOrganizationComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.editForm.logo = file;
+    const logo = event.target.files[0];
+    if (logo) {
+      this.editForm.logo = logo;
     }
   }
 

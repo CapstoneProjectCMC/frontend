@@ -144,8 +144,6 @@ export const routes: Routes = [
           import('./features/organization/organization.module').then(
             (m) => m.OrganizationModule
           ),
-        data: { roles: ['ADMIN'] },
-        canActivate: [RoleGuard],
       },
     ],
   },

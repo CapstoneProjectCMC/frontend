@@ -41,7 +41,11 @@
           </app-toggle-switch>
         </div>
         <!-- From Uiverse.io by 3bdel3ziz-T -->
-        <div class="notification" (click)="toggleNotification()">
+        <div
+          class="notification"
+          (click)="toggleNotification()"
+          [attr.data-count]="notificationCount"
+        >
           <div class="bell-container">
             <div class="bell"></div>
           </div>

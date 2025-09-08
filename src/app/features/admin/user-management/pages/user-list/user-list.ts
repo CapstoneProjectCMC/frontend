@@ -118,7 +118,7 @@ export class UserListComponent {
 
   // Pagination
   pageIndex: number = 1;
-  itemsPerPage: number = 8;
+  itemsPerPage: number = 10;
   totalDatas: number = 0;
   sortBy: EnumType['sort'] = 'CREATED_AT';
   asc: boolean = false;

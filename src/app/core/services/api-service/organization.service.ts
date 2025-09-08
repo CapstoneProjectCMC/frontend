@@ -54,7 +54,7 @@ export class OrganizationService {
     return this.api.patchWithFormData<ApiResponse<null>>(
       API_CONFIG.ENDPOINTS.PATCH.EDIT_ORG(orgId),
       otherData,
-      logo
+      { logo }
     );
   }
 

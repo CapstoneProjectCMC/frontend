@@ -20,7 +20,10 @@ import { mapPostdatatoPostCardInfo } from '../../../../shared/utils/mapData';
 import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { BtnType1Component } from '../../../../shared/components/fxdonad-shared/ui-verser-io/btn-type1/btn-type1.component';
-import { openModalNotification } from '../../../../shared/utils/notification';
+import {
+  openModalNotification,
+  sendNotification,
+} from '../../../../shared/utils/notification';
 
 @Component({
   selector: 'app-post-list',
@@ -36,8 +39,8 @@ import { openModalNotification } from '../../../../shared/utils/notification';
     TrendingComponent,
     LottieComponent,
     ScrollEndDirective,
-    BtnType1Component
-],
+    BtnType1Component,
+  ],
   providers: [provideLottieOptions({ player: () => import('lottie-web') })],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -248,7 +251,12 @@ export class PostListComponent {
       this.postservice.unSavePost(postId).subscribe({
         next: () => {
           post.isSaved = false; // ✅ cập nhật lại trạng thái
-          console.log(`Unsave thành công post: ${postId}`);
+          sendNotification(
+            this.store,
+            'Đã hủy lưu',
+            'Bạn đã hủy lưu bài viết này',
+            'success'
+          );
         },
         error: (err) => {
           console.error('Unsave thất bại', err);
@@ -259,7 +267,7 @@ export class PostListComponent {
       this.postservice.savePost(postId).subscribe({
         next: () => {
           post.isSaved = true;
-          console.log(`Save thành công post: ${postId}`);
+          sendNotification(this.store, 'Đã lưu', 'Bài viết đã lưu', 'success');
         },
         error: (err) => {
           console.error('Save thất bại', err);
