@@ -86,7 +86,12 @@ export class OrgBlocksComponent implements OnInit {
       next: (res) => {
         const result = res.result;
         this.totalPages = result.totalPages;
-        this.blocks = loadMore ? [...this.blocks, ...result.data] : result.data;
+        this.blocks = loadMore
+          ? [
+              ...this.blocks,
+              ...result.data.filter((data) => data.code !== 'UNASSIGNED'),
+            ]
+          : result.data.filter((data) => data.code !== 'UNASSIGNED');
         this.isLoading = false;
       },
       error: () => (this.isLoading = false),

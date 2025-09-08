@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  inject,
+  DestroyRef,
+} from '@angular/core';
 import { Observable, Subscription, interval, of } from 'rxjs';
 
 import { Store } from '@ngrx/store';
@@ -20,6 +26,7 @@ import {
 } from '../../validate/qr-payment.utils';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { ModalNoticeService } from '../../../../shared/store/modal-notice-state/modal-notice.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-qr-payment',
@@ -29,6 +36,8 @@ import { ModalNoticeService } from '../../../../shared/store/modal-notice-state/
   styleUrls: ['./qr-payment.component.scss'],
 })
 export class QrPaymentComponent implements OnInit, OnDestroy {
+  private destroyRef = inject(DestroyRef); //ngắt request khi thoát trang (thêm 2 dòng, dòng này và dòng pipe trong service)
+
   amount: number | null = null; // Số tiền VNĐ người dùng nhập
   maxAmount: number = 20000000;
   qrTimeOut: boolean = true;
@@ -90,15 +99,19 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
     this.countdownInterval?.unsubscribe();
   }
 
+  //có ngắt request khi thoát trang, (còn lại là pipe dưới để ngắt request)
   fetchCurrentMoney() {
-    this.paymentService.getMyWallet().subscribe({
-      next: (res) => {
-        this.currentGp = res.result.balance;
-      },
-      error(err) {
-        console.log(err);
-      },
-    });
+    this.paymentService
+      .getMyWallet()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (res) => {
+          this.currentGp = res.result.balance;
+        },
+        error(err) {
+          console.log(err);
+        },
+      });
   }
 
   paymentFailed() {

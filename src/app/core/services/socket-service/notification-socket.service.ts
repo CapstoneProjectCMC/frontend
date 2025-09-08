@@ -14,7 +14,7 @@ export interface NotificationEvent {
 }
 
 @Injectable({ providedIn: 'root' })
-export class NotificationService {
+export class NotificationSocketService {
   private readonly url = `${NOTIFICATION_SOCKET_PORT}?token=${localStorage.getItem(
     'token'
   )}`;
@@ -25,5 +25,12 @@ export class NotificationService {
 
   listenNotifications(): Observable<NotificationEvent> {
     return this.socketService.on<NotificationEvent>(this.url, 'notification');
+  }
+
+  listenNoticeCount(): Observable<{ unread: number }> {
+    return this.socketService.on<{ unread: number }>(
+      this.url,
+      'notification-unread'
+    );
   }
 }

@@ -13,10 +13,7 @@ import { resetVariable } from '../../../store/variable-state/variable.actions';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 import { SetPasswordModalComponent } from '../../../../features/auth/components/modal/set-password-modal/set-password-modal.component';
 import { NotificationModalComponent } from './notification-modal/notification-modal.component';
-import {
-  NotificationEvent,
-  NotificationService,
-} from '../../../../core/services/socket-service/notification-socket.service';
+import { NotificationSocketService } from '../../../../core/services/socket-service/notification-socket.service';
 import { NotificationListService } from '../../../../core/services/api-service/notification-list.service';
 
 @Component({
@@ -51,7 +48,7 @@ export class HeaderComponent {
     private profileService: ProfileService,
     private themeService: ThemeService,
     private store: Store,
-    private notificationService: NotificationService,
+    private notificationService: NotificationSocketService,
     private notificationListService: NotificationListService
   ) {
     this.needReloadAvatar$ = this.store.select(
@@ -87,12 +84,12 @@ export class HeaderComponent {
 
     // 👇 Đăng ký lắng nghe notification từ socket
     this.notificationService
-      .listenNotifications()
-      .subscribe((event: NotificationEvent) => {
-        console.log('Header nhận notification:', event);
+      .listenNoticeCount()
+      .subscribe((event: { unread: number }) => {
+        console.log('Header nhận count notification:', event.unread);
 
         // Tăng counter
-        this.notificationCount++;
+        this.notificationCount = event.unread;
 
         // Nếu muốn push vào modal hoặc show toast
         // this.notifications.unshift(event);
