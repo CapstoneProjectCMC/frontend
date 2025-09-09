@@ -78,6 +78,12 @@ export function mapPostInfortoPost(post: PostADD): Post {
   };
 }
 export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
+  let tagInput = post.hashtag || '';
+  let taglist = tagInput
+    .split(',')
+    .map((t) => t.trim())
+    .filter((t) => t.length > 0); // loại bỏ tag rỗng
+
   return {
     id: post.postId,
     avatar: post.user?.avatarUrl || avatarUrlDefault,
@@ -87,7 +93,7 @@ export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
     title: post.title,
     time: post.createdAt,
     description: post.content,
-    tags: [post.hashtag],
+    tags: taglist,
     comment: post.commentCount,
     upvote: post.upvoteCount,
     downvote: post.downvoteCount,
