@@ -1,0 +1,183 @@
+name: Frontend CD Deploy to Server (SSH)
+
+on:
+  workflow_run:
+    workflows:
+      - Frontend Docker Publish   # TÊN workflow build & push frontend bạn đã có
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-frontend-${{ github.event_name }}-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >
+      (github.event_name == 'workflow_dispatch') ||
+      (
+        github.event_name == 'workflow_run' &&
+        (
+          github.event.workflow_run.head_branch == 'main' ||
+          startsWith(github.event.workflow_run.head_branch, 'v')
+        ) &&
+        github.event.workflow_run.conclusion == 'success'
+      )
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      DEPLOY_DIR_SECRET: ${{ secrets.DEPLOY_DIR }}  # có thể để trống => dùng default /opt/codecampus
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Derive IMAGE_TAG (from workflow_run or manual)
+        shell: bash
+        env:
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          if [ "${EVENT_NAME}" = "workflow_dispatch" ]; then
+            IMAGE_TAG_VALUE="${GITHUB_SHA:0:12}"
+          else
+            if [[ "${HEAD_BRANCH:-}" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+              IMAGE_TAG_VALUE="${HEAD_BRANCH#v}"
+            else
+              IMAGE_TAG_VALUE="${HEAD_SHA:0:12}"
+            fi
+          fi
+          echo "IMAGE_TAG=${IMAGE_TAG_VALUE}" | tee -a "$GITHUB_ENV"
+
+      - name: Decide remote target dir
+        id: targetdir
+        run: |
+          set -euo pipefail
+          if [ -n "${DEPLOY_DIR_SECRET:-}" ]; then
+            echo "DEPLOY_DIR_FINAL=${DEPLOY_DIR_SECRET%/}" >> "$GITHUB_OUTPUT"
+          else
+            echo "DEPLOY_DIR_FINAL=/opt/codecampus" >> "$GITHUB_OUTPUT"   # <-- theo yêu cầu của bạn
+          fi
+
+      - name: Compute .env SHA256 (must exist in repo)
+        run: |
+          if [ ! -f .env ]; then
+            echo "::error::.env không tồn tại trong repo."
+            exit 1
+          fi
+          echo "ENV_SHA=$(sha256sum .env | awk '{print $1}')" >> "$GITHUB_ENV"
+
+      - name: Prepare deploy bundle
+        run: |
+          set -euo pipefail
+          mkdir -p deploy_bundle ops
+          cp -v .env deploy_bundle/.env
+          cp -v docker-compose.prod-frontend.yml deploy_bundle/
+
+          cat > ops/deploy-frontend.sh <<'EOS'
+          #!/usr/bin/env bash
+          set -euo pipefail
+
+          DEPLOY_DIR="${DEPLOY_DIR:-/opt/codecampus}"
+          mkdir -p "$DEPLOY_DIR"
+          cd "$DEPLOY_DIR"
+
+          # Backup .env
+          cp -f .env ".env.frontend.bak.$(date +%Y%m%d-%H%M%S)" || true
+
+          # Ghi IMAGE_TAG vào .env (idempotent)
+          if grep -q '^IMAGE_TAG=' .env; then
+            sed -i "s/^IMAGE_TAG=.*/IMAGE_TAG=${IMAGE_TAG}/" .env
+          else
+            echo "IMAGE_TAG=${IMAGE_TAG}" >> .env
+          fi
+
+          # Docker compose wrapper
+          compose() {
+            if docker compose version >/dev/null 2>&1; then
+              docker compose "$@"
+            else
+              docker-compose "$@"
+            fi
+          }
+
+          # docker login (nếu có)
+          if [ -n "${DOCKERHUB_USER:-}" ] && [ -n "${DOCKERHUB_TOKEN:-}" ]; then
+            echo "docker login Docker Hub..."
+            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
+          else
+            echo "Thiếu DOCKERHUB_USER/DOCKERHUB_TOKEN trong .env (image public thì vẫn OK)."
+          fi
+
+          echo "Pull image frontend tag ${IMAGE_TAG}…"
+          compose -f docker-compose.prod-frontend.yml --env-file .env pull
+
+          echo "Up frontend…"
+          compose -f docker-compose.prod-frontend.yml --env-file .env up -d
+
+          echo "Prune dangling images…"
+          docker image prune -f || true
+
+          echo "Frontend deploy xong."
+          EOS
+          chmod +x ops/deploy-frontend.sh
+          cp -v ops/deploy-frontend.sh deploy_bundle/deploy-frontend.sh
+
+      - name: Ensure remote dir exists
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            mkdir -p '${{ steps.targetdir.outputs.DEPLOY_DIR_FINAL }}'
+
+      - name: Upload bundle to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "deploy_bundle/.env,deploy_bundle/docker-compose.prod-frontend.yml,deploy_bundle/deploy-frontend.sh"
+          target: "${{ steps.targetdir.outputs.DEPLOY_DIR_FINAL }}"
+          overwrite: true
+          strip_components: 1
+
+      - name: Verify .env identical & run deploy
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
+          ENV_SHA: ${{ env.ENV_SHA }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          envs: IMAGE_TAG,ENV_SHA
+          script_stop: true
+          script: |
+            set -euo pipefail
+            DEPLOY_DIR='${{ steps.targetdir.outputs.DEPLOY_DIR_FINAL }}'
+            cd "$DEPLOY_DIR"
+
+            if [ ! -f .env ]; then
+              echo "::error::Không thấy $DEPLOY_DIR/.env trên server."
+              exit 1
+            fi
+
+            SERVER_SHA=$(sha256sum .env | awk '{print $1}')
+            echo "Local  .env sha: $ENV_SHA"
+            echo "Server .env sha: $SERVER_SHA"
+            if [ "$SERVER_SHA" != "$ENV_SHA" ]; then
+              echo "::error::.env trên server KHÁC repo. Hủy deploy để tránh sai lệch."
+              exit 1
+            fi
+
+            IMAGE_TAG="${IMAGE_TAG:-latest}" DEPLOY_DIR="$DEPLOY_DIR" bash ./deploy-frontend.sh

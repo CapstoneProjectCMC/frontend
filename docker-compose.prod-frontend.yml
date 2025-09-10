@@ -1,0 +1,14 @@
+name: codecampus-frontend
+
+services:
+  frontend:
+    container_name: codecampus-frontend
+    image: ${DOCKERHUB_USER}/codecampus-frontend:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    ports: [ "4200:4200" ]
+    networks: [ backend ]
+
+networks:
+  backend:
+    name: codecampus_backend
+    external: true
