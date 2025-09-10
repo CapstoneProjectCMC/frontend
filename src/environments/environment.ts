@@ -5,4 +5,4 @@ export const environment = {
   IP_SERVER_RADMIN: 'http://26.100.147.137:8888/api',
   IP_LOCAL: 'http://localhost:8081/api',
 };
- 
+
