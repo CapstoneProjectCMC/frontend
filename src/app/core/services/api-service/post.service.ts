@@ -112,7 +112,8 @@ export class PostService {
       const fd: Record<string, any> = {
         'fileDocument.category': fileDocument.category,
         'fileDocument.description': fileDocument.description,
-        'fileDocument.tags': fileDocument.tags,
+        // 'fileDocument.tags': fileDocument.tags, // Xử lý riêng bên dưới
+
         'fileDocument.isLectureVideo': fileDocument.isLectureVideo,
         'fileDocument.isTextBook': fileDocument.isTextBook,
         'fileDocument.orgId': fileDocument.orgId,
@@ -122,6 +123,12 @@ export class PostService {
         if (value !== undefined && value !== null) {
           formDataData[key] = value;
         }
+      }
+      // Nếu cần gửi tags theo dạng array [0], [1]...
+      if (fileDocument.tags?.length) {
+        fileDocument.tags.forEach((tag, i) => {
+          formDataData[`fileDocument.tags[${i}]`] = tag;
+        });
       }
     }
 
