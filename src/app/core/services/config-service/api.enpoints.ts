@@ -134,6 +134,12 @@ export const API_CONFIG = {
       GET_CHAT_MESSAGES: (page: number, size: number, conversationId: string) =>
         `/chat/messages?page=${page}&size=${size}&conversationId=${conversationId}`,
       GET_POST_DETAILS: (postId: string) => `/post/${postId}`,
+      SEARCH_POST: (page: number, size: number, search?: string | null) => {
+        let query = `/search/posts/filter?page=${page}&size=${size}`;
+        if (search) query += `&q=${encodeURIComponent(search)}`;
+
+        return query;
+      },
       GET_SAVED_POSTS: (page: number, size: number) =>
         `/profile/posts/saved?page=${page}&size=${size}`,
       GET_COMMENT_BY_POST_ID: (

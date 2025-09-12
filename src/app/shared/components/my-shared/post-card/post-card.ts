@@ -9,7 +9,10 @@ import {
 import { PostCardInfo } from '../../../../core/models/post.models';
 import { TruncatePipe } from '../../../pipes/format-view.pipe';
 import { getUserRoles } from '../../../utils/userInfo';
-import { activeForMyContent } from '../../../utils/authenRoleActions';
+import {
+  activeForMyContent,
+  checkAuthenticated,
+} from '../../../utils/authenRoleActions';
 import { MarkdownModule, MarkdownService } from 'ngx-markdown';
 
 import hljs from 'highlight.js';
@@ -39,8 +42,11 @@ export class PostCardComponent {
 
   roles = getUserRoles();
   active = false;
+  authenticated = false;
 
-  constructor(private markdownService: MarkdownService) {}
+  constructor(private markdownService: MarkdownService) {
+    this.authenticated = checkAuthenticated();
+  }
 
   ngOnInit() {
     this.markdownService.renderer.code = ({ text, lang, escaped }) => {

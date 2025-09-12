@@ -67,7 +67,7 @@
       }
     </div>
     <div class="post-card__actions">
-      @if (active) {
+      @if (active && authenticated) {
       <button
         type="button"
         class="post-card__button"
@@ -76,15 +76,15 @@
       >
         <i class="fa-solid fa-trash"></i>
       </button>
-      }
+      } @if(authenticated){
       <button
         type="button"
         class="post-card__button"
         (click)="onSaveClick($event)"
         title="Lưu lại"
       >
-        <i class="fa-regular fa-bookmark"></i>
-      </button>
+        <i class="fa-regular fa-bookmark"></i></button
+      >}
     </div>
   </footer>
 </div>

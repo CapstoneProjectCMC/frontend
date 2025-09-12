@@ -13,6 +13,7 @@ import { parseISO } from 'date-fns/parseISO';
 import { vi } from 'date-fns/locale/vi';
 import { decodeJWT } from '../../../utils/stringProcess';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
+import { checkAuthenticated } from '../../../utils/authenRoleActions';
 
 export interface CardExcercise {
   id: string;
@@ -55,10 +56,13 @@ export class CardExcerciseComponent {
   difficultyLevel = 1;
 
   showScrollButtons = false;
+  authenticated = false;
   constructor(
     private router: Router,
     private exerciseService: ExerciseService
-  ) {}
+  ) {
+    this.authenticated = checkAuthenticated();
+  }
 
   ngOnInit() {
     this.role = decodeJWT(localStorage.getItem('token') ?? '')?.payload.scope;
