@@ -158,7 +158,7 @@
       <div class="stats">
         <span title="Số câu hỏi"
           ><i class="fa-regular fa-question-circle"></i>
-          {{ exercise.quizDetail?.totalElements ?? 0 }}</span
+          {{ exercise.quizDetail?.totalElements ?? 0 }} Câu</span
         >
         <span title="Thời lượng"
           ><i class="fa-regular fa-hourglass-half"></i>
@@ -199,6 +199,8 @@
         @for (q of exercise.quizDetail?.questions; track q; let i = $index) {
         <div class="question-item">
           <div class="question-header">
+            <div class="question-number-index">Câu hỏi số {{ i + 1 }}</div>
+
             <div class="btn-control">
               @if (isActionActive) {
               <button
