@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 describe('Trang đăng nhập', () => {
   beforeEach(() => {
     cy.visit('/auth/identity/login');
@@ -12,10 +14,12 @@ describe('Trang đăng nhập', () => {
 
   it('Đăng nhập thành công với tài khoản hợp lệ', () => {
     cy.get('#username-input').type('admin');
-    cy.get('#password-input').type('admin123');
+    cy.get('#password-input').type('adminRoot123');
     cy.contains('button', 'Đăng nhập').click();
 
-    cy.url().should('include', '/exercise/exercise-layout/list');
+    // ✅ sửa lại URL cho đúng thực tế
+    cy.url().should('include', '/post-features/post-list');
+
     cy.window().then((win) => {
       expect(win.localStorage.getItem('token')).to.exist;
     });
