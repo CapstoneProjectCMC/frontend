@@ -214,6 +214,10 @@ export const API_CONFIG = {
       ) =>
         `/notification/my?page=${page}&size=${size}&readStatus=${readStatus}`,
       GET_COUNT_MY_UNREAD: '/notification/my/unread-count',
+
+      GET_EXERCISE_STATISTICS_ADMIN: (page: number, size: number) =>
+        `/submission/stats/admin/exercises?page=${page}&size=${size}`,
+      GET_SUMMARY_STATISTICS_ADMIN: '/submission/stats/admin/summary',
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -288,7 +292,7 @@ export const API_CONFIG = {
       ADD_ADMIN: '/identity/admin',
       ADD_STUDENT: '/identity/teacher',
       ADD_TEACHER: '/identity/user',
-      MARK_AS_READ_NOTIFICATION: '/my/mark-read',
+      MARK_AS_READ_NOTIFICATION: '/notification/my/mark-read',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,

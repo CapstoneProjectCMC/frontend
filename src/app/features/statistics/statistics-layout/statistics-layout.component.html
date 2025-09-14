@@ -1,0 +1,14 @@
+<div class="statistic-layout-container">
+  <div class="main-statistic-container">
+    @if (showSidebar) {
+    <app-main-sidebar
+      [sidebarItems]="sidebarData"
+      [isCollapsed]="isSidebarCollapsed"
+    >
+    </app-main-sidebar>
+    }
+    <div class="statistic-content-container">
+      <router-outlet />
+    </div>
+  </div>
+</div>

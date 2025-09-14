@@ -1,0 +1,82 @@
+<div class="summary-container">
+  <header class="summary-header">
+    <h1>Thống kê Tổng quan</h1>
+    <p>Các chỉ số chính về hoạt động trên hệ thống.</p>
+  </header>
+
+  @if (isLoading) {
+  <div class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Đang tải dữ liệu...</p>
+  </div>
+  } @else if (error && !isLoading) {
+  <div class="error-message">
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="loadSummary()">Thử lại</button>
+  </div>
+  } @else if (summaryData && !isLoading && !error) {
+  <div class="summary-content">
+    <div class="summary-cards-grid">
+      <div class="summary-card">
+        <div class="card-label">Tổng số bài tập</div>
+        <div class="card-value">{{ summaryData.totalExercises | number }}</div>
+        <div class="card-sub-value">
+          {{ summaryData.totalVisibleExercises | number }} công khai
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="card-label">Tổng lượt giao bài</div>
+        <div class="card-value">
+          {{ summaryData.totalAssignments | number }}
+        </div>
+        <div class="card-sub-value">
+          {{ summaryData.totalCompletedAssignments | number }} đã hoàn thành
+        </div>
+      </div>
+      <div class="summary-card">
+        <div class="card-label">Tổng lượt nộp bài</div>
+        <div class="card-value">
+          {{ summaryData.totalSubmissions | number }}
+        </div>
+        <div class="card-sub-value">
+          {{ summaryData.totalPassedSubmissions | number }} bài đạt
+        </div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      @if (exerciseTypeData.length > 0 && (exerciseTypeData[0] > 0 ||
+      exerciseTypeData[1] > 0)) {
+      <div class="chart-wrapper">
+        <fx-pie-chart
+          [value]="exerciseTypeData"
+          [labels]="exerciseTypeLabels"
+          [chartTitle]="'Phân loại Bài tập'"
+          [width]="350"
+        ></fx-pie-chart>
+      </div>
+      } @if (completionRateData.length > 0 && (completionRateData[0] > 0 ||
+      completionRateData[1] > 0)) {
+      <div class="chart-wrapper">
+        <fx-pie-chart
+          [value]="completionRateData"
+          [labels]="completionRateLabels"
+          [chartTitle]="'Tỷ lệ Hoàn thành'"
+          [width]="350"
+        ></fx-pie-chart>
+      </div>
+      } @if (passRateData.length > 0 && (passRateData[0] > 0 || passRateData[1]
+      > 0)) {
+      <div class="chart-wrapper">
+        <fx-pie-chart
+          [value]="passRateData"
+          [labels]="passRateLabels"
+          [chartTitle]="'Tỷ lệ Nộp bài Đạt'"
+          [width]="350"
+        ></fx-pie-chart>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>
