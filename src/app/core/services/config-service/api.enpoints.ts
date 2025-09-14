@@ -214,6 +214,10 @@ export const API_CONFIG = {
       ) =>
         `/notification/my?page=${page}&size=${size}&readStatus=${readStatus}`,
       GET_COUNT_MY_UNREAD: '/notification/my/unread-count',
+
+      GET_EXERCISE_STATISTICS_ADMIN: (page: number, size: number) =>
+        `/submission/stats/admin/exercises?page=${page}&size=${size}`,
+      GET_SUMMARY_STATISTICS_ADMIN: '/submission/stats/admin/summary',
     },
     POST: {
       LOGIN: '/identity/auth/login',

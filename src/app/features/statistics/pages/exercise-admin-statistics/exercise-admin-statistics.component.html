@@ -1,0 +1,113 @@
+<div class="stats-container">
+  <header class="stats-header">
+    <h1>Bảng thống kê bài tập</h1>
+    <p>Tổng quan về hiệu suất và tương tác của các bài tập.</p>
+  </header>
+
+  @if (isLoading) {
+  <div class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Đang tải dữ liệu...</p>
+  </div>
+  } @else if (error && !isLoading) {
+  <div class="error-message">
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="loadStats()">Thử lại</button>
+  </div>
+  } @else {
+  <div class="stats-content">
+    @if (statsData.length > 0) {
+    <div class="table-wrapper">
+      <table class="stats-table">
+        <thead>
+          <tr>
+            <th>Tiêu đề</th>
+            <th>Loại</th>
+            <th>Trạng thái</th>
+            <th>Lượt hoàn thành</th>
+            <th>Tỷ lệ hoàn thành</th>
+            <th>Lượt nộp bài</th>
+            <th>Tỷ lệ qua</th>
+            <th>Điểm TB</th>
+            <th>Lần nộp cuối</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (stat of statsData; track $index) {
+          <tr>
+            <td class="cell-title" [title]="stat.title">
+              {{ stat.title }}
+            </td>
+            <td>
+              <span
+                class="badge"
+                [class.badge-quiz]="stat.exerciseType === 'QUIZ'"
+                [class.badge-coding]="stat.exerciseType === 'CODING'"
+              >
+                {{ stat.exerciseType }}
+              </span>
+            </td>
+            <td>{{ stat.visibility ? "Công khai" : "Riêng tư" }}</td>
+            <td>{{ stat.completedCount }} / {{ stat.assignedCount }}</td>
+            <td>
+              <div
+                class="progress-bar-container"
+                [title]="stat.completionRate | percent : '1.0-2'"
+              >
+                <div
+                  class="progress-bar-fill"
+                  [style.width.%]="stat.completionRate * 100"
+                ></div>
+              </div>
+            </td>
+            <td>{{ stat.passedCount }} / {{ stat.submissionCount }}</td>
+            <td>
+              <div
+                class="progress-bar-container"
+                [title]="stat.passRate | percent : '0.0-1'"
+              >
+                <div
+                  class="progress-bar-fill success"
+                  [style.width.%]="stat.passRate * 100"
+                ></div>
+              </div>
+            </td>
+            <td>{{ stat.avgScore | number : "1.1-2" }}</td>
+            <td>{{ stat.lastSubmissionAt | date : "dd/MM/yyyy HH:mm" }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (totalPages > 1) {
+    <nav class="pagination-controls" aria-label="Page navigation">
+      <button
+        (click)="onPageChange(currentPage - 1)"
+        [disabled]="currentPage === 1"
+      >
+        &laquo;
+      </button>
+      @for (page of getPagesArray(); track page) {
+      <button
+        (click)="onPageChange(page)"
+        [class.active]="page === currentPage"
+      >
+        {{ page }}
+      </button>
+      }
+      <button
+        (click)="onPageChange(currentPage + 1)"
+        [disabled]="currentPage === totalPages"
+      >
+        &raquo;
+      </button>
+    </nav>
+    } } @else {
+    <div class="no-data-message">
+      <p>Không có dữ liệu thống kê để hiển thị.</p>
+    </div>
+    }
+  </div>
+  }
+</div>

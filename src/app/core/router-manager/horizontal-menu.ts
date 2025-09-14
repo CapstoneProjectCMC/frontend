@@ -34,7 +34,7 @@ export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
     },
     {
       id: 'statistics',
-      path: '/statistics',
+      path: '/codecampus-statistics/admin-exercise-statistics',
       label: 'Thống kê',
       icon: 'fas fa-chart-bar',
       isVisible: !roles.includes(auth_lv2[0]),

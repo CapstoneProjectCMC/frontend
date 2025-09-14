@@ -139,6 +139,13 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'codecampus-statistics',
+        loadChildren: () =>
+          import('./features/statistics/statistics.module').then(
+            (m) => m.StatisticsModule
+          ),
+      },
+      {
         path: 'organization',
         loadChildren: () =>
           import('./features/organization/organization.module').then(
