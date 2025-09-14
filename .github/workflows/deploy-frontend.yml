@@ -129,7 +129,7 @@ jobs:
           cp -v ops/deploy-frontend.sh deploy_bundle/deploy-frontend.sh
 
       - name: Ensure remote dir exists
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
@@ -151,7 +151,7 @@ jobs:
           strip_components: 1
 
       - name: Verify .env identical & run deploy
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         env:
           IMAGE_TAG: ${{ env.IMAGE_TAG }}
           ENV_SHA: ${{ env.ENV_SHA }}
