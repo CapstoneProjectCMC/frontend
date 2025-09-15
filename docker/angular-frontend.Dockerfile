@@ -19,7 +19,7 @@ FROM nginx:1.27-alpine
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 # copy artefact Angular
-COPY --from=build /app/dist/app /usr/share/nginx/html
+COPY --from=build /app/dist/app/browser/ /usr/share/nginx/html/
 
 EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -qO- http://localhost/ || exit 1
