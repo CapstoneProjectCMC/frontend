@@ -88,7 +88,7 @@ export interface PostADD {
   allowComment?: boolean;
   postType?: PostType;
   fileUrls: string; // CHUẨN THEO BE (lưu ý đánh vần!)
-  hashtag: string; // nếu muốn gửi dạng mảng
+  hashtag: string[]; // nếu muốn gửi dạng mảng
   fileDocument?: FileDocument | null;
 }
 
@@ -99,7 +99,7 @@ export interface CreatePostRequest {
   isPublic: boolean;
   allowComment: boolean;
   postType: PostType;
-  hashtag?: string;
+  hashtag?: string[]; // nếu muốn gửi dạng mảng
 
   fileDocument?: {
     files?: File[];

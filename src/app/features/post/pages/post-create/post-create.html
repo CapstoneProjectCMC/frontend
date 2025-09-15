@@ -14,7 +14,15 @@
       ></app-input>
     </div>
     <div class="input-info">
-      <app-dropdown-button
+      <app-input
+        label="Nhập tag (cách nhau bởi dấu ,)"
+        placeholder="Ví dụ: toán, lý, hoá"
+        [value]="tagInput"
+        (valueChange)="handleTagInputChange($event)"
+        [variant]="'primary'"
+        [isSvg]="false"
+      ></app-input>
+      <!-- <app-dropdown-button
         [label]="'Chủ đề'"
         [options]="topics"
         [variant]="'secondary'"
@@ -51,8 +59,8 @@
         [isSearchable]="true"
         [minHeight]="true"
         [needIndexColor]="true"
-      ></app-dropdown-button>
-      <app-dropdown-button
+      ></app-dropdown-button> -->
+      <!-- <app-dropdown-button
         [label]="'tag'"
         [options]="tag"
         [variant]="'secondary'"
@@ -69,7 +77,7 @@
         [isSearchable]="true"
         [minHeight]="true"
         [needIndexColor]="true"
-      ></app-dropdown-button>
+      ></app-dropdown-button> -->
     </div>
     <div class="post-options-container">
       <div class="option-group">

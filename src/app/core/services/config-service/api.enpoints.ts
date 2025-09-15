@@ -134,6 +134,12 @@ export const API_CONFIG = {
       GET_CHAT_MESSAGES: (page: number, size: number, conversationId: string) =>
         `/chat/messages?page=${page}&size=${size}&conversationId=${conversationId}`,
       GET_POST_DETAILS: (postId: string) => `/post/${postId}`,
+      SEARCH_POST: (page: number, size: number, search?: string | null) => {
+        let query = `/search/posts/filter?page=${page}&size=${size}`;
+        if (search) query += `&q=${encodeURIComponent(search)}`;
+
+        return query;
+      },
       GET_SAVED_POSTS: (page: number, size: number) =>
         `/profile/posts/saved?page=${page}&size=${size}`,
       GET_COMMENT_BY_POST_ID: (
@@ -208,6 +214,10 @@ export const API_CONFIG = {
       ) =>
         `/notification/my?page=${page}&size=${size}&readStatus=${readStatus}`,
       GET_COUNT_MY_UNREAD: '/notification/my/unread-count',
+
+      GET_EXERCISE_STATISTICS_ADMIN: (page: number, size: number) =>
+        `/submission/stats/admin/exercises?page=${page}&size=${size}`,
+      GET_SUMMARY_STATISTICS_ADMIN: '/submission/stats/admin/summary',
     },
     POST: {
       LOGIN: '/identity/auth/login',
@@ -282,7 +292,7 @@ export const API_CONFIG = {
       ADD_ADMIN: '/identity/admin',
       ADD_STUDENT: '/identity/teacher',
       ADD_TEACHER: '/identity/user',
-      MARK_AS_READ_NOTIFICATION: '/my/mark-read',
+      MARK_AS_READ_NOTIFICATION: '/notification/my/mark-read',
     },
     PUT: {
       EDIT_FILE: (id: string) => `/file/api/FileDocument/edit/${id}`,

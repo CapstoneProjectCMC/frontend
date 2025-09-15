@@ -1,6 +1,5 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
-import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { PostCardComponent } from '../../../../shared/components/my-shared/post-card/post-card';
 
 import {
@@ -24,6 +23,7 @@ import {
   openModalNotification,
   sendNotification,
 } from '../../../../shared/utils/notification';
+import { checkAuthenticated } from '../../../../shared/utils/authenRoleActions';
 
 @Component({
   selector: 'app-post-list',
@@ -32,7 +32,6 @@ import {
   standalone: true,
   imports: [
     InputComponent,
-    DropdownButtonComponent,
     PostCardComponent,
     PopularPostComponent,
     SkeletonLoadingComponent,
@@ -46,6 +45,7 @@ import {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PostListComponent {
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
   lottieOptions = {
     path: 'assets/lottie-animation/nodata.json',
     autoplay: true,
@@ -53,6 +53,8 @@ export class PostListComponent {
   };
   posts: PostCardInfo[] = [];
   postsraw!: PostResponse[];
+
+  authenticated = false;
 
   trendingData: TrendingItem[] = [
     { name: 'Angular', views: 15000 },
@@ -66,6 +68,7 @@ export class PostListComponent {
   hasMore = true;
   postname = '';
   tag: { value: string; label: string }[] = [];
+  pendingVote: { [postId: string]: boolean } = {};
   status: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
@@ -82,26 +85,28 @@ export class PostListComponent {
     private postservice: PostService,
     private store: Store
   ) {
-    this.tag = [
-      { value: '1', label: 'react' },
-      { value: '0', label: 'javascript' },
-      { value: '2', label: 'C#' },
-      { value: '3', label: 'java' },
-      { value: '4', label: 'python' },
-    ];
-    // Mock data for status
-    this.status = [
-      { value: '0', label: 'Reject' },
-      { value: '1', label: 'Accepted' },
-      { value: '2', label: 'Pendding' },
-    ];
+    // this.tag = [
+    //   { value: '1', label: 'react' },
+    //   { value: '0', label: 'javascript' },
+    //   { value: '2', label: 'C#' },
+    //   { value: '3', label: 'java' },
+    //   { value: '4', label: 'python' },
+    // ];
+    // // Mock data for status
+    // this.status = [
+    //   { value: '0', label: 'Reject' },
+    //   { value: '1', label: 'Accepted' },
+    //   { value: '2', label: 'Pendding' },
+    // ];
+
+    this.authenticated = checkAuthenticated();
   }
 
   ngOnInit(): void {
     this.fetchPostList(true);
   }
 
-  fetchPostList(isInitialLoad = false) {
+  fetchPostList(isInitialLoad = false, search = false) {
     this.isLoading = true;
 
     if (isInitialLoad) {
@@ -110,31 +115,38 @@ export class PostListComponent {
       this.isLoadingNextPage = true;
     }
 
-    this.postservice.getVisiblePosts(this.pageIndex, this.size).subscribe({
-      next: (res) => {
-        const newPostsRaw = res.result.data;
-        this.totalPages = res.result.totalPages;
+    this.postservice
+      .searchPosts(this.pageIndex, this.size, this.postname)
+      .subscribe({
+        next: (res) => {
+          const newPostsRaw = res.result.data;
+          this.totalPages = res.result.totalPages;
 
-        // ✅ Chỉ map phần dữ liệu mới
-        const newPosts = this.mapPostdatatoPostCardInfo(newPostsRaw);
-        if (isInitialLoad) {
-          this.posts = []; // reset khi load mới
-        }
-        this.posts.push(...newPosts); // append thêm
+          // ✅ Chỉ map phần dữ liệu mới
+          const newPosts = this.mapPostdatatoPostCardInfo(newPostsRaw);
+          if (isInitialLoad) {
+            this.posts = []; // reset khi load mới
+          }
+          if (!search) {
+            this.posts.push(...newPosts); // append thêm
+          } else {
+            this.posts = []; // reset khi load mới
+            this.posts = newPosts;
+          }
 
-        if (isInitialLoad) {
-          this.isLoadingInitial = false;
-        } else {
-          this.isLoadingNextPage = false;
-        }
+          if (isInitialLoad) {
+            this.isLoadingInitial = false;
+          } else {
+            this.isLoadingNextPage = false;
+          }
 
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.log(err);
-        this.isLoading = false;
-      },
-    });
+          this.isLoading = false;
+        },
+        error: (err) => {
+          console.log(err);
+          this.isLoading = false;
+        },
+      });
   }
 
   loadNextPage() {
@@ -154,12 +166,15 @@ export class PostListComponent {
   }
 
   // thêm field quản lý loading theo post
-  pendingVote: { [postId: string]: boolean } = {};
 
   handleUpVote(id: string) {
     if (this.pendingVote[id]) return; // chặn spam
     const post = this.posts.find((p) => p.id === id);
     if (!post) return;
+    if (!this.authenticated) {
+      this.openModalNeedLogin();
+      return;
+    }
 
     const prevVote = this.voteStates[id] ?? null;
     this.pendingVote[id] = true;
@@ -203,6 +218,10 @@ export class PostListComponent {
     if (this.pendingVote[id]) return;
     const post = this.posts.find((p) => p.id === id);
     if (!post) return;
+    if (!this.authenticated) {
+      this.openModalNeedLogin();
+      return;
+    }
 
     const prevVote = this.voteStates[id] ?? null;
     this.pendingVote[id] = true;
@@ -245,6 +264,10 @@ export class PostListComponent {
   handleToggleSave(postId: string) {
     const post = this.posts.find((p) => p.id === postId);
     if (!post) return;
+    if (!this.authenticated) {
+      this.openModalNeedLogin();
+      return;
+    }
 
     // Nếu đang lưu thì gọi unSave
     if (post.isSaved) {
@@ -277,27 +300,36 @@ export class PostListComponent {
   }
 
   handleInputChange(value: string | number): void {
+    this.isLoading = true;
+    this.pageIndex = 1;
+
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+    }
+
     this.postname = value.toString();
 
-    console.log('Input changed:', this.postname);
+    this.debounceTimer = setTimeout(() => {
+      this.fetchPostList(false, true);
+    }, 500); // chờ 500ms sau khi dừng gõ mới gọi
   }
 
-  handleSelect(dropdownKey: string, selected: any): void {
-    // Reset toàn bộ các lựa chọn trước đó
-    this.selectedOptions = {};
+  // handleSelect(dropdownKey: string, selected: any): void {
+  //   // Reset toàn bộ các lựa chọn trước đó
+  //   this.selectedOptions = {};
 
-    // Lưu lại option vừa chọn
-    this.selectedOptions[dropdownKey] = selected;
+  //   // Lưu lại option vừa chọn
+  //   this.selectedOptions[dropdownKey] = selected;
 
-    // this.router.navigate(['/', dropdownKey, selected.label]);
+  //   // this.router.navigate(['/', dropdownKey, selected.label]);
 
-    console.log(this.selectedOptions);
-  }
+  //   console.log(this.selectedOptions);
+  // }
 
-  toggleDropdown(id: string): void {
-    // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
-    this.activeDropdown = this.activeDropdown === id ? null : id;
-  }
+  // toggleDropdown(id: string): void {
+  //   // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
+  //   this.activeDropdown = this.activeDropdown === id ? null : id;
+  // }
 
   deletePost(id: string) {
     this.postservice.deletePost(id).subscribe({
@@ -321,12 +353,27 @@ export class PostListComponent {
     );
   }
 
+  openModalNeedLogin() {
+    openModalNotification(
+      this.store,
+      'Chưa đăng nhập',
+      'Bạn cần đăng nhập để tiếp tục',
+      'Đồng ý',
+      'Hủy',
+      () => this.router.navigate(['/auth/identity/login'])
+    );
+  }
+
   handleAdd = () => {
     this.router.navigate(['/post-features/post-create']);
   };
 
   goToDetail = ($event: string) => {
-    this.router.navigate(['/post-features/post-details', $event]);
+    if (!this.authenticated) {
+      this.openModalNeedLogin();
+    } else {
+      this.router.navigate(['/post-features/post-details', $event]);
+    }
   };
   // ...existing code...
 }

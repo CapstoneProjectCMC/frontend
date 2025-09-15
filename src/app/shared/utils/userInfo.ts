@@ -12,17 +12,6 @@ export function getUserInfoFromLocalStorage(): DecodedJwtPayload | null {
   }
 }
 
-export function checkAuthenticated(): boolean {
-  const decoded = decodeJWT(localStorage.getItem('token') ?? '');
-
-  if (decoded?.expiresAt) {
-    const expiresAt = new Date(decoded.expiresAt); // nếu expiresAt là string
-    return expiresAt > new Date();
-  } else {
-    return false;
-  }
-}
-
 export function getUserRoles(): string[] {
   const token = localStorage.getItem('token');
   let roles: string[] = [];

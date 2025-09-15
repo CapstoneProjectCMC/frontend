@@ -8,6 +8,7 @@ import { filter } from 'rxjs/internal/operators/filter';
 import { sidebarExercises } from '../../../core/router-manager/vetical-menu-dynamic/exercise-vetical-menu';
 import { decodeJWT } from '../../../shared/utils/stringProcess';
 import { SidebarItem } from '../../../core/models/data-handle';
+import { checkAuthenticated } from '../../../shared/utils/authenRoleActions';
 
 @Component({
   selector: 'app-exercise-layout',
@@ -20,6 +21,7 @@ export class ExerciseLayoutComponent implements OnInit, OnDestroy {
   sidebarData: SidebarItem[] = [];
 
   showSidebar = true;
+  isAuthenticated = false;
 
   // Danh sách các route cần ẩn sidebar
   private routesToHideSidebar: string[] = [
@@ -32,6 +34,7 @@ export class ExerciseLayoutComponent implements OnInit, OnDestroy {
   constructor(private router: Router) {
     const roles = decodeJWT(localStorage.getItem('token') ?? '')?.payload.roles;
     this.sidebarData = sidebarExercises(roles);
+    this.isAuthenticated = checkAuthenticated();
   }
 
   ngOnInit() {

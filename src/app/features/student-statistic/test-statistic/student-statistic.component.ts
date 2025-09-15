@@ -3,11 +3,17 @@ import { PieChartComponent } from '../../../shared/components/my-shared/pie-char
 import { BreadcrumbComponent } from '../../../shared/components/my-shared/breadcum/breadcrumb/breadcrumb.component';
 import { PostCardComponent } from '../../../shared/components/my-shared/post-card/post-card';
 import { PostCardInfo } from '../../../core/models/post.models';
+import { LineChartComponent } from '../../../shared/components/my-shared/line-chart/line-chart';
 
 @Component({
   selector: 'app-student-statistic',
   standalone: true,
-  imports: [PieChartComponent, BreadcrumbComponent, PostCardComponent],
+  imports: [
+    PieChartComponent,
+    BreadcrumbComponent,
+    PostCardComponent,
+    LineChartComponent,
+  ],
   templateUrl: './student-statistic.component.html',
   styleUrls: ['./student-statistic.component.scss'],
 })

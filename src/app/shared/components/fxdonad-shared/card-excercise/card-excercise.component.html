@@ -17,47 +17,44 @@
             [alt]="data.uploader.name"
             class="avatar"
             (error)="handleImageError($event)"
-            />
-            <span class="username">{{ data.uploader.name }}</span>
-          </div>
-          <div class="timestamp" [title]="data.uploadTime | date : 'full'">
-            {{ getTimeAgo(data.uploadTime) }}
-          </div>
+          />
+          <span class="username">{{ data.uploader.name }}</span>
+        </div>
+        <div class="timestamp" [title]="data.uploadTime | date : 'full'">
+          {{ getTimeAgo(data.uploadTime) }}
         </div>
       </div>
+    </div>
 
-      <div class="description">
-        <p [class.clamp-2-lines]="!isExpanded" [class.expanded]="isExpanded">
-          {{ data.description }}
-        </p>
-        @if (data.description.length > 300) {
-          <button
-            (click)="toggleDescription($event)"
-            class="read-more"
-            >
-            {{ isExpanded ? "Read Less" : "Read More" }}
-          </button>
-        }
-      </div>
+    <div class="description">
+      <p [class.clamp-2-lines]="!isExpanded" [class.expanded]="isExpanded">
+        {{ data.description }}
+      </p>
+      @if (data.description.length > 300) {
+      <button (click)="toggleDescription($event)" class="read-more">
+        {{ isExpanded ? "Read Less" : "Read More" }}
+      </button>
+      }
+    </div>
 
-      <div
-        class="difficulty"
-        [attr.aria-label]="'Difficulty: ' + data.difficulty"
-        >
-        <div class="part-difficulty">
-          <div class="difficulty-badge" [ngClass]="data.difficulty">
-            {{
+    <div
+      class="difficulty"
+      [attr.aria-label]="'Difficulty: ' + data.difficulty"
+    >
+      <div class="part-difficulty">
+        <div class="difficulty-badge" [ngClass]="data.difficulty">
+          {{
             data.difficulty === "EASY"
-            ? "Dễ"
-            : data.difficulty === "MEDIUM"
-            ? "Trung bình"
-            : data.difficulty === "HARD"
-            ? "Khó"
-            : (data.difficulty | titlecase)
-            }}
-          </div>
-          <div class="difficulty-stars">
-            <!-- <span
+              ? "Dễ"
+              : data.difficulty === "MEDIUM"
+              ? "Trung bình"
+              : data.difficulty === "HARD"
+              ? "Khó"
+              : (data.difficulty | titlecase)
+          }}
+        </div>
+        <div class="difficulty-stars">
+          <!-- <span
             class="star"
             *ngFor="let star of difficultyStars"
             [class.filled]="star <= difficultyLevel"
@@ -80,43 +77,27 @@
 
     <div class="tags-container">
       @if (showScrollButtons) {
-        <button
-          class="scroll-btn left"
-          (click)="scrollLeft($event)"
-          >
-          ‹
-        </button>
+      <button class="scroll-btn left" (click)="scrollLeft($event)">‹</button>
       }
 
       <div class="tags-scroll" #tagsScroll>
         @for (tag of data.tags; track tag) {
-          <span
-            class="tag"
-            [attr.aria-label]="'Tag: ' + tag"
-            >
-            #{{ tag }}
-          </span>
+        <span class="tag" [attr.aria-label]="'Tag: ' + tag"> #{{ tag }} </span>
         }
       </div>
 
       @if (showScrollButtons) {
-        <button
-          class="scroll-btn right"
-          (click)="scrollRight($event)"
-          >
-          ›
-        </button>
-      }
-
+      <button class="scroll-btn right" (click)="scrollRight($event)">›</button>
+      } @if(authenticated){
       <button
         class="save-btn"
         [class.saved]="isSaved"
         (click)="toggleSave($event)"
         aria-label="Save item"
         title="Lưu bài tập này"
-        >
-        <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span>
-      </button>
+      >
+        <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span></button
+      >}
     </div>
 
     <!-- <div class="actions">
@@ -142,10 +123,10 @@
       <span class="save-icon">{{ isSaved ? "★" : "☆" }}</span>
     </button>
   </div> -->
-</div>
+  </div>
 
-<!-- Phần này không sử dụng nữa, đã tạm ẩn -->
-<!-- <div
+  <!-- Phần này không sử dụng nữa, đã tạm ẩn -->
+  <!-- <div
 class="admin-actions"
 [class.accepted]="data.approval === 'accepted'"
 [class.pending]="data.approval === 'pending'"

@@ -78,7 +78,9 @@
       transition: all 0.3s ease;
 
       &:hover {
-        background-color: rgba(223, 8, 8, 0.1);
+        background-color: oklch(
+          from var(--button-color-hover) calc(l * 3.2) c h
+        );
         transform: translateX(3px);
       }
 

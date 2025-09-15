@@ -24,7 +24,7 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       padding: 20px 18px 18px 18px;
       max-width: 400px;
-      min-width: 260px;
+      min-width: 300px;
       .header {
         display: flex;
         // flex-direction: column;
@@ -340,6 +340,10 @@
                   color: var(--danger-color, #d32f2f);
                 }
               }
+            }
+
+            .question-number-index {
+              font-weight: 700;
             }
           }
           .confirm-modal-overlay {

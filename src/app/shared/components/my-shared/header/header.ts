@@ -15,6 +15,7 @@ import { SetPasswordModalComponent } from '../../../../features/auth/components/
 import { NotificationModalComponent } from './notification-modal/notification-modal.component';
 import { NotificationSocketService } from '../../../../core/services/socket-service/notification-socket.service';
 import { NotificationListService } from '../../../../core/services/api-service/notification-list.service';
+import { sendNotification } from '../../../utils/notification';
 
 @Component({
   selector: 'app-header',
@@ -82,18 +83,14 @@ export class HeaderComponent {
       localStorage.getItem('needPasswordSetup') || 'false'
     );
 
-    // 👇 Đăng ký lắng nghe notification từ socket
-    this.notificationService
-      .listenNoticeCount()
-      .subscribe((event: { unread: number }) => {
-        console.log('Header nhận count notification:', event.unread);
+    //Đăng ký lắng nghe notification từ socket
+    this.notificationService.listenNoticeCount().subscribe((event) => {
+      this.notificationCount = event.unread;
+    });
 
-        // Tăng counter
-        this.notificationCount = event.unread;
-
-        // Nếu muốn push vào modal hoặc show toast
-        // this.notifications.unshift(event);
-      });
+    this.notificationService.listenNotifications().subscribe((notice) => {
+      sendNotification(this.store, 'Thông báo mới', notice.body, 'info');
+    });
 
     this.getCountNotice();
   }

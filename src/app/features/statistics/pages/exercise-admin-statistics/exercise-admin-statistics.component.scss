@@ -1,0 +1,205 @@
+// Sử dụng các biến CSS đã được định nghĩa trong theme của bạn
+:host {
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+.stats-container {
+  padding: 24px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.stats-header {
+  margin-bottom: 24px;
+  h1 {
+    color: var(--title-text);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    margin-top: 0;
+  }
+  p {
+    color: var(--text-muted-color);
+    font-size: 1rem;
+  }
+}
+
+// ---- Trạng thái Tải và Lỗi ----
+.loading-overlay,
+.error-message,
+.no-data-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  border-radius: 8px;
+  background-color: var(--background-color-secondary);
+  border: 1px solid var(--border-color);
+  p {
+    font-size: 1.1rem;
+    margin-top: 16px;
+  }
+}
+
+.error-message {
+  color: var(--error-color);
+}
+
+.btn-retry {
+  margin-top: 16px;
+  padding: 10px 20px;
+  border: 1px solid var(--button-color);
+  background-color: transparent;
+  color: var(--button-color);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    background-color: var(--button-color-hover);
+    color: var(--reverse-color-text);
+  }
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid var(--primary-color-lighter);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ---- Bảng dữ liệu ----
+.stats-content {
+  height: calc(100vh - 265px);
+  overflow: auto;
+}
+
+.table-wrapper {
+  overflow-x: auto; // Đảm bảo bảng có thể cuộn ngang trên màn hình nhỏ
+  height: calc(100vh - 330px);
+  overflow: auto;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--surface-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+  th,
+  td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+  }
+
+  thead {
+    background-color: var(--background-color-secondary);
+    th {
+      font-weight: 600;
+      color: var(--accent-color);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  tbody tr {
+    transition: background-color 0.2s ease;
+    &:hover {
+      background-color: var(--background-color-secondary);
+    }
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  .cell-title {
+    font-weight: 500;
+    color: var(--primary-color);
+    max-width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// ---- Các element phụ ----
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background-color: var(--tags-color);
+  color: var(--title-text);
+}
+
+.progress-bar-container {
+  width: 100px;
+  height: 8px;
+  background-color: var(--primary-color-lightest);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background-color: var(--progress-color);
+  border-radius: 4px;
+  transition: width 0.5s ease-in-out;
+  &.success {
+    background-color: var(--success-color);
+  }
+}
+
+// ---- Phân trang ----
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+
+  button {
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    padding: 8px 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: var(--hover-color);
+      border-color: var(--hover-color);
+      color: var(--reverse-color-text);
+    }
+
+    &.active {
+      background-color: var(--primary-color);
+      color: var(--reverse-color-text);
+      border-color: var(--primary-color);
+      font-weight: bold;
+    }
+
+    &:disabled {
+      background-color: var(--disabled-color);
+      color: var(--text-muted-color);
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}

@@ -80,6 +80,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                   cancelText: 'Hủy',
                   onConfirm: () => {
                     router.navigate(['/auth/identity/login']);
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('refreshToken');
                   },
                 },
               })

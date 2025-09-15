@@ -123,7 +123,8 @@ export class ExerciseService {
         tags,
         difficulty,
         search
-      )
+      ),
+      true
     );
   }
 

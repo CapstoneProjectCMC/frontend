@@ -23,6 +23,7 @@ export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
       path: '/resource-learning/list-resource',
       label: 'Kho tài liệu',
       icon: 'fas fa-book',
+      isVisible: !(roles.length !== 0),
     },
     {
       id: 'message',
@@ -33,7 +34,7 @@ export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
     },
     {
       id: 'statistics',
-      path: '/statistics',
+      path: '/codecampus-statistics/admin-exercise-statistics',
       label: 'Thống kê',
       icon: 'fas fa-chart-bar',
       isVisible: !roles.includes(auth_lv2[0]),
@@ -50,6 +51,7 @@ export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
       path: '/service-and-payment/payment',
       label: 'Thanh toán',
       icon: 'fas fa-credit-card',
+      isVisible: !(roles.length !== 0),
     },
     {
       id: 'organization ',
@@ -59,6 +61,7 @@ export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
       label: 'Tổ chức',
       icon: 'fa-solid fa-building-user',
       // isVisible: !roles.includes(auth_lv2[0]),
+      isVisible: !(roles.length !== 0),
     },
   ];
 }

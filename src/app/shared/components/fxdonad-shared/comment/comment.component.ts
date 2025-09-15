@@ -20,10 +20,10 @@ import {
 } from '../../../../core/models/comment.models';
 import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 import { decodeJWT } from '../../../utils/stringProcess';
-import { checkAuthenticated } from '../../../utils/userInfo';
 import { CommentService } from '../../../../core/services/api-service/comment.service';
 import { mapCommentsToFilmResponses } from '../../../utils/mapData';
 import { Observable } from 'rxjs';
+import { checkAuthenticated } from '../../../utils/authenRoleActions';
 
 @Component({
   selector: 'app-comment',

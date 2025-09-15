@@ -30,6 +30,7 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
+import { th } from 'date-fns/locale';
 
 export interface Draft {
   id: string; // ID duy nhất cho mỗi bản nháp
@@ -45,7 +46,7 @@ export interface Draft {
   imports: [
     InputComponent,
     TextEditor,
-    DropdownButtonComponent,
+    // DropdownButtonComponent,
     ButtonComponent,
     FormsModule,
     CommonModule,
@@ -64,7 +65,7 @@ export class PostCreatePageComponent {
     allowComment: true,
     postType: 'Global',
     fileUrls: '', // CHUẨN THEO BE (lưu ý đánh vần!)
-    hashtag: '', // nếu muốn gửi dạng mảng
+    hashtag: [], // nếu muốn gửi dạng mảng
     fileDocument: null,
   };
 
@@ -113,6 +114,23 @@ export class PostCreatePageComponent {
 
   ngOnInit(): void {
     this.loadAllDrafts();
+  }
+  tagInput: string = ''; // người dùng nhập tag thô
+  tags: string[] = []; // danh sách tag đã cắt ra
+  handleTagInputChange(value: string | number): void {
+    this.tagInput = value.toString();
+    this.tags = this.tagInput
+      .split(',')
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0); // loại bỏ tag rỗng
+    if (this.tags.length > 0) {
+      if (!this.post.fileDocument) {
+        this.post.fileDocument = {};
+      }
+      this.post.hashtag = this.tags;
+      this.post.fileDocument.tags = this.tags;
+    }
+    console.log('Danh sách tag:', this.tags);
   }
 
   onFilesSelected(event: Event) {
@@ -164,15 +182,6 @@ export class PostCreatePageComponent {
       this.post.orgId = selected?.value || '';
       if (!this.post.fileDocument) this.post.fileDocument = {};
       this.post.fileDocument.orgId = selected?.value || '';
-    }
-
-    if (dropdownKey === 'tag') {
-      if (!this.post.fileDocument) this.post.fileDocument = {};
-      if (Array.isArray(selected)) {
-        this.post.fileDocument.tags = selected.map((s) => s.label);
-      } else {
-        this.post.fileDocument.tags = selected?.label ? [selected.label] : [];
-      }
     }
 
     if (dropdownKey === 'hashtag') {
@@ -262,12 +271,12 @@ export class PostCreatePageComponent {
 
   // Hàm helper để cập nhật UI của dropdowns
   updateSelectedOptionsFromDraft(): void {
-    if (this.post.hashtag) {
-      const selectedTopic = this.topics.find(
-        (t) => t.value === this.post.hashtag
-      );
-      if (selectedTopic) this.selectedOptions['hashtag'] = selectedTopic;
-    }
+    // if (this.post.hashtag) {
+    //   const selectedTopic = this.topics.find(
+    //     (t) => t.value === this.post.hashtag
+    //   );
+    //   if (selectedTopic) this.selectedOptions['hashtag'] = selectedTopic;
+    // }
     if (this.post.orgId) {
       const selectedWhere = this.wherepost.find(
         (w) => w.value === this.post.orgId
@@ -378,7 +387,7 @@ export class PostCreatePageComponent {
       allowComment: true,
       postType: 'Global',
       fileUrls: '',
-      hashtag: '',
+      hashtag: [],
       fileDocument: null,
     };
     this.editorContent = '';

@@ -12,7 +12,7 @@
           [isSvg]="false"
           [icon]="'fa fa-search'"
         ></app-input>
-        <app-dropdown-button
+        <!-- <app-dropdown-button
           [label]="'Vai trò'"
           [options]="tag"
           [variant]="'secondary'"
@@ -47,7 +47,8 @@
           [isSearchable]="true"
           [minHeight]="true"
           [needIndexColor]="true"
-        ></app-dropdown-button>
+        ></app-dropdown-button> -->
+        @if (authenticated) {
         <div class="post-list-button">
           <app-btn-type1
             thumb="+"
@@ -56,52 +57,48 @@
             (click)="handleAdd()"
           ></app-btn-type1>
         </div>
+        }
       </div>
     </div>
 
     <div class="list-post-card-container">
       <!-- Hiển thị bài viết khi có dữ liệu và không đang tải -->
       <!-- Đang để tạm hàm fetchPostList(), khi nào có loadnextpage sẽ thay thế -->
-      @if (posts && posts.length > 0) {
-        <div
-          class="list-post-card"
-          appScrollEnd
-          (appScrollEnd)="loadNextPage()"
-          >
-          @for (post of posts; track trackByPostId($index, post)) {
-            <div>
-              <app-post-card
-                [post]="post"
-                (delete)="openModalDelete(post.id)"
-                (upvote)="handleUpVote(post.id)"
-                (downvote)="handleDownVote(post.id)"
-                (mainClick)="goToDetail($event)"
-                (save)="handleToggleSave(post.id)"
-              ></app-post-card>
-            </div>
-          }
+      @if (posts && posts.length > 0 && !(isLoadingInitial || isLoadingMore ||
+      isLoading)) {
+      <div class="list-post-card" appScrollEnd (appScrollEnd)="loadNextPage()">
+        @for (post of posts; track trackByPostId($index, post)) {
+        <div>
+          <app-post-card
+            [post]="post"
+            (delete)="openModalDelete(post.id)"
+            (upvote)="handleUpVote(post.id)"
+            (downvote)="handleDownVote(post.id)"
+            (mainClick)="goToDetail($event)"
+            (save)="handleToggleSave(post.id)"
+          ></app-post-card>
         </div>
+        }
+      </div>
       }
 
       <!-- Hiển thị skeleton loading khi đang tải -->
-      @if (isLoadingInitial || isLoadingMore) {
-        <div class="list-post-card">
-          <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
-        </div>
+      @if (isLoadingInitial || isLoadingMore || isLoading) {
+      <div class="list-post-card">
+        <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
+      </div>
       }
 
       <!-- Hiển thị thông báo "Không có dữ liệu" với hình ảnh động khi không có bài viết -->
       @if (!isLoading && (!posts || posts.length === 0)) {
-        <div
-          class="no-data-container"
-          >
-          <ng-lottie
-            [options]="lottieOptions"
-            style="width: 200px; height: 200px"
-            >
-          </ng-lottie>
-          <p>Không có dữ liệu</p>
-        </div>
+      <div class="no-data-container">
+        <ng-lottie
+          [options]="lottieOptions"
+          style="width: 200px; height: 200px"
+        >
+        </ng-lottie>
+        <p>Không có dữ liệu</p>
+      </div>
       }
     </div>
   </div>
@@ -112,7 +109,7 @@
         [items]="trendingData"
         title="Popular Technologies"
         [maxItems]="15"
-        >
+      >
       </app-trending>
     </div>
     <div class="popular-post">

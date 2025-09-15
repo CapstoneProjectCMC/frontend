@@ -1,3 +1,4 @@
+import { decodeJWT } from './stringProcess';
 import { getUserEmail, getUserName, getUserRoles } from './userInfo';
 
 export function activeForAdminAndTeacher(): boolean {
@@ -19,6 +20,17 @@ export function activeForMyContent(
 
   if ((username === usernameEqual && email === emailEqual) || exception) {
     return true;
+  } else {
+    return false;
+  }
+}
+
+export function checkAuthenticated(): boolean {
+  const decoded = decodeJWT(localStorage.getItem('token') ?? '');
+
+  if (decoded?.expiresAt) {
+    const expiresAt = new Date(decoded.expiresAt); // nếu expiresAt là string
+    return expiresAt > new Date();
   } else {
     return false;
   }

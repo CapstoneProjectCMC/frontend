@@ -165,22 +165,18 @@ Dự án Angular này áp dụng nhiều **design pattern chuẩn** để đảm
 - **Guards** (`AuthGuard`, `RoleGuard`) áp dụng strategy để quyết định quyền truy cập.
 - **Environments** (`dev`, `staging`, `prod`) chọn cấu hình phù hợp theo môi trường.
 
-### 6. Facade Pattern
-- **Router Manager** gom logic routing vào 1 chỗ.
-- **NgRx Facade** (nếu sử dụng) để tách component khỏi chi tiết state management.
-
-### 7. Template Pattern
+### 6. Template Pattern
 - Các **layout** (`header`, `sidebar`, `footer`) định nghĩa khung sẵn, feature module nhúng nội dung vào khu vực content.
 
-### 8. Smart & Dumb Components (Container/Presenter)
+### 7. Smart & Dumb Components (Container/Presenter)
 - Component **Smart** xử lý logic, data fetching, và state.
 - Component **Dumb** nhận `@Input()` và emit `@Output()`, chỉ chịu trách nhiệm hiển thị.
 
-### 9. Decorator Pattern
+### 8. Decorator Pattern
 - Angular decorators: `@Component`, `@Directive`, `@Pipe`, `@Injectable`.
 - Cho phép mở rộng chức năng mà không sửa code gốc.
 
-### 10. DTO Pattern
+### 9. DTO Pattern
 - Các **model** trong `core/models` quản lý dữ liệu giữa API và component, đảm bảo type safety.
 
 ---
