@@ -18,8 +18,11 @@ FROM nginx:1.27-alpine
 # file Nginx phục vụ SPA & fallback
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
+# Xóa sạch html mặc định để chắc chắn không còn "Welcome to nginx!"
+RUN rm -rf /usr/share/nginx/html/*
+
 # copy artefact Angular
-COPY --from=build /app/dist/app/browser/ /usr/share/nginx/html/
+COPY --from=build /app/dist/app/ /usr/share/nginx/html/
 
 EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -qO- http://localhost/ || exit 1
