@@ -11,7 +11,7 @@ export const version = '/v1';
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: 'http://localhost:8888/api' + version,
+    MAIN_API: 'http://gateway-service:8888/api' + version,
     SECONDARY_API: '',
   },
   ENDPOINTS: {
