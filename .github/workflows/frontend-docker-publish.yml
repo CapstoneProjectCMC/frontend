@@ -71,3 +71,9 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Smoke test image content
+        run: |
+          IMG="${{ env.DOCKER_REPO }}:${IMAGE_TAG}"
+          docker pull "$IMG"
+          docker run --rm "$IMG" sh -lc 'test -f /usr/share/nginx/html/index.html && ls -lah /usr/share/nginx/html | head -n 50'
