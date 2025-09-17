@@ -31,13 +31,13 @@ jobs:
           fetch-depth: 0  # Sonar cần full history để tính blame
 
       - name: Set up JDK (for Sonar scanner)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "21"
 
       - name: Set up Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: "npm"

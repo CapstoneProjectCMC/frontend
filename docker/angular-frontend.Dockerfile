@@ -16,7 +16,7 @@ RUN npm run build -- --configuration=production
 RUN test -f dist/codecampus/browser/index.html
 
 # ====== Runtime stage ======
-FROM nginx:1.27-alpine
+FROM nginx:1.29-alpine
 
 # file Nginx phục vụ SPA & fallback
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
