@@ -43,7 +43,7 @@
     "date-fns": "^4.1.0",
     "github-markdown-css": "^5.8.1",
     "highlight.js": "^11.11.1",
-    "hls.js": "^1.6.10",
+    "hls.js": "^1.6.12",
     "marked": "^16.2.1",
     "ng-apexcharts": "^1.11.0",
     "ngx-cookie-service": "^20.1.0",
