@@ -36,17 +36,22 @@ jobs:
 
       - name: Derive tags (Docker Hub + GHCR)
         id: meta
+        shell: bash
         run: |
-          OWNER_LC="${GHCR_OWNER,,}"
-          echo "OWNER_LC=$OWNER_LC" >> $GITHUB_ENV
+          set -euo pipefail
+
+          # Hạ lowercase owner (an toàn POSIX)
+          OWNER_LC="$(printf '%s' "${GHCR_OWNER}" | tr '[:upper:]' '[:lower:]')"
+          echo "OWNER_LC=${OWNER_LC}" >> "$GITHUB_ENV"
+
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             VERSION="${GITHUB_REF_NAME#v}"
-            echo "IMAGE_TAG=${VERSION}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${VERSION}" >> "$GITHUB_ENV"
             HUB="${DOCKER_REPO}:${VERSION}"
             GHCR="ghcr.io/${OWNER_LC}/codecampus-frontend:${VERSION}"
           else
             SHA_TAG="${GITHUB_SHA::12}"
-            echo "IMAGE_TAG=${SHA_TAG}" >> $GITHUB_ENV
+            echo "IMAGE_TAG=${SHA_TAG}" >> "$GITHUB_ENV"
             HUB="${DOCKER_REPO}:${SHA_TAG}"
             GHCR="ghcr.io/${OWNER_LC}/codecampus-frontend:${SHA_TAG}"
             if [ "${GITHUB_REF_NAME}" = "main" ]; then
@@ -54,7 +59,14 @@ jobs:
               GHCR="${GHCR}"$'\n'"ghcr.io/${OWNER_LC}/codecampus-frontend:latest"
             fi
           fi
-          echo "all_tags=${HUB}"$'\n'"${GHCR}" >> $GITHUB_OUTPUT
+
+          # Xuất output "tags" dạng đa dòng
+          {
+            echo "tags<<__TAGS__"
+            printf '%s\n' "$HUB"
+            printf '%s\n' "$GHCR"
+            echo "__TAGS__"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -76,6 +88,6 @@ jobs:
           file: ${{ env.DOCKERFILE_PATH }}
           platforms: ${{ env.PLATFORMS }}
           push: true
-          tags: ${{ steps.meta.outputs.all_tags }}
+          tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
