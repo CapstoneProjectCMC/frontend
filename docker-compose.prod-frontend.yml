@@ -5,7 +5,7 @@ services:
     container_name: codecampus-frontend
     image: ${DOCKERHUB_USER}/codecampus-frontend:${IMAGE_TAG:-latest}
     restart: unless-stopped
-    ports: ["4200:4200"]
+    ports: ["4200:80"]
     volumes:
       # Dùng config local
       - ./config-local.json:/usr/share/nginx/html/config.json
