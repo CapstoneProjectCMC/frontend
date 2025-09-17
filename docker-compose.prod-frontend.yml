@@ -5,8 +5,13 @@ services:
     container_name: codecampus-frontend
     image: ${DOCKERHUB_USER}/codecampus-frontend:${IMAGE_TAG:-latest}
     restart: unless-stopped
-    ports: [ "4200:4200" ]
-    networks: [ backend ]
+    ports: ["4200:4200"]
+    volumes:
+      # Dùng config local
+      - ./config-local.json:/usr/share/nginx/html/config.json
+      # Hoặc server
+      # - ./config-server.json:/usr/share/nginx/html/config.json
+    networks: [backend]
 
 networks:
   backend:
