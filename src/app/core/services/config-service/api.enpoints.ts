@@ -1,4 +1,5 @@
 // import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { EnumType } from '../../models/data-handle';
 import { ReadStatusNotice } from '../../models/notice.model';
 import {
@@ -11,7 +12,7 @@ export const version = '/v1';
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: 'http://localhost:8888/api' + version,
+    MAIN_API: environment.IP_SERVER + version,
     SECONDARY_API: '',
   },
   ENDPOINTS: {
