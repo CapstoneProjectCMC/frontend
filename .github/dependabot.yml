@@ -1,4 +1,22 @@
 version: 2
+registries:
+  ghcr:
+    type: docker-registry
+    url: ghcr.io
+    username: ${{secrets.GHCR_USERNAME}}
+    password: ${{secrets.GHCR_TOKEN}}
+
+  dockerhub:
+    type: docker-registry
+    url: registry-1.docker.io
+    username: ${{secrets.DOCKERHUB_USER}}
+    password: ${{secrets.DOCKERHUB_TOKEN}}
+
+  github-maven:
+    type: maven-repository
+    url: https://maven.pkg.github.com/${{github.repository_owner}}/*
+    username: ${{secrets.GHCR_USERNAME}}
+    password: ${{secrets.GHCR_TOKEN}}
 updates:
   # (Angular app)
   - package-ecosystem: "npm"
@@ -10,39 +28,22 @@ updates:
     target-branch: "main"
     open-pull-requests-limit: 10
     labels: ["dependencies", "npm", "frontend"]
-    # CHỈ chặn nâng major Angular (v21+), vẫn cho phép 20.x
     ignore:
       - dependency-name: "@angular/*"
         update-types: ["version-update:semver-major"]
     groups:
       angular-core:
-        patterns:
-          - "@angular/*"
-          - "zone.js"
+        patterns: ["@angular/*", "zone.js"]
         update-types: ["minor", "patch"]
       tooling-and-tests:
-        patterns:
-          - "typescript"
-          - "karma*"
-          - "jasmine*"
-          - "@types/*"
-          - "cypress"
+        patterns: ["typescript", "karma*", "jasmine*", "@types/*", "cypress"]
         update-types: ["minor", "patch"]
       ui-and-md:
-        patterns:
-          - "highlight.js"
-          - "marked"
-          - "github-markdown-css"
-          - "apexcharts"
-          - "ng-apexcharts"
-          - "ngx-*"
+        patterns: ["highlight.js", "marked", "github-markdown-css", "apexcharts", "ng-apexcharts", "ngx-*"]
         update-types: ["minor", "patch"]
       codemirror-suite:
-        patterns:
-          - "codemirror"
-          - "@codemirror/*"
+        patterns: ["codemirror", "@codemirror/*"]
         update-types: ["minor", "patch"]
-
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -59,6 +60,7 @@ updates:
   # Docker images (Nginx, Node…)
   - package-ecosystem: "docker"
     directory: "/docker"
+    registries: ["ghcr", "dockerhub"]
     schedule:
       interval: "weekly"
       day: "tuesday"
@@ -69,16 +71,5 @@ updates:
     open-pull-requests-limit: 10
     groups:
       nginx-node-base:
-        patterns:
-          - "nginx"
-          - "node"
-        update-types: ["minor", "patch"]
-      dotnet-base:
-        patterns:
-          - "mcr.microsoft.com/dotnet/*"
-        update-types: ["minor", "patch"]
-      jre-maven:
-        patterns:
-          - "eclipse-temurin:*"
-          - "maven:*"
+        patterns: ["nginx", "node"]
         update-types: ["minor", "patch"]
