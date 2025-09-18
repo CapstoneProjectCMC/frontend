@@ -6,11 +6,6 @@ services:
     image: ${DOCKERHUB_USER}/codecampus-frontend:${IMAGE_TAG:-latest}
     restart: unless-stopped
     ports: ["4200:80"]
-    volumes:
-      # Dùng config local
-      - ./config-local.json:/usr/share/nginx/html/config.json
-      # Hoặc server
-      # - ./config-server.json:/usr/share/nginx/html/config.json
     networks: [backend]
 
 networks:
