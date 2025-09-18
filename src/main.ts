@@ -3,7 +3,7 @@ import { appConfig } from './app/app.config';
 import { App } from './app/app';
 
 // Load runtime config trước khi bootstrap
-fetch('/config.json')
+fetch('/assets/config.json')
   .then((response) => response.json())
   .then((config) => {
     (window as any).env = config;
