@@ -12,6 +12,7 @@ on:
       - "sonar-project.properties"
   pull_request:
 
+###
 permissions:
   contents: read
   pull-requests: write
@@ -31,7 +32,7 @@ jobs:
           fetch-depth: 0  # Sonar cần full history để tính blame
 
       - name: Set up JDK (for Sonar scanner)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "21"
