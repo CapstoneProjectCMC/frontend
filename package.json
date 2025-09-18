@@ -37,7 +37,7 @@
     "@ngrx/schematics": "20.0.1",
     "@ngrx/store": "20.0.1",
     "@ngrx/store-devtools": "20.0.1",
-    "@schematics/angular": "19.2.14",
+    "@schematics/angular": "20.3.2",
     "apexcharts": "^4.7.0",
     "codemirror": "^6.0.1",
     "date-fns": "^4.1.0",
