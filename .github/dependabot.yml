@@ -1,22 +1,31 @@
 version: 2
 updates:
-  # NPM (Angular app)
+  # (Angular app)
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
       time: "02:00"
       timezone: "Asia/Bangkok"
-    open-pull-requests-limit: 10
     target-branch: "main"
-    labels: ["dependencies", "npm"]
-    allow:
-      - dependency-type: "direct"
-      - dependency-type: "all"
+    open-pull-requests-limit: 10
+    labels: ["dependencies", "npm", "frontend"]
     ignore:
-      # ví dụ giữ cố định major của Angular 19
       - dependency-name: "@angular/*"
-        versions: [">=20"]
+        update-types: ["version-update:semver-major"]
+    groups:
+      angular-core:
+        patterns: ["@angular/*", "zone.js"]
+        update-types: ["minor", "patch"]
+      tooling-and-tests:
+        patterns: ["typescript","karma*","jasmine*","@types/*","cypress"]
+        update-types: ["minor", "patch"]
+      ui-and-md:
+        patterns: ["highlight.js","marked","github-markdown-css","apexcharts","ng-apexcharts","ngx-*"]
+        update-types: ["minor", "patch"]
+      codemirror-suite:
+        patterns: ["codemirror","@codemirror/*"]
+        update-types: ["minor", "patch"]
 
   # GitHub Actions
   - package-ecosystem: "github-actions"
@@ -24,11 +33,13 @@ updates:
     schedule:
       interval: "weekly"
       day: "monday"
-      time: "03:00"
-      timezone: "Asia/Bangkok"
+    time: "03:00"
+    timezone: "Asia/Bangkok"
+    target-branch: "main"
     labels: ["dependencies", "github-actions"]
+    open-pull-requests-limit: 10
 
-  # Docker base images (Nginx, Node…)
+  # Docker images (Nginx, Node…)
   - package-ecosystem: "docker"
     directory: "/docker"
     schedule:
@@ -36,4 +47,31 @@ updates:
       day: "tuesday"
       time: "04:00"
       timezone: "Asia/Bangkok"
+    target-branch: "main"
     labels: ["dependencies", "docker"]
+    open-pull-requests-limit: 10
+    registries:
+      - dockerhub
+      - ghcr
+    groups:
+      nginx-node-base:
+        patterns: ["nginx","node"]
+        update-types: ["minor", "patch"]
+      dotnet-base:
+        patterns: ["mcr.microsoft.com/dotnet/*"]
+        update-types: ["minor", "patch"]
+      jre-maven:
+        patterns: ["eclipse-temurin:*","maven:*"]
+        update-types: ["minor", "patch"]
+
+registries:
+  dockerhub:
+    type: docker-registry
+    url: https://index.docker.io/v1/
+    username: ${{secrets.DOCKERHUB_USER}}
+    password: ${{secrets.DOCKERHUB_TOKEN}}
+  ghcr:
+    type: docker-registry
+    url: https://ghcr.io
+    username: ${{secrets.GHCR_USERNAME}}
+    password: ${{secrets.GHCR_TOKEN}}

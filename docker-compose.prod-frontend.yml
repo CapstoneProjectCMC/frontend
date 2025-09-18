@@ -5,8 +5,8 @@ services:
     container_name: codecampus-frontend
     image: ${DOCKERHUB_USER}/codecampus-frontend:${IMAGE_TAG:-latest}
     restart: unless-stopped
-    ports: [ "4200:4200" ]
-    networks: [ backend ]
+    ports: ["4200:80"]
+    networks: [backend]
 
 networks:
   backend:
