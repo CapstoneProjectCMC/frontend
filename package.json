@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular-devkit/core": "20.2.1",
+    "@angular-devkit/core": "20.3.2",
     "@angular-devkit/schematics": "20.2.1",
     "@angular/animations": "20.2.3",
     "@angular/common": "20.2.3",
