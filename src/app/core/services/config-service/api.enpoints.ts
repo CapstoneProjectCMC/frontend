@@ -9,11 +9,10 @@ import {
 import { SearchingUser } from '../../models/user.models';
 
 export const version = '/v1';
-const runtimeConfig = (window as any).APP_CONFIG;
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: runtimeConfig.IP_SERVER + version,
+    MAIN_API: environment.IP_SERVER + version,
     SECONDARY_API: '',
   },
   ENDPOINTS: {
