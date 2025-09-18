@@ -106,12 +106,18 @@ jobs:
             fi
           }
 
-          # docker login (nếu có)
+          # docker login Docker Hub (nếu có)
           if [ -n "${DOCKERHUB_USER:-}" ] && [ -n "${DOCKERHUB_TOKEN:-}" ]; then
             echo "docker login Docker Hub..."
             echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
           else
             echo "Thiếu DOCKERHUB_USER/DOCKERHUB_TOKEN trong .env (image public thì vẫn OK)."
+          fi
+
+          # docker login GHCR (nếu có)
+          if [ -n "${GHCR_USERNAME:-}" ] && [ -n "${GHCR_TOKEN:-}" ]; then
+            echo "docker login GHCR..."
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
           fi
 
           echo "Pull image frontend tag ${IMAGE_TAG}…"
