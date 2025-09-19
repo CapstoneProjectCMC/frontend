@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://localhost:8888",
+    "target": "https://gateway-service:8888",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
