@@ -42,17 +42,7 @@ jobs:
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          set -euo pipefail
-          if [ "${EVENT_NAME}" = "workflow_dispatch" ]; then
-            IMAGE_TAG_VALUE="${GITHUB_SHA:0:12}"
-          else
-            if [[ "${HEAD_BRANCH:-}" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-              IMAGE_TAG_VALUE="${HEAD_BRANCH#v}"
-            else
-              IMAGE_TAG_VALUE="${HEAD_SHA:0:12}"
-            fi
-          fi
-          echo "IMAGE_TAG=${IMAGE_TAG_VALUE}" | tee -a "$GITHUB_ENV"
+          echo "IMAGE_TAG=latest" | tee -a "$GITHUB_ENV"
 
       - name: Decide remote target dir
         id: targetdir
@@ -186,4 +176,4 @@ jobs:
               exit 1
             fi
 
-            IMAGE_TAG="${IMAGE_TAG:-latest}" DEPLOY_DIR="$DEPLOY_DIR" bash ./deploy-frontend.sh
+            IMAGE_TAG="latest" DEPLOY_DIR="$DEPLOY_DIR" bash ./deploy-frontend.sh

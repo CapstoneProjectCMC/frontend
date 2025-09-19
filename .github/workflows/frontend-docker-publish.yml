@@ -48,17 +48,13 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             VERSION="${GITHUB_REF_NAME#v}"
             echo "IMAGE_TAG=${VERSION}" >> "$GITHUB_ENV"
-            HUB="${DOCKER_REPO}:${VERSION}"
-            GHCR="ghcr.io/${OWNER_LC}/codecampus-frontend:${VERSION}"
+            HUB="${DOCKER_REPO}:${VERSION}"$'\n'"${DOCKER_REPO}:latest"
+            GHCR="ghcr.io/${OWNER_LC}/codecampus-frontend:${VERSION}"$'\n'"ghcr.io/${OWNER_LC}/codecampus-frontend:latest"
           else
             SHA_TAG="${GITHUB_SHA::12}"
             echo "IMAGE_TAG=${SHA_TAG}" >> "$GITHUB_ENV"
-            HUB="${DOCKER_REPO}:${SHA_TAG}"
-            GHCR="ghcr.io/${OWNER_LC}/codecampus-frontend:${SHA_TAG}"
-            if [ "${GITHUB_REF_NAME}" = "main" ]; then
-              HUB="${HUB}"$'\n'"${DOCKER_REPO}:latest"
-              GHCR="${GHCR}"$'\n'"ghcr.io/${OWNER_LC}/codecampus-frontend:latest"
-            fi
+            HUB="${DOCKER_REPO}:${SHA_TAG}"$'\n'"${DOCKER_REPO}:latest"
+            GHCR="ghcr.io/${OWNER_LC}/codecampus-frontend:${SHA_TAG}"$'\n'"ghcr.io/${OWNER_LC}/codecampus-frontend:latest"
           fi
 
           # Xuất output "tags" dạng đa dòng
