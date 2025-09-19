@@ -135,7 +135,7 @@ jobs:
             mkdir -p '${{ steps.targetdir.outputs.DEPLOY_DIR_FINAL }}'
 
       - name: Upload bundle to server
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/scp-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
