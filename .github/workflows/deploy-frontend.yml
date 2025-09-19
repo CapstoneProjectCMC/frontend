@@ -42,17 +42,7 @@ jobs:
           HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
           EVENT_NAME: ${{ github.event_name }}
         run: |
-          set -euo pipefail
-          if [ "${EVENT_NAME}" = "workflow_dispatch" ]; then
-            IMAGE_TAG_VALUE="${GITHUB_SHA:0:12}"
-          else
-            if [[ "${HEAD_BRANCH:-}" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-              IMAGE_TAG_VALUE="${HEAD_BRANCH#v}"
-            else
-              IMAGE_TAG_VALUE="${HEAD_SHA:0:12}"
-            fi
-          fi
-          echo "IMAGE_TAG=${IMAGE_TAG_VALUE}" | tee -a "$GITHUB_ENV"
+          echo "IMAGE_TAG=latest" | tee -a "$GITHUB_ENV"
 
       - name: Decide remote target dir
         id: targetdir
@@ -106,12 +96,18 @@ jobs:
             fi
           }
 
-          # docker login (nếu có)
+          # docker login Docker Hub (nếu có)
           if [ -n "${DOCKERHUB_USER:-}" ] && [ -n "${DOCKERHUB_TOKEN:-}" ]; then
             echo "docker login Docker Hub..."
             echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
           else
             echo "Thiếu DOCKERHUB_USER/DOCKERHUB_TOKEN trong .env (image public thì vẫn OK)."
+          fi
+
+          # docker login GHCR (nếu có)
+          if [ -n "${GHCR_USERNAME:-}" ] && [ -n "${GHCR_TOKEN:-}" ]; then
+            echo "docker login GHCR..."
+            echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
           fi
 
           echo "Pull image frontend tag ${IMAGE_TAG}…"
@@ -180,4 +176,4 @@ jobs:
               exit 1
             fi
 
-            IMAGE_TAG="${IMAGE_TAG:-latest}" DEPLOY_DIR="$DEPLOY_DIR" bash ./deploy-frontend.sh
+            IMAGE_TAG="latest" DEPLOY_DIR="$DEPLOY_DIR" bash ./deploy-frontend.sh

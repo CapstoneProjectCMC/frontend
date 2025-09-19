@@ -55,11 +55,6 @@ export class HeaderComponent {
     this.needReloadAvatar$ = this.store.select(
       selectVariable('reloadAvatarHeader')
     );
-
-    this.timeExpiresAt =
-      decodeJWT(localStorage.getItem('token') ?? '')?.expiresAt || '';
-    const expiresAt = new Date(this.timeExpiresAt).getTime();
-    this.isLoggedIn = !isNaN(expiresAt) && Date.now() < expiresAt;
   }
 
   ngOnInit() {
@@ -93,6 +88,12 @@ export class HeaderComponent {
     });
 
     this.getCountNotice();
+
+    this.timeExpiresAt =
+      decodeJWT(localStorage.getItem('token') ?? '')?.expiresAt || '';
+    const expiresAt = new Date(this.timeExpiresAt).getTime();
+    // this.isLoggedIn = !isNaN(expiresAt) && Date.now() < expiresAt;
+    this.isLoggedIn = !!localStorage.getItem('token');
   }
 
   organizations = [

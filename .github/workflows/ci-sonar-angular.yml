@@ -12,6 +12,7 @@ on:
       - "sonar-project.properties"
   pull_request:
 
+###
 permissions:
   contents: read
   pull-requests: write
@@ -31,7 +32,7 @@ jobs:
           fetch-depth: 0  # Sonar cần full history để tính blame
 
       - name: Set up JDK (for Sonar scanner)
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "21"
@@ -79,7 +80,7 @@ jobs:
       # --- SonarQube self-hosted (nếu bạn set SONAR_HOST_URL) ---
       - name: SonarQube Scan (self-hosted)
         if: ${{ env.SONAR_HOST_URL != '' }}
-        uses: SonarSource/sonarqube-scan-action@v4
+        uses: SonarSource/sonarqube-scan-action@v5.3.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

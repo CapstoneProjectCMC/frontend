@@ -1,4 +1,5 @@
 // import { environment } from '../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { EnumType } from '../../models/data-handle';
 import { ReadStatusNotice } from '../../models/notice.model';
 import {
@@ -7,11 +8,11 @@ import {
 } from '../../models/organization.model';
 import { SearchingUser } from '../../models/user.models';
 
-export const version = '/v1';
+export const version = 'v1';
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: 'http://localhost:8888/api' + version,
+    MAIN_API: environment.IP_SERVER, //chạy ở local thì đổi ip thành IP_SERVER_LOCAL và thêm "+ version" vào chuỗi MAIN_API (sau IP). push lên github nhớ stash commit hoặc không làm thay đổi dòng này.
     SECONDARY_API: '',
   },
   ENDPOINTS: {
