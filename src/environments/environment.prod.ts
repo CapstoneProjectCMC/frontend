@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  IP_SERVER: '',
+  IP_SERVER: '/api',
 };

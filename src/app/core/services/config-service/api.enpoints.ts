@@ -12,7 +12,7 @@ export const version = '';
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: environment.IP_SERVER + version,
+    MAIN_API: environment.IP_SERVER,
     SECONDARY_API: '',
   },
   ENDPOINTS: {
