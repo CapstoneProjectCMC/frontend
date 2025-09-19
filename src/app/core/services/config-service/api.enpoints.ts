@@ -8,11 +8,11 @@ import {
 } from '../../models/organization.model';
 import { SearchingUser } from '../../models/user.models';
 
-export const version = '';
+export const version = 'v1';
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: environment.IP_SERVER,
+    MAIN_API: environment.IP_SERVER_LOCAL,
     SECONDARY_API: '',
   },
   ENDPOINTS: {
