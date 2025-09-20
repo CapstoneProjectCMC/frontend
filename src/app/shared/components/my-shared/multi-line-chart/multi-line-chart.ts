@@ -65,13 +65,13 @@ export class MultiLineChartComponent implements OnChanges {
     },
     yaxis: {
       title: {
-        text: 'Amount ($)',
+        text: 'Amount (VND)',
       },
     },
     tooltip: {
       y: {
         formatter: function (val: number) {
-          return val + ' $';
+          return val + ' VND';
         },
       },
     },

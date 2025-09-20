@@ -30,7 +30,7 @@ export function sidebarStatisticsRouter(roles: string[]): SidebarItem[] {
       path: '/codecampus-statistics/user-payment-statistics',
       label: 'Thống kê nạp & mua',
       icon: 'fa-solid fa-credit-card',
-      isVisible: !roles.includes(auth_lv2[0]),
+      isVisible: roles.length > 0,
     },
   ];
 }

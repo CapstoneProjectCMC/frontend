@@ -28,15 +28,7 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
   // dữ liệu thẻ
   purchaseAmount = 0;
   depositAmount = 0;
-  // table
-  tablePurchaseHeaders = [
-    { label: 'Ngày', value: 'day' },
-    { label: 'Số tiền nạp', value: 'depositAmount' },
-  ];
-  tableDepositHeaders = [
-    { label: 'Ngày', value: 'day' },
-    { label: 'Số tiền mua', value: 'purchaseAmount' },
-  ];
+
   fakeStats = [
     {
       day: '2025-09-11',
@@ -134,22 +126,7 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
     }
 
     this.loadPayment();
-    //chuẩn bị dữ liệu cho biểu đồ
-    this.convertToChartData(this.paymentData);
 
-    this.calculateTotals(this.paymentData);
-    // ✅ Gán dữ liệu BE vào chart
-    const { categories, seriesData } = this.convertToChartData(
-      this.paymentData
-    );
-    this.chartCategories = categories;
-    this.chartSeries = seriesData;
-
-    // ✅ Tính tổng nạp + chi
-    this.calculateTotals(this.paymentData);
-
-    // ✅ Chuẩn bị dữ liệu 2 bảng
-    this.splitDataForTables(this.paymentData);
     // this.convertToChartData(this.fakeStats);
     // // ✅ Gán fake data vào chart
     // const { categories, seriesData } = this.convertToChartData(this.fakeStats);
@@ -175,6 +152,9 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
 
     // ✅ Chuẩn bị dữ liệu 2 bảng
     this.splitDataForTables(this.paymentData);
+    console.log('Filtered Data:', this.paymentData);
+    console.log(this.chartCategories);
+    console.log(this.chartSeries);
   }
 
   loadPayment(): void {
@@ -188,6 +168,23 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
         next: (response) => {
           if (response && response.result) {
             this.paymentData = response.result;
+            console.log('Fetched Data:', this.paymentData);
+            //chuẩn bị dữ liệu cho biểu đồ
+            this.convertToChartData(this.paymentData);
+
+            this.calculateTotals(this.paymentData);
+            // ✅ Gán dữ liệu BE vào chart
+            const { categories, seriesData } = this.convertToChartData(
+              this.paymentData
+            );
+            this.chartCategories = categories;
+            this.chartSeries = seriesData;
+
+            // ✅ Tính tổng nạp + chi
+            this.calculateTotals(this.paymentData);
+
+            // ✅ Chuẩn bị dữ liệu 2 bảng
+            this.splitDataForTables(this.paymentData);
           } else {
             this.error = 'Dữ liệu trả về không hợp lệ.';
           }
@@ -210,7 +207,11 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
   }
 
   convertToChartData(data: any[]) {
-    const categories = data.map((item) => item.day);
+    const categories = data.map((item) => {
+      item.day;
+      console.log('Item day:', item.day);
+      return item.day;
+    });
 
     const seriesData = [
       {
@@ -227,19 +228,36 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
       },
     ];
 
+    console.log('categories:', categories);
+    console.log('seriesData:', seriesData);
     return { categories, seriesData };
   }
+  // table
+  tableDepositHeaders = [
+    { label: 'Ngày', value: 'day' },
+    { label: 'Số tiền nạp', value: 'depositAmount' },
+  ];
+  tablePurchaseHeaders = [
+    { label: 'Ngày', value: 'day' },
+    { label: 'Số tiền mua', value: 'purchaseAmount' },
+  ];
   splitDataForTables(data: any[]) {
+    // formatter chung cho VNĐ
+    const formatter = new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+    });
+
     // Bảng nạp tiền
     this.tableDepositData = data.map((item) => ({
       day: item.day,
-      depositAmount: item.depositAmount,
+      depositAmount: formatter.format(item.depositAmount), // format tại đây
     }));
 
     // Bảng mua hàng
     this.tablePurchaseData = data.map((item) => ({
       day: item.day,
-      purchaseAmount: item.purchaseAmount,
+      purchaseAmount: formatter.format(item.purchaseAmount), // format tại đây
     }));
   }
 
