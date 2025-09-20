@@ -15,6 +15,7 @@ export class ModalNoticeService {
     confirmText: string,
     cancelText: string
   ): Observable<boolean> {
+    this.decision$ = new Subject<boolean>();
     this.store.dispatch(
       openNoticeModal({
         payload: {

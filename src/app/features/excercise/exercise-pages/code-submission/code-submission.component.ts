@@ -129,7 +129,7 @@ export class CodeSubmissionComponent {
 
   canDeactivate(): Observable<boolean> {
     if (!this.codeEditorComponent.getCode()) return of(true);
-    if (this.codeEditorComponent.getCode()) {
+    if (this.codeEditorComponent.getCode() && !this.submitted) {
       return this.modalNoticeService.confirm(
         'Xác nhận thoát',
         'Bạn có chắc muốn thoát? Dữ liệu sẽ mất.',
