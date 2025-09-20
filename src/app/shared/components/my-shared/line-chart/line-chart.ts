@@ -19,7 +19,6 @@ import {
   ApexFill,
 } from 'ng-apexcharts';
 
-
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;

@@ -39,13 +39,37 @@
     </div>
 
     <div class="charts-grid">
+      <!-- Bar chart cho Nạp & Mua -->
       <div class="chart-wrapper">
-        <app-multi-line-chart
+        <app-multi-chart
           [categories]="chartCategories"
-          [seriesData]="chartSeries"
-        ></app-multi-line-chart>
+          [seriesData]="barChartSeries"
+          [title]="
+            'Thống kê Nạp & Mua theo ngày trong tháng ' +
+            selectedMonth +
+            '/' +
+            selectedYear
+          "
+          [type]="'bar'"
+        ></app-multi-chart>
+      </div>
+
+      <!-- Line chart cho Số dư ví -->
+      <div class="chart-wrapper">
+        <app-multi-chart
+          [categories]="chartCategories"
+          [seriesData]="lineChartSeries"
+          [title]="
+            'Thống kê Số dư ví theo ngày trong tháng ' +
+            selectedMonth +
+            '/' +
+            selectedYear
+          "
+          [type]="'line'"
+        ></app-multi-chart>
       </div>
     </div>
+
     <!-- Bảng chi tiết -->
     <div class="table-wrapper">
       <app-table
