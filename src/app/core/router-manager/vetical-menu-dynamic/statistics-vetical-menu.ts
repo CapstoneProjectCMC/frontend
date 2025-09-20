@@ -18,5 +18,19 @@ export function sidebarStatisticsRouter(roles: string[]): SidebarItem[] {
       icon: 'fa-solid fa-chart-pie',
       isVisible: !roles.includes(auth_lv2[0]),
     },
+    {
+      id: 'chart-payment-statistics',
+      path: '/codecampus-statistics/admin-payment-statistics',
+      label: 'Thống kê doanh thu',
+      icon: 'fa-solid fa-file-invoice-dollar',
+      isVisible: !roles.includes(auth_lv2[0]),
+    },
+    {
+      id: 'chart-user-payment-statistics',
+      path: '/codecampus-statistics/user-payment-statistics',
+      label: 'Thống kê nạp & mua',
+      icon: 'fa-solid fa-credit-card',
+      isVisible: !roles.includes(auth_lv2[0]),
+    },
   ];
 }

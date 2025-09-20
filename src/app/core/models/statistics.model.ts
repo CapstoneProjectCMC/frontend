@@ -24,3 +24,13 @@ export type SummaryStatisticsAdmin = {
   totalSubmissions: number;
   totalPassedSubmissions: number;
 };
+export type PaymentStatisticsAdmin = {
+  day: string;
+  totalAmount: number;
+};
+export type PaymentStatisticsUser = {
+  day: string;
+  depositAmount: number;
+  purchaseAmount: number;
+  walletBalance: number;
+};

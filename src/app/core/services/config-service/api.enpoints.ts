@@ -218,6 +218,10 @@ export const API_CONFIG = {
 
       GET_EXERCISE_STATISTICS_ADMIN: (page: number, size: number) =>
         `/submission/stats/admin/exercises?page=${page}&size=${size}`,
+      GET_PAYMENT_STATISTICS_ADMIN: (year: number, month: number) =>
+        `/payment/payment-statistics/daily-deposit?year=${year}&month=${month}`,
+      GET_USER_PAYMENT_STATISTICS_ADMIN: (year: number, month: number) =>
+        `/payment/payment-statistics/daily-statistic?year=${year}&month=${month}`,
       GET_SUMMARY_STATISTICS_ADMIN: '/submission/stats/admin/summary',
     },
     POST: {

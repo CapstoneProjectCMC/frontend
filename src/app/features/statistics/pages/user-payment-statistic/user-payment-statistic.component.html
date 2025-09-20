@@ -1,0 +1,68 @@
+<div class="payment-container">
+  <header class="payment-header">
+    <h1>Thống kê tiền nạp</h1>
+    <p>Các chỉ số chính về tiền nạp trên hệ thống.</p>
+  </header>
+
+  <div class="filter-bar">
+    <label for="month">Trong tháng:</label>
+    <select id="month" [(ngModel)]="selectedMonth" (change)="onFilterChange()">
+      <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+    </select>
+    <label for="year">của năm:</label>
+    <select id="year" [(ngModel)]="selectedYear" (change)="onFilterChange()">
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+  </div>
+
+  @if (isLoading) {
+  <div class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Đang tải dữ liệu...</p>
+  </div>
+  } @else if (error && !isLoading) {
+  <div class="error-message">
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="loadPayment()">Thử lại</button>
+  </div>
+  } @else if (paymentData && !isLoading && !error) {
+  <div class="payment-content">
+    <div class="payment-cards-grid">
+      <div class="payment-card">
+        <div class="card-label">Tổng số tiền nạp</div>
+        <div class="card-value">{{ depositAmount | number }}</div>
+      </div>
+      <div class="payment-card">
+        <div class="card-label">Tổng tiền mua</div>
+        <div class="card-value">{{ purchaseAmount | number }}</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-wrapper">
+        <app-multi-line-chart
+          [categories]="chartCategories"
+          [seriesData]="chartSeries"
+        ></app-multi-line-chart>
+      </div>
+    </div>
+    <!-- Bảng chi tiết -->
+    <div class="table-wrapper">
+      <app-table
+        [headers]="tablePurchaseHeaders"
+        [data]="tablePurchaseData"
+        [needNo]="true"
+        [amountDataPerPage]="paymentData.length"
+      >
+      </app-table>
+      <app-table
+        [headers]="tableDepositHeaders"
+        [data]="tableDepositData"
+        [needNo]="true"
+        [amountDataPerPage]="paymentData.length"
+      >
+      </app-table>
+    </div>
+  </div>
+  }
+</div>
