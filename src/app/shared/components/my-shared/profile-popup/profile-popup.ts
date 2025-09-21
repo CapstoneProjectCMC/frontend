@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { formatDate } from '../../../utils/stringProcess';
 import { ButtonComponent } from '../button/button.component';
 import {
+  DEFAULT_AVATAR,
   DEFAULT_BG,
   follow,
   SearchUserProfileResponse,
@@ -26,7 +27,7 @@ export class ProfilePopupComponent {
   @Input() variant: 'personal' | 'other' | 'popup' = 'popup';
   @Input() onClickEdit?: () => void;
   showFollowPopup = false;
-  avatarDefault = avatarUrlDefault;
+  avatarDefault = DEFAULT_AVATAR;
   backgroundDefault = DEFAULT_BG;
 
   formatDate(time: Date) {

@@ -18,6 +18,7 @@ import {
 } from '../../../../shared/store/loading-state/loading.action';
 import { sendNotification } from '../../../../shared/utils/notification';
 import { MarkdownModule } from 'ngx-markdown';
+import { DEFAULT_AVATAR } from '../../../../core/models/user.models';
 
 @Component({
   selector: 'app-resource-detail',
@@ -35,6 +36,8 @@ import { MarkdownModule } from 'ngx-markdown';
   standalone: true,
 })
 export class ResourceDetail implements OnInit {
+  avatarDefault = DEFAULT_AVATAR;
+  [x: string]: any;
   resourceId: string | null = null;
   resource!: MediaResource;
 

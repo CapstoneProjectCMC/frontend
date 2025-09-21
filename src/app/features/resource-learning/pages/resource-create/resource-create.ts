@@ -16,7 +16,10 @@ import { HtmlToMdService } from '../../../../shared/utils/HTMLtoMarkDown';
 import { Router } from '@angular/router';
 import { ResourceService } from '../../../../core/services/api-service/resource.service';
 import { sendNotification } from '../../../../shared/utils/notification';
-import { clearLoading } from '../../../../shared/store/loading-state/loading.action';
+import {
+  clearLoading,
+  setLoading,
+} from '../../../../shared/store/loading-state/loading.action';
 import { Store } from '@ngrx/store';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
@@ -134,6 +137,12 @@ export class ResourceCreatePageComponent {
       isTextbook,
       isLectureVideo,
     };
+    this.store.dispatch(
+      setLoading({
+        isLoading: true,
+        content: 'Đang tạo tài nguyên, xin chờ...',
+      })
+    );
 
     this.resourceService.addResource(postData).subscribe({
       next: (res) => {
