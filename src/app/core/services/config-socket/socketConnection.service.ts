@@ -13,7 +13,9 @@ export class SocketConnectionService {
       const u = new URL(urlOrPath, window.location.origin);
       const isTls = u.protocol === 'https:' || u.protocol === 'wss:';
       const base = `${isTls ? 'https' : 'http'}://${u.host}`;
-      const path = (u.pathname.endsWith('/') ? u.pathname.slice(0, -1) : u.pathname) + '/socket.io';
+      const path =
+        (u.pathname.endsWith('/') ? u.pathname.slice(0, -1) : u.pathname) +
+        '/socket.io';
 
       const token = localStorage.getItem('token') || undefined;
 
@@ -24,10 +26,13 @@ export class SocketConnectionService {
         reconnectionAttempts: 5,
         reconnectionDelay: 2000,
         withCredentials: true,
-        auth: token ? { token } : undefined,   // ✅ KHÔNG nhét token vào query
+        auth: token ? { token } : undefined, // KHÔNG nhét token vào query
+        query: token ? { token } : undefined, // thêm query
       });
 
-      socket.on('connect', () => console.log(`✅ WS connected: ${base}${path}`));
+      socket.on('connect', () =>
+        console.log(`✅ WS connected: ${base}${path}`)
+      );
       socket.on('connect_error', (err) =>
         console.error(`❌ WS connect error (${base}${path}):`, err.message)
       );
