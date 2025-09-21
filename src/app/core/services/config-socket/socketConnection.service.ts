@@ -4,45 +4,52 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SocketConnectionService {
-  private sockets: Map<string, Socket> = new Map();
+  private sockets = new Map<string, Socket>();
 
-  connect(url: string): Socket {
-    if (!this.sockets.has(url)) {
-      const socket = io(url, {
+  /** urlOrPath: ví dụ "/ws/chat" (prod) hoặc "http://localhost:4099" (dev) */
+  connect(urlOrPath: string): Socket {
+    if (!this.sockets.has(urlOrPath)) {
+      // Phân tích URL để tách base (http/https) và path /socket.io
+      const u = new URL(urlOrPath, window.location.origin);
+      const isTls = u.protocol === 'https:' || u.protocol === 'wss:';
+      const base = `${isTls ? 'https' : 'http'}://${u.host}`;
+      const path = (u.pathname.endsWith('/') ? u.pathname.slice(0, -1) : u.pathname) + '/socket.io';
+
+      const token = localStorage.getItem('token') || undefined;
+
+      const socket = io(base, {
+        path,
         transports: ['websocket'],
         reconnection: true,
         reconnectionAttempts: 5,
         reconnectionDelay: 2000,
-        auth: {
-          token: localStorage.getItem('token'), // nếu cần
-        },
+        withCredentials: true,
+        auth: token ? { token } : undefined,   // ✅ KHÔNG nhét token vào query
       });
 
-      socket.on('connect', () => console.log(`✅ Connected to ${url}`));
+      socket.on('connect', () => console.log(`✅ WS connected: ${base}${path}`));
       socket.on('connect_error', (err) =>
-        console.error(`❌ Connect error to ${url}:`, err.message)
+        console.error(`❌ WS connect error (${base}${path}):`, err.message)
       );
 
-      this.sockets.set(url, socket);
+      this.sockets.set(urlOrPath, socket);
     }
-    return this.sockets.get(url)!;
+    return this.sockets.get(urlOrPath)!;
   }
 
   emit(url: string, event: string, data?: any) {
-    const socket = this.sockets.get(url);
-    socket?.emit(event, data);
+    this.sockets.get(url)?.emit(event, data);
   }
 
   on<T>(url: string, event: string): Observable<T> {
     return new Observable<T>((observer) => {
-      const socket = this.sockets.get(url);
-      socket?.on(event, (data: T) => observer.next(data));
+      this.sockets.get(url)?.on(event, (data: T) => observer.next(data));
     });
   }
 
   disconnect(url: string) {
-    const socket = this.sockets.get(url);
-    socket?.disconnect();
+    const s = this.sockets.get(url);
+    s?.disconnect();
     this.sockets.delete(url);
   }
 }
