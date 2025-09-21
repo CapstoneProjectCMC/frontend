@@ -41,6 +41,9 @@
       <!-- Nếu là video -->
       @if (!isDocument && !isImage && resource.hlsUrl) {
       <app-video-player [videoSrc]="resource.hlsUrl || ''"></app-video-player>
+      <div class="resource-detail-content">
+        <markdown [data]="resource.description"></markdown>
+      </div>
       } @else {
       <!-- Nếu là document -->
       @if (isDocument) {
