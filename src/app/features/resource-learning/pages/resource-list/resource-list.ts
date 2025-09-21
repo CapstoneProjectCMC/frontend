@@ -30,8 +30,8 @@ import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.dir
     SkeletonLoadingComponent,
     ResourceCardComponent,
     ResourceEditPopupComponent,
-    ScrollEndDirective
-],
+    ScrollEndDirective,
+  ],
 })
 export class ResourceListComponent {
   resources: MediaResource[] = [];
@@ -184,7 +184,7 @@ export class ResourceListComponent {
 
   // ================== Actions ==================
   handleAdd = () => {
-    this.router.navigate(['/resource-management/resource-create']);
+    this.router.navigate(['/resource-learning/resource-create']);
   };
 
   handlePageChange(page: number) {
@@ -194,6 +194,6 @@ export class ResourceListComponent {
   // ================== Navigation ==================
   goToDetail = (resourceId: string) => {
     console.log('Navigating to resource detail with ID:', resourceId);
-    this.router.navigate(['/resource-management/resource', resourceId]);
+    this.router.navigate(['/resource-learning/resource', resourceId]);
   };
 }

@@ -18,6 +18,7 @@ import {
 } from '../../../../shared/store/loading-state/loading.action';
 import { sendNotification } from '../../../../shared/utils/notification';
 import { MarkdownModule } from 'ngx-markdown';
+import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 
 @Component({
   selector: 'app-resource-detail',
@@ -41,6 +42,9 @@ export class ResourceDetail implements OnInit {
   listResource: MediaResource[] = [];
   searchTerm: string = '';
   searchTermError: string | null = null;
+  avatarAuthor = '';
+  avatarAuthorDefault = avatarUrlDefault;
+  authorName = 'Ẩn danh';
 
   isDocument: boolean = false;
   isImage: boolean = false;
@@ -102,6 +106,8 @@ export class ResourceDetail implements OnInit {
     this.resourceService.getResourceById(this.resourceId).subscribe({
       next: (res) => {
         this.resource = res.result;
+        this.avatarAuthor = res.result.userProfile.avatarUrl;
+        this.authorName = res.result.userProfile.displayName;
         this.isDocument = this.supportedDocumentTypes.includes(
           this.resource.fileType
         );
@@ -155,6 +161,8 @@ export class ResourceDetail implements OnInit {
 
   goToDetail = (resourceId: string) => {
     this.router.navigate(['/resource-management/resource', resourceId]);
+    this.resourceId = resourceId;
+    this.loadResource();
   };
 
   handleInputChange(value: string | number): void {

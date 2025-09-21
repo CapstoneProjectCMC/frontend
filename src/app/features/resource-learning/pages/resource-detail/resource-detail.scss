@@ -1,9 +1,4 @@
 :root {
-  --primary-color: #007bff;
-  --secondary-color: #f8f9fa;
-  --text-color: #333;
-  --secondary-text-color: #6c757d;
-  --border-color: #e0e0e0;
   --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08);
   --shadow-medium: 0 6px 16px rgba(0, 0, 0, 0.1);
   --border-radius: 12px;
@@ -31,7 +26,7 @@
   min-width: 0;
 
   .resource-content {
-    background-color: var(--secondary-color);
+    background-color: var(--background-color);
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--shadow-light);
@@ -56,7 +51,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: #fafafa;
+      background: var(--background-color);
       padding: 1rem;
       .resource-image {
         max-width: 100%;
@@ -166,7 +161,7 @@
 
         .resource-tag {
           font-size: 0.8rem;
-          background: #e9f5ff;
+          background: oklch(from var(--background-color) calc(l * 0.9) c h);
           color: #007bff;
           padding: 4px 10px;
           border-radius: 6px;
@@ -200,8 +195,9 @@
 
   .input-title {
     position: sticky;
-    top: 1rem;
-    background: #fff;
+    top: 0;
+    padding-top: 1rem;
+    background: var(--background-color);
     padding-bottom: 0.5rem;
     z-index: 2;
   }

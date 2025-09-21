@@ -109,7 +109,7 @@
     margin-top: 40px;
 
     .draft-list-container {
-      background: #fff;
+      background: var(--background-color);
       border-radius: 12px;
       padding: 1.5rem;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -127,7 +127,7 @@
         h2 {
           font-size: 1.25rem;
           font-weight: 600;
-          color: #333;
+          color: var(--text-muted-color);
           margin: 0;
         }
 
@@ -170,7 +170,7 @@
               .draft-title {
                 font-size: 1rem;
                 font-weight: 500;
-                color: #222;
+                color: var(--text-color);
                 margin-bottom: 0.25rem;
                 white-space: nowrap;
                 overflow: hidden;
