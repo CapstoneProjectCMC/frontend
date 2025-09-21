@@ -3,7 +3,7 @@ export const OAuthConfig = {
     clientId:
       '839020123858-qnan968uvj0u9d5h6bq5cd5ulls9h7dk.apps.googleusercontent.com',
     redirectUri: 'http://localhost:4200/auth/identity/authenticate',
-    redirectUriServer: 'http://3.27.221.69/auth/identity/authenticate',
+    redirectUriServer: 'http://codecampus.site/auth/identity/authenticate',
     authUri: 'https://accounts.google.com/o/oauth2/auth',
   },
   facebook: {
