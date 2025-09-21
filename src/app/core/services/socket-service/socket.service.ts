@@ -20,7 +20,7 @@ export class SocketService {
       path,
       transports: ['websocket'],
       withCredentials: true,
-      query: token ? { token } : undefined, // 👈 thêm query
+      query: token ? { token } : undefined, // thêm query
     });
   }
 

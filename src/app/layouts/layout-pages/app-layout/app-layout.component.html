@@ -1,28 +1,27 @@
 <div class="app-default-container">
   <app-header></app-header>
   @if (visible) {
-    <app-menu-layout [menuItems]="menuItems" mode="horizontal">
-    </app-menu-layout>
+  <app-menu-layout [menuItems]="menuItems" mode="horizontal"> </app-menu-layout>
   }
   <div class="main-content-app-container">
     <router-outlet />
-    @if (initialLoadDataChatbot) {
-      <app-box-chat-ai
-        [chatContexts]="chatContexts"
-        [currentContextId]="currentContextId"
-        [isLoading]="isLoading"
-        [initialWidth]="currentChatWidth"
-        [minWidth]="'300px'"
-        [maxWidth]="'500px'"
-        [position]="'right'"
-        (sendMessage)="handleSendMessage($event)"
-        (createNewChat)="handleCreateNewChat($event)"
-        (selectContext)="handleSelectContext($event)"
-        (deleteContext)="handleDeleteContext($event)"
-      ></app-box-chat-ai>
+    @if (initialLoadDataChatbot && visible) {
+    <app-box-chat-ai
+      [chatContexts]="chatContexts"
+      [currentContextId]="currentContextId"
+      [isLoading]="isLoading"
+      [initialWidth]="currentChatWidth"
+      [minWidth]="'300px'"
+      [maxWidth]="'500px'"
+      [position]="'right'"
+      (sendMessage)="handleSendMessage($event)"
+      (createNewChat)="handleCreateNewChat($event)"
+      (selectContext)="handleSelectContext($event)"
+      (deleteContext)="handleDeleteContext($event)"
+    ></app-box-chat-ai>
     }
   </div>
   @if (showFooter) {
-    <app-footer></app-footer>
+  <app-footer></app-footer>
   }
 </div>

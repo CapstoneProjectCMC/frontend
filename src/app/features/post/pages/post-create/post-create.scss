@@ -152,11 +152,11 @@
           cursor: pointer;
 
           &:hover {
-            background: #f7f9fc;
+            background: var(--background-color);
           }
 
           &.selected {
-            background: #eef5ff;
+            background: oklch(from var(--background-color) calc(l * 0.9) c h);
             border-left: 4px solid #3b82f6;
           }
 
@@ -198,7 +198,9 @@
               transition: all 0.2s ease;
 
               &:hover {
-                background: #ffecec;
+                background: oklch(
+                  from var(--background-color) calc(l * 0.9) c h
+                );
                 color: #e11d48;
               }
 

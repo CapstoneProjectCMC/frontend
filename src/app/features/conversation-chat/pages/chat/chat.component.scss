@@ -1,17 +1,5 @@
 /* --- Biến CSS cho việc tùy chỉnh --- */
 :host {
-  --primary-color: #3f51b5;
-  --primary-color-light: #e8eaf6;
-  --my-message-bg: #e3f2fd;
-  --other-message-bg: #f1f1f1;
-  --failed-message-bg: #ffebee;
-  --border-color: #e0e0e0;
-  --text-primary: #212121;
-  --text-secondary: #757575;
-  --background-color: #ffffff;
-  --hover-bg-color: #f5f5f5;
-  --selected-bg-color: #eeeeee;
-
   display: block;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -41,7 +29,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  background-color: #fafafa;
+  background-color: var(--background-color);
 }
 
 /* --- Các thành phần chung --- */
@@ -156,11 +144,11 @@
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: var(--hover-bg-color);
+    background-color: oklch(from var(--background-color) calc(l * 0.9) c h);
   }
 
   &.selected {
-    background-color: var(--selected-bg-color);
+    background-color: oklch(from var(--background-color) calc(l * 0.8) c h);
   }
 
   &__details {
@@ -200,7 +188,9 @@
         transition: background-color 0.2s ease;
 
         &:hover {
-          background-color: var(--hover-bg-color);
+          background-color: oklch(
+            from var(--background-color) calc(l * 0.9) c h
+          );
         }
       }
     }
@@ -214,7 +204,7 @@
 
   .name {
     font-weight: 500;
-    color: var(--text-primary);
+    color: var(--text-color);
     p {
       margin: 0;
       font-size: 12px;
@@ -224,13 +214,13 @@
 
   .date {
     font-size: 0.75rem;
-    color: var(--text-secondary);
+    color: var(--text-color);
   }
 
   .last-message {
     margin: 4px 0 0;
     font-size: 0.875rem;
-    color: var(--text-secondary);
+    color: var(--text-color);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -265,7 +255,7 @@
   max-width: 70%;
   padding: 10px 14px;
   border-radius: 18px;
-  background-color: var(--other-message-bg);
+  background-color: oklch(from var(--background-color) calc(l * 0.9) c h);
   word-wrap: break-word;
   .read-by {
     display: flex;
@@ -284,25 +274,25 @@
 
   .message-content {
     margin: 0;
-    color: var(--text-primary);
+    color: var(--text-color);
   }
 
   .message-timestamp {
     display: block;
     font-size: 0.7rem;
-    color: var(--text-secondary);
+    color: var(--text-color);
     text-align: right;
     margin-top: 4px;
   }
 
   &.failed {
-    background-color: var(--failed-message-bg);
+    background-color: oklch(from var(--error-color) calc(l * 0.3) c h);
   }
 }
 
 // Custom bubble shapes for "me"
 .message-row.me .message-bubble {
-  background-color: var(--my-message-bg);
+  background-color: var(--message-bg-color);
   border-bottom-right-radius: 4px;
 }
 .message-row:not(.me) .message-bubble {
@@ -351,7 +341,7 @@
 }
 
 .text-secondary {
-  color: var(--text-secondary);
+  color: var(--text-color);
 }
 
 .btn {
@@ -367,11 +357,11 @@
   transition: background-color 0.2s ease;
 
   svg {
-    stroke: var(--text-secondary);
+    stroke: var(--text-color);
   }
 
   &:hover {
-    background-color: var(--hover-bg-color);
+    background-color: oklch(from var(--background-color) calc(l * 0.9) c h);
   }
 
   &--primary {
