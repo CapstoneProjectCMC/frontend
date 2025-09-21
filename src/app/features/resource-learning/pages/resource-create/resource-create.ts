@@ -137,6 +137,12 @@ export class ResourceCreatePageComponent {
       isTextbook,
       isLectureVideo,
     };
+    this.store.dispatch(
+      setLoading({
+        isLoading: true,
+        content: 'Đang tạo tài nguyên, xin chờ...',
+      })
+    );
 
     Promise.resolve().then(() => {
       this.store.dispatch(

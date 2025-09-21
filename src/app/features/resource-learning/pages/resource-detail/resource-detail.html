@@ -13,7 +13,7 @@
         <div class="author">
           <div class="avatar">
             <img
-              [src]="avatarAuthor ? avatarAuthor : avatarAuthorDefault"
+              [src]="resource.userProfile.avatarUrl || avatarDefault"
               alt="Avatar"
             />
           </div>
@@ -45,18 +45,30 @@
       <!-- Nếu là document -->
       @if (isDocument) {
       <div class="document-view">
+        @if (resource.fileName.endsWith('.pdf')) {
+        <!-- PDF xem trực tiếp -->
         <iframe
           [src]="safeUrl"
           width="100%"
           height="600px"
           frameborder="0"
-          (error)="onIframeError($event)"
         ></iframe>
+        } @else {
+        <!-- File Word hoặc định dạng không hỗ trợ -->
+        <div class="download-message">
+          <p>Tệp này không thể hiển thị trực tiếp. Tệp đã được tải xuống.</p>
+          <a [href]="resource.url" download class="download-link">
+            Tải xuống {{ resource.fileName }}
+          </a>
+        </div>
+        }
+
         <div class="resource-detail-content">
           <markdown [data]="resource.description"></markdown>
         </div>
       </div>
       }
+
       <!-- Nếu là image -->
       @if (isImage) {
       <div class="image-view">
@@ -102,7 +114,7 @@
         <div>
           <app-resource-card
             [resource]="resource"
-            [showControls]="true"
+            [showControls]="false"
             (main)="goToDetail($event)"
           ></app-resource-card>
         </div>

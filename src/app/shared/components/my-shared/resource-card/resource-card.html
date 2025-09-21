@@ -47,7 +47,7 @@
     <div class="card-meta">
       <div class="author-info">
         <img
-          [src]="resource.userProfile.avatarUrl ? resource.userProfile.avatarUrl : avatarDefault"
+          [src]="resource.userProfile.avatarUrl || avatarDefault"
           [alt]="resource.userProfile.displayName"
           class="author-avatar"
         />

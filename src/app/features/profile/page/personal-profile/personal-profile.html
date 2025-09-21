@@ -8,7 +8,7 @@
       [following]="followingList"
     ></app-profile-popup>
   </div>
-  <div class="learning-process">
+  <!-- <div class="learning-process">
     <div class="academic-results">
       <div class="title-nav">
         <span class="title"> Thống kê kết quả học tập </span>
@@ -90,9 +90,9 @@
         </div>
       }
     </div>
-    <!-- <div class="post"></div> -->
-  </div>
-  <div class="short-cut">
+    <div class="post"></div>
+  </div> -->
+  <!-- <div class="short-cut">
     <div class="recent-notice">
       <div class="title-nav">
         <span class="title"> Thông báo gần đây </span>
@@ -111,25 +111,23 @@
           >
         </div>
       </div>
-    </div>
+  </div> -->
 
-    @if (openedUser) {
-      <div
-        [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}"
-        >
-        <div
-          class="profile-popup-backdrop"
-          [ngClass]="{'hide': isClosing}"
-          (click)="closeProfilePopup()"
-        ></div>
-        <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
-          <button class="close-btn" (click)="closeProfilePopup()">×</button>
-          <app-update-profile
-            [user]="openedUser"
-            [variant]="'popup'"
-            (refresh)="refetchUserData($event)"
-          ></app-update-profile>
-        </div>
-      </div>
-    }
+  @if (openedUser) {
+  <div [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}">
+    <div
+      class="profile-popup-backdrop"
+      [ngClass]="{'hide': isClosing}"
+      (click)="closeProfilePopup()"
+    ></div>
+    <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
+      <button class="close-btn" (click)="closeProfilePopup()">×</button>
+      <app-update-profile
+        [user]="openedUser"
+        [variant]="'popup'"
+        (refresh)="refetchUserData($event)"
+      ></app-update-profile>
+    </div>
   </div>
+  }
+</div>

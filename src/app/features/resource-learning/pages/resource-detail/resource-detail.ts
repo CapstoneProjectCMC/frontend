@@ -18,7 +18,7 @@ import {
 } from '../../../../shared/store/loading-state/loading.action';
 import { sendNotification } from '../../../../shared/utils/notification';
 import { MarkdownModule } from 'ngx-markdown';
-import { avatarUrlDefault } from '../../../../core/constants/value.constant';
+import { DEFAULT_AVATAR } from '../../../../core/models/user.models';
 
 @Component({
   selector: 'app-resource-detail',
@@ -36,6 +36,8 @@ import { avatarUrlDefault } from '../../../../core/constants/value.constant';
   standalone: true,
 })
 export class ResourceDetail implements OnInit {
+  avatarDefault = DEFAULT_AVATAR;
+  [x: string]: any;
   resourceId: string | null = null;
   resource!: MediaResource;
 
@@ -43,7 +45,6 @@ export class ResourceDetail implements OnInit {
   searchTerm: string = '';
   searchTermError: string | null = null;
   avatarAuthor = '';
-  avatarAuthorDefault = avatarUrlDefault;
   authorName = 'Ẩn danh';
 
   isDocument: boolean = false;

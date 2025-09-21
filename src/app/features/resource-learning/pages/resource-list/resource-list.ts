@@ -35,6 +35,7 @@ import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.dir
 })
 export class ResourceListComponent {
   resources: MediaResource[] = [];
+  filteredResources: MediaResource[] = []; // danh sách sau khi search
 
   trendingData: TrendingItem[] = [
     { name: 'Angular', views: 15000 },
@@ -69,7 +70,6 @@ export class ResourceListComponent {
       { value: '4', label: 'python' },
     ];
 
-    // Mock data for status
     this.status = [
       { value: '0', label: 'Reject' },
       { value: '1', label: 'Accepted' },
@@ -82,7 +82,6 @@ export class ResourceListComponent {
   }
 
   // ================== Fetch ==================
-  // ================== Fetch ==================
   fetchDataResource(append: boolean = false) {
     this.isLoadingMore = append;
     this.isLoading = !append;
@@ -94,10 +93,9 @@ export class ResourceListComponent {
           const newData = res.result.data;
           const { currentPage, totalPages } = res.result;
 
-          // Gán data
           this.resources = append ? [...this.resources, ...newData] : newData;
+          this.filteredResources = [...this.resources]; // gán mặc định cho search
 
-          // Kiểm tra còn trang tiếp theo không
           this.hasMore = currentPage < totalPages;
 
           this.isLoading = false;
@@ -116,7 +114,7 @@ export class ResourceListComponent {
     if (this.isLoadingMore || !this.hasMore) return;
 
     this.pageIndex++;
-    this.fetchDataResource(true); // append thêm dữ liệu
+    this.fetchDataResource(true);
   }
 
   // ================== Delete ==================
@@ -130,18 +128,18 @@ export class ResourceListComponent {
     );
 
     this.resourceService.deleteResourceById(resourceId).subscribe({
-      next: (res) => {
-        // Xoá resource trong danh sách hiện tại (vì API chỉ trả string, không trả lại list mới)
+      next: () => {
         this.resources = this.resources.filter((r) => r.id !== resourceId);
+        this.filteredResources = this.filteredResources.filter(
+          (r) => r.id !== resourceId
+        );
 
-        // Kiểm tra còn item cho phân trang không
         if (this.resources.length < this.itemsPerPage) {
           this.hasMore = false;
         }
         this.isLoading = false;
         this.store.dispatch(clearLoading());
 
-        // Optional: Hiện thông báo xoá thành công
         sendNotification(
           this.store,
           'Đã xóa tài nguyên',
@@ -178,8 +176,15 @@ export class ResourceListComponent {
 
   // ================== Input & Filter ==================
   handleInputChange(value: string | number): void {
-    this.resourcename = value.toString();
-    console.log('Input changed:', this.resourcename);
+    this.resourcename = value.toString().trim().toLowerCase();
+    if (!this.resourcename) {
+      this.filteredResources = [...this.resources];
+      return;
+    }
+
+    this.filteredResources = this.resources.filter((r) =>
+      r.fileName?.toLowerCase().includes(this.resourcename)
+    );
   }
 
   // ================== Actions ==================

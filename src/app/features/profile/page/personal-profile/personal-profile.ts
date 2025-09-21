@@ -30,10 +30,10 @@ import { ButtonComponent } from '../../../../shared/components/my-shared/button/
     ProfilePopupComponent,
     NgClass,
     UpdateProfileComponent,
-    SkeletonLoadingComponent,
-    CardExcerciseComponent,
-    ButtonComponent
-],
+    // SkeletonLoadingComponent,
+    // CardExcerciseComponent,
+    // ButtonComponent
+  ],
   standalone: true,
 })
 export class PersonalProfileComponent {
