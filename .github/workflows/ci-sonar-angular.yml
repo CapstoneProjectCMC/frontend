@@ -80,7 +80,7 @@ jobs:
       # --- SonarQube self-hosted (nếu bạn set SONAR_HOST_URL) ---
       - name: SonarQube Scan (self-hosted)
         if: ${{ env.SONAR_HOST_URL != '' }}
-        uses: SonarSource/sonarqube-scan-action@v5.3.1
+        uses: SonarSource/sonarqube-scan-action@v6.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
