@@ -14,11 +14,13 @@ export class SocketService {
     const path =
       (u.pathname.endsWith('/') ? u.pathname.slice(0, -1) : u.pathname) +
       '/socket.io';
+    const token = localStorage.getItem('token') || undefined;
 
     this.socket = io(base, {
       path,
       transports: ['websocket'],
       withCredentials: true,
+      query: token ? { token } : undefined, // 👈 thêm query
     });
   }
 
