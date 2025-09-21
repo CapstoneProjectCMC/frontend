@@ -26,7 +26,6 @@ export class SocketConnectionService {
         reconnectionAttempts: 5,
         reconnectionDelay: 2000,
         withCredentials: true,
-        auth: token ? { token } : undefined, // KHÔNG nhét token vào query
         query: token ? { token } : undefined, // thêm query
       });
 
