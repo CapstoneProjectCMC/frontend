@@ -44,8 +44,8 @@ import { TruncatePipe } from '../../../../../shared/pipes/format-view.pipe';
     FormsModule,
     ButtonComponent,
     LottieComponent,
-    TruncatePipe
-],
+    TruncatePipe,
+  ],
   providers: [provideLottieOptions({ player: () => import('lottie-web') })],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -115,8 +115,8 @@ export class UpdateProfileComponent {
     ];
 
     this.gender = [
-      { value: 'true', label: 'Nam' },
-      { value: 'false', label: 'Nữ' },
+      { value: 'false', label: 'Nam' },
+      { value: 'true', label: 'Nữ' },
     ];
   }
 
@@ -147,21 +147,21 @@ export class UpdateProfileComponent {
       this.originalDob = this.user.dob;
       if (this.user.dob) {
         const [day, month, year] = this.user.dob.split('/');
-        this.dob = `${year}-${month.padStart(2, '0')}-${day.padStart(
-          2,
-          '0'
-        )}T00:00`;
+        this.dob = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
       }
-      const genderStr = this.user.gender?.toString();
-      this.selectedGender =
-        this.gender.find((g) => g.value === genderStr) || null;
 
+      // Gán giới tính
+      this.selectedGender =
+        this.gender.find((g) => g.value === String(this.user.gender)) || null;
+      console.log('selectedGender on init:', this.selectedGender);
       this.links = [...(this.user.links || [])];
       this.selectedCity = this.user.city || '';
 
       const edu = this.user.education;
       this.selectedEducation =
-        this.education.find((g) => g.value === edu) || null;
+        this.education.find((e) => e.value === this.user.education) || null;
+
+      console.log('selectedEducation on init:', this.selectedEducation);
     } else {
       this.hasError = true;
     }
@@ -247,7 +247,9 @@ export class UpdateProfileComponent {
     const isBioChanged = (this.bio || '') !== (this.user.bio || '');
 
     const isGenderChanged =
-      (this.selectedGender === 'true') !== this.user.gender;
+      (this.selectedGender?.value === 'true') !== this.user.gender;
+    console.log('selectedGender:', this.selectedGender);
+    console.log('user.gender:', this.user.gender);
 
     const isDisplayNameChanged =
       (this.displayName || '') !== (this.user.displayName || '');
@@ -294,7 +296,7 @@ export class UpdateProfileComponent {
           this.lastName,
           formatDateToDDMMYYYY(this.dob),
           this.bio || '',
-          this.selectedGender === 'true',
+          this.selectedGender === 'false' ? false : true,
           this.displayName,
           Number(this.selectedEducation?.value ?? 0),
           this.links,

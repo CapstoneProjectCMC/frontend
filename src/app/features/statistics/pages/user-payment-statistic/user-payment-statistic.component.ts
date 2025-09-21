@@ -11,11 +11,12 @@ import {
 } from '../../../../core/models/statistics.model';
 import { LineChartComponent } from '../../../../shared/components/my-shared/line-chart/line-chart';
 import { TableComponent } from '../../../../shared/components/my-shared/table/table.component';
-import { MultiLineChartComponent } from '../../../../shared/components/my-shared/multi-line-chart/multi-line-chart';
+import { MultiChartComponent } from '../../../../shared/components/my-shared/multi-chart/multi-chart';
 
 @Component({
   selector: 'app-user-payment-statistics',
-  imports: [CommonModule, FormsModule, MultiLineChartComponent, TableComponent],
+  standalone: true,
+  imports: [CommonModule, FormsModule, MultiChartComponent, TableComponent],
   templateUrl: './user-payment-statistic.component.html',
   styleUrls: ['./user-payment-statistic.component.scss'],
 })
@@ -114,7 +115,8 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
 
   // chart data
   chartCategories: string[] = [];
-  chartSeries: { name: string; data: number[] }[] = [];
+  barChartSeries: { name: string; data: number[] }[] = [];
+  lineChartSeries: { name: string; data: number[] }[] = [];
 
   constructor(private statisticsService: StatisticsService) {}
 
@@ -141,20 +143,17 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
 
     this.calculateTotals(this.paymentData);
     // ✅ Gán dữ liệu BE vào chart
-    const { categories, seriesData } = this.convertToChartData(
-      this.paymentData
-    );
+    const { categories, barSeriesData, lineSeriesData } =
+      this.convertToChartData(this.paymentData);
     this.chartCategories = categories;
-    this.chartSeries = seriesData;
+    this.barChartSeries = barSeriesData;
+    this.lineChartSeries = lineSeriesData;
 
     // ✅ Tính tổng nạp + chi
     this.calculateTotals(this.paymentData);
 
     // ✅ Chuẩn bị dữ liệu 2 bảng
     this.splitDataForTables(this.paymentData);
-    console.log('Filtered Data:', this.paymentData);
-    console.log(this.chartCategories);
-    console.log(this.chartSeries);
   }
 
   loadPayment(): void {
@@ -174,11 +173,11 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
 
             this.calculateTotals(this.paymentData);
             // ✅ Gán dữ liệu BE vào chart
-            const { categories, seriesData } = this.convertToChartData(
-              this.paymentData
-            );
+            const { categories, barSeriesData, lineSeriesData } =
+              this.convertToChartData(this.paymentData);
             this.chartCategories = categories;
-            this.chartSeries = seriesData;
+            this.barChartSeries = barSeriesData;
+            this.lineChartSeries = lineSeriesData;
 
             // ✅ Tính tổng nạp + chi
             this.calculateTotals(this.paymentData);
@@ -207,31 +206,31 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
   }
 
   convertToChartData(data: any[]) {
-    const categories = data.map((item) => {
-      item.day;
-      console.log('Item day:', item.day);
-      return item.day;
-    });
+    const categories = data.map((item) => item.day);
 
-    const seriesData = [
+    // Dữ liệu cho Bar chart (Nạp + Mua)
+    const barSeriesData = [
       {
-        name: 'Deposit',
+        name: 'Tiền nạp',
         data: data.map((item) => item.depositAmount),
       },
       {
-        name: 'Purchase',
+        name: 'Tiền mua',
         data: data.map((item) => item.purchaseAmount),
       },
+    ];
+
+    // Dữ liệu cho Line chart (Wallet)
+    const lineSeriesData = [
       {
-        name: 'Wallet Balance',
+        name: 'Số dư ví',
         data: data.map((item) => item.walletBalance),
       },
     ];
 
-    console.log('categories:', categories);
-    console.log('seriesData:', seriesData);
-    return { categories, seriesData };
+    return { categories, barSeriesData, lineSeriesData };
   }
+
   // table
   tableDepositHeaders = [
     { label: 'Ngày', value: 'day' },

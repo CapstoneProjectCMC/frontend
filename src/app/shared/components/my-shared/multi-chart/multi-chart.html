@@ -1,0 +1,25 @@
+<div class="chart-container">
+  @if (this.title) {
+  <div class="chart-title">{{ title }}</div>
+  } @if (chartOptions.series.length && chartOptions.xaxis.categories.length) {
+  <div class="chart-body">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [plotOptions]="chartOptions.plotOptions"
+      [yaxis]="chartOptions.yaxis"
+      [legend]="chartOptions.legend"
+      [fill]="chartOptions.fill"
+      [stroke]="chartOptions.stroke"
+      [tooltip]="chartOptions.tooltip"
+      [xaxis]="chartOptions.xaxis"
+    ></apx-chart>
+  </div>
+  } @else {
+  <div class="chart-error">
+    Lỗi: Thiếu dữ liệu đầu vào bắt buộc hoặc dữ liệu không hợp lệ để hiển thị
+    biểu đồ.
+  </div>
+  }
+</div>

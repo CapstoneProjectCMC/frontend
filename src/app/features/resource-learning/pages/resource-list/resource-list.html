@@ -3,7 +3,7 @@
     <div class="resource-list-control">
       <div class="resource-list-filter">
         <app-input
-          placeholder="Nhập tên..."
+          placeholder="Tìm kiếm tài nguyên..."
           [value]="resourcename"
           (valueChange)="handleInputChange($event)"
           [required]="false"
@@ -19,50 +19,44 @@
           [width]="'50px'"
           [height]="'50px'"
           variant="outline"
-          >
+        >
           <span style="font-size: 24px">+</span>
         </app-button>
       </div>
     </div>
 
     <div class="list-resource-card-container">
-      @if (!isLoading && resources) {
-        <div
-          class="list-resource-card"
-          appScrollEnd
-          (appScrollEnd)="loadNextPage()"
-          >
-          @for (resource of resources; track resource) {
-            <div>
-              <app-resource-card
-                [resource]="resource"
-                [showControls]="true"
-                (main)="goToDetail($event)"
-                (edit)="selectedResourceId = $event"
-                (delete)="deleteResource($event)"
-              ></app-resource-card>
-            </div>
-          }
+      @if (!isLoading && filteredResources) {
+      <div
+        class="list-resource-card"
+        appScrollEnd
+        (appScrollEnd)="loadNextPage()"
+      >
+        @for (resource of filteredResources; track resource) {
+        <div>
+          <app-resource-card
+            [resource]="resource"
+            [showControls]="true"
+            (main)="goToDetail($event)"
+            (edit)="selectedResourceId = $event"
+            (delete)="deleteResource($event)"
+          ></app-resource-card>
         </div>
-      }
-
-      @if (isLoading ) {
-        <div class="list-resource-card">
-          @if (isLoading) {
-            <app-skeleton-loading
-              type="card"
-              [count]="8"
-            ></app-skeleton-loading>
-          }
-        </div>
+        }
+      </div>
+      } @if (isLoading ) {
+      <div class="list-resource-card">
+        <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
+      </div>
       }
     </div>
   </div>
 </div>
+
 @if (selectedResourceId) {
-  <app-resource-edit-popup
-    [resourceId]="selectedResourceId"
-    (close)="handlePopupClose()"
-    (updated)="handleResourceUpdated()"
-  ></app-resource-edit-popup>
+<app-resource-edit-popup
+  [resourceId]="selectedResourceId"
+  (close)="handlePopupClose()"
+  (updated)="handleResourceUpdated()"
+></app-resource-edit-popup>
 }

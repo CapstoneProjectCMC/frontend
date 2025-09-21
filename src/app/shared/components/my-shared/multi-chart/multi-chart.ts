@@ -17,10 +17,12 @@ import {
   ApexXAxis,
   ApexFill,
   ApexTooltip,
+  ApexTitleSubtitle,
   NgApexchartsModule,
 } from 'ng-apexcharts';
 
 export type ChartOptions = {
+  responsive: any;
   series: ApexAxisChartSeries;
   chart: ApexChart;
   dataLabels: ApexDataLabels;
@@ -31,34 +33,40 @@ export type ChartOptions = {
   tooltip: ApexTooltip;
   stroke: ApexStroke;
   legend: ApexLegend;
+  title: ApexTitleSubtitle;
 };
 
 @Component({
-  selector: 'app-multi-line-chart',
-  templateUrl: './multi-line-chart.html',
-  styleUrls: ['./multi-line-chart.scss'],
+  selector: 'app-multi-chart',
+  templateUrl: './multi-chart.html',
+  styleUrls: ['./multi-chart.scss'],
   imports: [NgApexchartsModule],
   standalone: true,
 })
-export class MultiLineChartComponent implements OnChanges {
+export class MultiChartComponent implements OnChanges {
   @ViewChild('chart') chart!: ChartComponent;
 
-  // ✅ Nhận categories và series động từ bên ngoài
+  // ✅ Nhận đầu vào động
   @Input() categories: string[] = [];
   @Input() seriesData: ApexAxisChartSeries = [];
+  @Input() title: string = '';
+  @Input() type: 'bar' | 'line' = 'bar'; // 👈 loại biểu đồ
 
   public chartOptions: ChartOptions = {
     series: [],
     chart: {
-      type: 'bar',
-      height: 350,
+      type: 'bar', // mặc định
+      height: '100%', // 👈 thay vì 350 fix cứng
+      width: '100%', // 👈 ép full width
+      zoom: {
+        enabled: false,
+      },
     },
     dataLabels: {
       enabled: true,
     },
     stroke: {
-      curve: 'smooth',
-      width: 2,
+      curve: 'smooth', // 👈 chỉ giữ curve
     },
     xaxis: {
       categories: [],
@@ -70,9 +78,7 @@ export class MultiLineChartComponent implements OnChanges {
     },
     tooltip: {
       y: {
-        formatter: function (val: number) {
-          return val + ' VND';
-        },
+        formatter: (val: number) => val + ' VND',
       },
     },
     legend: {
@@ -82,11 +88,13 @@ export class MultiLineChartComponent implements OnChanges {
       opacity: 1,
     },
     plotOptions: {
-      bar: {
-        columnWidth: '55%',
-        borderRadius: 5,
-      },
+      bar: {}, // 👈 để trống, không set width/border
     },
+    title: {
+      text: '',
+      align: 'center',
+    },
+    responsive: undefined,
   };
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -94,9 +102,19 @@ export class MultiLineChartComponent implements OnChanges {
   }
 
   private updateChart() {
+    // cập nhật loại chart
+    this.chartOptions.chart.type = this.type;
+
+    // nếu là line thì bỏ plotOptions.bar đi
+    if (this.type === 'line') {
+      this.chartOptions.plotOptions = {} as ApexPlotOptions;
+    }
+
     this.chartOptions.series = this.seriesData;
-    this.chartOptions.xaxis = {
-      categories: this.categories,
+    this.chartOptions.xaxis = { categories: this.categories };
+    this.chartOptions.title = {
+      text: this.title,
+      align: 'center',
     };
   }
 }

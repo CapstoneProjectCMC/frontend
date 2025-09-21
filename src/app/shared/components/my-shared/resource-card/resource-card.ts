@@ -11,6 +11,10 @@ import { MediaResource } from '../../../../core/models/resource.model';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { activeForMyContent } from '../../../utils/authenRoleActions';
 import { getUserRoles } from '../../../utils/userInfo';
+import {
+  DEFAULT_AVATAR,
+  DEFAULT_BG,
+} from '../../../../core/models/user.models';
 
 @Component({
   selector: 'app-resource-card',
@@ -26,6 +30,8 @@ export class ResourceCardComponent implements OnChanges {
   @Output() main = new EventEmitter<string>();
   @Output() edit = new EventEmitter<string>();
   @Output() delete = new EventEmitter<string>();
+  avatarDefault = DEFAULT_AVATAR;
+  backgroundDefault = DEFAULT_BG;
 
   safeUrl!: SafeResourceUrl;
   roles = getUserRoles();
