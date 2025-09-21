@@ -1,15 +1,24 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
-import { Observable } from 'rxjs';
 import { CODE_COMPILER_SOCKET } from '../config-socket/port-socket';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io(CODE_COMPILER_SOCKET, {
+    const u = new URL(CODE_COMPILER_SOCKET, window.location.origin);
+    const isTls = u.protocol === 'https:' || u.protocol === 'wss:';
+    const base = `${isTls ? 'https' : 'http'}://${u.host}`;
+    const path =
+      (u.pathname.endsWith('/') ? u.pathname.slice(0, -1) : u.pathname) +
+      '/socket.io';
+
+    this.socket = io(base, {
+      path,
       transports: ['websocket'],
+      withCredentials: true,
     });
   }
 
