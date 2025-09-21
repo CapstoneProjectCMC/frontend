@@ -296,7 +296,7 @@ export class UpdateProfileComponent {
           this.lastName,
           formatDateToDDMMYYYY(this.dob),
           this.bio || '',
-          this.selectedGender === 'false' ? false : true,
+          this.selectedGender.value === 'false' ? false : true,
           this.displayName,
           Number(this.selectedEducation?.value ?? 0),
           this.links,
