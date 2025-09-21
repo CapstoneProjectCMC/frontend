@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { Observable } from 'rxjs';
+import { CODE_COMPILER_SOCKET } from '../config-socket/port-socket';
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io('http://localhost:4098', {
+    this.socket = io(CODE_COMPILER_SOCKET, {
       transports: ['websocket'],
     });
   }
