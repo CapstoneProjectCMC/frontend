@@ -206,9 +206,7 @@ export class UserListComponent {
     this.fetchDataListUser();
   }
 
-  handleImport = () => {
-    console.log('Import button clicked, listId:', this.listId);
-  };
+  handleImport = () => {};
 
   handleAdd = () => {
     this.isOpenCreateUser = !this.isOpenCreateUser;

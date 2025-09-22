@@ -53,9 +53,6 @@ export class ResourceCreatePageComponent {
   thumbnailError: string | null = null;
   handleInputChange(value: string | number): void {
     this.thumbnail = value.toString();
-
-    // Emit changes if needed
-    console.log('Input changed:', this.thumbnail);
   }
 
   newLink = '';
@@ -92,7 +89,6 @@ export class ResourceCreatePageComponent {
       .split(',')
       .map((t) => t.trim())
       .filter((t) => t.length > 0); // loại bỏ tag rỗng
-    console.log('Danh sách tag:', this.tags);
   }
 
   toggleDropdown(id: string): void {
@@ -220,9 +216,7 @@ export class ResourceCreatePageComponent {
     }
   }
 
-  onContentChange(content: string) {
-    console.log('Content changed:', content);
-  }
+  onContentChange(content: string) {}
 
   clearContent() {
     this.editorContent = '';

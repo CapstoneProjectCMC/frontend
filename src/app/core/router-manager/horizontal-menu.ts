@@ -3,7 +3,6 @@ import { SidebarItem } from '../models/data-handle';
 export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
   const auth_lv1 = ['ADMIN', 'TEACHER'];
   const auth_lv2 = ['ADMIN'];
-  console.log(roles);
 
   return [
     {

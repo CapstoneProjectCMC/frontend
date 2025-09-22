@@ -23,8 +23,8 @@ import { ChatbotService } from '../../../core/services/api-service/chatbot.servi
     HeaderComponent,
     FooterComponent,
     MenuLayoutComponent,
-    BoxChatAiComponent
-],
+    BoxChatAiComponent,
+  ],
   templateUrl: './app-layout.component.html',
   styleUrls: ['./app-layout.component.scss'],
 })
@@ -199,8 +199,6 @@ export class AppLayoutComponent implements OnInit {
 
     // Thêm vào đầu danh sách
     this.chatContexts = [newContext, ...this.chatContexts];
-
-    console.log('New chat created:', newContext);
   }
 
   handleSelectContext(contextId: string): void {

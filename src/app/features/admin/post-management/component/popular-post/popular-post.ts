@@ -22,9 +22,7 @@ export class PopularPostComponent {
   get topPosts(): PostCardInfo[] {
     return this.ListPost.slice(0, 2);
   }
-  handleAdd = () => {
-    console.log('Add button clicked');
-  };
+  handleAdd = () => {};
   formatCount(count: number): string {
     if (count >= 1_000_000_000)
       return (count / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'b';

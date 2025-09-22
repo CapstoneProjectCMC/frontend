@@ -102,7 +102,6 @@ export class AssignExerciseComponent implements OnInit {
         next: (res) => {
           if (res) {
             this.assignedStudents = res.data;
-            console.log(res.data);
             this.assignedTotalPages = res.totalPages;
             this.assignedTotalElements = res.totalElements;
             this.assignedPage = res.currentPage;

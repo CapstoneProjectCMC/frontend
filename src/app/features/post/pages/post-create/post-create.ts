@@ -130,7 +130,6 @@ export class PostCreatePageComponent {
       this.post.hashtag = this.tags;
       this.post.fileDocument.tags = this.tags;
     }
-    console.log('Danh sách tag:', this.tags);
   }
 
   onFilesSelected(event: Event) {

@@ -22,8 +22,8 @@ import { v4 as uuidv4 } from 'uuid';
     PaginationComponent,
     InputComponent,
     ButtonComponent,
-    DropdownButtonComponent
-],
+    DropdownButtonComponent,
+  ],
   standalone: true,
 })
 export class OrgListComponent {
@@ -112,9 +112,7 @@ export class OrgListComponent {
     ];
   }
 
-  handlePageChange(page: number) {
-    console.log('chuyển trang');
-  }
+  handlePageChange(page: number) {}
   formatDate(time: Date) {
     return formatDate(time);
   }
@@ -129,22 +127,14 @@ export class OrgListComponent {
       this.isClosing = false;
     }, 200); // Thời gian đúng với animation
   }
-  handletest(row: any) {
-    console.log(row);
-  }
+  handletest(row: any) {}
   // ... existing code ...
-  handleImport = () => {
-    console.log('Import button clicked, listId:', this.listId);
-  };
+  handleImport = () => {};
 
-  handleAdd = () => {
-    console.log('Add button clicked, listId:', this.listId);
-  };
+  handleAdd = () => {};
   // ... existing code ...
   handleInputChange(value: string | number): void {
     this.orgname = value.toString();
-
-    console.log('Input changed:', this.orgname);
   }
 
   handleSelect(dropdownKey: string, selected: any): void {
@@ -155,8 +145,6 @@ export class OrgListComponent {
     this.selectedOptions[dropdownKey] = selected;
 
     // this.router.navigate(['/', dropdownKey, selected.label]);
-
-    console.log(this.selectedOptions);
   }
 
   toggleDropdown(id: string): void {
@@ -166,6 +154,5 @@ export class OrgListComponent {
 
   handleSwitch = (row: any) => {
     // Xử lý chuyển trạng thái khoá/mở khoá ở đây
-    console.log('Switch clicked for org id:', row.id, 'status:', row.status);
   };
 }

@@ -116,7 +116,6 @@ export class CodeEditorComponent implements OnInit, OnDestroy {
     if (this.editor) {
       this.editor.destroy();
       this.initializeEditor();
-      console.log(this.editor);
     }
   }
 

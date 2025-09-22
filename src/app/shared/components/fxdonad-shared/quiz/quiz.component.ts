@@ -183,8 +183,6 @@ export class QuizComponent implements OnInit, OnDestroy, OnChanges {
       // Nếu tất cả câu hỏi đã trả lời, chuyển về câu đầu tiên
       this.currentQuestionIndex = 0;
     }
-
-    console.log('Quay lại làm bài tại câu hỏi:', this.currentQuestionIndex + 1);
   }
 
   startTimer(): void {
