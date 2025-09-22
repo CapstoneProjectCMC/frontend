@@ -119,7 +119,8 @@ export class ResourceCreatePageComponent {
         fileType.includes('msword') ||
         fileType.includes('officedocument.wordprocessingml') ||
         fileType.includes('presentation') ||
-        fileType.includes('text')
+        fileType.includes('text') ||
+        fileType.startsWith('image/')
       ) {
         category = 2;
         isTextbook = true;
@@ -127,10 +128,6 @@ export class ResourceCreatePageComponent {
       if (fileType.startsWith('video/')) {
         category = 1;
         isLectureVideo = true;
-      }
-      if (fileType.startsWith('image/')) {
-        category = 0;
-        isTextbook = true;
       }
     }
 

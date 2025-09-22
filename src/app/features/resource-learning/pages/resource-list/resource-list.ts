@@ -132,7 +132,10 @@ export class ResourceListComponent {
     ])
       .pipe(
         map(([videosRes, docsRes]) => {
-          const videos = videosRes.result ?? [];
+          const videos =
+            videosRes.result.filter(
+              (data) => data.checksum !== 'check-sum-demo'
+            ) ?? [];
           const docs = docsRes.result ?? [];
           return [...videos, ...docs]; // gộp
         })
