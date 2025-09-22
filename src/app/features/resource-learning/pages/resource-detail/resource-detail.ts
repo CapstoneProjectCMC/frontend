@@ -118,7 +118,7 @@ export class ResourceDetail implements OnInit {
         this.tags = res.result.tags.flatMap((tag) => {
           try {
             // Nếu là JSON array hợp lệ
-            if (tag.name.includes('[')) {
+            if (tag.name.includes('[') && tag.name.includes(']')) {
               const arr = JSON.parse(tag.name);
               if (Array.isArray(arr)) {
                 return arr.map((s: string) => s.trim());
