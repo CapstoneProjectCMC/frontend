@@ -5,6 +5,7 @@ import { ExerciseAdminStatisticsComponent } from './pages/exercise-admin-statist
 import { SummaryStatisticsComponent } from './pages/summary-statistics/summary-statistics.component';
 import { PaymentStatisticsComponent } from './pages/payment-statistics/payment-statistics.component';
 import { UserPaymentStatisticsComponent } from './pages/user-payment-statistic/user-payment-statistic.component';
+import { RoleGuard } from '../../core/guards/router-protected/role.guard';
 
 const routes: Routes = [
   {
@@ -25,7 +26,8 @@ const routes: Routes = [
       {
         path: 'admin-payment-statistics', //thêm vào đây
         component: PaymentStatisticsComponent, //thêm vào đây
-        data: { breadcrumb: 'Thống kê doanh thu' },
+        data: { breadcrumb: 'Thống kê doanh thu', roles: ['ADMIN'] },
+        canActivate: [RoleGuard],
       },
       {
         path: 'user-payment-statistics', //thêm vào đây

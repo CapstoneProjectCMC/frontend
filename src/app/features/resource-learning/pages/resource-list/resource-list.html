@@ -13,6 +13,7 @@
           [icon]="'fa fa-search'"
         ></app-input>
       </div>
+      @if(hasPermissionAction){
       <div class="resource-list-button">
         <app-button
           (onClick)="handleAdd()"
@@ -23,6 +24,7 @@
           <span style="font-size: 24px">+</span>
         </app-button>
       </div>
+      }
     </div>
 
     <div class="list-resource-card-container">
@@ -49,7 +51,26 @@
         <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
       </div>
       }
+      <!-- Hiển thị thông báo "Không có dữ liệu" với hình ảnh động khi không có bài viết -->
+      @if (!isLoading && (!filteredResources || filteredResources.length === 0))
+      {
+      <div class="no-data-container">
+        <ng-lottie
+          [options]="lottieOptions"
+          style="width: 200px; height: 200px"
+        >
+        </ng-lottie>
+        <p>Không có dữ liệu</p>
+      </div>
+      }
     </div>
+
+    <!-- Hiển thị skeleton loading khi đang tải -->
+    @if (isLoadingMore || isLoading) {
+    <div class="list-post-card">
+      <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
+    </div>
+    }
   </div>
 </div>
 

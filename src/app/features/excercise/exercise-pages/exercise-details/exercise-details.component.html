@@ -175,8 +175,8 @@
         <button class="btn main" (click)="openRequestBuyExercise()">
           <i class="fa-solid fa-cart-plus"></i> Mua bài tập
         </button>
-        } @if ( (hasQuestions && canStartDoing && (exercise.cost <= 0 ? true :
-        isBought)) || isActionActive ) {
+        } @if ( hasQuestions && (( canStartDoing && (exercise.cost <= 0 ? true :
+        isBought)) || isActionActive )) {
         <button class="btn main" (click)="doingQuiz()">
           <i class="fa fa-play"></i> Bắt đầu
         </button>

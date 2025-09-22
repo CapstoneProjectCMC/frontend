@@ -69,8 +69,8 @@ export class UpdateProfileComponent {
   displayName: string = '';
   firstName: string = '';
   lastName: string = '';
-  selectedEducation: any = null;
-  selectedGender: any = null;
+  selectedEducation: any = { value: 9, label: 'Khác' };
+  selectedGender: any = { value: 'other', label: 'Khác' };
   dob: string = ''; // ngày sinh dạng string để bind với datetime-local
   originalDob: string = '';
   bio: string = '';
@@ -116,6 +116,7 @@ export class UpdateProfileComponent {
     this.gender = [
       { value: 'false', label: 'Nam' },
       { value: 'true', label: 'Nữ' },
+      { value: 'other', label: 'Khác' },
     ];
   }
 

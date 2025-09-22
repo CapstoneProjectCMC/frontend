@@ -6,89 +6,89 @@
   "
   [class.ant-menu-light]="theme === 'light'"
   [class.ant-menu-dark]="theme === 'dark'"
-  >
+>
   <div class="ant-menu-container">
     <!-- Hamburger icon for mobile: luôn hiện khi isMobileView -->
     @if (isMobileView) {
-      <button
-        class="ant-menu-hamburger"
-        type="button"
-        (click)="toggleMobileMenu($event)"
-        aria-label="Open menu"
-        >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-menu-icon lucide-menu"
-          >
-          <path d="M4 12h16" />
-          <path d="M4 18h16" />
-          <path d="M4 6h16" />
-        </svg>
-      </button>
+    <button
+      class="ant-menu-hamburger"
+      type="button"
+      (click)="toggleMobileMenu($event)"
+      aria-label="Open menu"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-menu-icon lucide-menu"
+      >
+        <path d="M4 12h16" />
+        <path d="M4 18h16" />
+        <path d="M4 6h16" />
+      </svg>
+    </button>
     }
     <!-- Menu list: chỉ hiện khi isMobileMenuOpen hoặc không phải mobile -->
     @if (!isMobileView || isMobileMenuOpen) {
-      <ul
-        class="ant-menu-list"
-        [class.ant-menu-list-mobile-open]="isMobileMenuOpen"
-        [class.ant-menu-list-mobile]="isMobileView"
-        >
-        @for (item of menuItems; track item) {
-          <li
-            class="ant-menu-item-wrapper"
-            [class.ant-menu-item-wrapper-has-children]="hasChildren(item)"
-            (mouseenter)="onMouseEnter(item)"
-            (mouseleave)="onMouseLeave(item)"
-            >
-            @if (!item.isVisible) {
-              <div
-                class="ant-menu-item"
-                [class.ant-menu-item-active]="isActive(item)"
-                [class.ant-menu-item-selected]="isActive(item)"
-                [class.ant-menu-item-disabled]="item.disabled"
-                [class.ant-menu-item-expanded]="isExpanded(item)"
+    <ul
+      class="ant-menu-list"
+      [class.ant-menu-list-mobile-open]="isMobileMenuOpen"
+      [class.ant-menu-list-mobile]="isMobileView"
+    >
+      @for (item of menuItems; track item) {
+      <li
+        class="ant-menu-item-wrapper"
+        [class.ant-menu-item-wrapper-has-children]="hasChildren(item)"
+        (mouseenter)="onMouseEnter(item)"
+        (mouseleave)="onMouseLeave(item)"
+      >
+        @if (!item.needHidden) {
+        <div
+          class="ant-menu-item"
+          [class.ant-menu-item-active]="isActive(item)"
+          [class.ant-menu-item-selected]="isActive(item)"
+          [class.ant-menu-item-disabled]="item.disabled"
+          [class.ant-menu-item-expanded]="isExpanded(item)"
           (click)="
             hasChildren(item)
               ? toggleSubmenu(item, $event)
               : setActiveItem(item)
           "
-                [routerLink]="!hasChildren(item) ? item.path : null"
-                routerLinkActive="ant-menu-item-selected"
-                >
-                @if (item.icon) {
-                  <span class="ant-menu-item-icon">
-                    <i [class]="item.icon"></i>
-                  </span>
-                }
-                <span class="ant-menu-title-content">
-                  {{ item.label }}
-                </span>
-                @if (hasChildren(item)) {
-                  <span class="ant-menu-item-arrow">
-                    <i
-                      class="fas fa-chevron-down"
-                      [class.rotated]="isExpanded(item)"
-                    ></i>
-                  </span>
-                }
-              </div>
-            }
-            <!-- Submenu Dropdown -->
-            @if (hasChildren(item)) {
-              <div
-                class="ant-submenu"
-                [class.open]="submenuState[item.id] === 'open'"
-                [class.close]="submenuState[item.id] === 'close'"
-                (mouseenter)="onSubmenuMouseEnter(item)"
-                (mouseleave)="onSubmenuMouseLeave(item)"
+          [routerLink]="!hasChildren(item) ? item.path : null"
+          routerLinkActive="ant-menu-item-selected"
+        >
+          @if (item.icon) {
+          <span class="ant-menu-item-icon">
+            <i [class]="item.icon"></i>
+          </span>
+          }
+          <span class="ant-menu-title-content">
+            {{ item.label }}
+          </span>
+          @if (hasChildren(item)) {
+          <span class="ant-menu-item-arrow">
+            <i
+              class="fas fa-chevron-down"
+              [class.rotated]="isExpanded(item)"
+            ></i>
+          </span>
+          }
+        </div>
+        }
+        <!-- Submenu Dropdown -->
+        @if (hasChildren(item)) {
+        <div
+          class="ant-submenu"
+          [class.open]="submenuState[item.id] === 'open'"
+          [class.close]="submenuState[item.id] === 'close'"
+          (mouseenter)="onSubmenuMouseEnter(item)"
+          (mouseleave)="onSubmenuMouseLeave(item)"
           [ngStyle]="
             isMobileView &&
             submenuState[item.id] === 'open' &&
@@ -102,34 +102,34 @@
                 }
               : {}
           "
-              >
-              <ul class="ant-submenu-list">
-                @for (child of item.children; track child) {
-                  <li
-                    class="ant-submenu-item"
-                    [class.ant-submenu-item-active]="isActive(child)"
-                    [class.ant-submenu-item-selected]="isActive(child)"
-                    [class.ant-submenu-item-disabled]="child.disabled"
-                    (click)="onSubmenuItemClick(child)"
-                    [routerLink]="child.path"
-                    routerLinkActive="ant-submenu-item-selected"
-                    >
-                    @if (child.icon) {
-                      <span class="ant-submenu-item-icon">
-                        <i [class]="child.icon"></i>
-                      </span>
-                    }
-                    <span class="ant-submenu-title-content">
-                      {{ child.label }}
-                    </span>
-                  </li>
-                }
-              </ul>
-            </div>
-          }
-        </li>
+        >
+          <ul class="ant-submenu-list">
+            @for (child of item.children; track child) {
+            <li
+              class="ant-submenu-item"
+              [class.ant-submenu-item-active]="isActive(child)"
+              [class.ant-submenu-item-selected]="isActive(child)"
+              [class.ant-submenu-item-disabled]="child.disabled"
+              (click)="onSubmenuItemClick(child)"
+              [routerLink]="child.path"
+              routerLinkActive="ant-submenu-item-selected"
+            >
+              @if (child.icon) {
+              <span class="ant-submenu-item-icon">
+                <i [class]="child.icon"></i>
+              </span>
+              }
+              <span class="ant-submenu-title-content">
+                {{ child.label }}
+              </span>
+            </li>
+            }
+          </ul>
+        </div>
+        }
+      </li>
       }
     </ul>
-  }
-</div>
+    }
+  </div>
 </nav>

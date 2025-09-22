@@ -60,6 +60,9 @@ export interface ResourceCreateRequest {
   category: FileCategory;
   description: string;
   tags: string[];
+  isLectureVideo: boolean;
+  isTextbook: boolean;
+  orgId: string | null | undefined;
 }
 
 //--------------Input episode local---------------------
