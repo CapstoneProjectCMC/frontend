@@ -5,7 +5,7 @@
   <!-- Ô nhập bình luận -->
   @if (authenticated) {
   <div class="comment-input">
-    <img [src]="userAvatar" alt="User Avatar" class="avatar" />
+    <img [src]="userAvatar || avatarDefault" alt="User Avatar" class="avatar" />
     <input [(ngModel)]="newComment" placeholder="Viết bình luận..." />
     <button (click)="submitComment()">Gửi</button>
   </div>
@@ -17,7 +17,7 @@
     <div class="comment-item" [hidden]="comment.parentId !== null">
       <!-- Thông tin bình luận -->
       <div class="comment-header">
-        <img [src]="comment.user.avatarUrl" class="avatar" />
+        <img [src]="comment.user.avatarUrl || avatarDefault" class="avatar" />
         <div
           class="line-connect"
           [class.opened]="!!showReplies[comment.id]"

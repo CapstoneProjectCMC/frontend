@@ -83,7 +83,7 @@
       }
 
       <!-- Hiển thị skeleton loading khi đang tải -->
-      @if (isLoadingInitial || isLoadingMore || isLoading) {
+      @if (!isLoadingInitial || isLoadingMore || isLoading) {
       <div class="list-post-card">
         <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
       </div>

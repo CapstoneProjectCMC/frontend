@@ -1,9 +1,11 @@
 <div class="error-container">
-  <div class="error-icon">😕</div>
-  <h1>404</h1>
+  <!-- <div class="error-icon">😕</div> -->
+  <!-- <h1>404</h1> -->
+  <ng-lottie [options]="lottieOptions" style="width: 500px; height: 500px">
+  </ng-lottie>
   <h2>Không tìm thấy trang</h2>
   <p>
     Trang tìm kiếm của bạn không được tìm thấy hoặc không có quyền truy cập.
   </p>
-  <button class="back-home" (click)="goHome()">Quay về trang chủ</button>
+  <button class="back-home" (click)="goHome()">Quay về</button>
 </div>
