@@ -24,7 +24,6 @@
     </button>
     }
   </div>
-
   <div class="custom-controls" [class.visible]="controlsVisible">
     <button class="control-button" (click)="togglePlay()">
       @if (isPlaying) {
@@ -62,7 +61,6 @@
       </svg>
       }
     </button>
-
     <input
       type="range"
       min="0"
@@ -71,11 +69,9 @@
       (input)="seekVideo($event)"
       class="progress-bar"
     />
-
     @if (!isMobileView) {
     <button class="control-button" (click)="seekBackward()">-90s</button>
     <button class="control-button" (click)="seekForward()">+90s</button>
-
     <select
       #qualitySelector
       (change)="changeQuality($event)"

@@ -76,7 +76,6 @@ export class DropdownButtonComponent
   filteredOptions: DropdownOption[] = [];
 
   handleClick(event: any): void {
-    console.log('Button clicked!', event);
     this.loading = true;
 
     setTimeout(() => {
@@ -88,13 +87,9 @@ export class DropdownButtonComponent
     this.selectedOptions = [];
   }
 
-  handleHover(isHovered: boolean): void {
-    console.log('Button hover:', isHovered);
-  }
+  handleHover(isHovered: boolean): void {}
 
-  handleFocus(isFocused: boolean): void {
-    console.log('Button focus:', isFocused);
-  }
+  handleFocus(isFocused: boolean): void {}
 
   ngOnInit(): void {
     this.setupKeyboardNavigation();

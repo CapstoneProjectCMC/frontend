@@ -311,9 +311,9 @@ export class ExerciseDetailsComponent implements OnInit {
             'Số dư không đủ',
             `Số dư tài khoản của bạn là ${
               res.result.balance
-            }VNĐ hiện không đủ, còn thiếu ${
+            }VNĐ hiện không đủ\n Còn thiếu ${
               this.exercise.cost - res.result.balance
-            }VNĐ, bạn có muốn nạp thêm ?`,
+            }VNĐ \n Bạn có muốn nạp thêm ?`,
             'Đồng ý',
             'hủy',
             () => this.router.navigate(['/service-and-payment/payment'])
@@ -322,10 +322,10 @@ export class ExerciseDetailsComponent implements OnInit {
           openModalNotification(
             this.store,
             'Mua bài tập',
-            `Bạn chắc chắn mua bài tập này? 
-          Số dư sau thanh toán: ${(
+            `Bạn chắc chắn mua bài tập này? \n
+          Số dư sau thanh toán: <b>${(
             res.result.balance - this.exercise.cost
-          ).toLocaleString()}VNĐ`,
+          ).toLocaleString()}</b> VNĐ`,
             'Đồng ý',
             'hủy',
             () => this.payForExercise()

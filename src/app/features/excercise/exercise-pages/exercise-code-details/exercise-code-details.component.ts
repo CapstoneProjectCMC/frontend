@@ -186,9 +186,9 @@ export class ExerciseCodeDetailsComponent {
             'Số dư không đủ',
             `Số dư tài khoản của bạn là ${
               res.result.balance
-            }VNĐ hiện không đủ, còn thiếu ${
+            }VNĐ hiện không đủ \nCòn thiếu ${
               this.exercise!.cost - res.result.balance
-            }VNĐ, bạn có muốn nạp thêm ?`,
+            }VNĐ \nBạn có muốn nạp thêm ?`,
             'Đồng ý',
             'Hủy',
             () => this.router.navigate(['/service-and-payment/payment'])
@@ -197,9 +197,9 @@ export class ExerciseCodeDetailsComponent {
           openModalNotification(
             this.store,
             'Mua bài tập',
-            `Bạn chắc chắn mua bài tập này? Số dư sau thanh toán: ${(
+            `Bạn chắc chắn mua bài tập này? \nSố dư sau thanh toán: <b>${(
               res.result.balance - this.exercise!.cost
-            ).toLocaleString()}VNĐ`,
+            ).toLocaleString()}</b> VNĐ`,
             'Đồng ý',
             'Hủy',
             () => this.payForExercise()

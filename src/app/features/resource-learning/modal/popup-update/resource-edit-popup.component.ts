@@ -1,15 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
 import { FormsModule } from '@angular/forms';
 import { ResourceService } from '../../../../core/services/api-service/resource.service';
-import {
-  ResourceData,
-  Tag,
-  FileCategory,
-  MediaResource,
-} from '../../../../core/models/resource.model';
+import { MediaResource } from '../../../../core/models/resource.model';
 import { sendNotification } from '../../../../shared/utils/notification';
-import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { clearLoading } from '../../../../shared/store/loading-state/loading.action';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
@@ -33,11 +26,7 @@ export class ResourceEditPopupComponent {
 
   tagsInput: string = '';
 
-  constructor(
-    private router: Router,
-    private resourceService: ResourceService,
-    private store: Store
-  ) {}
+  constructor(private resourceService: ResourceService, private store: Store) {}
 
   ngOnInit() {
     if (this.resourceId) {
@@ -50,9 +39,33 @@ export class ResourceEditPopupComponent {
     this.resourceService.getResourceById(id).subscribe({
       next: (res) => {
         this.resource = res.result;
-        this.tagInput =
-          this.resource?.tags?.map((t) => t.name).join(', ') || '';
-        this.tags = this.resource?.tags?.map((t) => t.name) || [];
+        // gom tất cả các name
+        const rawNames = this.resource?.tags?.map((t) => t.name) || [];
+
+        // chuẩn hoá mảng tags
+        this.tags = rawNames.flatMap((name) => {
+          try {
+            // nếu là JSON array
+            if (name.includes('[')) {
+              const parsed = JSON.parse(name);
+              if (Array.isArray(parsed)) return parsed;
+            }
+            // nếu là string có dấu "
+            if (name.includes('"')) {
+              return name
+                .replace(/[\[\]"]+/g, '')
+                .split(',')
+                .map((s) => s.trim());
+            }
+            // ngược lại trả về trực tiếp
+            return [name];
+          } catch {
+            return [name.replace(/[\[\]"]+/g, '').trim()];
+          }
+        });
+
+        // hiển thị input (join bằng dấu phẩy)
+        this.tagInput = this.tags.join(', ');
 
         // xác định chế độ hiển thị từ orgId
         this.visibility =
@@ -81,8 +94,6 @@ export class ResourceEditPopupComponent {
       .split(',')
       .map((t) => t.trim())
       .filter((t) => t.length > 0); // loại bỏ tag rỗng
-
-    console.log('Danh sách tag:', this.tags);
   }
 
   // handler chọn file mới

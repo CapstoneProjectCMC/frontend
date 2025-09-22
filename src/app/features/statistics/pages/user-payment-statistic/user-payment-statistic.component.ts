@@ -167,7 +167,6 @@ export class UserPaymentStatisticsComponent implements OnInit, OnDestroy {
         next: (response) => {
           if (response && response.result) {
             this.paymentData = response.result;
-            console.log('Fetched Data:', this.paymentData);
             //chuẩn bị dữ liệu cho biểu đồ
             this.convertToChartData(this.paymentData);
 

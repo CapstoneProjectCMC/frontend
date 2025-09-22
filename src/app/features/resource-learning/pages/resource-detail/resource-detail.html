@@ -1,3 +1,4 @@
+@if(resource) {
 <div class="resource-detail-container">
   @if (resource) {
   <div
@@ -9,7 +10,9 @@
   >
     <!-- Nếu là Document thì đưa Info lên trước -->
     <div class="resource-video-info">
-      <div class="title">{{ resource.fileName }}</div>
+      <div class="title">
+        {{ resource.fileName || 'File tài nguyên học tập' }}
+      </div>
       <div class="author-action">
         <div class="author">
           <div class="avatar">
@@ -18,13 +21,13 @@
               alt="Avatar"
             />
           </div>
-          <div class="name">{{ authorName }}</div>
+          <div class="name">{{authorName ? authorName : 'Ẩn danh'}}</div>
         </div>
       </div>
       <div class="tag-description">
         <div class="resource-tags">
-          @for (tag of resource.tags; track tag) {
-          <span class="resource-tag"> #{{ tag.name }} </span>
+          @for (tag of tags; track tag) {
+          <span class="resource-tag"> #{{ tag }} </span>
           }
         </div>
       </div>
@@ -118,3 +121,8 @@
   </div>
   } }
 </div>
+} @if(!resource){
+<div class="list-post-card">
+  <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
+</div>
+}

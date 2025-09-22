@@ -51,7 +51,9 @@
           [alt]="resource.userProfile.displayName"
           class="author-avatar"
         />
-        <span class="author-name">{{ resource.userProfile.displayName }}</span>
+        <span class="author-name"
+          >{{ resource.userProfile.displayName || 'Ẩn danh'}}</span
+        >
       </div>
       <span class="created-at">{{ formatDate(resource.createdAt) }}</span>
     </div>

@@ -35,7 +35,6 @@ export class ChangePasswordComponent {
   isLoading = false;
 
   onClose(): void {
-    console.log('Modal closed');
     this.onCloseModal.emit(false);
     this.isVisibleModal = !this.isVisibleModal;
     // In một ứng dụng thực, bạn sẽ sử dụng một sự kiện hoặc service để đóng modal.

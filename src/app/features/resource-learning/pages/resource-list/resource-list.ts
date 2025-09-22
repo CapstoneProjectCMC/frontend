@@ -1,7 +1,5 @@
-import { NgClass } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 import { InputComponent } from '../../../../shared/components/fxdonad-shared/input/input';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { TrendingItem } from '../../../../shared/components/fxdonad-shared/trending/trending.component';
@@ -9,7 +7,6 @@ import { ButtonComponent } from '../../../../shared/components/my-shared/button/
 import { MediaResource } from '../../../../core/models/resource.model';
 import { ResourceCardComponent } from '../../../../shared/components/my-shared/resource-card/resource-card';
 import { ResourceService } from '../../../../core/services/api-service/resource.service';
-import { mapToResourceCardList } from '../../../../shared/utils/mapData';
 import { Store } from '@ngrx/store';
 import {
   clearLoading,
@@ -18,6 +15,10 @@ import {
 import { sendNotification } from '../../../../shared/utils/notification';
 import { ResourceEditPopupComponent } from '../../modal/popup-update/resource-edit-popup.component';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleActions';
+import { LottieComponent } from 'ngx-lottie';
 
 @Component({
   selector: 'app-resource-list',
@@ -31,9 +32,15 @@ import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.dir
     ResourceCardComponent,
     ResourceEditPopupComponent,
     ScrollEndDirective,
+    LottieComponent,
   ],
 })
 export class ResourceListComponent {
+  lottieOptions = {
+    path: 'assets/lottie-animation/nodata.json',
+    autoplay: true,
+    loop: true,
+  };
   resources: MediaResource[] = [];
   filteredResources: MediaResource[] = []; // danh sách sau khi search
 
@@ -44,6 +51,8 @@ export class ResourceListComponent {
     { name: 'TypeScript', views: 5000 },
     { name: 'JavaScript', views: 20000 },
   ];
+
+  hasPermissionAction = false;
 
   isLoading = false;
   isLoadingMore = false;
@@ -78,25 +87,74 @@ export class ResourceListComponent {
   }
 
   ngOnInit(): void {
+    this.hasPermissionAction = activeForAdminAndTeacher();
+
+    this.pageIndex = 1;
     this.fetchDataResource();
   }
+
+  // ================== Fetch All==================
+  // fetchDataResource(append: boolean = false) {
+  //   this.isLoadingMore = append;
+  //   this.isLoading = !append;
+
+  //   this.resourceService
+  //     .getAllResourceLearning(this.itemsPerPage, this.pageIndex)
+  //     .subscribe({
+  //       next: (res) => {
+  //         const newData = res.result.data;
+  //         const { currentPage, totalPages } = res.result;
+
+  //         this.resources = append ? [...this.resources, ...newData] : newData;
+  //         this.filteredResources = [...this.resources]; // gán mặc định cho search
+
+  //         this.hasMore = currentPage < totalPages;
+
+  //         this.isLoading = false;
+  //         this.isLoadingMore = false;
+  //       },
+  //       error: (err) => {
+  //         console.error(err);
+  //         this.isLoading = false;
+  //         this.isLoadingMore = false;
+  //       },
+  //     });
+  // }
 
   // ================== Fetch ==================
   fetchDataResource(append: boolean = false) {
     this.isLoadingMore = append;
     this.isLoading = !append;
 
-    this.resourceService
-      .getAllResourceLearning(this.itemsPerPage, this.pageIndex)
+    forkJoin([
+      this.resourceService.getVideoResources(),
+      this.resourceService.getDocumentResources(),
+    ])
+      .pipe(
+        map(([videosRes, docsRes]) => {
+          const videos =
+            videosRes.result.filter(
+              (data) => data.checksum !== 'check-sum-demo'
+            ) ?? [];
+          const docs = docsRes.result ?? [];
+          return [...videos, ...docs]; // gộp
+        })
+      )
       .subscribe({
-        next: (res) => {
-          const newData = res.result.data;
-          const { currentPage, totalPages } = res.result;
+        next: (allResources) => {
+          // Nếu append thì cộng dồn, ngược lại reset
+          this.resources = append
+            ? [...this.resources, ...allResources]
+            : allResources;
 
-          this.resources = append ? [...this.resources, ...newData] : newData;
-          this.filteredResources = [...this.resources]; // gán mặc định cho search
+          // tự phân trang tại FE
+          const start = (this.pageIndex - 1) * this.itemsPerPage;
+          const end = this.pageIndex * this.itemsPerPage;
 
-          this.hasMore = currentPage < totalPages;
+          this.filteredResources = this.resources.slice(0, end); // hiển thị từ đầu tới trang hiện tại
+
+          // check còn data nữa không
+          this.hasMore = end < this.resources.length;
 
           this.isLoading = false;
           this.isLoadingMore = false;
@@ -109,12 +167,23 @@ export class ResourceListComponent {
       });
   }
 
-  // ================== Load Next Page ==================
+  // ================== Load Next Page Server==================
+  // loadNextPage() {
+  //   if (this.isLoadingMore || !this.hasMore) return;
+
+  //   this.pageIndex++;
+  //   this.fetchDataResource(true);
+  // }
+
+  // ================== Load Next Page Client==================
   loadNextPage() {
     if (this.isLoadingMore || !this.hasMore) return;
 
     this.pageIndex++;
-    this.fetchDataResource(true);
+    const end = this.pageIndex * this.itemsPerPage;
+
+    this.filteredResources = this.resources.slice(0, end);
+    this.hasMore = end < this.resources.length;
   }
 
   // ================== Delete ==================
@@ -192,13 +261,10 @@ export class ResourceListComponent {
     this.router.navigate(['/resource-learning/resource-create']);
   };
 
-  handlePageChange(page: number) {
-    console.log('chuyển trang');
-  }
+  handlePageChange(page: number) {}
 
   // ================== Navigation ==================
   goToDetail = (resourceId: string) => {
-    console.log('Navigating to resource detail with ID:', resourceId);
     this.router.navigate(['/resource-learning/resource', resourceId]);
   };
 }

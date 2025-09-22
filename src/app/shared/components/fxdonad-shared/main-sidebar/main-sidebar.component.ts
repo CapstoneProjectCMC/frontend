@@ -55,14 +55,14 @@ export class MainSidebarComponent {
     children.forEach((child, index) => {
       // Add delay for staggered animation
       setTimeout(() => {
-        child.isVisible = true;
+        child.needHidden = true;
       }, index * 50); // 50ms delay between each item
     });
   }
 
   private resetSubmenuItemsVisibility(children: SidebarItem[]): void {
     children.forEach((child) => {
-      child.isVisible = false;
+      child.needHidden = false;
     });
   }
 }

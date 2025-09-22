@@ -199,14 +199,14 @@ export const routes: Routes = [
           ).then((m) => m.ResourceManagementRoutingModule),
         data: { breadcrumb: 'Quản lý tài nguyên' },
       },
-
-      {
-        path: '**',
-        loadComponent: () =>
-          import('./features/auth/pages/error-404/error-404.component').then(
-            (m) => m.Error404Component
-          ),
-      },
     ],
+  },
+
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/auth/pages/error-404/error-404.component').then(
+        (m) => m.Error404Component
+      ),
   },
 ];

@@ -25,6 +25,7 @@ import { InputComponent } from '../../../../shared/components/fxdonad-shared/inp
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
+import { FileCategory } from '../../../../core/models/resource.model';
 
 @Component({
   selector: 'app-resource-create',
@@ -52,9 +53,6 @@ export class ResourceCreatePageComponent {
   thumbnailError: string | null = null;
   handleInputChange(value: string | number): void {
     this.thumbnail = value.toString();
-
-    // Emit changes if needed
-    console.log('Input changed:', this.thumbnail);
   }
 
   newLink = '';
@@ -91,7 +89,6 @@ export class ResourceCreatePageComponent {
       .split(',')
       .map((t) => t.trim())
       .filter((t) => t.length > 0); // loại bỏ tag rỗng
-    console.log('Danh sách tag:', this.tags);
   }
 
   toggleDropdown(id: string): void {
@@ -104,15 +101,16 @@ export class ResourceCreatePageComponent {
       sendNotification(
         this.store,
         'Tạo tài nguyên',
-        'Vui lòng chọn file!',
+        'Yêu cầu chọn file!',
         'error'
       );
       return;
     }
 
     const file = this.selectedFile;
-    let isTextbook = false;
+    let category: FileCategory = 3;
     let isLectureVideo = false;
+    let isTextbook = false;
 
     if (file) {
       const fileType = file.type;
@@ -121,21 +119,26 @@ export class ResourceCreatePageComponent {
         fileType.includes('msword') ||
         fileType.includes('officedocument.wordprocessingml') ||
         fileType.includes('presentation') ||
-        fileType.includes('text')
+        fileType.includes('text') ||
+        fileType.startsWith('image/')
       ) {
+        category = 2;
         isTextbook = true;
       }
       if (fileType.startsWith('video/')) {
+        category = 1;
         isLectureVideo = true;
       }
     }
 
     const postData = {
       file,
+      category,
+      isLectureVideo,
+      isTextbook,
       description: this.htmlToMd.convert(this.editorContent),
       tags: this.tags,
-      isTextbook,
-      isLectureVideo,
+      orgId: null,
     };
     this.store.dispatch(
       setLoading({
@@ -218,9 +221,7 @@ export class ResourceCreatePageComponent {
     }
   }
 
-  onContentChange(content: string) {
-    console.log('Content changed:', content);
-  }
+  onContentChange(content: string) {}
 
   clearContent() {
     this.editorContent = '';

@@ -29,11 +29,9 @@ export class SocketConnectionService {
         query: token ? { token } : undefined, // thêm query
       });
 
-      socket.on('connect', () =>
-        console.log(`✅ WS connected: ${base}${path}`)
-      );
+      socket.on('connect', () => console.log(`Đã kết nối WS: ${base}${path}`));
       socket.on('connect_error', (err) =>
-        console.error(`❌ WS connect error (${base}${path}):`, err.message)
+        console.error(`Kết nối WS thất bại (${base}${path}):`, err.message)
       );
 
       this.sockets.set(urlOrPath, socket);

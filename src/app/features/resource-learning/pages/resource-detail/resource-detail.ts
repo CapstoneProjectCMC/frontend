@@ -50,6 +50,7 @@ export class ResourceDetail implements OnInit {
   isDocument: boolean = false;
   isImage: boolean = false;
   safeUrl!: SafeResourceUrl;
+  tags: string[] = [];
 
   // trạng thái phân trang
   isLoading = false;
@@ -113,6 +114,34 @@ export class ResourceDetail implements OnInit {
           this.resource.fileType
         );
         this.isImage = this.resource.fileType.startsWith('image/');
+        // this.tags = JSON.parse(res.result.tags[0].name);
+        this.tags = res.result.tags.flatMap((tag) => {
+          try {
+            // Nếu là JSON array hợp lệ
+            if (tag.name.includes('[') && tag.name.includes(']')) {
+              const arr = JSON.parse(tag.name);
+              if (Array.isArray(arr)) {
+                return arr.map((s: string) => s.trim());
+              }
+            }
+
+            // Nếu không phải array nhưng có ký tự [, ], "
+            if (/[\[\]"]/.test(tag.name)) {
+              return tag.name
+                .replace(/[\[\]"]+/g, '') // bỏ [, ], "
+                .split(',') // tách nếu có dấu phẩy
+                .map((s) => s.trim()) // trim khoảng trắng
+                .filter((s) => s.length); // bỏ chuỗi rỗng
+            }
+
+            // Trường hợp còn lại: trả trực tiếp
+            return [tag.name.trim()];
+          } catch (e) {
+            console.error('Parse error:', e);
+            return [tag.name.replace(/[\[\]"]+/g, '').trim()];
+          }
+        });
+
         if (this.resource.url) {
           this.setSafeUrl(this.resource.url);
         }
@@ -168,7 +197,6 @@ export class ResourceDetail implements OnInit {
 
   handleInputChange(value: string | number): void {
     this.searchTerm = value.toString();
-    console.log('Input changed:', this.searchTerm);
   }
 
   downloadDocument() {

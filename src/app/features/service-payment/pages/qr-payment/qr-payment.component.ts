@@ -279,7 +279,6 @@ export class QrPaymentComponent implements OnInit, OnDestroy {
 
   // Gọi API kiểm tra giao dịch
   checkTransactionStatus(): void {
-    console.log(this.paymentHash);
     this.paymentService.checkTransactionStatus().subscribe({
       next: (res) => {
         const transactions = res.data || [];
