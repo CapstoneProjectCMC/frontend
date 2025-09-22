@@ -1,10 +1,11 @@
 <div class="resource-detail-container">
+  @if (resource) {
   <div
     class="resource-detail-video"
     [ngClass]="{
-      'video': !isDocument,
-      'document': isDocument
-    }"
+        'video': !isDocument,
+        'document': isDocument
+      }"
   >
     <!-- Nếu là Document thì đưa Info lên trước -->
     <div class="resource-video-info">
@@ -17,16 +18,8 @@
               alt="Avatar"
             />
           </div>
-          <div class="name">{{authorName}}</div>
+          <div class="name">{{ authorName }}</div>
         </div>
-        <!-- <div class="action">
-          <div class="report">
-            <span>Báo cáo</span>
-          </div>
-          <div class="save">
-            <span>Lưu</span>
-          </div>
-        </div> -->
       </div>
       <div class="tag-description">
         <div class="resource-tags">
@@ -86,13 +79,6 @@
       </div>
       } }
     </div>
-
-    <!-- Nếu là Video thì info + comment vẫn nằm dưới như cũ -->
-    @if (!isDocument) {
-    <div class="resource-video-info">
-      <!-- giữ nguyên phần info -->
-    </div>
-    }
   </div>
 
   <!-- Ẩn Other video nếu là Document -->
@@ -130,5 +116,5 @@
       }
     </div>
   </div>
-  }
+  } }
 </div>

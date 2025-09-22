@@ -85,10 +85,10 @@ export class ExerciseService {
     );
   }
 
-  getMyAssignExercise(page: number, size: number) {
+  getMyAssignExercise(page?: number, size?: number) {
     return this.api.get<
       ApiResponse<IPaginationResponse<MyAssignExerciseResponse[]>>
-    >(API_CONFIG.ENDPOINTS.GET.GET_MY_ASSGIN(page, size));
+    >(API_CONFIG.ENDPOINTS.GET.GET_MY_ASSIGN(page, size));
   }
 
   getMyQuizHistory(page: number, size: number) {
@@ -103,7 +103,7 @@ export class ExerciseService {
     >(API_CONFIG.ENDPOINTS.GET.GET_HISTORY_CODE(page, size));
   }
 
-  getMySubmissionsHistory(page: number, size: number) {
+  getMySubmissionsHistory(page?: number, size?: number) {
     return this.api.get<
       ApiResponse<IPaginationResponse<MySubmissionsHistoryResponse[]>>
     >(API_CONFIG.ENDPOINTS.GET.GET_MY_SUBMISSION_HISTORY(page, size));
