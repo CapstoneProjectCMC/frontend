@@ -170,7 +170,6 @@ export class ResourceDetail implements OnInit {
 
   handleInputChange(value: string | number): void {
     this.searchTerm = value.toString();
-    console.log('Input changed:', this.searchTerm);
   }
 
   downloadDocument() {

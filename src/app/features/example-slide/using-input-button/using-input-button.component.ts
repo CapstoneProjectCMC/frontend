@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { InputComponent } from '../../../shared/components/fxdonad-shared/input/input';
 import { InteractiveButtonComponent } from '../../../shared/components/fxdonad-shared/button/button.component';
 
-
 @Component({
   selector: 'app-using-input-button',
   imports: [InputComponent, InteractiveButtonComponent],
@@ -31,7 +30,6 @@ export class UsingInputButtonComponent {
   }
 
   onClick() {
-    console.log('Clicked');
     this.follow = !this.follow;
   }
 }

@@ -35,8 +35,6 @@ export class DisplayScoreComponent implements OnInit {
       this.router.navigate(['/exercise/exercise-layout/list']);
       return;
     }
-
-    console.log('Quiz Result Data:', this.quizData);
   }
 
   /**

@@ -81,8 +81,6 @@ export class ResourceEditPopupComponent {
       .split(',')
       .map((t) => t.trim())
       .filter((t) => t.length > 0); // loại bỏ tag rỗng
-
-    console.log('Danh sách tag:', this.tags);
   }
 
   // handler chọn file mới

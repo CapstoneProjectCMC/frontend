@@ -105,8 +105,6 @@ export class HeaderComponent {
 
   onSelectedOganization(selected: any) {
     this.selectedOptions = selected;
-
-    console.log(this.selectedOptions);
   }
 
   toggleNotification() {
@@ -122,7 +120,6 @@ export class HeaderComponent {
   }
 
   goToHome() {
-    console.log('Click về trang chủ');
     this.router.navigate(['/']);
   }
 
@@ -162,7 +159,6 @@ export class HeaderComponent {
       this.showProfileMenu = true;
       this.isMenuVisible = true; // Set ngay lập tức để tránh flash
     }
-    console.log('đã bấm, showProfileMenu:', this.showProfileMenu);
   }
 
   toggleTheme(isChecked: boolean) {

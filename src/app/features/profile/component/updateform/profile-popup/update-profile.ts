@@ -99,7 +99,6 @@ export class UpdateProfileComponent {
     private store: Store,
     private router: Router
   ) {
-    console.log('data ở đây', this.user);
     // dữ liệu dropdown mẫu
     this.education = [
       { value: 0, label: 'Không tiết lộ' },
@@ -153,15 +152,12 @@ export class UpdateProfileComponent {
       // Gán giới tính
       this.selectedGender =
         this.gender.find((g) => g.value === String(this.user.gender)) || null;
-      console.log('selectedGender on init:', this.selectedGender);
       this.links = [...(this.user.links || [])];
       this.selectedCity = this.user.city || '';
 
       const edu = this.user.education;
       this.selectedEducation =
         this.education.find((e) => e.value === this.user.education) || null;
-
-      console.log('selectedEducation on init:', this.selectedEducation);
     } else {
       this.hasError = true;
     }
@@ -248,8 +244,6 @@ export class UpdateProfileComponent {
 
     const isGenderChanged =
       (this.selectedGender?.value === 'true') !== this.user.gender;
-    console.log('selectedGender:', this.selectedGender);
-    console.log('user.gender:', this.user.gender);
 
     const isDisplayNameChanged =
       (this.displayName || '') !== (this.user.displayName || '');
@@ -323,7 +317,6 @@ export class UpdateProfileComponent {
 
     forkJoin(requests).subscribe({
       next: (results) => {
-        console.log('Kết quả tất cả:', results);
         sendNotification(
           this.store,
           'Đã cập nhật thành công',

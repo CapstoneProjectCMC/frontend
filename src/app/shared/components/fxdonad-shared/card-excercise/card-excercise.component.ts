@@ -14,6 +14,7 @@ import { vi } from 'date-fns/locale/vi';
 import { decodeJWT } from '../../../utils/stringProcess';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { checkAuthenticated } from '../../../utils/authenRoleActions';
+import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 
 export interface CardExcercise {
   id: string;
@@ -48,6 +49,7 @@ export class CardExcerciseComponent {
     teacher: 'ROLE_TEACHER',
     user: 'ROLE_USER',
   };
+  avatarDefault = avatarUrlDefault;
 
   role: string = 'ROLE_USER';
   isExpanded = false;

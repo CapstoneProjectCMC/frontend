@@ -81,7 +81,7 @@ export class ResourceListComponent {
     this.fetchDataResource();
   }
 
-  // ================== Fetch ==================
+  // ================== Fetch All==================
   // fetchDataResource(append: boolean = false) {
   //   this.isLoadingMore = append;
   //   this.isLoading = !append;
@@ -152,7 +152,7 @@ export class ResourceListComponent {
       });
   }
 
-  // ================== Load Next Page ==================
+  // ================== Load Next Page Server==================
   // loadNextPage() {
   //   if (this.isLoadingMore || !this.hasMore) return;
 
@@ -160,7 +160,7 @@ export class ResourceListComponent {
   //   this.fetchDataResource(true);
   // }
 
-  // ================== Load Next Page ==================
+  // ================== Load Next Page Client==================
   loadNextPage() {
     if (this.isLoadingMore || !this.hasMore) return;
 
@@ -246,13 +246,10 @@ export class ResourceListComponent {
     this.router.navigate(['/resource-learning/resource-create']);
   };
 
-  handlePageChange(page: number) {
-    console.log('chuyển trang');
-  }
+  handlePageChange(page: number) {}
 
   // ================== Navigation ==================
   goToDetail = (resourceId: string) => {
-    console.log('Navigating to resource detail with ID:', resourceId);
     this.router.navigate(['/resource-learning/resource', resourceId]);
   };
 }

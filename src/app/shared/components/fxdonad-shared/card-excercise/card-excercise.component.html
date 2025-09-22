@@ -10,15 +10,12 @@
       <div class="metadata">
         <div class="uploader-info">
           <img
-            [src]="
-              data.uploader.avatar ||
-              'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=50&h=50'
-            "
+            [src]="data.uploader.avatar || avatarDefault"
             [alt]="data.uploader.name"
             class="avatar"
             (error)="handleImageError($event)"
           />
-          <span class="username">{{ data.uploader.name }}</span>
+          <span class="username">{{ data.uploader.name || "Ẩn danh" }}</span>
         </div>
         <div class="timestamp" [title]="data.uploadTime | date : 'full'">
           {{ getTimeAgo(data.uploadTime) }}

@@ -49,13 +49,11 @@ export function openModalNotification(
       onConfirm ||
       (() => {
         // Hành động mặc định khi xác nhận
-        console.log('Xác nhận mặc định');
       }),
     onCancel:
       onCancel ||
       (() => {
         // Hành động mặc định khi hủy
-        console.log('Hủy mặc định');
       }),
   };
 

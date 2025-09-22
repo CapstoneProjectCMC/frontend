@@ -193,7 +193,6 @@ export class CreateUserModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          console.log('User created successfully!');
           this.isSubmitting = false;
           this.userCreated.emit();
           this.closeModal();
