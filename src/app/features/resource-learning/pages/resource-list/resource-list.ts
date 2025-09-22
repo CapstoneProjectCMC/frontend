@@ -17,6 +17,7 @@ import { ResourceEditPopupComponent } from '../../modal/popup-update/resource-ed
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleActions';
 
 @Component({
   selector: 'app-resource-list',
@@ -43,6 +44,8 @@ export class ResourceListComponent {
     { name: 'TypeScript', views: 5000 },
     { name: 'JavaScript', views: 20000 },
   ];
+
+  hasPermissionAction = false;
 
   isLoading = false;
   isLoadingMore = false;
@@ -77,6 +80,8 @@ export class ResourceListComponent {
   }
 
   ngOnInit(): void {
+    this.hasPermissionAction = activeForAdminAndTeacher();
+
     this.pageIndex = 1;
     this.fetchDataResource();
   }

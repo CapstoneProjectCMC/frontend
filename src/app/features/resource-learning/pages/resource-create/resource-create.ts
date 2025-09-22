@@ -109,6 +109,8 @@ export class ResourceCreatePageComponent {
 
     const file = this.selectedFile;
     let category: FileCategory = 3;
+    let isLectureVideo = false;
+    let isTextbook = false;
 
     if (file) {
       const fileType = file.type;
@@ -120,20 +122,26 @@ export class ResourceCreatePageComponent {
         fileType.includes('text')
       ) {
         category = 2;
+        isTextbook = true;
       }
       if (fileType.startsWith('video/')) {
         category = 1;
+        isLectureVideo = true;
       }
       if (fileType.startsWith('image/')) {
         category = 0;
+        isTextbook = true;
       }
     }
 
     const postData = {
       file,
       category,
+      isLectureVideo,
+      isTextbook,
       description: this.htmlToMd.convert(this.editorContent),
       tags: this.tags,
+      orgId: null,
     };
     this.store.dispatch(
       setLoading({

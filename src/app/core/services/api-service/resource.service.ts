@@ -59,12 +59,15 @@ export class ResourceService {
   }
 
   addResource(postData: ResourceCreateRequest) {
-    const { file, category, description, tags } = postData;
+    const { file, category, isLectureVideo, isTextbook, description, tags } =
+      postData;
 
     // data: phần dữ liệu thông thường (không phải file)
     const data: Record<string, any> = {
       category,
       description,
+      isLectureVideo,
+      isTextbook,
       tags: JSON.stringify(tags), // stringify array để backend parse
     };
 

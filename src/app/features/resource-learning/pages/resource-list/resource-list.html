@@ -13,6 +13,7 @@
           [icon]="'fa fa-search'"
         ></app-input>
       </div>
+      @if(hasPermissionAction){
       <div class="resource-list-button">
         <app-button
           (onClick)="handleAdd()"
@@ -23,6 +24,7 @@
           <span style="font-size: 24px">+</span>
         </app-button>
       </div>
+      }
     </div>
 
     <div class="list-resource-card-container">
