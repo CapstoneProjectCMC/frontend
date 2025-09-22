@@ -49,7 +49,7 @@
     "ngx-cookie-service": "^20.1.0",
     "ngx-lottie": "^20.0.0",
     "ngx-markdown": "^20.1.0",
-    "pdfjs-dist": "^5.4.54",
+    "pdfjs-dist": "^5.4.149",
     "rxjs": "~7.8.0",
     "socket.io-client": "^4.8.1",
     "sub-vn": "^0.0.2",
