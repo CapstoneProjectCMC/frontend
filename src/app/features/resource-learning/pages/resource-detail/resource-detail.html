@@ -1,3 +1,4 @@
+@if(resource) {
 <div class="resource-detail-container">
   <div
     class="resource-detail-video"
@@ -8,7 +9,9 @@
   >
     <!-- Nếu là Document thì đưa Info lên trước -->
     <div class="resource-video-info">
-      <div class="title">{{ resource.fileName }}</div>
+      <div class="title">
+        {{ resource.fileName || 'File tài nguyên học tập' }}
+      </div>
       <div class="author-action">
         <div class="author">
           <div class="avatar">
@@ -132,3 +135,8 @@
   </div>
   }
 </div>
+} @if(!resource){
+<div class="list-post-card">
+  <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
+</div>
+}
