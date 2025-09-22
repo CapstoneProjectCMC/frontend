@@ -6,6 +6,7 @@ export const IGNORE_ERROR_NOTIFICATION_URLS = [
   '/submission/exercise/coding/',
   '/notification/',
   '/ai/chat/',
+  '/file/api/FileDocument/',
   // Ví dụ pattern regex: /\/submission\/exercise\/quiz\/\d+(\?.*)?$/
   // Thêm các endpoint khác nếu cần
 ];

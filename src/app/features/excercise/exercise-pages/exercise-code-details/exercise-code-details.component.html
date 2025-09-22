@@ -1,257 +1,243 @@
 @if (exercise) {
-  <div class="coding-details-container">
-    <div class="problem-description">
-      <div class="header-info">
-        <h1 class="title">{{ exercise.title }}</h1>
-        <div class="meta-header">
-          <span
-            class="difficulty-badge"
-            [ngClass]="'difficulty-' + exercise.difficulty.toLowerCase()"
-            >
-            {{ exercise.difficulty }}
-          </span>
-          @if (exercise.active) {
-            <span class="status-tag">
-              <i class="fa fa-circle"></i> Hoạt động
-            </span>
-          }
+<div class="coding-details-container">
+  <div class="problem-description">
+    <div class="header-info">
+      <h1 class="title">{{ exercise.title }}</h1>
+      <div class="meta-header">
+        <span
+          class="difficulty-badge"
+          [ngClass]="'difficulty-' + exercise.difficulty.toLowerCase()"
+        >
+          {{ exercise.difficulty }}
+        </span>
+        @if (exercise.active) {
+        <span class="status-tag"> <i class="fa fa-circle"></i> Hoạt động </span>
+        }
+      </div>
+    </div>
+    <div class="header">
+      <img
+        class="avatar"
+        [src]="avatarUrl ? avatarUrl : avatarUrlDefault"
+        alt="Avatar"
+      />
+      <div class="info-main">
+        <div class="author">
+          <i class="fa fa-user"></i>
+          <span title="Tác giả">{{ authorName }}</span>
+        </div>
+        <div class="author">
+          <i class="fa fa-fingerprint"></i>
+          <span title="Vai trò">{{ authorRoles }}</span>
         </div>
       </div>
-      <div class="header">
-        <img
-          class="avatar"
-          [src]="avatarUrl ? avatarUrl : avatarUrlDefault"
-          alt="Avatar"
-          />
-          <div class="info-main">
-            <div class="author">
-              <i class="fa fa-user"></i>
-              <span title="Tác giả">{{ authorName }}</span>
-            </div>
-            <div class="author">
-              <i class="fa fa-fingerprint"></i>
-              <span title="Vai trò">{{ authorRoles }}</span>
-            </div>
-          </div>
-          <div class="other-info-meta">
-            <div class="meta">
-              <span class="badge" title="Loại bài tập">
-                <i
-                  class="fa"
+      <div class="other-info-meta">
+        <div class="meta">
+          <span class="badge" title="Loại bài tập">
+            <i
+              class="fa"
               [ngClass]="
                 exercise.exerciseType === 'QUIZ'
                   ? 'fa-book'
                   : 'fa-solid fa-file-code'
               "
-                ></i>
-                {{ exercise.exerciseType }}
-              </span>
-              @if (exercise.orgId) {
-                <span
-                  class="badge"
-                  title="Nội bộ"
-                  >
-                  <i class="fa fa-building"></i> Nội bộ
-                </span>
-              } @else {
-                <span class="badge" title="Công khai">
-                  <i class="fa fa-globe"></i> Công khai
-                </span>
-              }
-              <span class="badge" title="Trạng thái">
-                <i
-                  class="fa"
-                  [ngClass]="exercise.visibility ? 'fa-users' : 'fa-user-lock'"
-                ></i>
-                {{ exercise.visibility ? "Tất cả" : "Chỉ định" }}
-              </span>
-            </div>
-            <div class="time-info" title="Thời gian bắt đầu và kết thúc">
-              <i class="fa-regular fa-clock"></i>
-              <span>
-                {{
-                exercise.startTime
+            ></i>
+            {{ exercise.exerciseType }}
+          </span>
+          @if (exercise.orgId) {
+          <span class="badge" title="Nội bộ">
+            <i class="fa fa-building"></i> Nội bộ
+          </span>
+          } @else {
+          <span class="badge" title="Công khai">
+            <i class="fa fa-globe"></i> Công khai
+          </span>
+          }
+          <span class="badge" title="Trạng thái">
+            <i
+              class="fa"
+              [ngClass]="exercise.visibility ? 'fa-users' : 'fa-user-lock'"
+            ></i>
+            {{ exercise.visibility ? "Tất cả" : "Chỉ định" }}
+          </span>
+        </div>
+        <div class="time-info" title="Thời gian bắt đầu và kết thúc">
+          <i class="fa-regular fa-clock"></i>
+          <span>
+            {{
+              exercise.startTime
                 ? (exercise.startTime | date : "dd/MM/yyyy HH:mm")
                 : "Có thể bắt đầu"
-                }}
-                -
-                {{
-                exercise.endTime
+            }}
+            -
+            {{
+              exercise.endTime
                 ? (exercise.endTime | date : "dd/MM/yyyy HH:mm")
                 : "Chưa có hạn"
-                }}
-              </span>
-            </div>
-            <div class="time-info" title="Giá bài tập">
-              <i class="fa-solid fa-money-bill-1-wave"></i>
-              <span> {{ exercise.cost | formatView }} VNĐ </span>
-            </div>
-          </div>
+            }}
+          </span>
         </div>
-        <div class="section">
-          <h2 class="section-title">Mô tả bài toán</h2>
-          <p [innerHTML]="exercise.description"></p>
-        </div>
-        <div class="section">
-          <h2 class="section-title">Định dạng đầu vào (Input)</h2>
-          <pre><code>{{ exercise.codingDetail.input }}</code></pre>
-        </div>
-        <div class="section">
-          <h2 class="section-title">Định dạng đầu ra (Output)</h2>
-          <pre><code>{{ exercise.codingDetail.output }}</code></pre>
-        </div>
-        <div class="section">
-          <h2 class="section-title">Các ràng buộc (Constraints)</h2>
-          <pre><code>{{ exercise.codingDetail.constraintText }}</code></pre>
-        </div>
-        <div class="section">
-          <h2 class="section-title">Ví dụ (Sample Test Cases)</h2>
-          @for (testCase of getSampleTestCases(); track testCase; let i = $index) {
-            <div
-              class="test-case"
-              >
-              <h3 class="test-case-title">
-                {{ testCase.sample ? "Ví dụ" : "Mẫu ẩn" }} {{ i + 1 }}
-              </h3>
-              <div class="io-block">
-                <label>Input:</label>
-                <pre><code>{{ testCase.input }}</code></pre>
-              </div>
-              <div class="io-block">
-                <label>Output:</label>
-                <pre><code>{{ testCase.expectedOutput }}</code></pre>
-              </div>
-              @if (testCase.note) {
-                <p class="note">
-                  <strong>Giải thích:</strong> {{ testCase.note }}
-                </p>
-              }
-            </div>
-          }
+        <div class="time-info" title="Giá bài tập">
+          <i class="fa-solid fa-money-bill-1-wave"></i>
+          <span> {{ exercise.cost | formatView }} VNĐ </span>
         </div>
       </div>
-      <aside class="problem-info">
-        <div class="info-card">
-          <ul class="info-list">
-            <li>
-              <span><i class="fa fa-clock"></i> Giới hạn thời gian</span>
-              <strong>{{ exercise.codingDetail.timeLimit }}ms</strong>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Mô tả bài toán</h2>
+      <p [innerHTML]="exercise.description"></p>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Định dạng đầu vào (Input)</h2>
+      <pre><code>{{ exercise.codingDetail.input }}</code></pre>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Định dạng đầu ra (Output)</h2>
+      <pre><code>{{ exercise.codingDetail.output }}</code></pre>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Các ràng buộc (Constraints)</h2>
+      <pre><code>{{ exercise.codingDetail.constraintText }}</code></pre>
+    </div>
+    <div class="section">
+      <h2 class="section-title">Ví dụ (Sample Test Cases)</h2>
+      @for (testCase of getSampleTestCases(); track testCase; let i = $index) {
+      <div class="test-case">
+        <h3 class="test-case-title">
+          {{ testCase.sample ? "Ví dụ" : "Mẫu ẩn" }} {{ i + 1 }}
+        </h3>
+        <div class="io-block">
+          <label>Input:</label>
+          <pre><code>{{ testCase.input }}</code></pre>
+        </div>
+        <div class="io-block">
+          <label>Output:</label>
+          <pre><code>{{ testCase.expectedOutput }}</code></pre>
+        </div>
+        @if (testCase.note) {
+        <p class="note"><strong>Giải thích:</strong> {{ testCase.note }}</p>
+        }
+      </div>
+      }
+    </div>
+  </div>
+  <aside class="problem-info">
+    <div class="info-card">
+      <ul class="info-list">
+        <li>
+          <span><i class="fa fa-clock"></i> Giới hạn thời gian</span>
+          <strong>{{ exercise.codingDetail.timeLimit }}ms</strong>
+        </li>
+        <li>
+          <span><i class="fa fa-memory"></i> Giới hạn bộ nhớ</span>
+          <strong>{{ exercise.codingDetail.memoryLimit }} MB</strong>
+        </li>
+        <li>
+          <span><i class="fa fa-upload"></i> Lượt nộp tối đa</span>
+          <strong>{{ exercise.codingDetail.maxSubmissions }}</strong>
+        </li>
+        <li>
+          <span><i class="fa fa-hourglass-half"></i> Thời gian làm bài</span>
+          <strong>{{ exercise.duration }} phút</strong>
+        </li>
+      </ul>
+    </div>
+    <div class="info-card">
+      <h3 class="card-title">Ngôn ngữ được phép</h3>
+      <div class="tags-container">
+        @for (lang of exercise.codingDetail.allowedLanguages; track lang) {
+        <span class="language-tag">
+          {{ lang }}
+        </span>
+        }
+      </div>
+    </div>
+    <div class="info-card">
+      <h3 class="card-title">Tags</h3>
+      <div class="tags-container">
+        @for (tag of exercise.tags; track tag) {
+        <span class="tag">#{{ tag }}</span>
+        }
+      </div>
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-secondary" (click)="goBack()" title="Quay lại">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      @if (isActionActive) {
+      <div class="admin-actions">
+        <div class="dropdown">
+          <button
+            class="btn btn-warning dropdown-toggle"
+            (click)="toggleDropdown()"
+            title="Chỉnh sửa"
+          >
+            <i class="fa-solid fa-pencil"></i>
+          </button>
+          <ul class="dropdown-menu" [class.show]="isDropdownOpen">
+            <li (click)="openBasicEdit()">
+              <i class="fa fa-pen-to-square"></i> Chỉnh sửa cơ bản
             </li>
-            <li>
-              <span><i class="fa fa-memory"></i> Giới hạn bộ nhớ</span>
-              <strong>{{ exercise.codingDetail.memoryLimit }} MB</strong>
-            </li>
-            <li>
-              <span><i class="fa fa-upload"></i> Lượt nộp tối đa</span>
-              <strong>{{ exercise.codingDetail.maxSubmissions }}</strong>
-            </li>
-            <li>
-              <span><i class="fa fa-hourglass-half"></i> Thời gian làm bài</span>
-              <strong>{{ exercise.duration }} phút</strong>
+            <li (click)="openDetailEdit()">
+              <i class="fa fa-code"></i> Chỉnh sửa chi tiết
             </li>
           </ul>
         </div>
-        <div class="info-card">
-          <h3 class="card-title">Ngôn ngữ được phép</h3>
-          <div class="tags-container">
-            @for (lang of exercise.codingDetail.allowedLanguages; track lang) {
-              <span
-                class="language-tag"
-                >
-                {{ lang }}
-              </span>
-            }
-          </div>
-        </div>
-        <div class="info-card">
-          <h3 class="card-title">Tags</h3>
-          <div class="tags-container">
-            @for (tag of exercise.tags; track tag) {
-              <span class="tag">#{{ tag }}</span>
-            }
-          </div>
-        </div>
-        <div class="action-buttons">
-          <button class="btn btn-secondary" (click)="goBack()" title="Quay lại">
-            <i class="fa-solid fa-arrow-left"></i>
-          </button>
-          @if (isActionActive) {
-            <div class="admin-actions">
-              <div class="dropdown">
-                <button
-                  class="btn btn-warning dropdown-toggle"
-                  (click)="toggleDropdown()"
-                  title="Chỉnh sửa"
-                  >
-                  <i class="fa-solid fa-pencil"></i>
-                </button>
-                <ul class="dropdown-menu" [class.show]="isDropdownOpen">
-                  <li (click)="openBasicEdit()">
-                    <i class="fa fa-pen-to-square"></i> Chỉnh sửa cơ bản
-                  </li>
-                  <li (click)="openDetailEdit()">
-                    <i class="fa fa-code"></i> Chỉnh sửa chi tiết
-                  </li>
-                </ul>
-              </div>
-              <button
-                class="btn btn-outline-delete"
-                (click)="openWarningModal()"
-                title="Xóa bài tập này"
-                >
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-              <button
-                class="btn btn-outline-assign"
-                (click)="openAssignExercise()"
-                title="Giao bài tập"
-                >
-                <i class="fa-solid fa-business-time"></i>
-              </button>
-            </div>
-          }
-          @if (canStartDoing && (exercise.cost <= 0 ? true : isBought)) {
-            <button
-              class="btn btn-primary"
-              (click)="confirmCoding()"
-              title="Bắt đầu làm bài"
-              >
-              <i class="fa-solid fa-play"></i>
-              <span>Bắt đầu làm</span>
-            </button>
-          }
-          @if (!isBought && exercise.cost > 0) {
-            <button
-              class="btn btn-primary"
-              (click)="openRequestBuyExercise()"
-              title="Mua bài tập này"
-              >
-              <i class="fa-solid fa-cart-plus"></i>
-              <span>Mua bài tập</span>
-            </button>
-          }
-        </div>
-      </aside>
+        <button
+          class="btn btn-outline-delete"
+          (click)="openWarningModal()"
+          title="Xóa bài tập này"
+        >
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+        <button
+          class="btn btn-outline-assign"
+          (click)="openAssignExercise()"
+          title="Giao bài tập"
+        >
+          <i class="fa-solid fa-business-time"></i>
+        </button>
+      </div>
+      } @if ((canStartDoing && (exercise.cost <= 0 ? true : isBought)) ||
+      isActionActive) {
+      <button
+        class="btn btn-primary"
+        (click)="confirmCoding()"
+        title="Bắt đầu làm bài"
+      >
+        <i class="fa-solid fa-play"></i>
+        <span>Bắt đầu làm</span>
+      </button>
+      } @if ((!isBought && exercise.cost > 0) && !isActionActive) {
+      <button
+        class="btn btn-primary"
+        (click)="openRequestBuyExercise()"
+        title="Mua bài tập này"
+      >
+        <i class="fa-solid fa-cart-plus"></i>
+        <span>Mua bài tập</span>
+      </button>
+      }
     </div>
-  }
+  </aside>
+</div>
+} @if (!exercise) {
+<div class="loading"></div>
+}
 
-  @if (!exercise) {
-    <div class="loading"></div>
-  }
+<!-- Update Modal -->
+<app-update-code-details
+  [codingDetail]="exercise?.codingDetail || null"
+  [isVisible]="isUpdateModalVisible"
+  [exerciseId]="exerciseId"
+  (closeModal)="closeUpdateModal()"
+  (saveChanges)="onSaveCodingDetails($event)"
+></app-update-code-details>
 
-  <!-- Update Modal -->
-  <app-update-code-details
-    [codingDetail]="exercise?.codingDetail || null"
-    [isVisible]="isUpdateModalVisible"
-    [exerciseId]="exerciseId"
-    (closeModal)="closeUpdateModal()"
-    (saveChanges)="onSaveCodingDetails($event)"
-  ></app-update-code-details>
-
-  <app-update-exercise
-    [isOpen]="isOpenUpdateExercise"
-    (cancel)="this.isOpenUpdateExercise = false"
-    [exercise]="exerciseBasic"
-    (updateSuccess)="onUpdateExercise()"
-    >
-  </app-update-exercise>
+<app-update-exercise
+  [isOpen]="isOpenUpdateExercise"
+  (cancel)="this.isOpenUpdateExercise = false"
+  [exercise]="exerciseBasic"
+  (updateSuccess)="onUpdateExercise()"
+>
+</app-update-exercise>
