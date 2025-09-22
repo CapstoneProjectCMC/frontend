@@ -85,9 +85,38 @@ export class TextEditor implements AfterViewInit, OnDestroy {
 
   constructor(private cdr: ChangeDetectorRef) {}
 
+  commandStates: Record<string, boolean> = {};
+
+  updateCommandStates() {
+    const commands = [
+      'bold',
+      'italic',
+      'underline',
+      'strikeThrough',
+      'justifyLeft',
+      'justifyCenter',
+      'justifyRight',
+      'justifyFull',
+      'insertUnorderedList',
+      'insertOrderedList',
+    ];
+    for (const cmd of commands) {
+      try {
+        this.commandStates[cmd] = document.queryCommandState(cmd);
+      } catch {
+        this.commandStates[cmd] = false;
+      }
+    }
+    this.cdr.markForCheck();
+  }
+
   ngAfterViewInit() {
     this.initializeEditor();
     this.setupMutationObserver();
+
+    document.addEventListener('selectionchange', () => {
+      Promise.resolve().then(() => this.updateCommandStates());
+    });
   }
 
   ngOnDestroy() {
@@ -135,10 +164,12 @@ export class TextEditor implements AfterViewInit, OnDestroy {
 
         if (markdown !== this.value) {
           this.internalChange = true;
-          this.value = markdown;
-          this.valueChange.emit(markdown);
-          this.onChange.emit(markdown);
-          this.cdr.markForCheck();
+          Promise.resolve().then(() => {
+            this.value = markdown;
+            this.valueChange.emit(markdown);
+            this.onChange.emit(markdown);
+            this.cdr.markForCheck();
+          });
         }
       });
 
@@ -227,7 +258,11 @@ export class TextEditor implements AfterViewInit, OnDestroy {
 
   // Check if command is active
   isCommandActive(command: string): boolean {
-    return document.queryCommandState(command);
+    try {
+      return document.queryCommandState(command);
+    } catch {
+      return false;
+    }
   }
 
   // Get current selection

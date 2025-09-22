@@ -91,7 +91,10 @@ export class VideoPlayerComponent
     overlay.classList.add('paused');
 
     if (Hls.isSupported()) {
-      this.hls = new Hls();
+      this.hls = new Hls({
+        enableWorker: true,
+        interstitials: false, // runtime vẫn nhận
+      } as any);
       this.hls.loadSource(this.videoSrc);
       this.hls.attachMedia(video);
 
@@ -151,7 +154,13 @@ export class VideoPlayerComponent
     video.src = '';
 
     if (Hls.isSupported()) {
-      this.hls = new Hls();
+      this.hls = new Hls({
+        enableWorker: true,
+        interstitials: false,
+        enableEmsgMetadataCues: false,
+        enableID3MetadataCues: false,
+      } as any);
+
       this.hls.loadSource(url);
       this.hls.attachMedia(video);
 
