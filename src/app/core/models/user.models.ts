@@ -1,7 +1,6 @@
 //ví dụ
 export const DEFAULT_BG = 'https://wallpaper.dog/large/10932813.jpg';
-export const DEFAULT_AVATAR =
-  'https://static.vecteezy.com/system/resources/previews/023/329/545/large_2x/user-profile-shadow-symbol-icon-isolated-illustration-vector.jpg';
+export const DEFAULT_AVATAR = 'auth-assets/avatar_placeholder.png';
 
 export type User = {
   userId: string; // id của user

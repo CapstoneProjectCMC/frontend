@@ -158,13 +158,6 @@ export type PostResponse = {
 };
 
 //post-create
-export interface PostDataCreateRequest {
-  file: File;
-  description: string;
-  tags: string[];
-  isLectureVideo: boolean;
-  isTextbook: boolean;
-}
 
 export type SavedPostResponse = {
   id: string;

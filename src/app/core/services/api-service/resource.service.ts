@@ -6,9 +6,13 @@ import {
   XuanIPaginationResponse,
   XuanPresignedUrlResponse,
 } from '../../models/api-response';
-import { MediaResource, ResourceData, Tag } from '../../models/resource.model';
+import {
+  MediaResource,
+  ResourceCreateRequest,
+  ResourceData,
+  Tag,
+} from '../../models/resource.model';
 import { API_CONFIG } from '../config-service/api.enpoints';
-import { PostDataCreateRequest } from '../../models/post.models';
 
 @Injectable({
   providedIn: 'root',
@@ -39,12 +43,12 @@ export class ResourceService {
   }
 
   getVideoResources() {
-    return this.api.get<ApiResponse<ResourceData[]>>(
+    return this.api.get<ApiResponse<MediaResource[]>>(
       API_CONFIG.ENDPOINTS.GET.GET_FILE_VIDEOS
     );
   }
   getDocumentResources() {
-    return this.api.get<ApiResponse<ResourceData[]>>(
+    return this.api.get<ApiResponse<MediaResource[]>>(
       API_CONFIG.ENDPOINTS.GET.GET_FILE_DOCUMENTS
     );
   }
@@ -54,15 +58,14 @@ export class ResourceService {
     );
   }
 
-  addResource(postData: PostDataCreateRequest) {
-    const { file, description, tags, isLectureVideo, isTextbook } = postData;
+  addResource(postData: ResourceCreateRequest) {
+    const { file, category, description, tags } = postData;
 
     // data: phần dữ liệu thông thường (không phải file)
     const data: Record<string, any> = {
+      category,
       description,
       tags: JSON.stringify(tags), // stringify array để backend parse
-      isLectureVideo: String(isLectureVideo),
-      isTextbook: String(isTextbook),
     };
 
     // files: phần file

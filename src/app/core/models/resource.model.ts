@@ -43,13 +43,25 @@ export interface ResourceData {
   tags: Tag[];
   isLectureVideo: boolean;
   isTextbook: boolean;
-  viewCount: number;
-  rating: number;
-  orgId: string; // Guid
-  duration: string; // TimeSpan
-  hlsUrl: string;
+  viewCount: number | null;
+  rating: number | null;
+  orgId: string | null; // Guid
+  duration: string | null; // TimeSpan
+  hlsUrl: string | null;
   createdAt: string;
+  createdBy: string;
+  organizationId: string | null;
+  organizationRole: string;
+  userProfile: UserBasicInfo;
 }
+
+export interface ResourceCreateRequest {
+  file: File;
+  category: FileCategory;
+  description: string;
+  tags: string[];
+}
+
 //--------------Input episode local---------------------
 export interface IEpisodeLocal {
   episodeId: string;

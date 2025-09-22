@@ -16,6 +16,7 @@ import {
   Post,
 } from '../../core/models/post.models';
 import {
+  MediaResource,
   ResourceData,
   resourceCardInfo,
 } from '../../core/models/resource.model';
@@ -101,14 +102,14 @@ export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
     allowComment: post.allowComment,
   };
 }
-export function maptoReourseCard(resourse: ResourceData): resourceCardInfo {
+export function maptoReourseCard(resourse: MediaResource): resourceCardInfo {
   return {
     id: resourse.id,
     avatarAuthor:
       'https://i.pinimg.com/736x/8b/8e/ff/8b8eff070443cf6103c8279a28673809.jpg',
     authorId: resourse.id,
     authorName: 'author',
-    duration: resourse.duration,
+    duration: resourse.duration?.toString() || '',
     progress: 5,
     title: resourse.fileName,
     thumnailurl: resourse.thumbnailUrl,
@@ -120,7 +121,7 @@ export function maptoReourseCard(resourse: ResourceData): resourceCardInfo {
   };
 }
 export function mapToResourceCardList(
-  resources: ResourceData[]
+  resources: MediaResource[]
 ): resourceCardInfo[] {
   return resources.map((resource) => ({
     id: resource.id,
@@ -128,7 +129,7 @@ export function mapToResourceCardList(
       'https://i.pinimg.com/1200x/b3/c2/77/b3c2779d6b6195793b72bf73e284b3e8.jpg',
     authorId: resource.id,
     authorName: 'Ẩn danh',
-    duration: resource.duration,
+    duration: resource.duration?.toString() || '',
     thumnailurl: resource.thumbnailUrl,
     progress: 5,
     title: resource.fileName,

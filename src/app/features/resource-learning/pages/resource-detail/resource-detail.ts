@@ -50,6 +50,7 @@ export class ResourceDetail implements OnInit {
   isDocument: boolean = false;
   isImage: boolean = false;
   safeUrl!: SafeResourceUrl;
+  tags: string[] = [];
 
   // trạng thái phân trang
   isLoading = false;
@@ -113,6 +114,7 @@ export class ResourceDetail implements OnInit {
           this.resource.fileType
         );
         this.isImage = this.resource.fileType.startsWith('image/');
+        this.tags = JSON.parse(res.result.tags[0].name);
         if (this.resource.url) {
           this.setSafeUrl(this.resource.url);
         }

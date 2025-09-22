@@ -17,7 +17,7 @@
               alt="Avatar"
             />
           </div>
-          <div class="name">{{authorName}}</div>
+          <div class="name">{{authorName ? authorName : 'Ẩn danh'}}</div>
         </div>
         <!-- <div class="action">
           <div class="report">
@@ -30,8 +30,8 @@
       </div>
       <div class="tag-description">
         <div class="resource-tags">
-          @for (tag of resource.tags; track tag) {
-          <span class="resource-tag"> #{{ tag.name }} </span>
+          @for (tag of tags; track tag) {
+          <span class="resource-tag"> #{{ tag }} </span>
           }
         </div>
       </div>

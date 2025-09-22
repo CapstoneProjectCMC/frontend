@@ -25,6 +25,7 @@ import { InputComponent } from '../../../../shared/components/fxdonad-shared/inp
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
+import { FileCategory } from '../../../../core/models/resource.model';
 
 @Component({
   selector: 'app-resource-create',
@@ -104,15 +105,14 @@ export class ResourceCreatePageComponent {
       sendNotification(
         this.store,
         'Tạo tài nguyên',
-        'Vui lòng chọn file!',
+        'Yêu cầu chọn file!',
         'error'
       );
       return;
     }
 
     const file = this.selectedFile;
-    let isTextbook = false;
-    let isLectureVideo = false;
+    let category: FileCategory = 3;
 
     if (file) {
       const fileType = file.type;
@@ -123,19 +123,21 @@ export class ResourceCreatePageComponent {
         fileType.includes('presentation') ||
         fileType.includes('text')
       ) {
-        isTextbook = true;
+        category = 2;
       }
       if (fileType.startsWith('video/')) {
-        isLectureVideo = true;
+        category = 1;
+      }
+      if (fileType.startsWith('image/')) {
+        category = 0;
       }
     }
 
     const postData = {
       file,
+      category,
       description: this.htmlToMd.convert(this.editorContent),
       tags: this.tags,
-      isTextbook,
-      isLectureVideo,
     };
     this.store.dispatch(
       setLoading({
