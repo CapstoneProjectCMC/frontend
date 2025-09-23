@@ -6,7 +6,6 @@ import { AppLayoutComponent } from './layouts/layout-pages/app-layout/app-layout
 import { AdminLayoutComponent } from './layouts/layout-pages/admin-layout/admin-layout';
 // import { RoleGuard } from './core/guards/router-protected/role.guard';
 import { PostModule } from './features/post/post.module';
-import { LandingModule } from './features/landing/landing.module';
 
 export const routes: Routes = [
   //Để test
@@ -77,7 +76,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     component: AuthLayoutComponent,
-    data: { skipBreadcrumb: true, preload: true },
+    data: { skipBreadcrumb: true },
     children: [
       {
         path: 'identity',
@@ -85,6 +84,7 @@ export const routes: Routes = [
           import('./features/auth/auth.module').then((m) => m.AuthModule),
       },
     ],
+    // data: { preload: true },
   },
 
   //Load app chính
@@ -94,10 +94,10 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => LandingModule,
-        // import('./features/landing/landing.module').then(
-        //   (m) => m.LandingModule
-        // ),
+        loadChildren: () =>
+          import('./features/landing/landing.module').then(
+            (m) => m.LandingModule
+          ),
         title: 'CodeCampus',
       },
       {
@@ -155,7 +155,6 @@ export const routes: Routes = [
           ),
       },
     ],
-    data: { preload: true },
   },
 
   {
@@ -203,7 +202,6 @@ export const routes: Routes = [
         data: { breadcrumb: 'Quản lý tài nguyên' },
       },
     ],
-    data: { preload: false },
   },
 
   {
