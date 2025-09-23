@@ -72,6 +72,20 @@
         background-color: #fff;
       }
     }
+
+    .no-data-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 20px;
+      background-color: oklch(from var(--hover-color) calc(l * 1.2) c h);
+      .no-available-video {
+        color: var(--reverse-color-text);
+      }
+    }
   }
 
   .resource-video-info {
@@ -211,6 +225,30 @@
       app-resource-card {
         width: 100%;
       }
+    }
+
+    .load-more-container {
+      text-align: center;
+      margin: 16px 0;
+
+      .load-more-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 6px;
+        background: #007bff;
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #0056b3;
+        }
+      }
+    }
+
+    .loading-more {
+      margin: 16px 0;
     }
   }
 }

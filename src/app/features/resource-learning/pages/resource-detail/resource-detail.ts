@@ -19,6 +19,10 @@ import {
 import { sendNotification } from '../../../../shared/utils/notification';
 import { MarkdownModule } from 'ngx-markdown';
 import { DEFAULT_AVATAR } from '../../../../core/models/user.models';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { lottieOptionsServerError } from '../../../../core/constants/value.constant';
+import { LottieComponent } from 'ngx-lottie';
 
 @Component({
   selector: 'app-resource-detail',
@@ -32,16 +36,19 @@ import { DEFAULT_AVATAR } from '../../../../core/models/user.models';
     SkeletonLoadingComponent,
     InputComponent,
     MarkdownModule,
+    LottieComponent,
   ],
   standalone: true,
 })
 export class ResourceDetail implements OnInit {
   avatarDefault = DEFAULT_AVATAR;
+  lottieOption = lottieOptionsServerError;
   [x: string]: any;
   resourceId: string | null = null;
   resource!: MediaResource;
 
   listResource: MediaResource[] = [];
+  searchAbleList: MediaResource[] = [];
   searchTerm: string = '';
   searchTermError: string | null = null;
   avatarAuthor = '';
@@ -166,13 +173,32 @@ export class ResourceDetail implements OnInit {
 
     this.isLoadingMore = true;
 
-    this.resourceService
-      .getAllResourceLearning(this.pageSize, this.currentPage)
+    forkJoin([
+      this.resourceService.getVideoResources(),
+      this.resourceService.getDocumentResources(),
+    ])
+      .pipe(
+        map(([videosRes, docsRes]) => {
+          const videos =
+            videosRes.result.filter(
+              (data) => data.checksum !== 'check-sum-demo'
+            ) ?? [];
+          const docs = docsRes.result ?? [];
+          return [...videos, ...docs]; // gộp
+        })
+      )
       .subscribe({
-        next: (res) => {
-          const pagination = res.result;
-          this.listResource.push(...pagination.data);
-          this.hasMore = pagination.hasNextPage;
+        next: (allResources) => {
+          // tổng dữ liệu từ cả video + document
+          const start = (this.currentPage - 1) * this.pageSize;
+          const end = this.currentPage * this.pageSize;
+
+          // cắt dữ liệu theo trang
+          const pageData = allResources.slice(start, end);
+
+          this.listResource.push(...pageData);
+          this.searchAbleList = this.listResource;
+          this.hasMore = end < allResources.length;
           this.currentPage++;
           this.isLoadingMore = false;
         },
@@ -180,7 +206,7 @@ export class ResourceDetail implements OnInit {
           console.error(err);
           sendNotification(
             this.store,
-            'Lỗi lấy danh sách video',
+            'Lỗi lấy danh sách tài nguyên',
             err.message,
             'error'
           );
@@ -190,13 +216,27 @@ export class ResourceDetail implements OnInit {
   }
 
   goToDetail = (resourceId: string) => {
-    this.router.navigate(['/resource-management/resource', resourceId]);
+    this.router.navigate(['/resource-learning/resource', resourceId]);
     this.resourceId = resourceId;
     this.loadResource();
   };
 
   handleInputChange(value: string | number): void {
-    this.searchTerm = value.toString();
+    this.searchTerm = value.toString().trim().toLowerCase();
+
+    if (this.searchTerm) {
+      this.listResource = this.searchAbleList.filter(
+        (data) =>
+          (data.description ?? '').toLowerCase().includes(this.searchTerm) ||
+          (data.fileName ?? '').toLowerCase().includes(this.searchTerm) ||
+          (data.userProfile?.displayName ?? '')
+            .toLowerCase()
+            .includes(this.searchTerm)
+      );
+    } else {
+      // Nếu clear ô tìm kiếm thì reset về danh sách gốc
+      this.listResource = [...this.searchAbleList];
+    }
   }
 
   downloadDocument() {

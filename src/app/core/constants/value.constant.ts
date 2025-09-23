@@ -114,4 +114,10 @@ export const lottieOptionsLoading1 = {
   loop: true,
 };
 
+export const lottieOptionsServerError = {
+  path: 'assets/lottie-animation/505.json',
+  autoplay: true,
+  loop: true,
+};
+
 export const avatarUrlDefault: string = 'auth-assets/avatar_placeholder.png';
