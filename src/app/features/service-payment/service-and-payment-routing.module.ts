@@ -33,6 +33,7 @@ const routes: Routes = [
           ),
       },
     ],
+    title: 'Dịch vụ và thanh toán',
   },
 ];
 

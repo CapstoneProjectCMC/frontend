@@ -17,7 +17,7 @@ export class BackgroundEffectComponent implements AfterViewInit {
   private ctx!: CanvasRenderingContext2D;
   private particles: Particle[] = [];
   private mouse = { x: 0, y: 0, isDown: false };
-  private numParticles = 400;
+  private numParticles = 100;
   private codeChars =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}[]();+-*/=><!@#$%^&*⊞'; // Thêm ⊞ (Windows),  (fa-home),  (fa-code)
   private specialChars = ['A+'];
