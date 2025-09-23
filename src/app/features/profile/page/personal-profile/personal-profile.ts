@@ -17,11 +17,19 @@ import {
   CardExcercise,
   CardExcerciseComponent,
 } from '../../../../shared/components/fxdonad-shared/card-excercise/card-excercise.component';
-import { ExerciseItem } from '../../../../core/models/exercise.model';
+import {
+  ExerciseItem,
+  ExerciseSave,
+  MyAssignExerciseResponse,
+  MySubmissionsHistoryResponse,
+} from '../../../../core/models/exercise.model';
 import { mapExerciseResToCardUI } from '../../../../shared/utils/mapData';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { ButtonComponent } from '../../../../shared/components/my-shared/button/button.component';
-
+import { lottieOptions2 } from '../../../../core/constants/value.constant';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { LottieComponent } from 'ngx-lottie';
 @Component({
   selector: 'app-personal-profile',
   templateUrl: './personal-profile.html',
@@ -30,9 +38,10 @@ import { ButtonComponent } from '../../../../shared/components/my-shared/button/
     ProfilePopupComponent,
     NgClass,
     UpdateProfileComponent,
-    // SkeletonLoadingComponent,
-    // CardExcerciseComponent,
-    // ButtonComponent
+    SkeletonLoadingComponent,
+    LottieComponent,
+    // ButtonComponent,
+    CommonModule,
   ],
   standalone: true,
 })
@@ -59,17 +68,31 @@ export class PersonalProfileComponent {
     createdAt: '',
   };
   isLoading = false;
+  isLoadingExercises = false;
   isLoadingMore = false;
   openedUser: User | null = null;
   isClosing = false;
-  fakenumber = 50;
+  fakenumber = 50000000000000000;
   userId: string | undefined = undefined;
   listExercise: CardExcercise[] = [];
+  assignments: MyAssignExerciseResponse[] = [];
+  totalAssignments: number = 0;
+  totalAssignmentsDisplay: string = '0';
+  submissions: MySubmissionsHistoryResponse[] | [] = [];
+  totalSubmissions: number = 0;
+  passedSubmissions: number = 0;
 
+  totalSubmissionsDisplay: string = '0';
+  passedSubmissionsDisplay: string = '0';
   pageIndex: number = 1;
   itemsPerPage: number = 2;
   sortBy: EnumType['sort'] = 'CREATED_AT';
   asc: boolean = false;
+  exercises: ExerciseSave[] = [];
+  page = 1;
+  size = 10;
+  totalPages = 1;
+  lottieOptions = lottieOptions2;
   fakeCompetition = [
     {
       name: 'Competition 1',
@@ -144,7 +167,8 @@ export class PersonalProfileComponent {
   constructor(
     private profileService: ProfileService,
     private store: Store,
-    private exerciseService: ExerciseService
+    private exerciseService: ExerciseService,
+    private router: Router
   ) {
     const token = localStorage.getItem('token');
 
@@ -157,9 +181,11 @@ export class PersonalProfileComponent {
     return data.map((info) => mapExerciseResToCardUI(info));
   }
   ngOnInit(): void {
-    this.isLoading = true;
     this.fetchUserData();
     this.fetchData();
+    this.fetchQuizSubmitted();
+    this.fetchMyAssignExercise();
+    this.loadExercises();
   }
 
   fetchData() {
@@ -197,6 +223,115 @@ export class PersonalProfileComponent {
       this.fetchUserData();
       this.isClosing = false;
       this.closeProfilePopup();
+    }
+  }
+
+  fetchMyAssignExercise() {
+    this.exerciseService.getMyAssignExercise().subscribe({
+      next: (res) => {
+        // Nối dữ liệu mới vào danh sách hiện tại
+        this.assignments = res.result.data;
+        this.calculateMyAssignments(this.assignments);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+  fetchQuizSubmitted() {
+    this.exerciseService.getMySubmissionsHistory().subscribe({
+      next: (res) => {
+        // Nối dữ liệu mới vào danh sách hiện tại
+        this.submissions = res.result.data;
+        this.calculateSubmissionStats(this.submissions);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+  // Thêm hàm format số
+  private formatNumber(num: number): string {
+    if (num >= 1_000_000_000) {
+      return (num / 1_000_000_000).toFixed(1).replace(/\.0$/, '') + 'B';
+    }
+    if (num >= 1_000_000) {
+      return (num / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1_000) {
+      return (num / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num.toString();
+  }
+
+  // Sửa lại hàm tính toán
+  private calculateMyAssignments(assignments: MyAssignExerciseResponse[]) {
+    const total = assignments.length;
+
+    // dùng formatNumber để gán
+    this.totalAssignments = total;
+
+    // Nếu bạn muốn hiển thị đã format, tạo thêm biến string
+    this.totalAssignmentsDisplay = this.formatNumber(total);
+  }
+  // Sửa lại hàm tính toán
+  private calculateSubmissionStats(
+    submissions: MySubmissionsHistoryResponse[]
+  ) {
+    const total = submissions.length;
+    const passed = submissions.filter((s) => s.passed).length;
+
+    // dùng formatNumber để gán
+    this.totalSubmissions = total;
+    this.passedSubmissions = passed;
+
+    // Nếu bạn muốn hiển thị đã format, tạo thêm biến string
+    this.totalSubmissionsDisplay = this.formatNumber(total);
+    this.passedSubmissionsDisplay = this.formatNumber(passed);
+  }
+  loadExercises(): void {
+    if (
+      this.isLoadingExercises ||
+      (this.totalPages && this.page > this.totalPages)
+    )
+      return;
+
+    this.isLoadingExercises = true;
+    this.exerciseService.getSavedExercises(this.page, this.size).subscribe({
+      next: (res) => {
+        const data = res.result;
+        this.exercises.push(...data.data);
+        this.totalPages = data.totalPages;
+        this.page++;
+        this.isLoadingExercises = false;
+      },
+      error: () => {
+        this.isLoadingExercises = false;
+      },
+    });
+  }
+
+  onUnsave(exercise: ExerciseSave, event: MouseEvent): void {
+    event.stopPropagation();
+    this.exerciseService
+      .unSaveExercise(exercise.exercise.exerciseId)
+      .subscribe({
+        next: () => {
+          this.exercises = this.exercises.filter(
+            (e) => e.exercise.exerciseId !== exercise.exercise.exerciseId
+          );
+        },
+      });
+  }
+
+  goToExercise(id: string, type: 'CODING' | 'QUIZ') {
+    if (type === 'QUIZ') {
+      this.router.navigate(['/exercise/exercise-layout/exercise-details/', id]);
+    } else {
+      this.router.navigate([
+        '/exercise/exercise-layout/exercise-code-details/',
+        id,
+      ]);
     }
   }
 

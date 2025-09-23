@@ -8,126 +8,140 @@
       [following]="followingList"
     ></app-profile-popup>
   </div>
-  <!-- <div class="learning-process">
+  <div class="learning-process">
     <div class="academic-results">
       <div class="title-nav">
         <span class="title"> Thống kê kết quả học tập </span>
         <span class="nav">
-          <a href="/profile/academic-results">Chi tiết</a>
+          <a href="/exercise/exercise-layout/submissions-history">Chi tiết</a>
         </span>
       </div>
       <div class="results">
         <div class="academic-results-item">
-          <div class="academic-results-value">{{fakenumber}}</div>
-          <span class="academic-results-label">Bài giảng đã học</span>
+          <div class="academic-results-value">{{totalSubmissionsDisplay}}</div>
+          <span class="academic-results-label">Bài tập đã nộp</span>
         </div>
         <div class="academic-results-item">
-          <div class="academic-results-value">{{fakenumber}}</div>
-          <span class="academic-results-label">Bài tập đã làm</span>
+          <div class="academic-results-value">{{passedSubmissionsDisplay}}</div>
+          <span class="academic-results-label">Bài tập đạt yêu cầu</span>
         </div>
         <div class="academic-results-item">
-          <div class="academic-results-value">{{fakenumber}}</div>
-          <span class="academic-results-label">Bài viết đã đăng</span>
+          <div class="academic-results-value">{{totalAssignmentsDisplay}}</div>
+          <span class="academic-results-label">Bài tập được giao</span>
         </div>
       </div>
     </div>
     <div class="competition">
       <div class="title-nav">
-        <span class="title"> Thống kê kết quả học tập </span>
+        <span class="title"> Bài tập của {{user.displayName}} </span>
         <span class="nav">
-          <a href="/profile/academic-results">Chi tiết</a>
+          <a href="/exercise/exercise-layout/my-assign-list">Chi tiết</a>
         </span>
       </div>
-      @for (competition of fakeCompetition.slice(0, 2); track competition) {
+      @for (assignment of assignments.slice(0, 2); track assignment) {
+      <div class="competition-item">
+        <div class="competition-name">{{assignment.exerciseTitle}}</div>
         <div
-          class="competition-item"
-          >
-          <div class="competition-name">{{competition.name}}</div>
-          <div
-            class="competition-status"
-            [ngClass]="{'ongoing': competition.status === 'ongoing', 'upcoming': competition.status === 'upcoming', 'completed': competition.status === 'completed'}"
-            >
-            {{competition.status}}
-          </div>
+          class="competition-status"
+          [ngClass]="{'ongoing': assignment.completed === false, 'completed': assignment.completed === true}"
+        >
+          {{assignment.completed ? 'Hoàn thành' : 'Chưa hoàn thành'}}
         </div>
+      </div>
       }
     </div>
     <div class="experience">
       <div class="title-nav">
-        <span class="title"> Thống kê kết quả học tập </span>
+        <span class="title"> Các bài tập đã lưu </span>
         <span class="nav">
-          <a href="/profile/academic-results">Chi tiết</a>
+          <a href="/exercise/exercise-layout/saved-exercises">Chi tiết</a>
         </span>
       </div>
-      @if (listExercise && !isLoading) {
-        <div class="list-exercise">
-          @for (item of listExercise; track item) {
-            <app-card-excercise
-              [data]="item"
-              [exerciseId]="item.id"
-              >
-            </app-card-excercise>
-          }
-        </div>
+      <!-- Empty state -->
+      @if (!isLoading && exercises.length === 0) {
+      <div class="no-data-container">
+        <ng-lottie
+          [options]="lottieOptions"
+          style="width: 200px; height: 200px"
+        >
+        </ng-lottie>
+        <p>Chưa lưu bài tập nào</p>
+      </div>
       }
+
+      <!-- List -->
+      <div class="exercise-list">
+        @for (ex of exercises.slice(0, 2); track ex) {
+        <div
+          class="exercise-card"
+          [@fadeInOut]
+          (click)="goToExercise(ex.exercise.exerciseId, ex.exercise.type)"
+        >
+          <div class="info">
+            <span class="type" [ngClass]="ex.exercise.type.toLowerCase()">
+              {{ ex.exercise.type }}
+            </span>
+            <h3>{{ ex.exercise.title }}</h3>
+            <p class="difficulty">
+              Độ khó:
+              <span [ngClass]="'level-' + ex.exercise.difficulty">
+                {{ ex.exercise.difficulty === 0 ? "Dễ" : ex.exercise.difficulty
+                === 1 ? "Trung bình" : "Khó" }}
+              </span>
+            </p>
+            <small
+              >Lưu lúc: {{ ex.saveAt ? (ex.saveAt | date : "short") : "Chưa rõ"
+              }}</small
+            >
+          </div>
+          <button class="unsave-btn" (click)="onUnsave(ex, $event)">
+            <i class="fa fa-link-slash"></i> Bỏ lưu
+          </button>
+        </div>
+        }
+      </div>
 
       @if (isLoading) {
-        <app-skeleton-loading
-          type="card"
-          [count]="8"
-        ></app-skeleton-loading>
-      }
-
-      @if (listExercise.length === 0 && !isLoading) {
-        <div class="no-content">
-          Không có dữ liệu
-        </div>
-      }
-
-      @if (isLoadingMore) {
-        <div class="loading-more">
-          Đang tải thêm, xin chờ...
-        </div>
+      <app-skeleton-loading type="list" [count]="8"></app-skeleton-loading>
       }
     </div>
-    <div class="post"></div>
-  </div> -->
-  <!-- <div class="short-cut">
-    <div class="recent-notice">
-      <div class="title-nav">
-        <span class="title"> Thông báo gần đây </span>
-        @for (noti of fakeNotification; track noti) {
+    <!-- <div class="short-cut">
+      <div class="recent-notice">
+        <div class="title-nav">
+          <span class="title"> Thông báo gần đây </span>
+          @for (noti of fakeNotification; track noti) {
           <div class="notice">
             <a class="notice-item">{{noti.title}}</a>
           </div>
-        }
-        <app-button
-          class="noti-button"
-          [width]="'140px'"
-          [height]="'40px'"
-          [variant]="'outline'"
+          }
+          <app-button
+            class="noti-button"
+            [width]="'140px'"
+            [height]="'40px'"
+            [variant]="'outline'"
           >
-          Xem tất cả</app-button
+            Xem tất cả</app-button
           >
         </div>
       </div>
-  </div> -->
+    </div> -->
 
-  @if (openedUser) {
-  <div [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}">
-    <div
-      class="profile-popup-backdrop"
-      [ngClass]="{'hide': isClosing}"
-      (click)="closeProfilePopup()"
-    ></div>
-    <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
-      <button class="close-btn" (click)="closeProfilePopup()">×</button>
-      <app-update-profile
-        [user]="openedUser"
-        [variant]="'popup'"
-        (refresh)="refetchUserData($event)"
-      ></app-update-profile>
+    @if (openedUser) {
+    <div [ngClass]="{'profile-popup-overlay': true, 'hide': isClosing}">
+      <div
+        class="profile-popup-backdrop"
+        [ngClass]="{'hide': isClosing}"
+        (click)="closeProfilePopup()"
+      ></div>
+      <div [ngClass]="{'profile-popup-container': true, 'hide': isClosing}">
+        <button class="close-btn" (click)="closeProfilePopup()">×</button>
+        <app-update-profile
+          [user]="openedUser"
+          [variant]="'popup'"
+          (refresh)="refetchUserData($event)"
+        ></app-update-profile>
+      </div>
     </div>
+    }
   </div>
-  }
 </div>

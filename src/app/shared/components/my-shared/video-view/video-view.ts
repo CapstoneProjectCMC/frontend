@@ -1,4 +1,3 @@
-
 import {
   Component,
   ElementRef,
@@ -11,11 +10,11 @@ import {
   OnChanges,
   OnInit,
   OnDestroy,
+  HostListener,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import Hls from 'hls.js';
 import { debounceTime, Subject } from 'rxjs';
-
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -29,14 +28,12 @@ export class VideoPlayerComponent
   implements AfterViewInit, OnChanges, OnInit, OnDestroy
 {
   @ViewChild('videoElement') videoRef!: ElementRef<HTMLVideoElement>;
-  @ViewChild('customControls') customControls!: ElementRef;
   @ViewChild('qualitySelector')
   qualitySelectorRef!: ElementRef<HTMLSelectElement>;
   @Input() videoSrc: string = '';
   @Input() historyId: string = '';
   @Input() episodeId: string = '';
   @Input() statusEpisode: string = '';
-
   @Output() currentTimeUpdated = new EventEmitter<number>();
 
   hls!: Hls;
@@ -47,25 +44,23 @@ export class VideoPlayerComponent
     bandwidth?: number;
     url: string;
   }[] = [];
-
   playbackSpeeds = [
     { value: 0.5, label: '0.5x' },
     { value: 1.0, label: '1x' },
     { value: 1.5, label: '1.5x' },
     { value: 2.0, label: '2x' },
   ];
-  volume: number = 1; // Mặc định là 100%
+  volume: number = 1;
   showVolumeSlider: boolean = false;
-  hideTimeout: any = null;
-  currentTime: string = '00:00';
-  currentTimeSecond: number = 0;
-  totalTime: string = '00:00';
+  showControlsPopup: boolean = false;
+  controlsVisible: boolean = false;
+  isMobileView: boolean = false;
   progress: number = 0;
+  hideTimeout: any = null;
   hideControlsTimeout: any = null;
-  isloading = false;
-  private hasCountedView: boolean = false;
 
-  private currentTimeSubject = new Subject<number>(); // Subject để quản lý sự kiện
+  private hasCountedView: boolean = false;
+  private currentTimeSubject = new Subject<number>();
 
   constructor(private store: Store) {}
 
@@ -73,6 +68,7 @@ export class VideoPlayerComponent
     this.currentTimeSubject.pipe(debounceTime(250)).subscribe((currentTime) => {
       this.currentTimeUpdated.emit(currentTime);
     });
+    this.checkScreenSize();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -87,7 +83,6 @@ export class VideoPlayerComponent
   ngAfterViewInit() {
     const video = this.videoRef.nativeElement;
     const videoContainer = video.closest('.video-container');
-    const controls = document.querySelector('.custom-controls') as HTMLElement;
     const overlay = document.querySelector(
       '.overlay-player-episode'
     ) as HTMLElement;
@@ -96,7 +91,10 @@ export class VideoPlayerComponent
     overlay.classList.add('paused');
 
     if (Hls.isSupported()) {
-      this.hls = new Hls();
+      this.hls = new Hls({
+        enableWorker: true,
+        interstitials: false, // runtime vẫn nhận
+      } as any);
       this.hls.loadSource(this.videoSrc);
       this.hls.attachMedia(video);
 
@@ -114,12 +112,9 @@ export class VideoPlayerComponent
     } else {
       video.src = this.videoSrc;
     }
+
     video.addEventListener('timeupdate', () => this.updateProgress());
     video.addEventListener('loadedmetadata', () => this.updateTotalTime());
-
-    controls?.addEventListener('mouseenter', () =>
-      clearTimeout(this.hideControlsTimeout)
-    );
     video.controls = false;
 
     document.addEventListener('fullscreenchange', () => {
@@ -131,6 +126,7 @@ export class VideoPlayerComponent
     });
     this.reloadSource(this.videoSrc);
   }
+
   ngOnDestroy(): void {
     if (this.hls) {
       this.hls.destroy();
@@ -140,6 +136,13 @@ export class VideoPlayerComponent
       video.pause();
       video.src = '';
     }
+    clearTimeout(this.hideControlsTimeout);
+    clearTimeout(this.hideTimeout);
+  }
+
+  @HostListener('window:resize')
+  checkScreenSize() {
+    this.isMobileView = window.innerWidth <= 768;
   }
 
   private reloadSource(url: string): void {
@@ -147,12 +150,17 @@ export class VideoPlayerComponent
       this.hls.destroy();
     }
     const video = this.videoRef.nativeElement;
-    this.currentTime = '00:00';
     video.pause();
     video.src = '';
 
     if (Hls.isSupported()) {
-      this.hls = new Hls();
+      this.hls = new Hls({
+        enableWorker: true,
+        interstitials: false,
+        enableEmsgMetadataCues: false,
+        enableID3MetadataCues: false,
+      } as any);
+
       this.hls.loadSource(url);
       this.hls.attachMedia(video);
 
@@ -210,17 +218,16 @@ export class VideoPlayerComponent
 
         if (resolutionMatch && url) {
           this.qualityLevels.push({
-            index: this.qualityLevels.length - 1, // Giữ đúng index
+            index: this.qualityLevels.length - 1,
             label: resolutionMatch[1],
             bandwidth: bandwidthMatch
               ? parseInt(bandwidthMatch[1], 10)
               : undefined,
-            url: new URL(url, this.videoSrc).href, // Đảm bảo URL tuyệt đối
+            url: new URL(url, this.videoSrc).href,
           });
         }
       }
     }
-    console.log('Danh sách chất lượng video:', this.qualityLevels);
   }
 
   changeQuality(event: Event) {
@@ -228,70 +235,55 @@ export class VideoPlayerComponent
       (event.target as HTMLSelectElement).value,
       10
     );
-
     if (
       this.hls &&
       selectedIndex >= 0 &&
       selectedIndex < this.qualityLevels.length
     ) {
-      this.hls.currentLevel = selectedIndex; // Đổi chất lượng trực tiếp
+      this.hls.currentLevel = selectedIndex;
     } else {
-      this.hls.currentLevel = -1; // Chế độ tự động
+      this.hls.currentLevel = -1;
     }
   }
 
   onMouseMove(event: MouseEvent) {
-    // Mỗi lần di chuột, ta hiện controls
     this.showControls();
-    // Rồi sau 3 giây (hideControls() có setTimeout 3000ms) ta ẩn
     this.hideControls();
   }
 
   showControls() {
     clearTimeout(this.hideControlsTimeout);
-
-    const controls = document.querySelector('.custom-controls') as HTMLElement;
-    if (controls) {
-      controls.style.opacity = '1';
-      controls.style.transform = 'translateY(0px)';
-    }
+    this.controlsVisible = true;
   }
 
   hideControls() {
     this.hideControlsTimeout = setTimeout(() => {
-      const controls = document.querySelector(
-        '.custom-controls'
-      ) as HTMLElement;
-      if (controls && !controls.matches(':hover')) {
-        controls.style.opacity = '0';
-        controls.style.transform = 'translateY(0px)';
+      if (!this.showControlsPopup) {
+        this.controlsVisible = false;
       }
     }, 3000);
+  }
+
+  toggleControlsPopup() {
+    this.showControlsPopup = !this.showControlsPopup;
+    if (this.showControlsPopup) {
+      this.showControls();
+    } else {
+      this.hideControls();
+    }
   }
 
   updateProgress() {
     const video = this.videoRef.nativeElement;
     if (video.duration) {
       this.progress = (video.currentTime / video.duration) * 100;
-      this.currentTime = this.formatTime(video.currentTime);
-      this.currentTimeSecond = Math.floor(video.currentTime);
-
-      // Phát giá trị qua subject
-      this.currentTimeSubject.next(this.currentTimeSecond); // Gửi giá trị cho subject
-
-      // this.currentTimeUpdated.emit(this.currentTimeSecond); // Phát sự kiện trực tiếp
+      this.currentTimeSubject.next(Math.floor(video.currentTime));
     }
   }
 
   updateTotalTime() {
     const video = this.videoRef.nativeElement;
-    this.totalTime = this.formatTime(video.duration);
-  }
-
-  formatTime(seconds: number): string {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60);
-    return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    // Total time calculation logic (not displayed in UI)
   }
 
   togglePlay() {
@@ -363,7 +355,6 @@ export class VideoPlayerComponent
 
   toggleFullscreen() {
     const video = this.videoRef.nativeElement;
-
     if (!document.fullscreenElement) {
       if (video.requestFullscreen) {
         video.requestFullscreen();
@@ -372,9 +363,8 @@ export class VideoPlayerComponent
       } else if ((video as any).msRequestFullscreen) {
         (video as any).msRequestFullscreen();
       }
-
-      video.classList.add('fullscreen-mode'); // Áp dụng CSS khi fullscreen
-      video.controls = true; // Hiển thị controls mặc định của trình duyệt
+      video.classList.add('fullscreen-mode');
+      video.controls = true;
     } else {
       if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -383,36 +373,9 @@ export class VideoPlayerComponent
       } else if ((document as any).msExitFullscreen) {
         (document as any).msExitFullscreen();
       }
-
-      video.classList.remove('fullscreen-mode'); // Bỏ fullscreen mode
-      video.controls = true; // Ẩn controls mặc định nếu cần
+      video.classList.remove('fullscreen-mode');
+      video.controls = true;
     }
-  }
-
-  resizeVideo() {
-    const video = this.videoRef.nativeElement;
-    video.style.width = '100vw';
-    video.style.height = '100vh';
-    video.style.objectFit = 'contain';
-  }
-
-  resetVideoSize() {
-    const video = this.videoRef.nativeElement;
-    video.style.width = '';
-    video.style.height = '';
-    video.style.objectFit = '';
-  }
-
-  increaseVolume() {
-    const video = this.videoRef.nativeElement;
-    video.volume = Math.min(1, parseFloat((video.volume + 0.1).toFixed(1)));
-    this.volume = video.volume;
-  }
-
-  decreaseVolume() {
-    const video = this.videoRef.nativeElement;
-    video.volume = Math.max(0, parseFloat((video.volume - 0.1).toFixed(1)));
-    this.volume = video.volume;
   }
 
   setVolume() {

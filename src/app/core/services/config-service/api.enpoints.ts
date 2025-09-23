@@ -102,15 +102,38 @@ export const API_CONFIG = {
 
         return query;
       },
-      GET_MY_ASSGIN: (page: number, size: number) =>
-        `/submission/assignments/self?page=${page}&size=${size}`,
+      GET_MY_ASSIGN: (page?: number, size?: number) => {
+        let url = `/submission/assignments/self`;
+        const params: string[] = [];
+
+        if (page !== undefined) params.push(`page=${page}`);
+        if (size !== undefined) params.push(`size=${size}`);
+
+        if (params.length > 0) {
+          url += `?${params.join('&')}`;
+        }
+
+        return url;
+      },
 
       GET_HISTORY_QUIZ: (page: number, size: number) =>
         `/submission/quiz/self/history?page=${page}&size=${size}`,
       GET_HISTORY_CODE: (page: number, size: number) =>
         `/submission/coding/self/history?page=${page}&size=${size}`,
-      GET_MY_SUBMISSION_HISTORY: (page: number, size: number) =>
-        `/submission/self/history?page=${page}&size=${size}`,
+      GET_MY_SUBMISSION_HISTORY: (page?: number, size?: number) => {
+        let url = `/submission/self/history`;
+        const params: string[] = [];
+
+        if (page !== undefined) params.push(`page=${page}`);
+        if (size !== undefined) params.push(`size=${size}`);
+
+        if (params.length > 0) {
+          url += `?${params.join('&')}`;
+        }
+
+        return url;
+      },
+
       GET_ALL_USER: (
         page: number,
         size: number,

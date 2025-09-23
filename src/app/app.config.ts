@@ -21,6 +21,7 @@ import { modalNoticeReducer } from './shared/store/modal-notice-state/modal-noti
 import { MarkdownModule, provideMarkdown } from 'ngx-markdown';
 import { provideLottieOptions } from 'ngx-lottie';
 import { variableReducer } from './shared/store/variable-state/variable.reducer';
+import { CustomPreloadStrategy } from './core/strategies/custom-preload.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,7 +40,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideAnimations(),
     provideMarkdown(),
-    provideRouter(routes, withPreloading(PreloadAllModules)),
+    provideRouter(routes, withPreloading(CustomPreloadStrategy)),
     importProvidersFrom(MarkdownModule.forRoot()),
   ],
 };
