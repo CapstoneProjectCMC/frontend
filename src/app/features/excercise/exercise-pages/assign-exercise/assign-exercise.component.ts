@@ -23,12 +23,13 @@ import {
   MySubmissionsHistoryResponse,
 } from '../../../../core/models/exercise.model';
 import { CodingService } from '../../../../core/services/api-service/coding.service';
+import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 
 @Component({
   selector: 'app-assign-exercise',
   templateUrl: './assign-exercise.component.html',
   styleUrls: ['./assign-exercise.component.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ScrollEndDirective],
 })
 export class AssignExerciseComponent implements OnInit {
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
@@ -156,6 +157,43 @@ export class AssignExerciseComponent implements OnInit {
       //   this.loadAssignedStudents();
       // });
     }
+  }
+
+  loadNextPageListStudent(): void {
+    if (this.isLoadingSearchUser) return; // tránh spam gọi khi đang loading
+    this.isLoadingSearchUser = true;
+
+    this.page++;
+
+    this.userService
+      .searchUserProfile(this.page, this.size, { q: this.searchTerm })
+      .subscribe({
+        next: (res) => {
+          if (res.result) {
+            const selectedIds = new Set(
+              this.selectedStudents.map((s) => s.userId)
+            );
+
+            // merge thêm data mới vào danh sách
+            this.allStudents = [...this.allStudents, ...res.result.data];
+
+            // lọc ra available (chưa chọn)
+            const newAvailable = res.result.data.filter(
+              (student) => !selectedIds.has(student.userId)
+            );
+            this.availableStudents = [
+              ...this.availableStudents,
+              ...newAvailable,
+            ];
+          }
+          this.isLoadingSearchUser = false;
+        },
+        error: (err) => {
+          console.error('Lỗi khi load thêm học sinh:', err);
+          this.isLoadingSearchUser = false;
+          this.page--; // rollback page nếu lỗi
+        },
+      });
   }
 
   loadExerciseAndStudents(id: string): void {

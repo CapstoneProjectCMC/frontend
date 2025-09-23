@@ -121,8 +121,8 @@ export function removeSpecialCharacters(str: string): string {
 export function decodeJWT(token: string | null): {
   header: any;
   payload: DecodedJwtPayload;
-  issuedAt?: string;
-  expiresAt?: string;
+  issuedAt?: Date;
+  expiresAt?: Date;
 } {
   try {
     if (!token) {
@@ -165,13 +165,9 @@ export function decodeJWT(token: string | null): {
     const header = base64UrlDecode(header64);
     const payload = base64UrlDecode(payload64) as DecodedJwtPayload;
 
-    const issuedAt = payload.iat
-      ? new Date(payload.iat * 1000).toLocaleString()
-      : undefined;
+    const issuedAt = payload.iat ? new Date(payload.iat * 1000) : undefined;
 
-    const expiresAt = payload.exp
-      ? new Date(payload.exp * 1000).toLocaleString()
-      : undefined;
+    const expiresAt = payload.exp ? new Date(payload.exp * 1000) : undefined;
 
     return {
       header,

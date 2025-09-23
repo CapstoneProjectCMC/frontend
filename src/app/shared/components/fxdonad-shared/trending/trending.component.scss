@@ -1,9 +1,9 @@
 .trending-container {
-  background: #ffffff;
+  background: var(--background-color);
   border-radius: 10px; // 12px -> ~20% giảm
   padding: 19px; // 24px -> ~20% giảm
   box-shadow: 0 1.5px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border-color);
 }
 
 .trending-header {
@@ -12,7 +12,7 @@
   align-items: center;
   margin-bottom: 16px; // 20px -> 16px
   padding-bottom: 10px; // 12px -> 10px
-  border-bottom: 1.5px solid #f3f4f6;
+  border-bottom: 1.5px solid var(--border-color);
 }
 
 .trending-title {
@@ -155,7 +155,7 @@
   justify-content: center;
   gap: 16px; // 20px -> 16px
   padding: 13px; // 16px -> 13px
-  background: #f9fafb;
+  background: oklch(from var(--background-color) calc(l * 1.2) c h);
   border-radius: 6px; // 8px -> 6px
   flex-wrap: wrap;
 }
