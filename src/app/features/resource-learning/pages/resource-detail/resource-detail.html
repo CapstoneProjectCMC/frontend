@@ -35,8 +35,17 @@
 
     <div class="resource-content">
       <!-- Nếu là video -->
-      @if (!isDocument && !isImage && resource.hlsUrl) {
-      <app-video-player [videoSrc]="resource.hlsUrl || ''"></app-video-player>
+      @if (!isDocument && !isImage) { @if( resource.hlsUrl){<app-video-player
+        [videoSrc]="resource.hlsUrl || ''"
+      ></app-video-player
+      >} @else {
+      <div class="no-data-container">
+        <ng-lottie [options]="lottieOption" style="width: 200px; height: 200px">
+        </ng-lottie>
+        <div class="no-available-video">Video hiện không khả dụng</div>
+      </div>
+
+      }
       <div class="resource-detail-content">
         <markdown [data]="resource.description"></markdown>
       </div>
@@ -112,7 +121,13 @@
         </div>
         }
       </div>
-      } @if (isLoading) {
+      @if(hasMore && !isLoadingMore){
+      <div class="load-more-container">
+        <button class="load-more-btn" (click)="loadOtherResource()">
+          Xem thêm
+        </button>
+      </div>
+      } } @if (isLoading) {
       <div class="list-resource-card">
         <app-skeleton-loading type="card" [count]="8"></app-skeleton-loading>
       </div>
