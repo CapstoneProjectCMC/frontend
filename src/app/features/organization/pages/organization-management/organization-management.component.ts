@@ -18,7 +18,10 @@ import {
   OrganizationResponse,
 } from '../../../../core/models/organization.model';
 import { PaginationComponent } from '../../../../shared/components/fxdonad-shared/pagination/pagination.component';
-import { lottieOptions2 } from '../../../../core/constants/value.constant';
+import {
+  lottieOptions2,
+  lottieOptionsLoading1,
+} from '../../../../core/constants/value.constant';
 import { LottieComponent } from 'ngx-lottie';
 import { OrganizationCreateModalComponent } from '../../organization-component/organization-create-modal/organization-create-modal.component';
 import { Router } from '@angular/router';
@@ -51,6 +54,7 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
   selectedOrgId: string | null = null;
 
   lottieOptions = lottieOptions2;
+  lottieOptionsLoading = lottieOptionsLoading1;
 
   // Pagination state
   page = 1;

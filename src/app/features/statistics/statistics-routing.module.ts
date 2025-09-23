@@ -36,6 +36,8 @@ const routes: Routes = [
       },
       //thêm vào đây
     ],
+    data: { roles: ['STUDENT', 'TEACHER', 'ADMIN'] },
+    canActivate: [RoleGuard],
   },
 ];
 

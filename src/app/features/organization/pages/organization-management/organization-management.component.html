@@ -34,7 +34,14 @@
   </div>
 
   @if (loading) {
-  <div class="loading">Đang tải dữ liệu...</div>
+  <div class="no-data">
+    <ng-lottie
+      [options]="lottieOptionsLoading"
+      style="width: 200px; height: 200px"
+    >
+    </ng-lottie>
+    <p>Đang load nội dung, xin chờ...</p>
+  </div>
   } @if (!loading && !orgs.length) {
   <div class="no-data">
     <ng-lottie [options]="lottieOptions" style="width: 200px; height: 200px">
