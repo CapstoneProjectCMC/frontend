@@ -40,7 +40,7 @@ export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
     },
     {
       id: 'management',
-      path: 'management/admin',
+      path: 'user-management/user-list',
       label: 'Admin quản lý',
       icon: 'fas fa-user-shield',
       needHidden: !roles.includes(auth_lv2[0]),

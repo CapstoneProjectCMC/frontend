@@ -27,8 +27,6 @@ export function activeForMyContent(
 
 export function checkAuthenticated(): boolean {
   const decoded = decodeJWT(localStorage.getItem('token') ?? '');
-  console.log('expiresAt:', decoded.expiresAt);
-  console.log('now:', new Date());
 
   if (decoded?.expiresAt) {
     return decoded.expiresAt > new Date();

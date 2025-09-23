@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MyQuizHistoryResponse } from '../../../../core/models/exercise.model';
 import { ExerciseService } from '../../../../core/services/api-service/exercise.service';
 import { ScrollEndDirective } from '../../../../shared/directives/scroll-end.directive';
 import { Router } from '@angular/router';
