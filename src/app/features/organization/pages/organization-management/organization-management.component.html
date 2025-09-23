@@ -76,9 +76,11 @@
           <span class="status-badge" [ngClass]="org.status.toLowerCase()">
             {{ org.status }}
           </span>
+          @if(org.id === myOrgId){
           <button class="btn-icon danger" (click)="confirmDelete(org.id)">
             <i class="fa fa-trash"></i>
           </button>
+          }
         </div>
       </div>
       <div class="card-body">
