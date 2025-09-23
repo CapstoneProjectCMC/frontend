@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ProfileMenuComponent } from './profile-menu.component';
-import { decodeJWT } from '../../../utils/stringProcess';
 import { ToggleSwitch } from '../../fxdonad-shared/toggle-switch/toggle-switch';
 import { ThemeService } from '../../../../styles/theme-service/theme.service';
 import { ProfileService } from '../../../../core/services/api-service/profile.service';
@@ -16,6 +15,7 @@ import { NotificationModalComponent } from './notification-modal/notification-mo
 import { NotificationSocketService } from '../../../../core/services/socket-service/notification-socket.service';
 import { NotificationListService } from '../../../../core/services/api-service/notification-list.service';
 import { sendNotification } from '../../../utils/notification';
+import { checkAuthenticated } from '../../../utils/authenRoleActions';
 
 @Component({
   selector: 'app-header',
@@ -37,7 +37,7 @@ export class HeaderComponent {
   isLoggedIn: boolean = false;
   showProfileMenu = false;
   isMenuVisible = false;
-  timeExpiresAt: string = '';
+  timeExpiresAt: Date = new Date();
   avatarUrl: string = '';
   avatarDefault = avatarUrlDefault;
   setPassword = false;
@@ -89,11 +89,8 @@ export class HeaderComponent {
 
     this.getCountNotice();
 
-    this.timeExpiresAt =
-      decodeJWT(localStorage.getItem('token') ?? '')?.expiresAt || '';
-    const expiresAt = new Date(this.timeExpiresAt).getTime();
-    // this.isLoggedIn = !isNaN(expiresAt) && Date.now() < expiresAt;
-    this.isLoggedIn = !!localStorage.getItem('token');
+    //kiểm tra trạng thái đăng nhập có hợp lệ không
+    this.isLoggedIn = checkAuthenticated();
   }
 
   organizations = [
