@@ -83,6 +83,7 @@
       <div class="option-group">
         <span class="option-title">Chế độ đăng</span>
         <div class="option-choices">
+          @if(myOrgId){
           <label class="option-label">
             <input
               type="radio"
@@ -90,8 +91,9 @@
               [(ngModel)]="post.postType"
               value="Org"
             />
-            <span>Nội bộ</span>
+            <span>Nội bộ tổ chức</span>
           </label>
+          }
           <label class="option-label">
             <input
               type="radio"

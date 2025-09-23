@@ -135,7 +135,7 @@ export class Login {
   onGoogleLogin() {
     const params = new URLSearchParams({
       client_id: OAuthConfig.google.clientId,
-      redirect_uri: OAuthConfig.google.redirectUriServer,
+      redirect_uri: OAuthConfig.google.redirectUri,
       response_type: 'code',
       scope: 'email profile openid',
       include_granted_scopes: 'true',

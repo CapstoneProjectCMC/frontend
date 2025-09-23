@@ -31,6 +31,7 @@ import {
   clearLoading,
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
 
 @Component({
   selector: 'app-organization-management',
@@ -55,6 +56,7 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
 
   lottieOptions = lottieOptions2;
   lottieOptionsLoading = lottieOptionsLoading1;
+  myOrgId = '';
 
   // Pagination state
   page = 1;
@@ -63,6 +65,7 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
 
   // Search and Filter state
   searchControl = new FormControl('');
+  onlyMyOrgControl = new FormControl(false);
   private destroy$ = new Subject<void>();
 
   createForm!: FormGroup;
@@ -76,9 +79,12 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.myOrgId = decodeJWT(localStorage.getItem('token')).payload.org_id;
+
     this.initCreateForm();
     this.loadOrgs();
     this.listenToSearchChanges();
+    this.listenToOnlyMyOrgChanges();
   }
 
   ngOnDestroy() {
@@ -98,6 +104,15 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
     });
   }
 
+  private listenToOnlyMyOrgChanges() {
+    this.onlyMyOrgControl.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.page = 1; // reset về page 1 khi filter thay đổi
+        this.loadOrgs();
+      });
+  }
+
   // Lắng nghe sự kiện nhập liệu vào ô search
   private listenToSearchChanges() {
     this.searchControl.valueChanges
@@ -115,22 +130,28 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
   loadOrgs() {
     this.loading = true;
     const searchTerm = this.searchControl.value || '';
+    const onlyMyOrg = this.onlyMyOrgControl.value;
 
-    // Xây dựng bộ lọc để gửi đi
     const filters: FilterOrgs = {
       q: searchTerm,
-      status: 'Active', // Có thể thêm filter status ở đây
-      includeBlocks: true, // Yêu cầu API trả về thông tin blocks
+      status: 'Active',
+      includeBlocks: true,
       blocksPage: 1,
-      blocksSize: 5, // Lấy tối đa 5 khối
+      blocksSize: 5,
       includeUnassigned: true,
     };
 
     this.orgService.searchOrgsFilter(this.page, this.size, filters).subscribe({
       next: (res) => {
-        // Cập nhật dữ liệu và thông tin phân trang
-        this.orgs = res.result.data;
-        this.totalData = res.result.totalElements;
+        let orgs = res.result.data;
+
+        // nếu bật filter thì chỉ giữ lại org có id = myOrgId
+        if (onlyMyOrg && this.myOrgId) {
+          orgs = orgs.filter((o) => o.id === this.myOrgId);
+        }
+
+        this.orgs = orgs;
+        this.totalData = orgs.length; // tổng data thay đổi theo filter
         this.loading = false;
       },
       error: () => (this.loading = false),

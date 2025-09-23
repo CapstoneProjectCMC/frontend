@@ -51,3 +51,13 @@ export function getUserEmail(): string {
 
   return email;
 }
+
+export function getMyOrgId(): string {
+  const token = localStorage.getItem('token');
+  let orgId = '';
+  if (token) {
+    orgId = decodeJWT(token)?.payload.org_id;
+  }
+
+  return orgId;
+}

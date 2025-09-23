@@ -58,6 +58,27 @@
         >
         </app-dropdown-button>
       </div>
+      <div class="dropdown-filter">
+        <app-dropdown-button
+          [label]="'Loại bài tập'"
+          [options]="isJustOrg"
+          [variant]="'secondary'"
+          [size]="'medium'"
+          [customDropField]="'main-type'"
+          [disabled]="false"
+          [multiSelect]="false"
+          [isDisplayCheckbox]="false"
+          (onSelect)="handleSelect(isJustOrgKey, $event)"
+          [isOpen]="activeDropdown === isJustOrgKey"
+          (toggle)="toggleDropdown(isJustOrgKey)"
+          [isDisplaySelectedOpptionLabels]="true"
+          [isButtonControl]="false"
+          [isSearchable]="false"
+          [minHeight]="true"
+          [needIndexColor]="true"
+        >
+        </app-dropdown-button>
+      </div>
 
       @if (isActionActive) {
       <div class="create-exercise-btn">

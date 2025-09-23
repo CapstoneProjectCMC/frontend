@@ -18,6 +18,7 @@ import { avatarUrlDefault } from '../../../../core/constants/value.constant';
 
 export interface CardExcercise {
   id: string;
+  orgId: string;
   title: string;
   description: string;
   uploader: {

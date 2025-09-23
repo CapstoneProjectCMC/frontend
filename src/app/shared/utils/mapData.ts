@@ -27,6 +27,7 @@ const newDate = new Date();
 export function mapExerciseResToCardUI(exercise: ExerciseItem): CardExcercise {
   return {
     id: exercise.id,
+    orgId: exercise.orgId,
     title: exercise.title,
     description: exercise.description,
     uploader: {
@@ -47,6 +48,7 @@ export function mapCreateExerciseToCardUI(
 ): CardExcercise {
   return {
     id: '',
+    orgId: '',
     title: exercise.title,
     description: exercise.description || '',
     uploader: {
@@ -87,6 +89,7 @@ export function mapPostdatatoPostCardInfo(post: PostResponse): PostCardInfo {
 
   return {
     id: post.postId,
+    orgId: post.orgId,
     avatar: post.user?.avatarUrl || avatarUrlDefault,
     author: post.user?.displayName || 'Ẩn danh',
     accountName: post.user?.username || '',

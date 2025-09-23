@@ -54,9 +54,7 @@ export function getNavHorizontalItems(roles: string[]): SidebarItem[] {
     },
     {
       id: 'organization ',
-      path: roles.includes('ADMIN')
-        ? '/organization/orgs-list'
-        : '/organization/org-list-post',
+      path: '/organization/orgs-list',
       label: 'Tổ chức',
       icon: 'fa-solid fa-building-user',
       // needHidden: !roles.includes(auth_lv2[0]),

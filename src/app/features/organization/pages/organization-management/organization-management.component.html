@@ -2,6 +2,12 @@
   <div class="header">
     <h2>Quản lý Tổ chức</h2>
     <div class="header-actions">
+      <div class="checkbox-filter">
+        <label>
+          <input type="checkbox" [formControl]="onlyMyOrgControl" />
+          Chỉ hiển thị tổ chức của tôi
+        </label>
+      </div>
       <div class="search-bar">
         <input
           type="text"
@@ -9,6 +15,7 @@
           placeholder="Tìm kiếm theo tên, email..."
         />
       </div>
+
       <!-- Nút tải file mẫu -->
       <button class="btn secondary other" (click)="downloadTemplate()">
         <i class="fa-solid fa-arrow-down"></i>
@@ -27,9 +34,11 @@
         />
       </label>
 
+      @if(!myOrgId) {
       <button class="btn primary other" (click)="openCreateModal()">
-        <i class="fa-solid fa-plus"></i> Thêm tổ chức
+        <i class="fa-solid fa-plus"></i> Tạo tổ chức
       </button>
+      }
     </div>
   </div>
 

@@ -20,6 +20,7 @@ import { LineChartComponent } from '../../../shared/components/my-shared/line-ch
 export class StudentStatisticComponent {
   postCardData: PostCardInfo = {
     id: '1',
+    orgId: '1',
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
@@ -38,6 +39,7 @@ export class StudentStatisticComponent {
   };
   postCardDataApproved: PostCardInfo = {
     id: '2',
+    orgId: '1',
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',
@@ -56,6 +58,7 @@ export class StudentStatisticComponent {
   };
   postCardDataPending: PostCardInfo = {
     id: '1',
+    orgId: '1',
     avatar:
       'https://noithatbinhminh.com.vn/wp-content/uploads/2022/08/anh-dep-44.jpg',
     author: 'Nguyễn Văn A',

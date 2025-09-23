@@ -1,5 +1,6 @@
 export interface PostCardInfo {
   id: string;
+  orgId: string;
   avatar: string;
   author: string;
   accountName: string;

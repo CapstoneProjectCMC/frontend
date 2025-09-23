@@ -30,6 +30,7 @@ import {
   tagsData,
 } from '../../../../core/constants/value.constant';
 import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleActions';
+import { getMyOrgId } from '../../../../shared/utils/userInfo';
 
 @Component({
   selector: 'app-list-exercise',
@@ -42,8 +43,8 @@ import { activeForAdminAndTeacher } from '../../../../shared/utils/authenRoleAct
     ScrollEndDirective,
     BtnType1Component,
     GenerateExerciseModalComponent,
-    LottieComponent
-],
+    LottieComponent,
+  ],
   templateUrl: './list-exercise.component.html',
   styleUrl: './list-exercise.component.scss',
 })
@@ -64,6 +65,7 @@ export class ListExerciseComponent implements OnInit {
 
   filterTagsKey = 'tags';
   filterDifficultyKey = 'do-kho';
+  isJustOrgKey = 'isJustOrg';
 
   tagsSelected: string = '';
   difficultySelected: number | null = null;
@@ -72,9 +74,12 @@ export class ListExerciseComponent implements OnInit {
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
   errorSearch = '';
+  myOrgId = '';
 
   listExercise: CardExcercise[] = [];
+  listExerciseForSeacrh: CardExcercise[] = [];
   tags: { value: string; label: string }[] = [];
+  isJustOrg: { value: string; label: string }[] = [];
   difficultyLevel: { value: string; label: string }[] = [];
 
   isActionActive = activeForAdminAndTeacher();
@@ -86,6 +91,11 @@ export class ListExerciseComponent implements OnInit {
       { value: '1', label: 'Trung bình' },
       { value: '2', label: 'Khó' },
     ];
+
+    this.isJustOrg = [
+      { value: '0', label: 'Bài tập công khai' },
+      { value: '1', label: 'Bài tập trong tổ chức' },
+    ];
   }
 
   private mapExerciseResToCardDataUI(data: ExerciseItem[]): CardExcercise[] {
@@ -93,6 +103,8 @@ export class ListExerciseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.myOrgId = getMyOrgId();
+
     this.fetchData();
   }
 
@@ -111,6 +123,7 @@ export class ListExerciseComponent implements OnInit {
         next: (res) => {
           const data = this.mapExerciseResToCardDataUI(res.result.data);
           this.listExercise = data;
+          this.listExerciseForSeacrh = data;
           if (res.result.currentPage >= res.result.totalPages) {
             this.hasMore = false;
           }
@@ -142,6 +155,7 @@ export class ListExerciseComponent implements OnInit {
             this.hasMore = false;
           }
           this.listExercise = [...this.listExercise, ...newData];
+          this.listExerciseForSeacrh = [...this.listExercise, ...newData];
           this.isLoadingMore = false;
         },
         error: (err) => {
@@ -175,7 +189,6 @@ export class ListExerciseComponent implements OnInit {
   handleSelect(dropdownKey: string, selected: any): void {
     // Reset toàn bộ các lựa chọn trước đó tránh thừa query
     this.selectedOptions = {};
-
     this.pageIndex = 1;
 
     // Lưu lại option vừa chọn
@@ -183,17 +196,26 @@ export class ListExerciseComponent implements OnInit {
 
     if (dropdownKey === this.filterTagsKey) {
       this.tagsSelected = this.filterData(dropdownKey);
+      this.fetchData();
     } else if (dropdownKey === this.filterDifficultyKey) {
       this.difficultySelected = this.filterData(dropdownKey)
         ? Number(this.filterData(dropdownKey))
         : null;
+      this.fetchData();
+    } else if (dropdownKey === this.isJustOrgKey) {
+      // ✅ Filter FE: không call API
+      if (selected.value === '1') {
+        // chỉ lấy bài tập trong tổ chức
+        this.listExercise = this.listExerciseForSeacrh.filter(
+          (ex) => ex.orgId === this.myOrgId
+        );
+      } else {
+        // lấy tất cả
+        this.listExercise = [...this.listExerciseForSeacrh];
+      }
     } else {
       console.log('filter không khả dụng: ', dropdownKey);
     }
-
-    this.fetchData();
-
-    // this.router.navigate(['/', dropdownKey, selected.label]);
   }
 
   toggleDropdown(id: string): void {

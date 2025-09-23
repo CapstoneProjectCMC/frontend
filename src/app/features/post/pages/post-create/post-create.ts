@@ -31,6 +31,7 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 import { th } from 'date-fns/locale';
+import { decodeJWT } from '../../../../shared/utils/stringProcess';
 
 export interface Draft {
   id: string; // ID duy nhất cho mỗi bản nháp
@@ -57,6 +58,7 @@ export class PostCreatePageComponent {
 
   drafts: Draft[] = [];
   selectedDraftId: string | null = null;
+  myOrgId = '';
 
   post: PostADD = {
     title: '',
@@ -113,6 +115,8 @@ export class PostCreatePageComponent {
   isVideoFile: boolean = false;
 
   ngOnInit(): void {
+    this.myOrgId = decodeJWT(localStorage.getItem('token')).payload.org_id;
+
     this.loadAllDrafts();
   }
   tagInput: string = ''; // người dùng nhập tag thô
@@ -322,7 +326,7 @@ export class PostCreatePageComponent {
           f.type.startsWith('video/')
         ),
         isTextBook: this.selectedFiles.some((f) => f.type.startsWith('image/')),
-        orgId: this.post.fileDocument?.orgId,
+        orgId: this.post.postType === 'Org' ? this.myOrgId : undefined,
       },
     };
 
@@ -331,7 +335,7 @@ export class PostCreatePageComponent {
         sendNotification(this.store, 'Tạo bài viết', 'Thành công', 'success');
         localStorage.removeItem('postDraft');
         setTimeout(() => {
-          this.router.navigate(['/post-management/post-list']);
+          this.router.navigate(['/post-features/post-list']);
           this.store.dispatch(clearLoading());
         }, 300);
       },

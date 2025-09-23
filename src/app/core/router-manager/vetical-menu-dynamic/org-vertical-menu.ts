@@ -9,7 +9,6 @@ export function sidebarOrgRouter(roles: string[]): SidebarItem[] {
       path: '/organization/orgs-list',
       label: 'Danh sách tổ chức',
       icon: 'fa-solid fa-tasks',
-      needHidden: !roles.includes(auth_lv2[0]),
     },
     {
       id: 'list-posts-org',

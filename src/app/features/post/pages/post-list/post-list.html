@@ -29,25 +29,25 @@
           [isSearchable]="true"
           [minHeight]="true"
           [needIndexColor]="true"
-        ></app-dropdown-button>
+        ></app-dropdown-button> -->
         <app-dropdown-button
-          [label]="'Trạng thái'"
-          [options]="status"
+          [label]="'Bài viết công khai'"
+          [options]="isJustOrg"
           [variant]="'secondary'"
           [size]="'small'"
           [customDropField]="'main-type'"
           [disabled]="false"
-          [multiSelect]="true"
+          [multiSelect]="false"
           [isDisplayCheckbox]="false"
-          (onSelect)="handleSelect('status', $event)"
-          [isOpen]="activeDropdown === 'status'"
-          (toggle)="toggleDropdown('status')"
+          (onSelect)="handleSelect('isJustOrg', $event)"
+          [isOpen]="activeDropdown === 'isJustOrg'"
+          (toggle)="toggleDropdown('isJustOrg')"
           [isDisplaySelectedOpptionLabels]="true"
-          [isButtonControl]="true"
-          [isSearchable]="true"
+          [isButtonControl]="false"
+          [isSearchable]="false"
           [minHeight]="true"
           [needIndexColor]="true"
-        ></app-dropdown-button> -->
+        ></app-dropdown-button>
         @if (authenticated) {
         <div class="post-list-button">
           <app-btn-type1

@@ -4,11 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../core/services/api-service/auth.service';
 import { LoadingOverlayComponent } from '../../../../shared/components/fxdonad-shared/loading-overlay/loading-overlay.component';
 import { Store } from '@ngrx/store';
-import {
-  openModalNotification,
-  sendNotification,
-} from '../../../../shared/utils/notification';
-import { setVariable } from '../../../../shared/store/variable-state/variable.actions';
+import { sendNotification } from '../../../../shared/utils/notification';
 
 @Component({
   selector: 'app-oauth-callback',

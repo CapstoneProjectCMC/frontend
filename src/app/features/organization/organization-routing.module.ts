@@ -17,8 +17,7 @@ const routes: Routes = [
         path: 'orgs-list',
         component: OrganizationManagementComponent,
         title: 'Quản lý tổ chức',
-        data: { breadcrumb: 'Quản lý tổ chức', roles: ['ADMIN'] },
-        canActivate: [RoleGuard],
+        data: { breadcrumb: 'Quản lý tổ chức' },
       },
       {
         path: 'in-org/:orgId',

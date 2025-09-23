@@ -24,6 +24,8 @@ import {
   sendNotification,
 } from '../../../../shared/utils/notification';
 import { checkAuthenticated } from '../../../../shared/utils/authenRoleActions';
+import { getMyOrgId } from '../../../../shared/utils/userInfo';
+import { DropdownButtonComponent } from '../../../../shared/components/fxdonad-shared/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-post-list',
@@ -38,6 +40,7 @@ import { checkAuthenticated } from '../../../../shared/utils/authenRoleActions';
     TrendingComponent,
     LottieComponent,
     ScrollEndDirective,
+    DropdownButtonComponent,
     BtnType1Component,
   ],
   providers: [provideLottieOptions({ player: () => import('lottie-web') })],
@@ -52,9 +55,11 @@ export class PostListComponent {
     loop: true,
   };
   posts: PostCardInfo[] = [];
+  listForSearchPosts: PostCardInfo[] = [];
   postsraw!: PostResponse[];
 
   authenticated = false;
+  myOrgId = '';
 
   trendingData: TrendingItem[] = [
     { name: 'Angular', views: 15000 },
@@ -69,7 +74,7 @@ export class PostListComponent {
   postname = '';
   tag: { value: string; label: string }[] = [];
   pendingVote: { [postId: string]: boolean } = {};
-  status: { value: string; label: string }[] = [];
+  isJustOrg: { value: string; label: string }[] = [];
   selectedOptions: { [key: string]: any } = {};
   activeDropdown: string | null = null;
   pageIndex = 1;
@@ -85,24 +90,17 @@ export class PostListComponent {
     private postservice: PostService,
     private store: Store
   ) {
-    // this.tag = [
-    //   { value: '1', label: 'react' },
-    //   { value: '0', label: 'javascript' },
-    //   { value: '2', label: 'C#' },
-    //   { value: '3', label: 'java' },
-    //   { value: '4', label: 'python' },
-    // ];
-    // // Mock data for status
-    // this.status = [
-    //   { value: '0', label: 'Reject' },
-    //   { value: '1', label: 'Accepted' },
-    //   { value: '2', label: 'Pendding' },
-    // ];
+    this.isJustOrg = [
+      { value: '0', label: 'Bài viết công khai' },
+      { value: '1', label: 'Bài viết trong tổ chức' },
+    ];
 
     this.authenticated = checkAuthenticated();
   }
 
   ngOnInit(): void {
+    this.myOrgId = getMyOrgId();
+
     this.fetchPostList(true);
   }
 
@@ -126,12 +124,16 @@ export class PostListComponent {
           const newPosts = this.mapPostdatatoPostCardInfo(newPostsRaw);
           if (isInitialLoad) {
             this.posts = []; // reset khi load mới
+            this.listForSearchPosts = []; // reset khi load mới
           }
           if (!search) {
             this.posts.push(...newPosts); // append thêm
+            this.listForSearchPosts.push(...newPosts); // append thêm
           } else {
             this.posts = []; // reset khi load mới
+            this.listForSearchPosts = []; // reset khi load mới
             this.posts = newPosts;
+            this.listForSearchPosts = newPosts;
           }
 
           if (isInitialLoad) {
@@ -314,22 +316,32 @@ export class PostListComponent {
     }, 500); // chờ 500ms sau khi dừng gõ mới gọi
   }
 
-  // handleSelect(dropdownKey: string, selected: any): void {
-  //   // Reset toàn bộ các lựa chọn trước đó
-  //   this.selectedOptions = {};
+  handleSelect(dropdownKey: string, selected: any): void {
+    // Reset các lựa chọn trước đó
+    this.selectedOptions = {};
+    this.selectedOptions[dropdownKey] = selected;
 
-  //   // Lưu lại option vừa chọn
-  //   this.selectedOptions[dropdownKey] = selected;
+    if (dropdownKey === 'isJustOrg') {
+      if (selected.value === '1') {
+        // chỉ lấy bài trong tổ chức
+        this.posts = this.listForSearchPosts.filter(
+          (data) => data.orgId === this.myOrgId
+        );
+      } else {
+        // lấy tất cả bài viết
+        this.posts = [...this.listForSearchPosts];
+      }
+    } else {
+      this.posts = [...this.listForSearchPosts];
+    }
 
-  //   // this.router.navigate(['/', dropdownKey, selected.label]);
+    console.log(this.selectedOptions);
+  }
 
-  //   console.log(this.selectedOptions);
-  // }
-
-  // toggleDropdown(id: string): void {
-  //   // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
-  //   this.activeDropdown = this.activeDropdown === id ? null : id;
-  // }
+  toggleDropdown(id: string): void {
+    // Nếu bạn muốn chỉ mở 1 dropdown tại một thời điểm
+    this.activeDropdown = this.activeDropdown === id ? null : id;
+  }
 
   deletePost(id: string) {
     this.postservice.deletePost(id).subscribe({
