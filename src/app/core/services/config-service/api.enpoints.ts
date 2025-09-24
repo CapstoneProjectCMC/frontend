@@ -246,6 +246,8 @@ export const API_CONFIG = {
       GET_USER_PAYMENT_STATISTICS_ADMIN: (year: number, month: number) =>
         `/payment/payment-statistics/daily-statistic?year=${year}&month=${month}`,
       GET_SUMMARY_STATISTICS_ADMIN: '/submission/stats/admin/summary',
+      GET_MY_POST: (page: number, size: number) =>
+        `/post/my?page=${page}&size=${size}`,
     },
     POST: {
       LOGIN: '/identity/auth/login',

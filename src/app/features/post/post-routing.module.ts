@@ -5,6 +5,7 @@ import { PostDetailComponent } from './pages/post-detail/post-detail';
 import { PostCreatePageComponent } from './pages/post-create/post-create';
 import { PostLayoutComponent } from './post-layout/post-layout.component';
 import { SavedPostsListComponent } from './pages/saved-posts-list/saved-posts-list.component';
+import { MyPostComponent } from './pages/my-post/my-post';
 
 const routes: Routes = [
   {
@@ -34,6 +35,12 @@ const routes: Routes = [
         component: SavedPostsListComponent,
         data: { breadcrumb: 'Bài đăng đã lưu' },
         title: 'Danh sách lưu',
+      },
+      {
+        path: 'my-posts-list',
+        component: MyPostComponent,
+        data: { breadcrumb: 'Bài đăng của tôi' },
+        title: 'Danh sách bài đăng của tôi',
       },
     ],
   },

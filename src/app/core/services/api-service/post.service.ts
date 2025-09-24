@@ -38,6 +38,12 @@ export class PostService {
     );
   }
 
+  getAllMyPost(page: number, size: number) {
+    return this.api.get<ApiResponse<IPaginationResponse<PostResponse[]>>>(
+      API_CONFIG.ENDPOINTS.GET.GET_MY_POST(page, size)
+    );
+  }
+
   //sử dụng postWithFormData
   createPost(data: CreatePostRequest) {
     const { fileDocument, ...otherData } = data;
