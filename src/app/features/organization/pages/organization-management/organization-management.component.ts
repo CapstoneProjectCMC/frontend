@@ -234,12 +234,21 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
   }
 
   submitCreate(req: CreateOrgRequest) {
+    Promise.resolve().then(() => {
+      this.store.dispatch(
+        setLoading({ isLoading: true, content: 'Đang tạo, xin chờ...' })
+      );
+    });
     this.orgService.createOrg(req).subscribe({
       next: () => {
         this.refreshTokenAfterCreatedOrg();
         setTimeout(() => {
+          this.store.dispatch(clearLoading());
           this.loadOrgs();
-        }, 2000);
+        }, 1000);
+      },
+      error: () => {
+        this.store.dispatch(clearLoading());
       },
     });
   }
