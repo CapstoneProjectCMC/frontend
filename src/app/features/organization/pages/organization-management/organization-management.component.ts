@@ -163,8 +163,13 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
         let orgs = res.result.data;
 
         // nếu bật filter thì chỉ giữ lại org có id = myOrgId
-        if (onlyMyOrg && this.myOrgId) {
-          orgs = orgs.filter((o) => o.id === this.myOrgId);
+        if (onlyMyOrg) {
+          if (this.myOrgId) {
+            orgs = orgs.filter((o) => o.id === this.myOrgId);
+          } else {
+            // Không có myOrgId mà vẫn tick filter → danh sách rỗng
+            orgs = [];
+          }
         }
 
         this.orgs = orgs;
