@@ -16,13 +16,14 @@ import {
 import { MarkdownModule, MarkdownService } from 'ngx-markdown';
 
 import hljs from 'highlight.js';
+import { Tooltip } from '../../fxdonad-shared/tooltip/tooltip';
 
 @Component({
   selector: 'app-post-card',
   templateUrl: './post-card.html',
   styleUrls: ['./post-card.scss'],
   standalone: true,
-  imports: [CommonModule, TruncatePipe, MarkdownModule],
+  imports: [CommonModule, TruncatePipe, MarkdownModule, Tooltip],
   changeDetection: ChangeDetectionStrategy.OnPush, // Tối ưu hiệu suất
 })
 export class PostCardComponent {

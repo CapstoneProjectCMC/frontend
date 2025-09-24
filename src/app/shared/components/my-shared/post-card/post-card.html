@@ -26,9 +26,22 @@
 
     @if (post.tags.length) {
     <div class="post-card__tags">
-      @for (tag of post.tags; track trackByFn($index, tag)) {
+      @for (tag of post.tags.slice(0, 3); track trackByFn($index, tag)) {
       <span class="post-card__tag">#{{ tag }}</span>
       }
+
+      <div style="position: relative">
+        <app-tooltip
+          [content]="(post.tags || []).slice(3).join(', ')"
+          [position]="'bottom'"
+          [delay]="0.5"
+          [distance]="50"
+        >
+          @if ((post.tags.length || 0) > 3) {
+          <span class="tag other"> +{{ (post.tags.length || 0) - 3 }} </span>
+          }
+        </app-tooltip>
+      </div>
     </div>
     }
   </main>
