@@ -76,8 +76,7 @@
           <span class="status-badge" [ngClass]="org.status.toLowerCase()">
             {{ org.status }}
           </span>
-          <!-- @if(org.ownerId === myId){ -->
-          @if(true){
+          @if(org.ownerId === myId){
           <button class="btn-icon danger" (click)="confirmDelete(org.id)">
             <i class="fa fa-trash"></i>
           </button>
