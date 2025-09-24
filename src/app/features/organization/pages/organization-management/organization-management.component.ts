@@ -33,6 +33,7 @@ import {
 } from '../../../../shared/store/loading-state/loading.action';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
 import { AuthService } from '../../../../core/services/api-service/auth.service';
+import { getUserId } from '../../../../shared/utils/userInfo';
 
 @Component({
   selector: 'app-organization-management',
@@ -58,6 +59,8 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
   lottieOptions = lottieOptions2;
   lottieOptionsLoading = lottieOptionsLoading1;
   myOrgId = '';
+  ownerOrgId = '';
+  myId = '';
 
   // Pagination state
   page = 1;
@@ -82,6 +85,7 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.myOrgId = decodeJWT(localStorage.getItem('token')).payload.org_id;
+    this.myId = getUserId();
 
     this.initCreateForm();
     this.loadOrgs();

@@ -5,6 +5,7 @@ export type OrganizationInfo = {
   id: string;
   name: string;
   description: string | null;
+  ownerId: string;
   address: string;
   email: string;
   phone: string;
@@ -45,6 +46,7 @@ export type OrganizationResponse = {
   id: string;
   name: string;
   description: string;
+  ownerId: string;
   logoUrl: string | null;
   email: string;
   phone: string;

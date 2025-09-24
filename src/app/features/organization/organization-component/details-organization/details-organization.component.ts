@@ -10,6 +10,7 @@ import { finalize } from 'rxjs/internal/operators/finalize';
 import { FormsModule } from '@angular/forms';
 import { sendNotification } from '../../../../shared/utils/notification';
 import { Store } from '@ngrx/store';
+import { getUserId } from '../../../../shared/utils/userInfo';
 
 @Component({
   selector: 'app-details-organization',
@@ -27,6 +28,8 @@ export class DetailsOrganizationComponent implements OnInit {
 
   isSaving = false;
 
+  myId = '';
+
   constructor(
     private route: ActivatedRoute,
     private organizationService: OrganizationService,
@@ -34,6 +37,8 @@ export class DetailsOrganizationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.myId = getUserId();
+
     this.route.params.subscribe((params) => {
       const id = params['orgId'];
       this.loadOrganization(id);

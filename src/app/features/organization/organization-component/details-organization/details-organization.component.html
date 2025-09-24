@@ -1,130 +1,124 @@
 <div class="org-header">
   <div class="org-header__container">
     @if (!isLoading && organization) {
-      <div class="org-header__content">
-        <div class="org-header__logo">
-          @if (organization.logoUrl && !isEditing) {
-            <img
-              [src]="organization.logoUrl"
-              [alt]="organization.name"
-              class="org-logo"
-              />
-          } @else {
-            <div class="org-logo-fallback">
-              {{ organization.name.charAt(0) }}
-            </div>
-          }
-          @if (isEditing) {
-            <div class="org-logo__edit">
-              <input type="file" (change)="onFileChange($event)" />
-              @if (!organization.logoUrl) {
-                <div class="org-logo-fallback">
-                  {{ organization.name.charAt(0) }}
-                </div>
-              }
-            </div>
-          }
+    <div class="org-header__content">
+      <div class="org-header__logo">
+        @if (organization.logoUrl && !isEditing) {
+        <img
+          [src]="organization.logoUrl"
+          [alt]="organization.name"
+          class="org-logo"
+        />
+        } @else {
+        <div class="org-logo-fallback">
+          {{ organization.name.charAt(0) }}
         </div>
-        <div class="org-header__info">
-          <div class="org-header__main">
-            <h1 class="org-name">{{ organization.name }}</h1>
-            @if (!isEditing) {
-              <span
-                class="org-status"
-                [class]="getStatusClass(organization.status)"
-                >
-                {{ getStatusLabel(organization.status) }}
-              </span>
-            } @else {
-              <div class="org-select-wrapper">
-                <select [(ngModel)]="editForm.status" class="org-select">
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="pending">Pending</option>
-                  <option value="unknown">Unknown</option>
-                </select>
-              </div>
-            }
-            @if (!isEditing) {
-              <button
-                (click)="enableEdit()"
-                class="btn btn-edit"
-                >
-                <i class="fas fa-edit"></i> Chỉnh sửa
-              </button>
-            }
+        } @if (isEditing) {
+        <div class="org-logo__edit">
+          <input type="file" (change)="onFileChange($event)" />
+          @if (!organization.logoUrl) {
+          <div class="org-logo-fallback">
+            {{ organization.name.charAt(0) }}
           </div>
-          @if (!isEditing) {
-            <div class="view-mode-details">
-              @if (organization.description) {
-                <p class="org-description">
-                  {{ organization.description }}
-                </p>
-              }
-              <div class="org-meta">
-                <div class="org-meta__item">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <span>{{ organization.address }}</span>
-                </div>
-                <div class="org-meta__item">
-                  <i class="fas fa-envelope"></i>
-                  <span>{{ organization.email }}</span>
-                </div>
-                <div class="org-meta__item">
-                  <i class="fas fa-phone"></i>
-                  <span>{{ organization.phone }}</span>
-                </div>
-              </div>
-            </div>
-          }
-          @if (isEditing) {
-            <div class="edit-mode-form">
-              <div class="form-group">
-                <label for="org-description">Mô tả</label>
-                <textarea
-                  id="org-description"
-                  [(ngModel)]="editForm.description"
-                  placeholder="Mô tả"
-                ></textarea>
-              </div>
-              <div class="form-group">
-                <label for="org-address">Địa chỉ</label>
-                <input
-                  id="org-address"
-                  [(ngModel)]="editForm.address"
-                  placeholder="Địa chỉ"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="org-email">Email</label>
-                  <input
-                    id="org-email"
-                    [(ngModel)]="editForm.email"
-                    placeholder="Email"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label for="org-phone">Số điện thoại</label>
-                    <input
-                      id="org-phone"
-                      [(ngModel)]="editForm.phone"
-                      placeholder="Số điện thoại"
-                      />
-                    </div>
-                    <div class="form-actions">
-                      <button class="btn btn-cancel" (click)="cancelEdit()">Hủy</button>
-                      <button
-                        class="btn btn-save"
-                        (click)="saveEdit()"
-                        [disabled]="isSaving"
-                        >
-                        Lưu
-                      </button>
-                    </div>
-                  </div>
-                }
-              </div>
-            </div>
           }
         </div>
+        }
       </div>
+      <div class="org-header__info">
+        <div class="org-header__main">
+          <h1 class="org-name">{{ organization.name }}</h1>
+          @if (!isEditing) {
+          <span
+            class="org-status"
+            [class]="getStatusClass(organization.status)"
+          >
+            {{ getStatusLabel(organization.status) }}
+          </span>
+          } @else {
+          <div class="org-select-wrapper">
+            <select [(ngModel)]="editForm.status" class="org-select">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="pending">Pending</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </div>
+          } @if (!isEditing && myId === organization.ownerId) {
+          <button (click)="enableEdit()" class="btn btn-edit">
+            <i class="fas fa-edit"></i> Chỉnh sửa
+          </button>
+          }
+        </div>
+        @if (!isEditing) {
+        <div class="view-mode-details">
+          @if (organization.description) {
+          <p class="org-description">
+            {{ organization.description }}
+          </p>
+          }
+          <div class="org-meta">
+            <div class="org-meta__item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span>{{ organization.address }}</span>
+            </div>
+            <div class="org-meta__item">
+              <i class="fas fa-envelope"></i>
+              <span>{{ organization.email }}</span>
+            </div>
+            <div class="org-meta__item">
+              <i class="fas fa-phone"></i>
+              <span>{{ organization.phone }}</span>
+            </div>
+          </div>
+        </div>
+        } @if (isEditing) {
+        <div class="edit-mode-form">
+          <div class="form-group">
+            <label for="org-description">Mô tả</label>
+            <textarea
+              id="org-description"
+              [(ngModel)]="editForm.description"
+              placeholder="Mô tả"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="org-address">Địa chỉ</label>
+            <input
+              id="org-address"
+              [(ngModel)]="editForm.address"
+              placeholder="Địa chỉ"
+            />
+          </div>
+          <div class="form-group">
+            <label for="org-email">Email</label>
+            <input
+              id="org-email"
+              [(ngModel)]="editForm.email"
+              placeholder="Email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="org-phone">Số điện thoại</label>
+            <input
+              id="org-phone"
+              [(ngModel)]="editForm.phone"
+              placeholder="Số điện thoại"
+            />
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-cancel" (click)="cancelEdit()">Hủy</button>
+            <button
+              class="btn btn-save"
+              (click)="saveEdit()"
+              [disabled]="isSaving"
+            >
+              Lưu
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
