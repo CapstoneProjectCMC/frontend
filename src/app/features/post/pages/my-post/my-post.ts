@@ -6,13 +6,9 @@ import {
   PostCardInfo,
   PostResponse,
 } from '../../../../core/models/post.models';
-import { PopularPostComponent } from '../../../admin/post-management/component/popular-post/popular-post';
 import { SkeletonLoadingComponent } from '../../../../shared/components/fxdonad-shared/skeleton-loading/skeleton-loading.component';
 import { Router } from '@angular/router';
-import {
-  TrendingComponent,
-  TrendingItem,
-} from '../../../../shared/components/fxdonad-shared/trending/trending.component';
+import { TrendingItem } from '../../../../shared/components/fxdonad-shared/trending/trending.component';
 import { PostService } from '../../../../core/services/api-service/post.service';
 import { Store } from '@ngrx/store';
 import { mapPostdatatoPostCardInfo } from '../../../../shared/utils/mapData';
@@ -34,9 +30,7 @@ import { getMyOrgId } from '../../../../shared/utils/userInfo';
   imports: [
     InputComponent,
     PostCardComponent,
-    PopularPostComponent,
     SkeletonLoadingComponent,
-    TrendingComponent,
     LottieComponent,
     ScrollEndDirective,
     BtnType1Component,

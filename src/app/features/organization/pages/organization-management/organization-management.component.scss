@@ -19,16 +19,21 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.2rem;
+    flex-wrap: wrap; // Cho phép xuống dòng
 
     h2 {
       color: var(--text-color);
       margin: 0;
+      flex: 1; // h2 chiếm không gian còn lại để không bị bóp
     }
 
     .header-actions {
       display: flex;
       gap: 1rem;
       align-items: center;
+      flex-wrap: wrap; // Cho phép các nút xuống dòng khi thiếu chỗ
+      justify-content: flex-end;
+
       .btn {
         white-space: nowrap;
         p {
@@ -38,6 +43,40 @@
       }
     }
   }
+
+  /* Responsive cho màn nhỏ */
+  @media (max-width: 1024px) {
+    .header {
+      flex-direction: column; // Header xuống 2 dòng: title + actions
+      align-items: flex-start;
+      gap: 0.8rem;
+
+      .header-actions {
+        width: 100%;
+        justify-content: flex-start; // Căn trái cho đồng bộ
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    .header-actions {
+      flex-direction: column; // Xếp dọc toàn bộ action
+      align-items: stretch;
+      gap: 0.5rem;
+
+      .search-bar input {
+        width: 100%; // search full width
+      }
+
+      .btn,
+      .checkbox-filter {
+        width: 100%; // Nút và filter chiếm hết chiều ngang
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  }
+
   // Search Bar
   .search-bar {
     input {
