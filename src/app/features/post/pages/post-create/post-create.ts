@@ -313,6 +313,7 @@ export class PostCreatePageComponent {
     // Debug nhanh
     const payload: CreatePostRequest = {
       title: this.post.title,
+      orgId: this.post.postType === 'Org' ? this.myOrgId : undefined,
       content: this.htmlToMd.convert(this.editorContent || ''),
       isPublic: this.post.postType !== 'Private',
       allowComment: this.post.allowComment ?? false,

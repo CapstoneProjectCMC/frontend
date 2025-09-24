@@ -329,7 +329,7 @@ export class UserListComponent {
 
     Promise.resolve().then(() => {
       this.store.dispatch(
-        setLoading({ isLoading: true, content: 'Đang thêm test case...' })
+        setLoading({ isLoading: true, content: 'Đang xử lý, xin chờ...' })
       );
     });
 

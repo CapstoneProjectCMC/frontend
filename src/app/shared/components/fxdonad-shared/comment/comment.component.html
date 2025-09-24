@@ -40,7 +40,7 @@
       @if (authenticated) {
       <div class="reply-section" [class.opened]="showReplies[comment.id]">
         <div class="line-connect"></div>
-        <img [src]="userAvatar" class="avatar small" />
+        <img [src]="userAvatar || avatarDefault" class="avatar small" />
         <input [(ngModel)]="replyMap[comment.id]" placeholder="Phản hồi..." />
         <button (click)="submitReplyComment(comment.id)">Gửi</button>
       </div>
@@ -54,7 +54,7 @@
           }
           <div class="line-border-connect-replies"></div>
           <div class="comment-header-replies">
-            <img [src]="reply.user.avatarUrl" class="avatar" />
+            <img [src]="reply.user.avatarUrl || avatarDefault" class="avatar" />
             <div class="replies-info">
               <div class="user-replies">
                 <strong>{{ reply.user.username }}</strong>

@@ -32,6 +32,7 @@ import {
   setLoading,
 } from '../../../../shared/store/loading-state/loading.action';
 import { decodeJWT } from '../../../../shared/utils/stringProcess';
+import { AuthService } from '../../../../core/services/api-service/auth.service';
 
 @Component({
   selector: 'app-organization-management',
@@ -73,6 +74,7 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
 
   constructor(
     private orgService: OrganizationService,
+    private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
     private store: Store
@@ -127,6 +129,17 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
       });
   }
 
+  refreshTokenAfterCreatedOrg() {
+    const token = localStorage.getItem('token') ?? '';
+
+    this.authService.refreshToken(token).subscribe({
+      next: (res) => {
+        localStorage.setItem('refreshToken', res.result.refreshToken);
+        localStorage.setItem('token', res.result.accessToken);
+      },
+    });
+  }
+
   loadOrgs() {
     this.loading = true;
     const searchTerm = this.searchControl.value || '';
@@ -179,7 +192,7 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
 
     Promise.resolve().then(() => {
       this.store.dispatch(
-        setLoading({ isLoading: true, content: 'Đang thêm test case...' })
+        setLoading({ isLoading: true, content: 'Xin chờ, đang xử lý...' })
       );
     });
 
@@ -219,6 +232,7 @@ export class OrganizationManagementComponent implements OnInit, OnDestroy {
   submitCreate(req: CreateOrgRequest) {
     this.orgService.createOrg(req).subscribe({
       next: () => {
+        this.refreshTokenAfterCreatedOrg();
         setTimeout(() => {
           this.loadOrgs();
         }, 2000);
