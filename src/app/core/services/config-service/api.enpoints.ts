@@ -12,7 +12,7 @@ export const version = 'v1';
 
 export const API_CONFIG = {
   BASE_URLS: {
-    MAIN_API: environment.IP_SERVER_LOCAL + version, //chạy ở local thì đổi ip thành IP_SERVER_LOCAL và thêm "+ version" vào chuỗi MAIN_API (sau IP). push lên github nhớ stash commit hoặc không làm thay đổi dòng này.
+    MAIN_API: environment.IP_SERVER, //chạy ở local thì đổi ip thành IP_SERVER_LOCAL và thêm "+ version" vào chuỗi MAIN_API (sau IP). push lên github nhớ stash commit hoặc không làm thay đổi dòng này.
     SECONDARY_API: '',
   },
   ENDPOINTS: {
