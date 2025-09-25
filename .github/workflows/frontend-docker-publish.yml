@@ -25,7 +25,7 @@ env:
   PLATFORMS: linux/amd64
 
 jobs:
-  ############
+  #############
   build-and-push:
     runs-on: ubuntu-latest
 
