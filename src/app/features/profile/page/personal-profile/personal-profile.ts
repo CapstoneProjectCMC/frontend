@@ -239,7 +239,7 @@ export class PersonalProfileComponent {
     });
   }
   fetchQuizSubmitted() {
-    this.exerciseService.getMySubmissionsHistory().subscribe({
+    this.exerciseService.getMySubmissionsHistory(1, 10).subscribe({
       next: (res) => {
         // Nối dữ liệu mới vào danh sách hiện tại
         this.submissions = res.result.data;
